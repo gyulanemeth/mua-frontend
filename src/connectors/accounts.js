@@ -100,10 +100,10 @@ const generateResetForgotPasswordRoute = (params) => {
   }
 
   const patchUrlFriendlyName = async function(formData){
-    if(formData === undefined || formData.id === undefined || formData.oldPassword === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
+    if(formData === undefined || formData.id === undefined || formData.urlFriendlyName === undefined  ){
         throw new RouteError("Account ID And New Password Is Required")
       }
-    const res = await updateUrlFriendlyName({ id: formData.id }, {oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain})
+    const res = await updateUrlFriendlyName({ id: formData.id }, {urlFriendlyName: formData.urlFriendlyName})
     return res
   }
 
