@@ -22,6 +22,54 @@ export default (connectors) => {
           return e
         }
       },
+      logout () {
+     localStorage.removeItem("accessToken");
+     this.accessToken = null
+     this.user = null
+    // forward to /
+  },
+
+    async  sendForgotPassword (email) {
+        try {
+          await connectors.forgotPassword.send({email:email})
+          return 'success'
+        } catch (e) {
+          return e
+        }
+      },
+
+    async  resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
+        try {
+          this.accessToken = await connectors.forgotPassword.reset({token:forgotPasswordToken, newPassword: newPassword, newPasswordAgain: newPasswordAgain})
+          const tokenData = jwt_decode(this.accessToken)
+          this.accessToken = await connectors.admins.getAccessToken({id: tokenData.user._id})
+          this.user = await connectors.admins.readOne({id: tokenData.user._id})
+          return "success"
+        } catch (e) {
+          return e
+        }
+      },
+
+    async sendInvitation (email) {
+        try {
+          await connectors.invitation.send({email:email})
+          return "success"
+        } catch (e) {
+          return e
+        }
+      },
+      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain) {
+        try {
+          this.accessToken = await connectors.invitation.accept({token:acceptInvitationToken, newPassword: newPassword, newPasswordAgain: newPasswordAgain })
+          const tokenData = jwt_decode(this.accessToken)
+          this.accessToken = await connectors.admins.getAccessToken({id: tokenData.user._id})
+          this.user = await connectors.admins.readOne({id: tokenData.user._id})
+          return "success"
+        } catch (e) {
+          return e
+        }
+      },
+
 //3
       async readOne () {
         try {

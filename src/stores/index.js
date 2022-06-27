@@ -1,10 +1,10 @@
-import currentUserAndAdmin from './currentUserAndAdmin .js'
+import currentUserAndAccount from './currentUserAndAccount.js'
 import users from './users.js'
 import connectors from '../connectors/index.js'
 export default function (){
 
-const currentUserAndAdmin =  currentUserAndAdmin(connectors().accountsConnectors)
-const users =  users(connectors().userConnectors)
+const currentUserAndAccountStore =  currentUserAndAccount({...connectors().accountsConnectors, ...connectors().userConnectors} )
+const usersStore =  users(connectors().userConnectors)
 
-  return {currentUserAndAdmin, users}
+  return {currentUserAndAccountStore, usersStore}
 }

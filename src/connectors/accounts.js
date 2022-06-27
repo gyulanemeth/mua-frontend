@@ -146,7 +146,7 @@ const finalizeRegistration = async function(data){
 
 
 const sendInvitation = async function(data){
-  if(data === undefined || data.email === undefined){
+  if(data === undefined || data.id === undefined || data.email === undefined){
     throw new RouteError("Email Is Required")
   }
   const res = await postSendInvitation({ id:data.id}, {email:data.email})
@@ -154,7 +154,7 @@ const sendInvitation = async function(data){
 }
 
 const accept = async function(formData){
-  if(formData === undefined ||formData.token === undefined ||formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
+  if(formData === undefined || data.id === undefined ||formData.token === undefined ||formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
     throw new RouteError("Admin Password Is Required")
   }
   localStorage.setItem("accessToken", formData.token);
@@ -163,7 +163,7 @@ const accept = async function(formData){
 }
 
 const sendForgotPassword = async function(data){
-  if(data === undefined || data.email === undefined){
+  if(data === undefined || data.email === undefined || data.id === undefined){
     throw new RouteError("Email Is Required")
   }
   const res = await postSendForgotPassword({ id:data.id}, {email:data.email})
@@ -171,7 +171,7 @@ const sendForgotPassword = async function(data){
 }
 
 const reset = async function(formData){
-  if(formData === undefined ||formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
+  if(formData === undefined || data.id === undefined ||formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
     throw new RouteError("Admin Password Is Required")
   }
   localStorage.setItem("accessToken", formData.token);
