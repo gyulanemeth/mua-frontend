@@ -1,23 +1,23 @@
 <script setup >
 import { ref } from 'vue'
 import stores from '../stores/index.js'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const Store = stores().currentUserAndAccountStore()
 const router = useRouter()
 const password = ref('')
-const account = ref({name:'Please select account'})
+const account = ref({ name: 'Please select account' })
 
 const props = defineProps({
   data: Object,
   token: String
 })
 
-async function submit(){
- const res = await Store.login(props.token ,password.value, account.value._id)
- if(res === 'success'){
-   router.push("/")
- }
+async function submit () {
+  const res = await Store.login(props.token, password.value, account.value._id)
+  if (res === 'success') {
+    router.push('/')
+  }
 }
 
 </script>

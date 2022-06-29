@@ -3,9 +3,8 @@ import { ref } from 'vue'
 const props = defineProps({
   formData: Object
 })
-const data = ref("")
+const data = ref('')
 </script>
-
 
 <template>
   <v-container>

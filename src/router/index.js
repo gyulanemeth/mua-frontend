@@ -77,7 +77,7 @@ const router = createRouter({
       path: '/invitation/accept',
       name: 'accept-invitation',
       component: SetAndReSetPasswordView
-    },
+    }
   ]
 })
 

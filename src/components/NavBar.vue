@@ -1,13 +1,13 @@
 <script setup>
 
-const menuItems = [
-        { title: 'Me', path: '/me' },
-        { title: 'Account Settings', path: '/account' },
-        { title: 'Account Users', path: '/users' }
-  ]
-const model = false
-
 import stores from '../stores/index.js'
+
+const menuItems = [
+  { title: 'Me', path: '/me' },
+  { title: 'Account Settings', path: '/account' },
+  { title: 'Account Users', path: '/users' }
+]
+const model = false
 const store = stores().currentUserAndAccountStore()
 
 </script>
@@ -54,19 +54,6 @@ const store = stores().currentUserAndAccountStore()
     </v-btn>
   </v-app-bar>
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!--
 <v-list color="transparent">

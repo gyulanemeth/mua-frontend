@@ -11,9 +11,8 @@ export default function (fetch, apiUrl) {
     return { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
   }
 
-  const generateUserRoute = (params,query) => {
-
-    return `/v1/accounts/${params.accountId}/users${params.id ? '/'+ params.id : ''}${query ? '?' + query : ''}`
+  const generateUserRoute = (params, query) => {
+    return `/v1/accounts/${params.accountId}/users${params.id ? '/' + params.id : ''}${query ? '?' + query : ''}`
   }
 
   const generateAccessTokenRoute = (params) => {
@@ -33,13 +32,12 @@ export default function (fetch, apiUrl) {
   }
 
   const generateLoginGetAccountsRoute = () => {
-  return `/v1/accounts/login`
+    return `/v1/accounts/login`
   }
 
   const generateLoginRoute = (params) => {
     return `/v1/accounts/${params.id}/login`
   }
-
 
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
@@ -52,90 +50,83 @@ export default function (fetch, apiUrl) {
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, generateAdditionalHeaders)
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
 
-
-
-  const list = async function (param,query) {
-    if(param === undefined ){
-      throw new RouteError("User ID Is Required")
+  const list = async function (param, query) {
+    if (param === undefined) {
+      throw new RouteError('User ID Is Required')
     }
-    const res = await getUserList(param,query)
+    const res = await getUserList(param, query)
     return res
   }
 
-
-
-  const readOne = async function (data){
-    if(data === undefined || data.accountId === undefined || data.id === undefined ){
-      throw new RouteError("ID And Account ID Is Required")
+  const readOne = async function (data) {
+    if (data === undefined || data.accountId === undefined || data.id === undefined) {
+      throw new RouteError('ID And Account ID Is Required')
     }
-    const res = await getUser({id:data.id, accountId:data.accountId})
+    const res = await getUser({ id: data.id, accountId: data.accountId })
     return res
   }
 
-  const getAccessToken = async function (data){
-    if(data === undefined || data.accountId === undefined || data.id === undefined ){
-      throw new RouteError("ID And Account ID Is Required")
+  const getAccessToken = async function (data) {
+    if (data === undefined || data.accountId === undefined || data.id === undefined) {
+      throw new RouteError('ID And Account ID Is Required')
     }
-    const res = await getToken({id:data.id, accountId:data.accountId})
-    if(res.accessToken){
-      localStorage.setItem("accessToken", res.accessToken);
+    const res = await getToken({ id: data.id, accountId: data.accountId })
+    if (res.accessToken) {
+      localStorage.setItem('accessToken', res.accessToken)
     }
     return res
   }
 
-
-  const loginGetAccounts = async function(formData){
-    if(formData === undefined || formData.email === undefined ){
-        throw new RouteError("User Email Is Required")
-      }
-    const res = await postLoginGetEmails({},{ email:formData.email})
+  const loginGetAccounts = async function (formData) {
+    if (formData === undefined || formData.email === undefined) {
+      throw new RouteError('User Email Is Required')
+    }
+    const res = await postLoginGetEmails({}, { email: formData.email })
     return res
   }
 
-  const login = async function(formData){
-    if(formData === undefined || formData.password === undefined || formData.accountId === undefined ){
-        throw new RouteError("User Password Is Required")
-      }
-    const res = await postLogin({id:formData.accountId},{password: formData.password})
-    if(res.loginToken){
-      localStorage.setItem("accessToken", res.loginToken);
+  const login = async function (formData) {
+    if (formData === undefined || formData.password === undefined || formData.accountId === undefined) {
+      throw new RouteError('User Password Is Required')
+    }
+    const res = await postLogin({ id: formData.accountId }, { password: formData.password })
+    if (res.loginToken) {
+      localStorage.setItem('accessToken', res.loginToken)
     }
     return res.loginToken
   }
 
-
-  const patchName = async function(data){
-    if(data === undefined || data.id === undefined|| data.accountId === undefined || data.name === undefined ){
-        throw new RouteError("User ID, Account ID And New Name Is Required")
-      }
-    const res = await updateName({id:data.id, accountId:data.accountId}, {name: data.name})
+  const patchName = async function (data) {
+    if (data === undefined || data.id === undefined || data.accountId === undefined || data.name === undefined) {
+      throw new RouteError('User ID, Account ID And New Name Is Required')
+    }
+    const res = await updateName({ id: data.id, accountId: data.accountId }, { name: data.name })
     return res
   }
 
-  const patchPassword = async function(formData){
-    if(formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.oldPassword === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
-        throw new RouteError("User ID, Account ID And New Password Is Required")
-      }
-    const res = await updatePassword({id:formData.id, accountId:formData.accountId}, {oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain})
+  const patchPassword = async function (formData) {
+    if (formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.oldPassword === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+      throw new RouteError('User ID, Account ID And New Password Is Required')
+    }
+    const res = await updatePassword({ id: formData.id, accountId: formData.accountId }, { oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
     return res
   }
 
-  const patchRole = async function(formData){
-    if(formData === undefined || formData.id === undefined|| formData.accountId === undefined || formData.role === undefined ){
-        throw new RouteError("User ID, Account ID And New Role Is Required")
-      }
-    const res = await updateRole({id:data.id, accountId:data.accountId}, {role: formData.role})
+  const patchRole = async function (formData) {
+    if (formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.role === undefined) {
+      throw new RouteError('User ID, Account ID And New Role Is Required')
+    }
+    const res = await updateRole({ id: formData.id, accountId: formData.accountId }, { role: formData.role })
     return res
   }
 
-  const deleteOne = async function(data){
-    if(data === undefined || data.id === undefined|| data.accountId === undefined){
-        throw new RouteError("User ID and Account ID Is Required")
-      }
-    const res = await del({id:data.id, accountId:data.accountId})
+  const deleteOne = async function (data) {
+    if (data === undefined || data.id === undefined || data.accountId === undefined) {
+      throw new RouteError('User ID and Account ID Is Required')
+    }
+    const res = await del({ id: data.id, accountId: data.accountId })
     return res
   }
-
 
   return {
     user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts }

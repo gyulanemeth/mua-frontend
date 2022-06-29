@@ -1,6 +1,6 @@
 <script setup >
 import { ref } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 import stores from '../stores/index.js'
 
 const props = defineProps({
@@ -11,9 +11,7 @@ const route = useRoute()
 const newPassword = ref('')
 const newPasswordAgain = ref('')
 
-
 </script>
-
 
 <template>
   <v-container>
