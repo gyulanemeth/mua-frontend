@@ -4,7 +4,7 @@ import MeView from '../views/MeView.vue'
 import AccountView from '../views/AccountView.vue'
 import SetAndReSetPasswordView from '../views/SetAndReSetPasswordView.vue'
 import EmailAndNameFormView from '../views/EmailAndNameFormView.vue'
-import Login from '../components/Login.vue'
+import LoginView from '../views/LoginView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -16,7 +16,12 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: LoginView
+    },
+    {
+      path: '/loginSelect',
+      name: 'loginSelect',
+      component: LoginView
     },
     {
       path: '/forgot-password',
@@ -52,7 +57,27 @@ const router = createRouter({
       path: '/patchUrlFriendlyName',
       name: 'patchUrlFriendlyName',
       component: AccountView
-    }
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/forgot-password/reset',
+      name: 'forgot-password-reset',
+      component: SetAndReSetPasswordView
+    },
+    {
+      path: '/invitation',
+      name: 'invite',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/invitation/accept',
+      name: 'accept-invitation',
+      component: SetAndReSetPasswordView
+    },
   ]
 })
 

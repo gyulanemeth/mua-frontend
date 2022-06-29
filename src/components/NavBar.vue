@@ -1,8 +1,9 @@
 <script setup>
 
 const menuItems = [
-        { title: 'Update Password', path: '/updatePassword' },
-        { title: 'Update Name', path: '/UpdateName' },
+        { title: 'Me', path: '/me' },
+        { title: 'Account Settings', path: '/account' },
+        { title: 'Account Users', path: '/users' }
   ]
 const model = false
 
@@ -12,8 +13,8 @@ const store = stores().currentUserAndAccountStore()
 </script>
 
 <template>
-  <v-app-bar  v-if="store.loggedIn">
-    <v-app-bar-title >MUA admin's UI</v-app-bar-title>
+  <v-app-bar  v-if="store.user">
+    <v-app-bar-title >MUA Account's UI</v-app-bar-title>
     <v-avatar color="secondary">
      Pic
    </v-avatar>
@@ -35,12 +36,15 @@ const store = stores().currentUserAndAccountStore()
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
+              <v-list-item @click="store.logout()">
+                <v-list-item-title> Logout </v-list-item-title>
+              </v-list-item>
             </v-list>
           </v-menu>
   </v-app-bar>
 
   <v-app-bar v-else >
-      <v-app-bar-title >MUA admin's UI</v-app-bar-title>
+      <v-app-bar-title >MUA Account's UI</v-app-bar-title>
     <v-btn
 
       variant="text"

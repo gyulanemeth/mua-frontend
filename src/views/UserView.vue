@@ -2,14 +2,21 @@
 import { defineComponent, watchEffect, ref } from 'vue'
 import List from '../components/List.vue'
 import stores from '../stores/index.js'
-import { useRoute } from 'vue-router';
+import systemMessages from '../stores/systemMessages.js'
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
+const router = useRouter()
 const data = ref()
 const btn = ref()
 var store
 async function loadData(){
+    var currentAccountStore = await stores().currentUserAndAccountStore()
     store = stores().usersStore()
-    store.params= store.account._id
+    if(currentAccountStore.account === null){
+      systemMessages().addError({status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login'})
+       return router.push('/login')
+    }
+    store.params= {accountId:currentAccountStore.account._id}
     await store.load()
     data.value = store.items
     btn.value = {text:"Delete", color:"red-lighten-2"}

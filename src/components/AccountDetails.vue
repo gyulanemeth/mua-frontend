@@ -1,8 +1,8 @@
 <script setup >
 import { ref } from 'vue'
-import stores from '../stores/index.js'
-
-
+const props = defineProps({
+  data: Object
+})
 </script>
 
 <template>
@@ -18,9 +18,9 @@ import stores from '../stores/index.js'
           </v-col>
           <v-card  >
             <v-card-title>
-              Account Name
+              {{props.data.name}}
             <v-card-subtitle>
-              -  Account Url Friendly Name
+              -  {{props.data.urlFriendlyName}}
             </v-card-subtitle >
           </v-card-title>
             <v-card-actions>

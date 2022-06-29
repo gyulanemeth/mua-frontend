@@ -21,12 +21,13 @@ const filter = ref("")
   @change="$emit('searchEvent',filter)"
 
   ></v-text-field>
+
   <v-btn class="py-7 my-2 ml-4"
   variant="outlined"
   color="primary"
   to="/invitation"
   >
-  Invite Admin
+  Invite User
 </v-btn>
 </v-layout>
     <v-layout class="d-flex flex-wrap">

@@ -1,7 +1,7 @@
 <script setup>
 import { defineComponent, watchEffect, ref } from 'vue'
 import AccountDetails from '../components/AccountDetails.vue'
-import UpdatePassword from '../components/UpdatePassword.vue'
+import systemMessages from '../stores/systemMessages.js'
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
 import { useRoute, useRouter } from 'vue-router';
@@ -12,16 +12,21 @@ const store = stores().currentUserAndAccountStore()
 async function loadData(){
   if(route.name === "patchAccountName"){
     formData.value = {inputType:"text", inputText:"New Name", text:"Update Name"}
-  }
-  if(route.name === "patchUrlFriendlyName"){
+  }else if(route.name === "patchUrlFriendlyName"){
     formData.value = {inputType:"text", inputText:"New Url Friendly Name", text:"Update Url Friendly Name"}
+  }else {
+    if(store.account === null){
+      systemMessages().addError({status: 404, name: 'NOT_FOUND', message: 'Account data not found please login'})
+       return router.push('/login')
+    }
+     formData.value =  await store.account
   }
 }
 
 async function eventHandler(data){
   var res
   if(formData.value.text === "Update Name"){
-   res = await store.patchName(data)
+   res = await store.patchAccountName(data)
  }
  else if(formData.value.text === "Update Url Friendly Name"){
   res = await store.patchUrlFriendlyName(data)
@@ -39,8 +44,17 @@ watchEffect(async () => {
 
 
 <template>
-  <EmailAndNameForm v-if="route.name === 'patchAccountName'" :formData="formData" @buttonEvent="eventHandler" />
-  <EmailAndNameForm v-else-if="route.name === 'patchUrlFriendlyName'" :formData="formData" @buttonEvent="eventHandler" />
-  <AccountDetails v-else />
+  <EmailAndNameForm v-if="route.name === 'patchAccountName'|| route.name === 'patchUrlFriendlyName' " :formData="formData" @buttonEvent="eventHandler" />
+  <template v-else>
+    <AccountDetails v-if="formData" :data="formData" />
 
+  <v-row v-else class="text-center" justify="center">
+    <v-progress-circular
+    indeterminate
+    :size="70"
+    :width="7"
+    color="red"
+  ></v-progress-circular>
+</v-row>
+  </template>
 </template>

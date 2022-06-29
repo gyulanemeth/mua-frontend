@@ -11,8 +11,9 @@ export default function (fetch, apiUrl) {
     return { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
   }
 
-  const generateUserRoute = (params) => {
-    return `/v1/accounts${params.accountId}/users${params.id ? '/'+ params.id : ''}`
+  const generateUserRoute = (params,query) => {
+
+    return `/v1/accounts/${params.accountId}/users${params.id ? '/'+ params.id : ''}${query ? '?' + query : ''}`
   }
 
   const generateAccessTokenRoute = (params) => {
@@ -31,6 +32,10 @@ export default function (fetch, apiUrl) {
     return `/v1/accounts/${params.accountId}/users/${params.id}/role`
   }
 
+  const generateLoginGetAccountsRoute = () => {
+  return `/v1/accounts/login`
+  }
+
   const generateLoginRoute = (params) => {
     return `/v1/accounts/${params.id}/login`
   }
@@ -44,15 +49,16 @@ export default function (fetch, apiUrl) {
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
-  const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute)
+  const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, generateAdditionalHeaders)
+  const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
 
 
 
-  const list = async function (id,query) {
-    if(id === undefined ){
+  const list = async function (param,query) {
+    if(param === undefined ){
       throw new RouteError("User ID Is Required")
     }
-    const res = await getUserList(id)
+    const res = await getUserList(param,query)
     return res
   }
 
@@ -78,11 +84,19 @@ export default function (fetch, apiUrl) {
   }
 
 
-  const login = async function(formData){
-    if(formData === undefined || formData.id === undefined || formData.email === undefined || formData.password === undefined ){
-        throw new RouteError("User Email And Password Is Required")
+  const loginGetAccounts = async function(formData){
+    if(formData === undefined || formData.email === undefined ){
+        throw new RouteError("User Email Is Required")
       }
-    const res = await postLogin({ id: formData.id },{ email:formData.email, password: formData.password})
+    const res = await postLoginGetEmails({},{ email:formData.email})
+    return res
+  }
+
+  const login = async function(formData){
+    if(formData === undefined || formData.password === undefined || formData.accountId === undefined ){
+        throw new RouteError("User Password Is Required")
+      }
+    const res = await postLogin({id:formData.accountId},{password: formData.password})
     if(res.loginToken){
       localStorage.setItem("accessToken", res.loginToken);
     }
@@ -90,11 +104,11 @@ export default function (fetch, apiUrl) {
   }
 
 
-  const patchName = async function(formData){
-    if(formData === undefined || formData.id === undefined|| formData.accountId === undefined || formData.name === undefined ){
+  const patchName = async function(data){
+    if(data === undefined || data.id === undefined|| data.accountId === undefined || data.name === undefined ){
         throw new RouteError("User ID, Account ID And New Name Is Required")
       }
-    const res = await updateName({id:data.id, accountId:data.accountId}, {name: formData.name})
+    const res = await updateName({id:data.id, accountId:data.accountId}, {name: data.name})
     return res
   }
 
@@ -102,7 +116,7 @@ export default function (fetch, apiUrl) {
     if(formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.oldPassword === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined ){
         throw new RouteError("User ID, Account ID And New Password Is Required")
       }
-    const res = await updatePassword({id:data.id, accountId:data.accountId}, {oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain})
+    const res = await updatePassword({id:formData.id, accountId:formData.accountId}, {oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain})
     return res
   }
 
@@ -124,6 +138,6 @@ export default function (fetch, apiUrl) {
 
 
   return {
-    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login }
+    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts }
   }
 }

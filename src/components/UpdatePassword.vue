@@ -11,6 +11,7 @@ const newPassword = ref('')
 const newPasswordAgain = ref('')
 async function submit(){
 const res = await Store.patchPassword(oldPassword.value, newPassword.value, newPasswordAgain.value)
+
  if(res === 'success'){
    router.push('/')
  }

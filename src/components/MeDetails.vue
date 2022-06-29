@@ -1,16 +1,11 @@
 <script setup >
 import { ref } from 'vue'
-import stores from '../stores/index.js'
-const store = stores().currentUserAndAccountStore()
-const res = await store.readOne()
-console.log(res);
+const props = defineProps({
+  data: Object
+})
 </script>
 
 <template>
-  <v-container>
-      <v-layout >
-  </v-layout>
-  </v-container>
   <v-container>
     <v-row class="text-center" justify="center">
         <v-col cols="6">
@@ -24,9 +19,9 @@ console.log(res);
               cover
             ></v-img>
             <v-card-title>
-              {{res.name}}
+              {{props.data.name}}
             <v-card-subtitle>
-              -  {{res.email}}
+              -  {{props.data.email}}
             </v-card-subtitle >
           </v-card-title>
             <v-card-actions>
