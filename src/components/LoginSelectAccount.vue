@@ -1,17 +1,18 @@
 <script setup >
 import { ref } from 'vue'
-import stores from '../stores/index.js'
 import { useRouter } from 'vue-router'
+
+import stores from '../stores/index.js'
 
 const Store = stores().currentUserAndAccountStore()
 const router = useRouter()
-const password = ref('')
-const account = ref({ name: 'Please select account' })
-
 const props = defineProps({
   data: Object,
   token: String
 })
+
+const password = ref('')
+const account = ref({ name: 'Please select account' })
 
 async function submit () {
   const res = await Store.login(props.token, password.value, account.value._id)

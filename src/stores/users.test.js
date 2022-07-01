@@ -1,11 +1,12 @@
-import { test, beforeEach, expect, describe, vi } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
 import { createApp } from 'vue'
+import { test, beforeEach, expect, describe } from 'vitest'
+import { setActivePinia, createPinia } from 'pinia'
+
 import users from './users.js'
 import RouteError from '../errors/RouteError.js'
+
 describe('users Store', () => {
   const app = createApp({})
-  const secrets = 'verylongsecret1'
 
   const mokeConnector = () => {
     const mockList = () => {
@@ -41,7 +42,7 @@ describe('users Store', () => {
   test('test success List', async () => {
     const usersStore = users(mokeConnector())
     const store = usersStore()
-    const res = await store.load()
+    await store.load()
     expect(store.count).toEqual(4)
   })
 
@@ -49,7 +50,7 @@ describe('users Store', () => {
     const usersStore = users(mokeConnector())
     const store = usersStore()
     await store.load()
-    const res = await store.deleteOne(store.items[0]._id)
+    await store.deleteOne(store.items[0]._id)
     expect(store.items.length).toEqual(3)
     expect(store.items[0].data.name).toEqual('user2')
   })

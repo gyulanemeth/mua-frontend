@@ -1,5 +1,7 @@
 import { test, beforeEach, expect, describe, vi } from 'vitest'
+
 import accounts from './accounts.js'
+
 describe('test accounts connectors', () => {
   const apiUrl = 'https:/mua/accounts'
   beforeEach(async () => {
@@ -97,7 +99,6 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    const spy = vi.spyOn(fetch, 'impl')
     await expect(accounts(fetch, apiUrl).account.readOne()).rejects.toThrowError('Admin ID Is Required')
   })
 

@@ -4,6 +4,7 @@ import {
   createPatchConnector,
   createDeleteConnector
 } from 'standard-json-api-connectors'
+
 import RouteError from '../errors/RouteError.js'
 
 export default function (fetch, apiUrl) {

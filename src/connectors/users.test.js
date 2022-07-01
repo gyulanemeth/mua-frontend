@@ -1,5 +1,7 @@
 import { test, beforeEach, expect, describe, vi } from 'vitest'
+
 import users from './users.js'
+
 describe('test accounts connectors', () => {
   const apiUrl = 'https:/mua/accounts'
   beforeEach(async () => {
@@ -64,7 +66,6 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', email: 'example@gmail.com' } })
     })
 
-    const spy = vi.spyOn(fetch, 'impl')
     await expect(users(fetch, apiUrl).user.readOne()).rejects.toThrowError('ID And Account ID Is Required')
   })
 
@@ -97,7 +98,6 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { accessToken: 'Token' } })
     })
-    const spy = vi.spyOn(fetch, 'impl')
     await expect(users(fetch, apiUrl).user.getAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
   })
 

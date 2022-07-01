@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+
 const props = defineProps({
   formData: Object
 })
+
 const data = ref('')
+
 </script>
 
 <template>

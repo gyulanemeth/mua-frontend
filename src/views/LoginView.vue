@@ -1,19 +1,22 @@
 <script setup>
-import { defineComponent, watchEffect, ref } from 'vue'
+import { watchEffect, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import jwtDecode from 'jwt-decode'
+
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import LoginSelectAccount from '../components/LoginSelectAccount.vue'
-import jwt_decode from 'jwt-decode'
 import stores from '../stores/index.js'
-import { useRoute, useRouter } from 'vue-router'
+
+const store = stores().currentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
+
 const data = ref()
 const formData = ref()
-const store = stores().currentUserAndAccountStore()
 
 async function loadData () {
   if (route.query.token) {
-    data.value = jwt_decode(route.query.token)
+    data.value = jwtDecode(route.query.token)
   } else {
     formData.value = { inputType: 'email', inputText: 'Login Email', text: 'Login Email' }
   }

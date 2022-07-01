@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import UserView from '../views/UserView.vue'
 import MeView from '../views/MeView.vue'
 import AccountView from '../views/AccountView.vue'
 import SetAndReSetPasswordView from '../views/SetAndReSetPasswordView.vue'
 import EmailAndNameFormView from '../views/EmailAndNameFormView.vue'
 import LoginView from '../views/LoginView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

@@ -4,6 +4,7 @@ import {
   createPatchConnector,
   createDeleteConnector
 } from 'standard-json-api-connectors'
+
 import RouteError from '../errors/RouteError.js'
 
 export default function (fetch, apiUrl) {
@@ -32,7 +33,7 @@ export default function (fetch, apiUrl) {
   }
 
   const generateLoginGetAccountsRoute = () => {
-    return `/v1/accounts/login`
+    return '/v1/accounts/login'
   }
 
   const generateLoginRoute = (params) => {
@@ -41,7 +42,6 @@ export default function (fetch, apiUrl) {
 
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
-  const createUser = createPostConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
@@ -49,6 +49,7 @@ export default function (fetch, apiUrl) {
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, generateAdditionalHeaders)
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
+  //  const createUser = createPostConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     if (param === undefined) {

@@ -1,14 +1,18 @@
 <script setup>
-import { defineComponent, watchEffect, ref } from 'vue'
+import { watchEffect, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 import AccountDetails from '../components/AccountDetails.vue'
 import systemMessages from '../stores/systemMessages.js'
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
-import { useRoute, useRouter } from 'vue-router'
+
+const store = stores().currentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
+
 const formData = ref()
-const store = stores().currentUserAndAccountStore()
+
 async function loadData () {
   if (route.name === 'patchAccountName') {
     formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }

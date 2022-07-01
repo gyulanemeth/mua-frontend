@@ -1,12 +1,16 @@
 <script setup>
-import { defineComponent, watchEffect, ref } from 'vue'
+import { watchEffect, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 import SetAndReSetPassword from '../components/SetAndReSetPassword.vue'
 import stores from '../stores/index.js'
-import { useRoute, useRouter } from 'vue-router'
+
+const store = stores().currentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
+
 const formData = ref()
-const store = stores().currentUserAndAccountStore()
+
 async function loadData () {
   if (route.name === 'forgot-password-reset') {
     formData.value = { text: 'Reset Password' }

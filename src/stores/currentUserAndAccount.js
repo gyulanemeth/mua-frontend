@@ -1,7 +1,9 @@
-import jwt_decode from 'jwt-decode'
 import { defineStore } from 'pinia'
+import jwtDecode from 'jwt-decode'
+
 import RouteError from '../errors/RouteError.js'
 import systemMessages from './systemMessages.js'
+
 export default (connectors) => {
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
     state: () => ({
@@ -14,7 +16,7 @@ export default (connectors) => {
         try {
           localStorage.setItem('accessToken', token)
           this.accessToken = await connectors.user.login({ password, accountId })
-          const tokenData = jwt_decode(this.accessToken)
+          const tokenData = jwtDecode(this.accessToken)
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.account._id })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.account._id })
           this.account = await connectors.account.readOne({ id: tokenData.account._id })
@@ -58,7 +60,7 @@ export default (connectors) => {
             throw new RouteError('User ID Is Required')
           }
           this.accessToken = await connectors.forgotPassword.reset({ id: this.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
-          const tokenData = jwt_decode(this.accessToken)
+          const tokenData = jwtDecode(this.accessToken)
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
           return 'success'
@@ -86,7 +88,7 @@ export default (connectors) => {
             throw new RouteError('account ID Is Required')
           }
           this.accessToken = await connectors.invitation.accept({ id: this.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain })
-          const tokenData = jwt_decode(this.accessToken)
+          const tokenData = jwtDecode(this.accessToken)
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
           return 'success'

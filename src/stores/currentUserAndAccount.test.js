@@ -1,9 +1,12 @@
-import { test, beforeEach, expect, describe, vi } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import jwt from 'jsonwebtoken'
 import { createApp } from 'vue'
+import { setActivePinia, createPinia } from 'pinia'
+import { test, beforeEach, expect, describe } from 'vitest'
+
+import jwt from 'jsonwebtoken'
+
 import currentUserAndAccount from './currentUserAndAccount.js'
 import RouteError from '../errors/RouteError.js'
+
 describe('Current User And Account Store', () => {
   const app = createApp({})
   const secrets = 'verylongsecret1'
@@ -141,8 +144,6 @@ describe('Current User And Account Store', () => {
     const currentUser = currentUserAndAccount(mokeConnector())
     const store = currentUser()
     const res = await store.login()
-    const token = jwt.sign(
-      { type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
     expect(res.message).toEqual('User Password Is Required')
     expect(store.user).toEqual(null)
     expect(store.accessToken).toEqual(null)
@@ -154,7 +155,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.accessToken = 'token'
     store.user = { name: 'test' }
-    const res = await store.logout()
+    await store.logout()
     expect(store.user).toEqual(null)
     expect(store.accessToken).toEqual(null)
   })

@@ -1,14 +1,18 @@
 <script setup>
 import { ref } from 'vue'
+
 import useSystemMessages from '../stores/systemMessages.js'
+
 const systemMessages = useSystemMessages()
 const snackbar = ref(true)
+
 </script>
 
 <template>
 
   <v-snackbar v-for="(error, n) in systemMessages.items"
    :timeout="-1"
+   :key="n"
   color="error"
     rounded="pill"
      location="top"

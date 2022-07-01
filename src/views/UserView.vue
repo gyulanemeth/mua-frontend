@@ -1,14 +1,18 @@
 <script setup>
-import { defineComponent, watchEffect, ref } from 'vue'
-import List from '../components/List.vue'
+import { watchEffect, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+import UsersList from '../components/UsersList.vue'
 import stores from '../stores/index.js'
 import systemMessages from '../stores/systemMessages.js'
-import { useRoute, useRouter } from 'vue-router'
-const route = useRoute()
+
 const router = useRouter()
+
 const data = ref()
 const btn = ref()
+
 let store
+
 async function loadData () {
   const currentAccountStore = await stores().currentUserAndAccountStore()
   store = stores().usersStore()
@@ -42,5 +46,5 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <List :items="data" :btn="btn" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
+  <UsersList :items="data" :btn="btn" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
 </template>

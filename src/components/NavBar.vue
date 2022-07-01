@@ -2,13 +2,13 @@
 
 import stores from '../stores/index.js'
 
+const store = stores().currentUserAndAccountStore()
+
 const menuItems = [
   { title: 'Me', path: '/me' },
   { title: 'Account Settings', path: '/account' },
   { title: 'Account Users', path: '/users' }
 ]
-const model = false
-const store = stores().currentUserAndAccountStore()
 
 </script>
 
