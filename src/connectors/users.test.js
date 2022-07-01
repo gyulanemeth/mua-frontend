@@ -2,8 +2,22 @@ import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import users from './users.js'
 
+const apiUrl = 'https:/mua/accounts'
+
 describe('test accounts connectors', () => {
-  const apiUrl = 'https:/mua/accounts'
+  global.localStorage = {
+    data: {},
+    getItem (key) {
+      return this.data[key]
+    },
+    setItem (key, value) {
+      this.data[key] = value
+    },
+    removeItem (key) {
+      delete this.data[key]
+    }
+  }
+
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
   })
@@ -31,6 +45,18 @@ describe('test accounts connectors', () => {
       })
 
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 })
+  })
+
+  test('test list users Error', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 } })
+    })
+
+    await expect(users(fetch, apiUrl).user.list()).rejects.toThrowError('Account ID Is Required')
   })
 
   test('test readOne user', async () => {

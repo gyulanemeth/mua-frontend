@@ -53,7 +53,7 @@ export default function (fetch, apiUrl) {
 
   const list = async function (param, query) {
     if (param === undefined) {
-      throw new RouteError('User ID Is Required')
+      throw new RouteError('Account ID Is Required')
     }
     const res = await getUserList(param, query)
     return res

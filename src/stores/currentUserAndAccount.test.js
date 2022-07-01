@@ -7,9 +7,22 @@ import jwt from 'jsonwebtoken'
 import currentUserAndAccount from './currentUserAndAccount.js'
 import RouteError from '../errors/RouteError.js'
 
+const secrets = 'verylongsecret1'
+
 describe('Current User And Account Store', () => {
+  global.localStorage = {
+    data: {},
+    getItem (key) {
+      return this.data[key]
+    },
+    setItem (key, value) {
+      this.data[key] = value
+    },
+    removeItem (key) {
+      delete this.data[key]
+    }
+  }
   const app = createApp({})
-  const secrets = 'verylongsecret1'
 
   const mokeConnector = () => {
     const mockLoginGetAccounts = (formData) => {
@@ -149,6 +162,22 @@ describe('Current User And Account Store', () => {
     expect(store.accessToken).toEqual(null)
   })
 
+  test('test success login get accounts', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.loginGetAccounts('12123password')
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test login get accounts error invalid ', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.loginGetAccounts()
+    expect(res.message).toEqual('User Email Is Required')
+    expect(store.user).toEqual(null)
+    expect(store.accessToken).toEqual(null)
+  })
+
   test('test logOut', async () => {
     localStorage.setItem('accessToken', 'Token')
     const currentUser = currentUserAndAccount(mokeConnector())
@@ -166,6 +195,13 @@ describe('Current User And Account Store', () => {
     store.account = { _id: '12test12' }
     const res = await store.sendForgotPassword('user1@gmail.com')
     expect(res).toEqual('success')
+  })
+
+  test('test send forgot Password account id undefined', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.sendForgotPassword('user1@gmail.com')
+    expect(res.message).toEqual('User ID Is Required')
   })
 
   test('test send forgot Password fail email required ', async () => {
@@ -196,12 +232,26 @@ describe('Current User And Account Store', () => {
     expect(res.message).toEqual('User Password Is Required')
   })
 
+  test('test reset forgot Password fail account id undefined', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.resetForgotPassword('forgotPasswordToken', 'newPassword')
+    expect(res.message).toEqual('User ID Is Required')
+  })
+
   test('test success send admin Invitation', async () => {
     const currentUser = currentUserAndAccount(mokeConnector())
     const store = currentUser()
     store.account = { _id: '12test12' }
     const res = await store.sendInvitation('user1@gmail.com')
     expect(res).toEqual('success')
+  })
+
+  test('test send admin Invitation undefined account id error', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.sendInvitation('user1@gmail.com')
+    expect(res.message).toEqual('account ID Is Required')
   })
 
   test('test send admin Invitation fail email required ', async () => {
@@ -222,6 +272,13 @@ describe('Current User And Account Store', () => {
     expect(res).toEqual('success')
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
     expect(store.accessToken).toEqual(token)
+  })
+
+  test('test accept invitation fail account id is required', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.acceptInvitation('acceptInvitationToken', 'newPassword', 'newPassword')
+    expect(res.message).toEqual('account ID Is Required')
   })
 
   test('test accept invitation fail password is required', async () => {
@@ -319,6 +376,13 @@ describe('Current User And Account Store', () => {
     store.account = { _id: '123123' }
     const res = await store.patchPassword('oldPassword', 'newPassword', 'newPassword')
     expect(res).toEqual('success')
+  })
+
+  test('test patchPassword fail account id required ', async () => {
+    const currentUser = currentUserAndAccount(mokeConnector())
+    const store = currentUser()
+    const res = await store.patchPassword('oldPassword', 'newPassword', 'newPassword')
+    expect(res.message).toEqual('Admin ID Is Required')
   })
 
   test('test patchPassword fail  id required ', async () => {

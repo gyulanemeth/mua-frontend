@@ -2,8 +2,22 @@ import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import accounts from './accounts.js'
 
+const apiUrl = 'https:/mua/accounts'
+
 describe('test accounts connectors', () => {
-  const apiUrl = 'https:/mua/accounts'
+  global.localStorage = {
+    data: {},
+    getItem (key) {
+      return this.data[key]
+    },
+    setItem (key, value) {
+      this.data[key] = value
+    },
+    removeItem (key) {
+      delete this.data[key]
+    }
+  }
+
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
   })
@@ -238,7 +252,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.patchName({ id: '123' })).rejects.toThrowError('Account ID And New Name Is Required')
+    await expect(accounts(fetch, apiUrl).account.adminCreateOne()).rejects.toThrowError('FormData Name And UrlFriendlyName Is Required')
   })
 
   test('test createOne account', async () => {
@@ -284,6 +298,16 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
     await expect(accounts(fetch, apiUrl).account.createOne()).rejects.toThrowError('Account Name And UrlFriendlyName Is Required')
+  })
+
+  test('test createOne with undefined account input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(accounts(fetch, apiUrl).account.createOne({ account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })).rejects.toThrowError('User Name, Email And Password Is Required')
   })
 
   test('test finalizeRegistration account', async () => {

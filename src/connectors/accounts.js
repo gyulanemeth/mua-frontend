@@ -120,9 +120,9 @@ export default function (fetch, apiUrl) {
   }
 
   const createOne = async function (formData) {
-    if (formData === undefined || formData.account.name === undefined || formData.account.urlFriendlyName === undefined) {
+    if (formData === undefined || formData.account === undefined || formData.account.name === undefined || formData.account.urlFriendlyName === undefined) {
       throw new RouteError('Account Name And UrlFriendlyName Is Required')
-    } else if (formData.user.name === undefined || formData.user.email === undefined || formData.user.password === undefined) {
+    } else if (formData.user === undefined || formData.user.name === undefined || formData.user.email === undefined || formData.user.password === undefined) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
     const res = await postCreateAccount({}, { account: formData.account, user: formData.user })
