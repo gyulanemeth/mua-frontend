@@ -9,8 +9,7 @@ import systemMessages from '../stores/systemMessages.js'
 const router = useRouter()
 
 const data = ref()
-const btn = ref()
-
+const roles = ref()
 let store
 
 async function loadData () {
@@ -23,11 +22,16 @@ async function loadData () {
   store.params = { accountId: currentAccountStore.account._id }
   await store.load()
   data.value = store.items
-  btn.value = { text: 'Delete', color: 'red-lighten-2' }
+  const config = await store.config()
+  roles.value = config.role
 }
 
-async function eventHandler (id) {
-  store.deleteOne(id)
+async function eventHandler (data) {
+  if (data.operation === 'delete') {
+    store.deleteOne(data.id)
+  } else if (data.operation === 'updateRole') {
+    store.patchRole(data.id, { role: data.role })
+  }
 }
 
 async function searchBarHandler (filter) {
@@ -46,5 +50,6 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <UsersList :items="data" :btn="btn" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
+  <UsersList :items="data" :roles="roles" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
+
 </template>

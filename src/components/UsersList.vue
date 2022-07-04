@@ -4,10 +4,18 @@ import { ref } from 'vue'
 
 const props = defineProps({
   items: Array,
-  btn: Object
+  roles: Array
 })
 
 const filter = ref('')
+const radioGroup = ref(false)
+const show = ref(false)
+
+function expande (id) {
+  radioGroup.value = false
+  show.value = show.value === id ? false : id
+}
+
 </script>
 
 <template>
@@ -34,7 +42,7 @@ const filter = ref('')
 </v-btn>
 </v-layout>
     <v-layout class="d-flex flex-wrap">
-      <v-card class="mx-2 my-5 pa-2 " min-width="275"  v-for="item in props.items" :key="item._id" >
+      <v-card class="mx-2 my-5 pa-2 align-self-start " min-width="275"  v-for="item in props.items" :key="item._id" >
         <v-img
           src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
           height="150px"
@@ -48,13 +56,40 @@ const filter = ref('')
       </v-card-title>
         <v-card-actions>
           <v-btn
-            :color="props.btn.color"
+            color="red-lighten-2"
             variant="text"
-            @click="$emit('buttonEvent',item._id)"
+            @click="$emit('buttonEvent',{id:item._id,operation: 'delete'})"
           >
-            {{props.btn.text}}
+            Delete
           </v-btn>
-        </v-card-actions>
+          <v-spacer></v-spacer>
+                <v-btn
+                  :icon="show === item._id? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                  @click="expande(item._id)"
+                ></v-btn>
+              </v-card-actions>
+              <v-expand-transition v-if="show === item._id">
+                <div >
+                  <v-divider></v-divider>
+                  <v-radio-group inline v-model="radioGroup">
+                    <v-radio
+                    v-for="data in props.roles"
+                    :key="data+item._id"
+                    :disabled = "item.data.role === data"
+                    :label="data"
+                    :value="data"
+                    ></v-radio>
+                  </v-radio-group>
+
+                  <v-btn
+                  color="primary"
+                  variant="text"
+                  @click="radioGroup && $emit('buttonEvent',{id: item._id, role: radioGroup, operation: 'updateRole'})"
+                  >
+                  Change Role
+                </v-btn>
+                </div>
+              </v-expand-transition>
       </v-card>
 </v-layout>
 </v-container>

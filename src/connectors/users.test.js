@@ -47,6 +47,30 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 })
   })
 
+  test('test get config', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { accountsAppUrl: 'https://accountsAPPUrl', appUrl: 'https://AppUrl', role: ['admin', 'user'] } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).config.getConfig()
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/config',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ accountsAppUrl: 'https://accountsAPPUrl', appUrl: 'https://AppUrl', role: ['admin', 'user'] })
+  })
+
   test('test list users Error', async () => {
     const fetch = vi.fn()
 
@@ -269,7 +293,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchRole({ id: '123', accountId: '112233', role: 'admin' })
+    const res = await users(fetch, apiUrl).user.patchRole({ id: '123', accountId: '112233' }, { role: 'admin' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/role',
@@ -291,7 +315,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.patchRole()).rejects.toThrowError('User ID, Account ID And New Role Is Required')
+    await expect(users(fetch, apiUrl).user.patchRole({}, {})).rejects.toThrowError('User ID, Account ID And New Role Is Required')
   })
 
   test('test deleteOne ', async () => {

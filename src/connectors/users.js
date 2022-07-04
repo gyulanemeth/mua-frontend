@@ -40,6 +40,11 @@ export default function (fetch, apiUrl) {
     return `/v1/accounts/${params.id}/login`
   }
 
+  const generateGetConfigRoute = () => {
+    return '/v1/config'
+  }
+
+  const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
@@ -50,6 +55,11 @@ export default function (fetch, apiUrl) {
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, generateAdditionalHeaders)
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   //  const createUser = createPostConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
+
+  const getConfig = async function () {
+    const res = await getAccountConfig()
+    return res
+  }
 
   const list = async function (param, query) {
     if (param === undefined) {
@@ -113,11 +123,11 @@ export default function (fetch, apiUrl) {
     return res
   }
 
-  const patchRole = async function (formData) {
-    if (formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.role === undefined) {
+  const patchRole = async function (formData, body) {
+    if (formData === undefined || formData.id === undefined || formData.accountId === undefined || body.role === undefined) {
       throw new RouteError('User ID, Account ID And New Role Is Required')
     }
-    const res = await updateRole({ id: formData.id, accountId: formData.accountId }, { role: formData.role })
+    const res = await updateRole({ id: formData.id, accountId: formData.accountId }, { role: body.role })
     return res
   }
 
@@ -130,6 +140,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts }
+    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts },
+    config: { getConfig }
   }
 }
