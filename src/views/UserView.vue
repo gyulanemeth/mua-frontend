@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 
 import UsersList from '../components/UsersList.vue'
 import stores from '../stores/index.js'
-import systemMessages from '../stores/systemMessages.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const router = useRouter()
 
@@ -16,7 +16,7 @@ async function loadData () {
   const currentAccountStore = await stores().currentUserAndAccountStore()
   store = stores().usersStore()
   if (currentAccountStore.account === null) {
-    systemMessages().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
     return router.push('/login')
   }
   store.params = { accountId: currentAccountStore.account._id }
