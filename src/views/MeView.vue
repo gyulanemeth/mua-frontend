@@ -6,7 +6,7 @@ import MeDetails from '../components/MeDetails.vue'
 import UpdatePassword from '../components/UpdatePassword.vue'
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
-import systemMessages from '../stores/systemMessages.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const store = stores().currentUserAndAccountStore()
 const route = useRoute()
@@ -19,7 +19,7 @@ async function loadData () {
     formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }
   } else {
     if (store.user === null) {
-      systemMessages().addError({ status: 404, name: 'NOT_FOUND', message: 'User data not found please login' })
+      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User data not found please login' })
       return router.push('/login')
     }
     formData.value = await store.user

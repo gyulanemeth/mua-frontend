@@ -3,7 +3,7 @@ import { watchEffect, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import AccountDetails from '../components/AccountDetails.vue'
-import systemMessages from '../stores/systemMessages.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
 
@@ -20,7 +20,7 @@ async function loadData () {
     formData.value = { inputType: 'text', inputText: 'New Url Friendly Name', text: 'Update Url Friendly Name' }
   } else {
     if (store.account === null) {
-      systemMessages().addError({ status: 404, name: 'NOT_FOUND', message: 'Account data not found please login' })
+      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account data not found please login' })
       return router.push('/login')
     }
     formData.value = await store.account

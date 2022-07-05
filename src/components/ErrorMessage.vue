@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 
-import useSystemMessages from '../stores/systemMessages.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
-const systemMessages = useSystemMessages()
+const systemMessages = useSystemMessagesStore()
 const snackbar = ref(true)
 
 </script>
