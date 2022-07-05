@@ -1,21 +1,84 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+
+import UserView from '../views/UserView.vue'
+import MeView from '../views/MeView.vue'
+import AccountView from '../views/AccountView.vue'
+import SetAndReSetPasswordView from '../views/SetAndReSetPasswordView.vue'
+import EmailAndNameFormView from '../views/EmailAndNameFormView.vue'
+import LoginView from '../views/LoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: '/users',
+      name: 'users',
+      component: UserView
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
+    {
+      path: '/loginSelect',
+      name: 'loginSelect',
+      component: LoginView
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/me',
+      name: 'me',
+      component: MeView
+    },
+    {
+      path: '/patchUserName',
+      name: 'patchUserName',
+      component: MeView
+    },
+    {
+      path: '/patchPassword',
+      name: 'patchPassword',
+      component: MeView
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: AccountView
+    },
+    {
+      path: '/patchAccountName',
+      name: 'patchAccountName',
+      component: AccountView
+    },
+    {
+      path: '/patchUrlFriendlyName',
+      name: 'patchUrlFriendlyName',
+      component: AccountView
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/forgot-password/reset',
+      name: 'forgot-password-reset',
+      component: SetAndReSetPasswordView
+    },
+    {
+      path: '/invitation',
+      name: 'invite',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/invitation/accept',
+      name: 'accept-invitation',
+      component: SetAndReSetPasswordView
     }
   ]
 })
