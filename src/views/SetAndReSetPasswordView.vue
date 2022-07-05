@@ -27,7 +27,7 @@ async function eventHandler (token, newPassword, newPasswordAgain) {
     res = await store.acceptInvitation(token, newPassword, newPasswordAgain)
   }
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

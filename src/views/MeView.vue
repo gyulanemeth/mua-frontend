@@ -33,7 +33,7 @@ async function eventHandler (data) {
   }
 
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

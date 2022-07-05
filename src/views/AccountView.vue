@@ -35,7 +35,7 @@ async function eventHandler (data) {
     res = await store.patchUrlFriendlyName(data)
   }
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

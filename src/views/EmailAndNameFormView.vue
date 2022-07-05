@@ -27,7 +27,7 @@ async function eventHandler (data) {
     res = await store.sendForgotPassword(data)
   }
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

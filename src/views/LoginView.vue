@@ -28,7 +28,7 @@ async function eventHandler (data) {
     res = await store.loginGetAccounts(data)
   }
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

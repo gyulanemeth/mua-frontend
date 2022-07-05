@@ -17,7 +17,7 @@ const account = ref({ name: 'Please select account' })
 async function submit () {
   const res = await Store.login(props.token, password.value, account.value._id)
   if (res === 'success') {
-    router.push('/')
+    router.push('/me')
   }
 }
 

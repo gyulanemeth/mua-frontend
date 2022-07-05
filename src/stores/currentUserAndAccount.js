@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
-import systemMessages from './systemMessages.js'
+import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
@@ -22,7 +22,7 @@ export default (connectors) => {
           this.account = await connectors.account.readOne({ id: tokenData.account._id })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -31,7 +31,7 @@ export default (connectors) => {
           const res = await connectors.user.loginGetAccounts({ email })
           return res
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -49,7 +49,7 @@ export default (connectors) => {
           await connectors.forgotPassword.send({ email, id: this.account._id })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -65,7 +65,7 @@ export default (connectors) => {
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -78,7 +78,7 @@ export default (connectors) => {
           await connectors.invitation.send({ email, id: this.account._id })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -93,7 +93,7 @@ export default (connectors) => {
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -105,7 +105,7 @@ export default (connectors) => {
           this.account = await connectors.account.readOne({ id: this.account._id })
           return this.account
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -118,7 +118,7 @@ export default (connectors) => {
           this.user.name = name
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -131,7 +131,7 @@ export default (connectors) => {
           this.account.name = name
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -144,7 +144,7 @@ export default (connectors) => {
           this.account.urlFriendlyName = newUrlFriendlyName
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       },
@@ -156,7 +156,7 @@ export default (connectors) => {
           await connectors.user.patchPassword({ accountId: this.account._id, id: this.user._id, oldPassword, newPassword, newPasswordAgain })
           return 'success'
         } catch (e) {
-          systemMessages().addError(e)
+          useSystemMessagesStore().addError(e)
           return e
         }
       }

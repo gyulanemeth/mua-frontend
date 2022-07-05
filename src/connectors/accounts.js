@@ -9,48 +9,28 @@ import RouteError from '../errors/RouteError.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
-    return { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
+    return { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
   }
 
-  const generateAccountRoute = (params, query) => {
-    return `/v1/accounts${params.id ? '/' + params.id : ''}${query ? '?' + query : ''}`
-  }
+  const generateAccountRoute = (params) => `/v1/accounts${params.id ? '/' + params.id : ''}`
 
-  const generatePatchNameRoute = (params) => {
-    return `/v1/accounts/${params.id}/name`
-  }
+  const generatePatchNameRoute = (params) => `/v1/accounts/${params.id}/name`
 
-  const generatePatchurlFriendlyNameRoute = (params) => {
-    return `/v1/accounts/${params.id}/urlFriendlyName`
-  }
+  const generatePatchurlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/urlFriendlyName`
 
-  const generateCheckAvailabilityRoute = (query) => {
-    return `/v1/accounts/check-availability?urlFriendlyName=${query}`
-  }
+  const generateCheckAvailabilityRoute = () => '/v1/accounts/check-availability'
 
-  const generateCreateAccountRoute = () => {
-    return '/v1/accounts/create'
-  }
+  const generateCreateAccountRoute = () => '/v1/accounts/create'
 
-  const generateFinalizeRegistrationRoute = (params) => {
-    return `/v1/accounts/${params.accountId}/users/${params.id}/finalize-registration`
-  }
+  const generateFinalizeRegistrationRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/finalize-registration`
 
-  const generateSendInvitationRoute = (params) => {
-    return `/v1/accounts/${params.id}/invitation/send`
-  }
+  const generateSendInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/send`
 
-  const generateAcceptInvitationRoute = (params) => {
-    return `/v1/accounts/${params.id}/invitation/accept`
-  }
+  const generateAcceptInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/accept`
 
-  const generateSendForgotPasswordRoute = (params) => {
-    return `/v1/accounts/${params.id}/forgot-password/send`
-  }
+  const generateSendForgotPasswordRoute = (params) => `/v1/accounts/${params.id}/forgot-password/send`
 
-  const generateResetForgotPasswordRoute = (params) => {
-    return `/v1/accounts/${params.id}/forgot-password/reset`
-  }
+  const generateResetForgotPasswordRoute = (params) => `/v1/accounts/${params.id}/forgot-password/reset`
 
   const getAccountsList = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const getAccount = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
@@ -72,7 +52,7 @@ export default function (fetch, apiUrl) {
   }
 
   const readOne = async function (id) {
-    if (id === undefined) {
+    if (!id) {
       throw new RouteError('Admin ID Is Required')
     }
     const res = await getAccount(id)
@@ -80,7 +60,7 @@ export default function (fetch, apiUrl) {
   }
 
   const adminCreateOne = async function (formData) {
-    if (formData === undefined || formData.name === undefined || formData.urlFriendlyName === undefined) {
+    if (!formData || !formData.name || !formData.urlFriendlyName) {
       throw new RouteError('FormData Name And UrlFriendlyName Is Required')
     }
     const res = await adminCreateAccount({}, { name: formData.name, urlFriendlyName: formData.urlFriendlyName })
@@ -88,7 +68,7 @@ export default function (fetch, apiUrl) {
   }
 
   const patchName = async function (formData) {
-    if (formData === undefined || formData.id === undefined || formData.name === undefined) {
+    if (!formData || !formData.id || !formData.name) {
       throw new RouteError('Account ID And New Name Is Required')
     }
     const res = await updateName({ id: formData.id }, { name: formData.name })
@@ -96,7 +76,7 @@ export default function (fetch, apiUrl) {
   }
 
   const patchUrlFriendlyName = async function (formData) {
-    if (formData === undefined || formData.id === undefined || formData.urlFriendlyName === undefined) {
+    if (!formData || !formData.id || !formData.urlFriendlyName) {
       throw new RouteError('Account ID And New urlFriendlyName Is Required')
     }
     const res = await updateUrlFriendlyName({ id: formData.id }, { urlFriendlyName: formData.urlFriendlyName })
@@ -104,7 +84,7 @@ export default function (fetch, apiUrl) {
   }
 
   const deleteOne = async function (id) {
-    if (id === undefined) {
+    if (!id) {
       throw new RouteError('Account ID Is Required')
     }
     const res = await del(id)
@@ -112,17 +92,17 @@ export default function (fetch, apiUrl) {
   }
 
   const checkAvailability = async function (data) {
-    if (data === undefined || data.urlFriendlyName === undefined) {
+    if (!data || !data.urlFriendlyName) {
       throw new RouteError('Account UrlFriendlyName Is Required')
     }
-    const res = await getCheckAvailability(data.urlFriendlyName)
+    const res = await getCheckAvailability({}, { urlFriendlyName: data.urlFriendlyName })
     return res
   }
 
   const createOne = async function (formData) {
-    if (formData === undefined || formData.account === undefined || formData.account.name === undefined || formData.account.urlFriendlyName === undefined) {
+    if (!formData || !formData.account || !formData.account.name || !formData.account.urlFriendlyName) {
       throw new RouteError('Account Name And UrlFriendlyName Is Required')
-    } else if (formData.user === undefined || formData.user.name === undefined || formData.user.email === undefined || formData.user.password === undefined) {
+    } else if (!formData.user || !formData.user.name || !formData.user.email || !formData.user.password) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
     const res = await postCreateAccount({}, { account: formData.account, user: formData.user })
@@ -130,7 +110,7 @@ export default function (fetch, apiUrl) {
   }
 
   const finalizeRegistration = async function (data) {
-    if (data === undefined || data.id === undefined || data.accountId === undefined) {
+    if (!data || !data.id || !data.accountId) {
       throw new RouteError('User Id And Account Id Is Required')
     }
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
@@ -138,7 +118,7 @@ export default function (fetch, apiUrl) {
   }
 
   const sendInvitation = async function (data) {
-    if (data === undefined || data.id === undefined || data.email === undefined) {
+    if (!data || !data.id || !data.email) {
       throw new RouteError('Email Is Required')
     }
     const res = await postSendInvitation({ id: data.id }, { email: data.email })
@@ -146,7 +126,7 @@ export default function (fetch, apiUrl) {
   }
 
   const accept = async function (formData) {
-    if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+    if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('Accouunt Password Is Required')
     }
     localStorage.setItem('accessToken', formData.token)
@@ -155,7 +135,7 @@ export default function (fetch, apiUrl) {
   }
 
   const sendForgotPassword = async function (data) {
-    if (data === undefined || data.email === undefined || data.id === undefined) {
+    if (!data || !data.email || !data.id) {
       throw new RouteError('Email Is Required')
     }
     const res = await postSendForgotPassword({ id: data.id }, { email: data.email })
@@ -163,7 +143,7 @@ export default function (fetch, apiUrl) {
   }
 
   const reset = async function (formData) {
-    if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+    if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('User Password Is Required')
     }
     localStorage.setItem('accessToken', formData.token)
