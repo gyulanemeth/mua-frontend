@@ -17,7 +17,7 @@ async function loadData () {
   store = stores().usersStore()
   if (currentAccountStore.account === null) {
     useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
-    return router.push('/login')
+    return router.push('/')
   }
   store.params = { accountId: currentAccountStore.account._id }
   await store.load()
