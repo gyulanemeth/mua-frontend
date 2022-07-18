@@ -1,5 +1,5 @@
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 import CreateAccount from '../components/CreateAccount.vue'
 import stores from '../stores/index.js'
@@ -7,16 +7,9 @@ import stores from '../stores/index.js'
 const store = stores().currentUserAndAccountStore()
 
 const router = useRouter()
-const route = useRoute()
 
 async function eventHandler (data) {
-  let res
-
-  if (route.name === 'createAccount') {
-    res = await store.createAccount(data)
-  } else if (route.name === 'adminCreateAccount') {
-    res = await store.AdminCreateAccount(data.account)
-  }
+  const res = await store.createAccount(data)
 
   if (res === 'success') {
     router.push('/')

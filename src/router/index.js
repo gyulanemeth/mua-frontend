@@ -27,11 +27,6 @@ const router = createRouter({
       component: CreateAccountView
     },
     {
-      path: '/adminCreateAccount',
-      name: 'adminCreateAccount',
-      component: CreateAccountView
-    },
-    {
       path: '/loginSelect',
       name: 'loginSelect',
       component: LoginView

@@ -35,15 +35,6 @@ export default (connectors) => {
           return e
         }
       },
-      async AdminCreateAccount (formData) {
-        try {
-          await connectors.account.adminCreateOne(formData)
-          return 'success'
-        } catch (e) {
-          useSystemMessagesStore().addError(e)
-          return e
-        }
-      },
       async loginGetAccounts (email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })

@@ -34,7 +34,6 @@ export default function (fetch, apiUrl) {
 
   const getAccountsList = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const getAccount = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
-  const adminCreateAccount = createPostConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updateUrlFriendlyName = createPatchConnector(fetch, apiUrl, generatePatchurlFriendlyNameRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
@@ -56,14 +55,6 @@ export default function (fetch, apiUrl) {
       throw new RouteError('Admin ID Is Required')
     }
     const res = await getAccount(id)
-    return res
-  }
-
-  const adminCreateOne = async function (formData) {
-    if (!formData || !formData.name || !formData.urlFriendlyName) {
-      throw new RouteError('FormData Name And UrlFriendlyName Is Required')
-    }
-    const res = await adminCreateAccount({}, { name: formData.name, urlFriendlyName: formData.urlFriendlyName })
     return res
   }
 
@@ -152,7 +143,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    account: { list, readOne, deleteOne, patchName, patchUrlFriendlyName, adminCreateOne, createOne, finalizeRegistration, checkAvailability },
+    account: { list, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept },
     forgotPassword: { send: sendForgotPassword, reset }
   }

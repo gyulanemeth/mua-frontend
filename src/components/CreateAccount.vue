@@ -1,8 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
 
 const data = ref({ user: {}, account: {} })
 
@@ -37,8 +34,8 @@ const data = ref({ user: {}, account: {} })
                     </v-row>
 
                 </v-container>
-              <h4 v-if="route.name === 'createAccount'" >  <v-divider />User Data:<v-divider  class=" mb-6"/></h4>
-  <v-container v-if="route.name === 'createAccount'">
+              <h4  >  <v-divider />User Data:<v-divider  class=" mb-6"/></h4>
+  <v-container>
   <v-row lass=" my-3">
 
     <v-text-field

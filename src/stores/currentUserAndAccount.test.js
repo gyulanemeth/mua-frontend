@@ -46,12 +46,6 @@ describe('Current User And Account Store', () => {
       }
       return { success: true }
     }
-    const mockAdminCreateOne = async function (formData) {
-      if (!formData || !formData.name || !formData.urlFriendlyName) {
-        throw new RouteError('FormData Name And UrlFriendlyName Is Required')
-      }
-      return { success: true }
-    }
 
     const mockCreateOne = async function (formData) {
       if (!formData || !formData.account || !formData.account.name || !formData.account.urlFriendlyName) {
@@ -145,7 +139,7 @@ describe('Current User And Account Store', () => {
     }
 
     return {
-      account: { patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, adminCreateOne: mockAdminCreateOne, createOne: mockCreateOne, readOne: mockAccountReadOne },
+      account: { patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       user: { patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne }
@@ -260,20 +254,6 @@ describe('Current User And Account Store', () => {
     store.account = { _id: '12test12' }
     const res = await store.sendInvitation('user1@gmail.com')
     expect(res).toEqual('success')
-  })
-
-  test('test success admin createOne', async () => {
-    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
-    const store = currentUser()
-    const res = await store.AdminCreateAccount({ name: 'testName', urlFriendlyName: 'testurlFriendlyName' })
-    expect(res).toEqual('success')
-  })
-
-  test('test admin createOne', async () => {
-    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
-    const store = currentUser()
-    const res = await store.AdminCreateAccount()
-    expect(res.message).toEqual('FormData Name And UrlFriendlyName Is Required')
   })
 
   test('test success createOne', async () => {
