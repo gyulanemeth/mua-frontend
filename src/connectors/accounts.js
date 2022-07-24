@@ -101,9 +101,10 @@ export default function (fetch, apiUrl) {
   }
 
   const finalizeRegistration = async function (data) {
-    if (!data || !data.id || !data.accountId) {
+    if (!data || !data.id || !data.accountId || !data.token) {
       throw new RouteError('User Id And Account Id Is Required')
     }
+    localStorage.setItem('accessToken', data.token)
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
     return res
   }
@@ -117,11 +118,11 @@ export default function (fetch, apiUrl) {
   }
 
   const accept = async function (formData) {
-    if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
+    if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain || !formData.name) {
       throw new RouteError('Accouunt Password Is Required')
     }
     localStorage.setItem('accessToken', formData.token)
-    const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
     return res
   }
 
