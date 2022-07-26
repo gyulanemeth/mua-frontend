@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 
 const props = defineProps({
   formData: Object
 })
+
+const route = useRoute()
 
 const data = ref('')
 
@@ -27,8 +31,9 @@ const data = ref('')
                 required></v-text-field>
 
               <v-btn  class="mx-10 my-1 py-6" color="primary" @click="$emit('buttonEvent',data)">{{props.formData.text}}</v-btn>
+                  <button hidden @click.enter.prevent="$emit('buttonEvent',data)" />
             </v-row >
-            <v-list-item class="d-flex flex-row mb-1 ml-4" title="Create Account" to="/createAccount"></v-list-item>
+            <v-list-item  v-if="route.name === 'login'" class="d-flex flex-row mb-1 ml-4" title="Create Account" to="/createAccount"></v-list-item>
             </v-col>
         </form>
       </v-col>

@@ -54,6 +54,7 @@ function redirect(){
             <v-col>
                 <v-list-item class="d-flex flex-row mb-1 ml-4" title=" Forget password? Reset Password" @click="redirect"></v-list-item>
               <v-btn color="primary" @click="submit" >Sign In</v-btn>
+                  <button hidden @click.enter.prevent="submit" />
             </v-col>
           </v-row>
         </form>

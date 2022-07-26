@@ -1,25 +1,33 @@
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
 import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
+  const router = useRouter()
 
   const storage = {}
+
  const storedAccessToken = localStorage.getItem('accessToken')
    if (!storedAccessToken || Date.now() >= jwtDecode(storedAccessToken).exp * 1000) {
-  /*   if (window.location.pathname !== "/") {
-       window.location.href = "/";
-     }*/
+     if (window.location.pathname !== '/forgot-password/reset'
+     && window.location.pathname !==  '/forgot-password'
+     && window.location.pathname !== '/finalize-registration'
+     && window.location.pathname !== '/loginSelect'
+     && window.location.pathname !==  '/invitation/accept'
+     && window.location.pathname !==  '/createAccount'
+     && window.location.pathname !==  '/') {
+         router.push('/')
+       }
    }else {
      storage.user = jwtDecode(storedAccessToken).user
      storage.account = jwtDecode(storedAccessToken).account
      storage.accessToken = storedAccessToken
-  /*
-     if (window.location.pathname === "/") {
-       window.location.pathname = "/me";
-     }*/
+     if (window.location.pathname === '/') {
+       router.push('/users')
+     }
    }
 
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
@@ -30,7 +38,7 @@ export default (connectors) => {
     }),
     getters: {
    loggedIn () {
-      return !!this.user || !! this.account
+      return !! this.account
     }
   },
     actions: {
@@ -42,7 +50,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.account._id })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.account._id })
           this.account = await connectors.account.readOne({ id: tokenData.account._id })
-          return 'success'
+           router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -51,7 +59,8 @@ export default (connectors) => {
       async createAccount (formData) {
         try {
           await connectors.account.createOne(formData)
-          return 'success'
+          router.push('/')
+          return {success:true}
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -70,6 +79,8 @@ export default (connectors) => {
         localStorage.removeItem('accessToken')
         this.accessToken = null
         this.user = null
+        this.account = null
+        router.push('/')
       },
 
       async  sendForgotPassword (data) {
@@ -95,7 +106,7 @@ export default (connectors) => {
           const tokenData = jwtDecode(this.accessToken)
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
-          return 'success'
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -108,7 +119,7 @@ export default (connectors) => {
             throw new RouteError('account ID Is Required')
           }
           await connectors.invitation.send({ email, id: this.account._id })
-          return 'success'
+          router.push('/users')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -123,7 +134,7 @@ export default (connectors) => {
           const tokenData = jwtDecode(this.accessToken)
           this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
           this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
-          return 'success'
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -141,6 +152,18 @@ export default (connectors) => {
           return e
         }
       },
+      async readOneUser () {
+        try {
+          if (this.user === null ||  this.account === null || this.user._id === undefined || this.account._id === undefined) {
+            throw new RouteError('user ID Is Required')
+          }
+          this.user = await connectors.user.readOne({ id: this.user._id, accountId: this.account._id })
+          return this.user
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async patchUserName (name) {
         try {
           if (this.account === null || this.account._id === undefined || this.user === null || this.user._id === undefined) {
@@ -148,7 +171,7 @@ export default (connectors) => {
           }
           await connectors.user.patchName({ id: this.user._id, name, accountId: this.account._id })
           this.user.name = name
-          return 'success'
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -161,7 +184,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
-          return 'success'
+          router.push('/account')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -174,7 +197,7 @@ export default (connectors) => {
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
-          return 'success'
+          router.push('/account')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -186,7 +209,7 @@ export default (connectors) => {
             throw new RouteError('Admin ID Is Required')
           }
           await connectors.user.patchPassword({ accountId: this.account._id, id: this.user._id, oldPassword, newPassword, newPasswordAgain })
-          return 'success'
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -198,8 +221,9 @@ export default (connectors) => {
           if (!token || !tokenData || Date.now() >= tokenData.exp * 1000) {
             throw new RouteError('Valid Token Is Required')
           }
-          await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
-          return 'success'
+          this.user = await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
+          router.push('/')
+          return {success:true}
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e

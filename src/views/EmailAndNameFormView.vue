@@ -35,9 +35,6 @@ async function eventHandler (data) {
      await alert.message(`message Send to your email`)
     }
   }
-  if (res === 'success') {
-    router.push('/me')
-  }
 }
 
 watchEffect(async () => {

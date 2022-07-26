@@ -24,7 +24,7 @@ async function loadData () {
   } else {
     if (route.name === 'finalize-registration' && route.query.token){
       let res = await store.finalizeRegistration(route.query.token)
-      if (res === 'success') {
+      if (res.success) {
         await alert.message(`your registration has been finalized`)
       }
     }
@@ -33,15 +33,11 @@ async function loadData () {
 }
 
 async function eventHandler (data) {
-  let res
   if (formData.value.text === 'Login Email') {
-    res = await store.loginGetAccounts(data)
+    const res = await store.loginGetAccounts(data)
     if (res.success) {
       await alert.message(`message Send to your email`)
     }
-  }
-  if (res === 'success') {
-    router.push('/me')
   }
 }
 

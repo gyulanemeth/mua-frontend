@@ -106,6 +106,7 @@ export default function (fetch, apiUrl) {
     }
     localStorage.setItem('accessToken', data.token)
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
+    localStorage.removeItem('accessToken')
     return res
   }
 
@@ -123,7 +124,7 @@ export default function (fetch, apiUrl) {
     }
     localStorage.setItem('accessToken', formData.token)
     const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
-    return res
+    return res.loginToken
   }
 
   const sendForgotPassword = async function (data) {
@@ -140,7 +141,7 @@ export default function (fetch, apiUrl) {
     }
     localStorage.setItem('accessToken', formData.token)
     const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
-    return res
+    return res.loginToken
   }
 
   return {

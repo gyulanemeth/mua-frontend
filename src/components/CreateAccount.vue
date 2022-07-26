@@ -61,6 +61,7 @@ const data = ref({ user: {}, account: {} })
 
   </v-container>
             <v-btn class="mx-10 my-1 py-6" color="primary" @click="$emit('buttonEvent',data)">Create Account</v-btn>
+              <button hidden @click.enter.prevent="$emit('buttonEvent',data)" />
             </v-col>
         </form>
       </v-col>
