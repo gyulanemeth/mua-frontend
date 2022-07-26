@@ -17,6 +17,11 @@ describe('test accounts connectors', () => {
       delete this.data[key]
     }
   }
+  global.window = {
+    config: {
+      accountsApiBaseUrl: 'http://accounts-api.emailfox.link'
+    }
+  }
 
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
@@ -285,7 +290,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).account.finalizeRegistration({ id: '123', accountId: '112233' })
+    const res = await accounts(fetch, apiUrl).account.finalizeRegistration({ id: '123', accountId: '112233', token: 'token' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/finalize-registration',
@@ -293,7 +298,7 @@ describe('test accounts connectors', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+          Authorization: 'Bearer token'
         }
       })
     expect(res).toEqual({ id: '12qw', name: 'userName', email: 'userEmail' })
@@ -352,19 +357,19 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).invitation.accept({ id: '123', token: 'token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
+    const res = await accounts(fetch, apiUrl).invitation.accept({ id: '123', token: 'token', newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/invitation/accept',
 
       {
         method: 'POST',
-        body: JSON.stringify({ newPassword: 'newPassword', newPasswordAgain: 'newPassword' }),
+        body: JSON.stringify({ newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
-    expect(res).toEqual({ loginToken: 'Token' })
+    expect(res).toEqual('Token')
   })
 
   test('test accept invitation without password ', async () => {
@@ -429,7 +434,7 @@ describe('test accounts connectors', () => {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
-    expect(res).toEqual({ loginToken: 'Token' })
+    expect(res).toEqual('Token')
   })
 
   test('test forgotPassword reset with undefined input admin', async () => {
