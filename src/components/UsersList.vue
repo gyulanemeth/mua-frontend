@@ -12,13 +12,11 @@ const radioGroup = ref(false)
 const newName = ref('')
 const editemood = ref(false)
 
-
 function edite (id) {
   newName.value = ''
   radioGroup.value = ''
   editemood.value = editemood.value === id ? false : id
 }
-
 
 </script>
 

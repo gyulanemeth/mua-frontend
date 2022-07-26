@@ -1,11 +1,10 @@
 <script setup >
 import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 import stores from '../stores/index.js'
 
 const Store = stores().currentUserAndAccountStore()
-const route = useRoute()
 const router = useRouter()
 
 const props = defineProps({
@@ -23,7 +22,7 @@ async function submit () {
   }
 }
 
-function redirect(){
+function redirect () {
   router.push(`/forgot-password?accountId=${account.value._id}`)
 }
 

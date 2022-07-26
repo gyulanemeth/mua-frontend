@@ -13,14 +13,13 @@ const router = useRouter()
 
 const formData = ref()
 
-
 async function loadData () {
   if (route.name === 'account') {
     if (!store.account.name) {
-       await store.readOne()
+      await store.readOne()
     }
     formData.value = store.account
-  }else if (route.name === 'patchAccountName') {
+  } else if (route.name === 'patchAccountName') {
     formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }
   } else if (route.name === 'patchUrlFriendlyName') {
     formData.value = { inputType: 'text', inputText: 'New Url Friendly Name', text: 'Update Url Friendly Name' }
@@ -30,15 +29,13 @@ async function loadData () {
       return router.push('/')
     }
   }
-
 }
-
 
 async function eventHandler (data) {
   if (formData.value.text === 'Update Name') {
-     await store.patchAccountName(data)
+    await store.patchAccountName(data)
   } else if (formData.value.text === 'Update Url Friendly Name') {
-     await store.patchUrlFriendlyName(data)
+    await store.patchUrlFriendlyName(data)
   }
 }
 

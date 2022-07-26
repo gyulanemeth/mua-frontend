@@ -32,9 +32,9 @@ async function eventHandler (data) {
   if (data.operation === 'updateRole') {
     store.patchRole(data.id, { role: data.role })
   }
-    if (data.operation === 'delete') {
-      const confirm = await alert.confirmAlert(`do you want to Delete the record?`)
-      if (confirm.isConfirmed) {
+  if (data.operation === 'delete') {
+    const confirm = await alert.confirmAlert('do you want to Delete the record?')
+    if (confirm.isConfirmed) {
       store.deleteOne(data.id)
     }
   }

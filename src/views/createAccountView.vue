@@ -8,10 +8,10 @@ const store = stores().currentUserAndAccountStore()
 const alert = alerts()
 
 async function eventHandler (data) {
-   const res = await store.createAccount(data)
-   if (res.success) {
-     await alert.message(`message Send to your email`)
-   }
+  const res = await store.createAccount(data)
+  if (res.success) {
+    await alert.message('message Send to your email')
+  }
 }
 
 </script>

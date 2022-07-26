@@ -17,7 +17,7 @@ const formData = ref()
 async function loadData () {
   if (route.name === 'me') {
     if (!store.user.name) {
-       await store.readOneUser()
+      await store.readOneUser()
     }
     formData.value = store.user
   }
@@ -33,9 +33,8 @@ async function loadData () {
 
 async function eventHandler (data) {
   if (formData.value.text === 'Update Name') {
-     await store.patchUserName(data)
+    await store.patchUserName(data)
   }
-
 }
 watchEffect(async () => {
   loadData()

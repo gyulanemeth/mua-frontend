@@ -1,6 +1,6 @@
 <script setup>
 import { watchEffect, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
@@ -10,22 +10,19 @@ import alerts from '../alerts/alert.js'
 
 const store = stores().currentUserAndAccountStore()
 const route = useRoute()
-const router = useRouter()
 const alert = alerts()
-
 
 const data = ref()
 const formData = ref()
 
 async function loadData () {
-
   if (route.name === 'loginSelect' && route.query.token) {
     data.value = jwtDecode(route.query.token)
   } else {
-    if (route.name === 'finalize-registration' && route.query.token){
-      let res = await store.finalizeRegistration(route.query.token)
+    if (route.name === 'finalize-registration' && route.query.token) {
+      const res = await store.finalizeRegistration(route.query.token)
       if (res.success) {
-        await alert.message(`your registration has been finalized`)
+        await alert.message('your registration has been finalized')
       }
     }
     formData.value = { inputType: 'email', inputText: 'Login Email', text: 'Login Email' }
@@ -36,7 +33,7 @@ async function eventHandler (data) {
   if (formData.value.text === 'Login Email') {
     const res = await store.loginGetAccounts(data)
     if (res.success) {
-      await alert.message(`message Send to your email`)
+      await alert.message('message Send to your email')
     }
   }
 }
