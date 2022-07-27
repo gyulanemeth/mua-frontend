@@ -15,9 +15,9 @@ export default (connectors) => {
     if (window.location.pathname !== '/forgot-password/reset' &&
      window.location.pathname !== '/forgot-password' &&
      window.location.pathname !== '/finalize-registration' &&
-     window.location.pathname !== '/loginSelect' &&
+     window.location.pathname !== '/login-select' &&
      window.location.pathname !== '/invitation/accept' &&
-     window.location.pathname !== '/createAccount' &&
+     window.location.pathname !== '/create-account' &&
      window.location.pathname !== '/') {
       router.push('/')
     }
@@ -44,12 +44,12 @@ export default (connectors) => {
     actions: {
       async login (token, password, accountId) {
         try {
-          localStorage.setItem('accessToken', token)
-          this.accessToken = await connectors.user.login({ password, accountId })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.account._id })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.account._id })
-          this.account = await connectors.account.readOne({ id: tokenData.account._id })
+          localStorage.setItem('loginToken', token)
+          const loginToken = await connectors.user.login({ password, accountId })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -77,6 +77,7 @@ export default (connectors) => {
       },
       logout () {
         localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
         this.accessToken = null
         this.user = null
         this.account = null
@@ -102,10 +103,11 @@ export default (connectors) => {
           if (!forgotPasswordToken || !forgotPasswordTokenData || Date.now() >= forgotPasswordTokenData.exp * 1000 || !newPassword || !newPasswordAgain) {
             throw new RouteError('Valid token, password and new password Is Required')
           }
-          this.accessToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.user.accountId, token: forgotPasswordToken, newPassword, newPasswordAgain })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
+          const loginToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -127,13 +129,13 @@ export default (connectors) => {
       },
       async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name) {
         try {
-          if (this.account === null || this.account._id === undefined) {
-            throw new RouteError('account ID Is Required')
-          }
-          this.accessToken = await connectors.invitation.accept({ id: this.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain, name })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
+          const acceptInvitationTokenData = jwtDecode(acceptInvitationToken)
+          const loginToken = await connectors.invitation.accept({ id: acceptInvitationTokenData.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain, name })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
+
           router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)

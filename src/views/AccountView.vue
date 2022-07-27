@@ -19,9 +19,9 @@ async function loadData () {
       await store.readOne()
     }
     formData.value = store.account
-  } else if (route.name === 'patchAccountName') {
+  } else if (route.name === 'patch-account-name') {
     formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }
-  } else if (route.name === 'patchUrlFriendlyName') {
+  } else if (route.name === 'patch-urlFriendlyName') {
     formData.value = { inputType: 'text', inputText: 'New Url Friendly Name', text: 'Update Url Friendly Name' }
   } else {
     if (store.account === null) {
@@ -45,6 +45,6 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <EmailAndNameForm v-if="route.name === 'patchAccountName'|| route.name === 'patchUrlFriendlyName' " :formData="formData" @buttonEvent="eventHandler" />
-    <AccountDetails v-else-if="formData" :data="formData" />
+  <EmailAndNameForm v-if="route.name === 'patch-account-name'|| route.name === 'patch-urlFriendlyName' " :formData="formData" @buttonEvent="eventHandler" />
+  <AccountDetails v-else-if="formData" :data="formData" />
 </template>

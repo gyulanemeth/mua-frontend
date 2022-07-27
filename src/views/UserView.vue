@@ -55,7 +55,6 @@ watchEffect(async () => {
 })
 </script>
 
-<template>
-  <UsersList :items="data" :roles="roles" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
-
-</template>
+  <template>
+    <UsersList :items="data" :roles="roles" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
+  </template>

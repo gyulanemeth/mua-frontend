@@ -27,13 +27,13 @@ const router = createRouter({
       component: LoginView
     },
     {
-      path: '/createAccount',
-      name: 'createAccount',
+      path: '/create-account',
+      name: 'create-account',
       component: CreateAccountView
     },
     {
-      path: '/loginSelect',
-      name: 'loginSelect',
+      path: '/login-select',
+      name: 'login-select',
       component: LoginView
     },
     {
@@ -47,13 +47,13 @@ const router = createRouter({
       component: MeView
     },
     {
-      path: '/patchUserName',
-      name: 'patchUserName',
+      path: '/patch-user-name',
+      name: 'patch-user-name',
       component: MeView
     },
     {
-      path: '/patchPassword',
-      name: 'patchPassword',
+      path: '/patch-password',
+      name: 'patch-password',
       component: MeView
     },
     {
@@ -62,13 +62,13 @@ const router = createRouter({
       component: AccountView
     },
     {
-      path: '/patchAccountName',
-      name: 'patchAccountName',
+      path: '/patch-account-name',
+      name: 'patch-account-name',
       component: AccountView
     },
     {
-      path: '/patchUrlFriendlyName',
-      name: 'patchUrlFriendlyName',
+      path: '/patch-urlFriendlyName',
+      name: 'patch-urlFriendlyName',
       component: AccountView
     },
     {

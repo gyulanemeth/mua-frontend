@@ -39,11 +39,11 @@ export default function (fetch, apiUrl) {
   const del = createDeleteConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const getCheckAvailability = createGetConnector(fetch, apiUrl, generateCheckAvailabilityRoute)
   const postCreateAccount = createPostConnector(fetch, apiUrl, generateCreateAccountRoute, generateAdditionalHeaders)
-  const postFinalizeRegistration = createPostConnector(fetch, apiUrl, generateFinalizeRegistrationRoute, generateAdditionalHeaders)
+  const postFinalizeRegistration = createPostConnector(fetch, apiUrl, generateFinalizeRegistrationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('registrationToken')}`}))
   const postSendInvitation = createPostConnector(fetch, apiUrl, generateSendInvitationRoute, generateAdditionalHeaders)
-  const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, generateAdditionalHeaders)
+  const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('invitationToken')}`}))
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
-  const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, generateAdditionalHeaders)
+  const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}`}))
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
@@ -104,9 +104,9 @@ export default function (fetch, apiUrl) {
     if (!data || !data.id || !data.accountId || !data.token) {
       throw new RouteError('User Id And Account Id Is Required')
     }
-    localStorage.setItem('accessToken', data.token)
+    localStorage.setItem('registrationToken', data.token)
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
-    localStorage.removeItem('accessToken')
+    localStorage.removeItem('registrationToken')
     return res
   }
 
@@ -122,8 +122,12 @@ export default function (fetch, apiUrl) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain || !formData.name) {
       throw new RouteError('Accouunt Password Is Required')
     }
-    localStorage.setItem('accessToken', formData.token)
+    localStorage.setItem('invitationToken', formData.token)
     const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+      localStorage.removeItem('invitationToken');
+    }
     return res.loginToken
   }
 
@@ -139,8 +143,12 @@ export default function (fetch, apiUrl) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('User Password Is Required')
     }
-    localStorage.setItem('accessToken', formData.token)
+    localStorage.setItem('resetPasswordToken', formData.token)
     const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+      localStorage.removeItem('resetPasswordToken');
+    }
     return res.loginToken
   }
 

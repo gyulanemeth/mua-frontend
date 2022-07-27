@@ -21,7 +21,7 @@ async function loadData () {
     }
     formData.value = store.user
   }
-  if (route.name === 'patchUserName') {
+  if (route.name === 'patch-user-name') {
     formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }
   } else {
     if (store.user === null) {
@@ -42,7 +42,7 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <EmailAndNameForm v-if="route.name === 'patchUserName'" :formData="formData" @buttonEvent="eventHandler" />
-  <UpdatePassword v-else-if="route.name === 'patchPassword'"  />
+  <EmailAndNameForm v-if="route.name === 'patch-user-name'" :formData="formData" @buttonEvent="eventHandler" />
+  <UpdatePassword v-else-if="route.name === 'patch-password'"  />
   <MeDetails v-else-if="formData" :data="formData" />
 </template>

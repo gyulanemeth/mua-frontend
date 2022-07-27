@@ -16,13 +16,13 @@ const data = ref()
 const formData = ref()
 
 async function loadData () {
-  if (route.name === 'loginSelect' && route.query.token) {
+  if (route.name === 'login-select' && route.query.token) {
     data.value = jwtDecode(route.query.token)
   } else {
     if (route.name === 'finalize-registration' && route.query.token) {
       const res = await store.finalizeRegistration(route.query.token)
       if (res.success) {
-        await alert.message('your registration has been finalized')
+        await alert.message('Your registration has been finalized')
       }
     }
     formData.value = { inputType: 'email', inputText: 'Login Email', text: 'Login Email' }
@@ -33,7 +33,7 @@ async function eventHandler (data) {
   if (formData.value.text === 'Login Email') {
     const res = await store.loginGetAccounts(data)
     if (res.success) {
-      await alert.message('message Send to your email')
+      await alert.message('Message sent to your email')
     }
   }
 }
