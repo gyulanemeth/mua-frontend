@@ -10,6 +10,12 @@ export default (connectors) => {
 
   const storage = {}
 
+  const query = new URLSearchParams(window.location.search)
+
+  if (query.get('token') && query.get('accountId')) {
+    localStorage.setItem('accessToken', query.get('token'))
+  }
+
   const storedAccessToken = localStorage.getItem('accessToken')
   if (!storedAccessToken || Date.now() >= jwtDecode(storedAccessToken).exp * 1000) {
     if (window.location.pathname !== '/forgot-password/reset' &&
@@ -22,8 +28,12 @@ export default (connectors) => {
       router.push('/')
     }
   } else {
+    if (query.get('token') && query.get('accountId')) {
+      storage.account = { _id: query.get('accountId') }
+    } else {
+      storage.account = jwtDecode(storedAccessToken).account
+    }
     storage.user = jwtDecode(storedAccessToken).user
-    storage.account = jwtDecode(storedAccessToken).account
     storage.accessToken = storedAccessToken
     if (window.location.pathname === '/') {
       router.push('/users')
@@ -38,7 +48,7 @@ export default (connectors) => {
     }),
     getters: {
       loggedIn () {
-        return !!this.account
+        return !!this.accessToken
       }
     },
     actions: {
@@ -156,9 +166,13 @@ export default (connectors) => {
       },
       async readOneUser () {
         try {
+          if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+            window.location.href = `${window.config.adminsAppBaseUrl}me`
+          }
           if (this.user === null || this.account === null || this.user._id === undefined || this.account._id === undefined) {
             throw new RouteError('user ID Is Required')
           }
+
           this.user = await connectors.user.readOne({ id: this.user._id, accountId: this.account._id })
           return this.user
         } catch (e) {
