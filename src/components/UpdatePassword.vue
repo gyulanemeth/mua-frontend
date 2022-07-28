@@ -1,4 +1,5 @@
 <script setup >
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -13,7 +14,6 @@ const newPasswordAgain = ref('')
 
 async function submit () {
   const res = await Store.patchPassword(oldPassword.value, newPassword.value, newPasswordAgain.value)
-
   if (res === 'success') {
     router.push('/me')
   }
@@ -22,44 +22,29 @@ async function submit () {
 </script>
 
 <template>
-  <v-container>
+
+<v-container>
     <v-row class="text-center" justify="center">
         <v-col cols="6">
-        <form>
-          <v-col>
-            <h1>Update Password</h1>
-          </v-col>
-          <v-col>
-            <v-text-field
-              name="oldPassword"
-              label="Old Password"
-              id="oldPassword"
-              type="password"
-              v-model="oldPassword"
-              required></v-text-field>
+            <form>
+                <v-col>
+                    <h1>Update Password</h1>
+                </v-col>
+                <v-col>
+                    <v-text-field name="oldPassword" label="Old Password" id="oldPassword" type="password" v-model="oldPassword" required></v-text-field>
 
-              <v-text-field
-                name="newPassword"
-                label="New Password"
-                id="newPassword"
-                type="password"
-                v-model="newPassword"
-                required></v-text-field>
+                    <v-text-field name="newPassword" label="New Password" id="newPassword" type="password" v-model="newPassword" required></v-text-field>
 
-              <v-text-field
-                name="newPasswordAgain"
-                label="New Password Again"
-                id="newPasswordAgain"
-                type="password"
-                v-model="newPasswordAgain"
-                required></v-text-field>
-            </v-col>
-            <v-col>
-              <v-btn color="primary" @click="submit">Set Password</v-btn>
-            </v-col>
+                    <v-text-field name="newPasswordAgain" label="New Password Again" id="newPasswordAgain" type="password" v-model="newPasswordAgain" required></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-btn color="primary" @click="submit">Set Password</v-btn>
+                    <button hidden @click.enter.prevent="submit" />
+                </v-col>
 
-        </form>
-      </v-col>
-    </v-row >
-  </v-container>
+            </form>
+        </v-col>
+    </v-row>
+</v-container>
+
 </template>

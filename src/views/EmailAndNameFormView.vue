@@ -1,13 +1,14 @@
 <script setup>
 import { watchEffect, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
+import alerts from '../alerts/alert.js'
 
 const store = stores().currentUserAndAccountStore()
 const route = useRoute()
-const router = useRouter()
+const alert = alerts()
 
 const formData = ref()
 
@@ -23,11 +24,14 @@ async function eventHandler (data) {
   let res
   if (formData.value.text === 'Invite') {
     res = await store.sendInvitation(data)
+    if (res.success) {
+      await alert.message('message Send to your email')
+    }
   } else if (formData.value.text === 'Reset Password') {
-    res = await store.sendForgotPassword(data)
-  }
-  if (res === 'success') {
-    router.push('/me')
+    res = await store.sendForgotPassword({ email: data, accountId: route.query.accountId })
+    if (res.success) {
+      await alert.message('message Send to your email')
+    }
   }
 }
 

@@ -10,16 +10,8 @@ const snackbar = ref(true)
 
 <template>
 
-  <v-snackbar v-for="(error, n) in systemMessages.items"
-   :timeout="-1"
-   :key="n"
-  color="error"
-    rounded="pill"
-     location="top"
-    v-model="snackbar"
-    :style="`top: ${n*60}px`"
-  >
-  {{error.message}} \ {{error.name}}
+  <v-snackbar v-for="(error, n) in systemMessages.items" :timeout="-1" :key="n" color="error" rounded="pill" location="top" v-model="snackbar" :style="`top: ${n*60}px`">
+      {{error.message}} \ {{error.name}}
   </v-snackbar>
 
 </template>

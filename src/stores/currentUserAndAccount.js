@@ -1,26 +1,66 @@
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
 import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
+  const router = useRouter() || [] // [] for test
+
+  const storage = {}
+
+  const storedAccessToken = localStorage.getItem('accessToken')
+  if (!storedAccessToken || Date.now() >= jwtDecode(storedAccessToken).exp * 1000) {
+    if (window.location.pathname !== '/forgot-password/reset' &&
+     window.location.pathname !== '/forgot-password' &&
+     window.location.pathname !== '/finalize-registration' &&
+     window.location.pathname !== '/login-select' &&
+     window.location.pathname !== '/invitation/accept' &&
+     window.location.pathname !== '/create-account' &&
+     window.location.pathname !== '/') {
+      router.push('/')
+    }
+  } else {
+    storage.user = jwtDecode(storedAccessToken).user
+    storage.account = jwtDecode(storedAccessToken).account
+    storage.accessToken = storedAccessToken
+    if (window.location.pathname === '/') {
+      router.push('/users')
+    }
+  }
+
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
     state: () => ({
-      accessToken: null,
-      user: null,
-      account: null
+      accessToken: storage.accessToken,
+      user: storage.user,
+      account: storage.account
     }),
+    getters: {
+      loggedIn () {
+        return !!this.account
+      }
+    },
     actions: {
       async login (token, password, accountId) {
         try {
-          localStorage.setItem('accessToken', token)
-          this.accessToken = await connectors.user.login({ password, accountId })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.account._id })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.account._id })
-          this.account = await connectors.account.readOne({ id: tokenData.account._id })
-          return 'success'
+          localStorage.setItem('loginToken', token)
+          const loginToken = await connectors.user.login({ password, accountId })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
+          router.push('/me')
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async createAccount (formData) {
+        try {
+          await connectors.account.createOne(formData)
+          router.push('/')
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -37,17 +77,20 @@ export default (connectors) => {
       },
       logout () {
         localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
         this.accessToken = null
         this.user = null
+        this.account = null
+        router.push('/')
       },
 
-      async  sendForgotPassword (email) {
+      async  sendForgotPassword (data) {
         try {
-          if (this.account === null || this.account._id === undefined) {
-            throw new RouteError('User ID Is Required')
+          if (!data || !data.email || !data.accountId) {
+            throw new RouteError('account Id and email Is Required')
           }
-          await connectors.forgotPassword.send({ email, id: this.account._id })
-          return 'success'
+          const res = await connectors.forgotPassword.send({ email: data.email, id: data.accountId })
+          return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -56,14 +99,16 @@ export default (connectors) => {
 
       async  resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
-          if (this.account === null || this.account._id === undefined) {
-            throw new RouteError('User ID Is Required')
+          const forgotPasswordTokenData = jwtDecode(forgotPasswordToken)
+          if (!forgotPasswordToken || !forgotPasswordTokenData || Date.now() >= forgotPasswordTokenData.exp * 1000 || !newPassword || !newPasswordAgain) {
+            throw new RouteError('Valid token, password and new password Is Required')
           }
-          this.accessToken = await connectors.forgotPassword.reset({ id: this.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
-          return 'success'
+          const loginToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -76,22 +121,22 @@ export default (connectors) => {
             throw new RouteError('account ID Is Required')
           }
           await connectors.invitation.send({ email, id: this.account._id })
-          return 'success'
+          router.push('/users')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain) {
+      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name) {
         try {
-          if (this.account === null || this.account._id === undefined) {
-            throw new RouteError('account ID Is Required')
-          }
-          this.accessToken = await connectors.invitation.accept({ id: this.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain })
-          const tokenData = jwtDecode(this.accessToken)
-          this.accessToken = await connectors.user.getAccessToken({ id: tokenData.user._id, accountId: tokenData.user.accountId })
-          this.user = await connectors.user.readOne({ id: tokenData.user._id, accountId: tokenData.user._id })
-          return 'success'
+          const acceptInvitationTokenData = jwtDecode(acceptInvitationToken)
+          const loginToken = await connectors.invitation.accept({ id: acceptInvitationTokenData.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain, name })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
+
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -109,6 +154,18 @@ export default (connectors) => {
           return e
         }
       },
+      async readOneUser () {
+        try {
+          if (this.user === null || this.account === null || this.user._id === undefined || this.account._id === undefined) {
+            throw new RouteError('user ID Is Required')
+          }
+          this.user = await connectors.user.readOne({ id: this.user._id, accountId: this.account._id })
+          return this.user
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async patchUserName (name) {
         try {
           if (this.account === null || this.account._id === undefined || this.user === null || this.user._id === undefined) {
@@ -116,7 +173,7 @@ export default (connectors) => {
           }
           await connectors.user.patchName({ id: this.user._id, name, accountId: this.account._id })
           this.user.name = name
-          return 'success'
+          router.push('/me')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -129,7 +186,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
-          return 'success'
+          router.push('/account')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -142,7 +199,7 @@ export default (connectors) => {
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
-          return 'success'
+          router.push('/account')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -154,13 +211,26 @@ export default (connectors) => {
             throw new RouteError('Admin ID Is Required')
           }
           await connectors.user.patchPassword({ accountId: this.account._id, id: this.user._id, oldPassword, newPassword, newPasswordAgain })
-          return 'success'
+          router.push('/me')
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async finalizeRegistration (token) {
+        try {
+          const tokenData = jwtDecode(token)
+          if (!token || !tokenData || Date.now() >= tokenData.exp * 1000) {
+            throw new RouteError('Valid Token Is Required')
+          }
+          this.user = await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
+          router.push('/')
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       }
-
     }
   })
 

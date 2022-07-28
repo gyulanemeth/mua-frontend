@@ -6,6 +6,7 @@ import AccountView from '../views/AccountView.vue'
 import SetAndReSetPasswordView from '../views/SetAndReSetPasswordView.vue'
 import EmailAndNameFormView from '../views/EmailAndNameFormView.vue'
 import LoginView from '../views/LoginView.vue'
+import CreateAccountView from '../views/CreateAccountView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,13 +17,23 @@ const router = createRouter({
       component: UserView
     },
     {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: LoginView
     },
     {
-      path: '/loginSelect',
-      name: 'loginSelect',
+      path: '/finalize-registration',
+      name: 'finalize-registration',
+      component: LoginView
+    },
+    {
+      path: '/create-account',
+      name: 'create-account',
+      component: CreateAccountView
+    },
+    {
+      path: '/login-select',
+      name: 'login-select',
       component: LoginView
     },
     {
@@ -36,13 +47,13 @@ const router = createRouter({
       component: MeView
     },
     {
-      path: '/patchUserName',
-      name: 'patchUserName',
+      path: '/patch-user-name',
+      name: 'patch-user-name',
       component: MeView
     },
     {
-      path: '/patchPassword',
-      name: 'patchPassword',
+      path: '/patch-password',
+      name: 'patch-password',
       component: MeView
     },
     {
@@ -51,13 +62,13 @@ const router = createRouter({
       component: AccountView
     },
     {
-      path: '/patchAccountName',
-      name: 'patchAccountName',
+      path: '/patch-account-name',
+      name: 'patch-account-name',
       component: AccountView
     },
     {
-      path: '/patchUrlFriendlyName',
-      name: 'patchUrlFriendlyName',
+      path: '/patch-urlFriendlyName',
+      name: 'patch-urlFriendlyName',
       component: AccountView
     },
     {
