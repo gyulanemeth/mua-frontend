@@ -32,11 +32,11 @@ export default function (fetch, apiUrl) {
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
-  const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute,  () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}`}))
+  const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
-  const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}`}))
+  const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   //  const createUser = createPostConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
 
@@ -68,7 +68,7 @@ export default function (fetch, apiUrl) {
     const res = await getToken({ id: data.id, accountId: data.accountId })
     if (res.accessToken) {
       localStorage.setItem('accessToken', res.accessToken)
-      localStorage.removeItem('loginToken');
+      localStorage.removeItem('loginToken')
     }
     return res
   }
