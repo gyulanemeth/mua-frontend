@@ -24,7 +24,8 @@ export default (connectors) => {
      window.location.pathname !== '/login-select' &&
      window.location.pathname !== '/invitation/accept' &&
      window.location.pathname !== '/create-account' &&
-     window.location.pathname !== '/') {
+     window.location.pathname !== '/' &&
+     window.location.pathname !== '/verify-email') {
       router.push('/')
     }
   } else {
@@ -244,7 +245,36 @@ export default (connectors) => {
           useSystemMessagesStore().addError(e)
           return e
         }
+      },
+
+      async patchEmail (newEmail) {
+        try {
+          if (!this.user || !this.user._id || !this.account || !this.account._id) {
+            throw new RouteError('User ID And Account ID Is Required')
+          }
+          const res = await connectors.user.patchEmail({ id: this.user._id, accountId: this.account._id, newEmail })
+          router.push('/me')
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async patchEmailConfirm (token) {
+        try {
+          const tokenData = jwtDecode(token)
+          if (!tokenData || !tokenData.user || !tokenData.user._id || !tokenData.account || !tokenData.account._id) {
+            throw new RouteError('Valid Token Is Required')
+          }
+          const res = await connectors.user.patchEmailConfirm({ id: tokenData.user._id, accountId: tokenData.account._id, token })
+          router.push('/')
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
       }
+
     }
   })
 

@@ -126,6 +126,8 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { accessToken: 'Token' } })
     })
+    localStorage.setItem('loginToken', 'Token')
+
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).user.getAccessToken({ id: '123', accountId: '112233' })
 
@@ -190,6 +192,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
+    localStorage.setItem('loginToken', 'Token')
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).user.login({ accountId: '123', password: 'userPassword' })
     expect(spy).toHaveBeenLastCalledWith(
@@ -353,5 +356,74 @@ describe('test accounts connectors', () => {
     })
 
     await expect(users(fetch, apiUrl).user.deleteOne()).rejects.toThrowError('User ID and Account ID Is Required')
+  })
+
+  test('test success patchEmail ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/112233/users/123/email',
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ newEmail: 'newEmail@gmail.com' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test patchEmail with undefined input', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    await expect(users(fetch, apiUrl).user.patchEmail({})).rejects.toThrowError('User ID, Account ID And New Email Is Required')
+  })
+
+  test('test success patchEmailConfirm ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.patchEmailConfirm({ id: '123', accountId: '112233', token: 'token' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/112233/users/123/email-confirm',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + 'token'
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test patchEmailConfirm with undefined input admin', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    await expect(users(fetch, apiUrl).user.patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
   })
 })

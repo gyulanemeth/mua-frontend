@@ -357,7 +357,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).invitation.accept({ id: '123', token: 'token', newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' })
+    const res = await accounts(fetch, apiUrl).invitation.accept({ id: '123', token: 'Token', newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/invitation/accept',
 
@@ -366,7 +366,7 @@ describe('test accounts connectors', () => {
         body: JSON.stringify({ newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' }),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+          Authorization: 'Bearer ' + localStorage.getItem('loginToken')
         }
       })
     expect(res).toEqual('Token')
@@ -423,7 +423,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).forgotPassword.reset({ id: '123', token: 'token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
+    const res = await accounts(fetch, apiUrl).forgotPassword.reset({ id: '123', token: 'Token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/forgot-password/reset',
       {
@@ -431,7 +431,7 @@ describe('test accounts connectors', () => {
         body: JSON.stringify({ newPassword: 'newPassword', newPasswordAgain: 'newPassword' }),
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+          Authorization: 'Bearer ' + localStorage.getItem('loginToken')
         }
       })
     expect(res).toEqual('Token')
