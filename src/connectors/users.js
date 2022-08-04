@@ -22,6 +22,10 @@ export default function (fetch, apiUrl) {
 
   const generatePatchRoleRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/role`
 
+  const generatePatchEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email`
+
+  const generatePatchConfirmEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email-confirm`
+
   const generateLoginGetAccountsRoute = () => '/v1/accounts/login'
 
   const generateLoginRoute = (params) => `/v1/accounts/${params.id}/login`
@@ -38,7 +42,8 @@ export default function (fetch, apiUrl) {
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
-  //  const createUser = createPostConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
+  const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
+  const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -124,8 +129,26 @@ export default function (fetch, apiUrl) {
     return res
   }
 
+  const patchEmail = async function (formData) {
+    if (!formData || !formData.id || !formData.accountId || !formData.newEmail) {
+      throw new RouteError('User ID, Account ID And New Email Is Required')
+    }
+    const res = await updateEmail({ id: formData.id, accountId: formData.accountId }, { newEmail: formData.newEmail })
+    return res
+  }
+
+  const patchEmailConfirm = async function (formData) {
+    if (!formData || !formData.id || !formData.accountId || !formData.token) {
+      throw new RouteError('User ID, Account ID and token Is Required')
+    }
+    localStorage.setItem('verifyEmailToken', formData.token)
+    const res = await confirmEmailUpdate({ id: formData.id, accountId: formData.accountId })
+    localStorage.removeItem('verifyEmailToken')
+    return res
+  }
+
   return {
-    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts },
+    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm },
     config: { getConfig }
   }
 }

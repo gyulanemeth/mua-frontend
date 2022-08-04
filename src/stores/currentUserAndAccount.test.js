@@ -69,7 +69,7 @@ describe('Current User And Account Store', () => {
       if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
         throw new RouteError('User Password Is Required')
       }
-      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com', accountId: '112233' } }, secrets)
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
       return token
     }
 
@@ -84,7 +84,7 @@ describe('Current User And Account Store', () => {
       if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
         throw new RouteError('Accouunt Password Is Required')
       }
-      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com', accountId: '112233' } }, secrets)
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
       return token
     }
 
@@ -153,11 +153,25 @@ describe('Current User And Account Store', () => {
       }
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
+
+    const mockPatchEmail = async function (formData) {
+      if (!formData || !formData.id || !formData.accountId || !formData.newEmail) {
+        throw new RouteError('User ID, Account ID And New Email Is Required')
+      }
+      return 'success'
+    }
+    const mockPatchEmailConfirm = async function (formData) {
+      if (!formData || !formData.id || !formData.accountId || !formData.token) {
+        throw new RouteError('User ID, Account ID and token Is Required')
+      }
+      return 'success'
+    }
+
     return {
       account: { patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne }
+      user: { patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
     }
   }
 
@@ -290,19 +304,21 @@ describe('Current User And Account Store', () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
     store.account = { _id: '12test12' }
-    await store.acceptInvitation('acceptInvitationToken', 'newPassword', 'newPassword')
     const token = jwt.sign(
       { type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    await store.acceptInvitation(token, 'newPassword', 'newPassword')
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
     expect(store.accessToken).toEqual(token)
   })
 
-  test('test accept invitation fail invalid input', async () => {
+  test('test accept invitation error', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    store.account = {}
-    const res = await store.acceptInvitation()
-    expect(res.message).toEqual('account ID Is Required')
+    store.account = { _id: '12test12' }
+    const token = jwt.sign(
+      { type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    const res = await store.acceptInvitation(token, 'newPassword')
+    expect(res.message).toEqual('Accouunt Password Is Required')
   })
 
   test('test success patchUserName', async () => {
@@ -423,6 +439,21 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '123123' }
     store.user = { _id: '123123' }
+    const token = jwt.sign({ type: 'user' }, secrets)
+    localStorage.setItem('accessToken', token)
+
+    const res = await store.readOneUser()
+    expect(res).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
+  })
+
+  test('test readOneUser Admin success ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    store.account = { _id: '123123' }
+    store.user = { _id: '123123' }
+    const token = jwt.sign({ type: 'admin' }, secrets)
+    localStorage.setItem('accessToken', token)
+
     const res = await store.readOneUser()
     expect(res).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
   })
@@ -470,5 +501,36 @@ describe('Current User And Account Store', () => {
     store.account = {}
     const res = await store.readOne()
     expect(res.message).toEqual('account ID Is Required')
+  })
+
+  test('test success patchEmail', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = { _id: '123test123' }
+
+    const res = await userStore.patchEmail('testEmail@gmail.com')
+    expect(res).toEqual('success')
+  })
+
+  test('test patchEmail fail admin id required ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    const res = await userStore.patchEmail('testEmail@gmail.com')
+    expect(res.message).toEqual('User ID And Account ID Is Required')
+  })
+
+  test('test success patchEmailConfirm', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    const res = await userStore.patchEmailConfirm('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlciI6eyJfaWQiOiIxMnRlc3QxMiJ9LCJhY2NvdW50Ijp7Il9pZCI6IjEyM3Rlc3QxMjMifSwiaWF0IjoxNTE2MjM5MDIyfQ.dmLGrl7qt43fb34XQQqYA1AirTvWErg_9hnOAA8OmG8')
+    expect(res).toEqual('success')
+  })
+
+  test('test patchEmailConfirm fail Valid Token  required ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    const res = await userStore.patchEmailConfirm('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
+    expect(res.message).toEqual('Valid Token Is Required')
   })
 })

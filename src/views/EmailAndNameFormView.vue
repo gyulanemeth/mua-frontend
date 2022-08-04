@@ -15,6 +15,8 @@ const formData = ref()
 async function loadData () {
   if (route.name === 'invite') {
     formData.value = { inputType: 'Email', inputText: 'Email', text: 'Invite' }
+  } else if (route.name === 'patch-email') {
+    formData.value = { inputType: 'Email', inputText: 'Email', text: 'Update Email' }
   } else if (route.name === 'forgot-password') {
     formData.value = { inputType: 'Email', inputText: 'Email', text: 'Reset Password' }
   }
@@ -32,6 +34,11 @@ async function eventHandler (data) {
     if (res.success) {
       await alert.message('message Send to your email')
     }
+  } else if (formData.value.text === 'Update Email') {
+    res = await store.patchEmail(data)
+    if (res.success) {
+      await alert.message('Message sent to your email')
+    }
   }
 }
 
@@ -41,5 +48,5 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <EmailAndNameForm :formData="formData" @buttonEvent="eventHandler" />
+  <EmailAndNameForm v-if="formData" :formData="formData" @buttonEvent="eventHandler" />
 </template>

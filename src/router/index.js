@@ -52,6 +52,16 @@ const router = createRouter({
       component: MeView
     },
     {
+      path: '/patch-email',
+      name: 'patch-email',
+      component: EmailAndNameFormView
+    },
+    {
+      path: '/verify-email',
+      name: 'verify-email',
+      component: MeView
+    },
+    {
       path: '/patch-password',
       name: 'patch-password',
       component: MeView

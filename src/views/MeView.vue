@@ -7,14 +7,22 @@ import UpdatePassword from '../components/UpdatePassword.vue'
 import EmailAndNameForm from '../components/EmailAndNameForm.vue'
 import stores from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
+import alerts from '../alerts/alert.js'
 
 const store = stores().currentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
+const alert = alerts()
 
 const formData = ref()
 
 async function loadData () {
+  if (route.name === 'verify-email') {
+    const res = await store.patchEmailConfirm(route.query.token)
+    if (res.success) {
+      await alert.message('Email changed successfully')
+    }
+  }
   if (route.name === 'me') {
     if (!store.user.name) {
       await store.readOneUser()
