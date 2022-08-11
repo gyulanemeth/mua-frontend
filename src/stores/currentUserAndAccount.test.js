@@ -228,7 +228,7 @@ describe('Current User And Account Store', () => {
 
   test('test logOut', async () => {
     const token = jwt.sign({ type: 'token', data: 'token' }, secrets)
-    localStorage.setItem('accessToken', token)
+    window.location.search = { token, accountId: '112233' }
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
     store.accessToken = 'token'
@@ -301,6 +301,8 @@ describe('Current User And Account Store', () => {
   })
 
   test('test success accept invitation', async () => {
+    window.location.pathname = '/'
+    window.location.search = { token: 'token' }
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
     store.account = { _id: '12test12' }
