@@ -44,7 +44,7 @@ if (props.tokenData.account) {
                 name="email"
                 label="Email"
                 v-model="data.email"
-                :disabled="cb || !!props.tokenData.user"
+                :disabled="!!cb || !!props.tokenData.user"
                 type="email"
                 required />
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account "
@@ -54,7 +54,7 @@ if (props.tokenData.account) {
                   color="info"
                   class="elevation-2 my-5 pt-2 pl-3 rounded"
                   variant="plain"
-                  :disabled="cb"
+                  :disabled="!!cb"
                   :items="props.tokenData.accounts"
                   item-title="name"
                   item-value="_id"
@@ -63,7 +63,7 @@ if (props.tokenData.account) {
                   />
 
                   <div v-if="props.tokenData.accounts && props.formData.btnText === 'Sign in' ">
-                    <v-btn v-if="!cb" color="info" @click="cb=true" >Continue</v-btn>
+                    <v-btn v-if="!cb" color="info" @click="cb='signIn'" >Continue</v-btn>
                     <div v-if="cb">
                     <v-text-field hide-details
                       density="compact"
@@ -120,7 +120,7 @@ if (props.tokenData.account) {
                       </div>
 
                <div v-if="props.tokenData.accounts && !props.tokenData.account && props.formData.btnText === 'Reset Password'">
-                   <div v-if="!cb">
+                   <div v-if="cb !== 'reset'">
                    <v-checkbox
                       label="I am human."
                       color="info"
@@ -130,7 +130,7 @@ if (props.tokenData.account) {
                      <v-btn color="info" @click="$emit('handleForgotPasswordHandler', data, (res)=>{cb=res})" >{{props.formData.btnText}}</v-btn>
                      <button hidden @click.enter.prevent="$emit('handleForgotPasswordHandler', data, (res)=>{cb=res})" />
                    </div>
-                   <p v-else class="mt-4">To continue resetting your password, please check your inbox and click the link we sent you.</p>
+                   <p v-if="cb === 'reset'" class="mt-4">To continue resetting your password, please check your inbox and click the link we sent you.</p>
                  </div>
 
               <div  v-if="!props.tokenData.accounts">

@@ -35,7 +35,7 @@ async function handleForgotPasswordResetEvent (params) {
 async function handleForgotPasswordEvent (params, statusCallBack) {
   const res = await store.sendForgotPassword({ email: params.email, accountId: params.account })
   if (!res.message) {
-    statusCallBack(true)
+    statusCallBack('reset')
   }
 }
 
