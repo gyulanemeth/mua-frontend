@@ -1,10 +1,10 @@
 <script setup>
 
 import CreateAccount from '../components/CreateAccount.vue'
-import stores from '../stores/index.js'
+import { useCurrentUserAndAccountStore } from '../stores/index.js'
 import alerts from '../alerts/alert.js'
 
-const store = stores().currentUserAndAccountStore()
+const store = useCurrentUserAndAccountStore()
 const alert = alerts()
 
 async function eventHandler (data) {

@@ -367,13 +367,13 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com' })
+    const res = await users(fetch, apiUrl).user.patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/email',
       {
         method: 'PATCH',
-        body: JSON.stringify({ newEmail: 'newEmail@gmail.com' }),
+        body: JSON.stringify({ newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
@@ -390,7 +390,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(users(fetch, apiUrl).user.patchEmail({})).rejects.toThrowError('User ID, Account ID And New Email Is Required')
+    await expect(users(fetch, apiUrl).user.patchEmail({})).rejects.toThrowError('User ID, Account ID, New Email and New Email Confirm Is Required')
   })
 
   test('test success patchEmailConfirm ', async () => {

@@ -87,12 +87,12 @@ export default (connectors) => {
         }
       },
       logout () {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('loginToken')
+        router.push('/')
         this.accessToken = null
         this.user = null
         this.account = null
-        router.push('/')
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
       },
 
       async  sendForgotPassword (data) {
@@ -226,7 +226,7 @@ export default (connectors) => {
             throw new RouteError('Admin ID Is Required')
           }
           await connectors.user.patchPassword({ accountId: this.account._id, id: this.user._id, oldPassword, newPassword, newPasswordAgain })
-          router.push('/me')
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -247,12 +247,12 @@ export default (connectors) => {
         }
       },
 
-      async patchEmail (newEmail) {
+      async patchEmail (newEmail, newEmailAgain) {
         try {
           if (!this.user || !this.user._id || !this.account || !this.account._id) {
             throw new RouteError('User ID And Account ID Is Required')
           }
-          const res = await connectors.user.patchEmail({ id: this.user._id, accountId: this.account._id, newEmail })
+          const res = await connectors.user.patchEmail({ id: this.user._id, accountId: this.account._id, newEmail, newEmailAgain })
           router.push('/me')
           return res
         } catch (e) {

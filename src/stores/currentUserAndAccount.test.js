@@ -396,7 +396,7 @@ describe('Current User And Account Store', () => {
     store.user = { _id: '12test12', name: 'user1' }
     store.account = { _id: '123123' }
     const res = await store.patchPassword('oldPassword', 'newPassword', 'newPassword')
-    expect(res).toEqual(undefined)
+    expect(res.success).toEqual(true)
   })
 
   test('test patchPassword fail account id required ', async () => {

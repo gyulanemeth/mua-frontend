@@ -1,10 +1,15 @@
-import useCurrentUserAndAccountStore from './currentUserAndAccount.js'
-import useUsersStore from './users.js'
+import createCurrentUserAndAccountStore from './currentUserAndAccount.js'
+import createUsersStore from './users.js'
 import connectors from '../connectors/index.js'
 
-export default function () {
-  const currentUserAndAccountStore = useCurrentUserAndAccountStore({ ...connectors().accountsConnectors, ...connectors().userConnectors })
-  const usersStore = useUsersStore(connectors().userConnectors)
-
-  return { currentUserAndAccountStore, usersStore }
+const useCurrentUserAndAccountStore = () => {
+  const store = createCurrentUserAndAccountStore({ ...connectors().accountsConnectors, ...connectors().userConnectors })
+  return store()
 }
+
+const useUsersStore = () => {
+  const store = createUsersStore(connectors().userConnectors)
+  return store()
+}
+
+export { useCurrentUserAndAccountStore, useUsersStore }

@@ -3,54 +3,67 @@ import { watchEffect, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import MeDetails from '../components/MeDetails.vue'
-import UpdatePassword from '../components/UpdatePassword.vue'
-import EmailAndNameForm from '../components/EmailAndNameForm.vue'
-import stores from '../stores/index.js'
+import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import alerts from '../alerts/alert.js'
 
-const store = stores().currentUserAndAccountStore()
+let store = useCurrentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
 const alert = alerts()
 
-const formData = ref()
+const data = ref()
 
 async function loadData () {
   if (route.name === 'verify-email') {
     const res = await store.patchEmailConfirm(route.query.token)
-    if (res.success) {
-      await alert.message('Email changed successfully')
+    if (!res.message) {
+      router.push({ path: '/me', query: { tab: 'changeEmail' } })
+      await new Promise(resolve => setTimeout(resolve, 5000))
+      router.push({ path: '/me', query: {}, replace: true })
     }
+  } else if (!store.user.name) {
+    await store.readOneUser()
   }
-  if (route.name === 'me') {
-    if (!store.user.name) {
-      await store.readOneUser()
-    }
-    formData.value = store.user
-  }
-  if (route.name === 'patch-user-name') {
-    formData.value = { inputType: 'text', inputText: 'New Name', text: 'Update Name' }
-  } else {
-    if (store.user === null) {
-      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User data not found please login' })
-      return router.push('/')
-    }
+  data.value = store.user
+  if (store.user === null) {
+    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User data not found please login' })
+    return router.push('/')
   }
 }
 
-async function eventHandler (data) {
-  if (formData.value.text === 'Update Name') {
-    await store.patchUserName(data)
+async function handleUpdateUserName (params) {
+  const res = await store.patchUserName(params)
+  if (res) {
+    await alert.message('Name updated successfully')
   }
 }
+
+async function handleUpdatePassword (params, statusCallBack) {
+  const res = await store.patchPassword(params.oldPassword, params.newPassword, params.confirmNewPassword)
+  if (!res.message) {
+    await alert.message('Password updated successfully')
+  }
+}
+async function handleUpdateEmail (params, statusCallBack) {
+  const res = await store.patchEmail(params.newEmail, params.confirmNewEmail)
+  statusCallBack(!res.message)
+}
+async function handleDeleteMyAccount (params) {
+  store = useUsersStore()
+  const res = await store.deleteOne(params.id)
+  if (!res.message) {
+    alert.message('Account Deleted successfully')
+    store = useCurrentUserAndAccountStore()
+    await store.logout()
+  }
+}
+
 watchEffect(async () => {
   loadData()
 })
 </script>
 
 <template>
-  <EmailAndNameForm v-if="route.name === 'patch-user-name'" :formData="formData" @buttonEvent="eventHandler" />
-  <UpdatePassword v-else-if="route.name === 'patch-password'"  />
-  <MeDetails v-else-if="formData" :data="formData" />
+  <MeDetails v-if="data" :data="data"  @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteMyAccount' />
 </template>

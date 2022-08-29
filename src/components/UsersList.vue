@@ -1,62 +1,73 @@
 <script setup>
 import { ref } from 'vue'
+import Invite from '../components/InviteMembers.vue'
+import DeleteUser from '../components/deleteMyAccount.vue'
+import UserProfile from '../components/UserProfile.vue'
 
+const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler'])
 const props = defineProps({
   items: Array,
-  roles: Array
+  roles: Array,
+  currentAccName: String,
+  userId: String
 })
 
 const filter = ref('')
-const radioGroup = ref(false)
-const newName = ref('')
-const editemood = ref(false)
 
-function edite (id) {
-  newName.value = ''
-  radioGroup.value = ''
-  editemood.value = editemood.value === id ? false : id
+function redirectDeleteEventHandler (data) {
+  emit('deleteEventHandler', data)
+}
+
+function redirectInviteEventHandler (data, cb) {
+  emit('inviteEventHandler', data, cb)
+}
+
+function redirectUpdateRoleEventHandler (data) {
+  emit('updateRoleEventHandler', data)
 }
 
 </script>
 
 <template>
 
-<v-container>
-    <v-layout class="d-flex flex-wrap">
+<v-container class="mx-6 pt-0">
+  <v-layout class="d-flex flex-wrap">
+      <v-col cols="2" class="pt-3">
+          <p class="text-h6">{{props.currentAccName}} </p>
+      </v-col>
+      <v-spacer />
+      <v-col cols="5">
+          <v-text-field hide-details density="compact" label="Search" variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary" @change="$emit('searchEvent',filter)"></v-text-field>
+      </v-col>
 
-        <v-text-field class="my-2 ml-4" variant="outlined" label="Search" prepend-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary" @change="$emit('searchEvent',filter)"></v-text-field>
+      <v-col class="pt-3">
+        <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
+      </v-col>
+      <v-divider />
 
-        <v-btn class="py-7 my-2 ml-4" variant="outlined" color="primary" to="/invitation">
-            Invite User
-        </v-btn>
-    </v-layout>
+  </v-layout>
+
     <v-layout class="d-flex flex-wrap">
-        <v-card class="mx-2 my-5 pa-2 align-self-start " min-width="275" v-for="item in props.items" :key="item._id">
+        <v-card class="mx-2 my-5 align-self-start " min-width="275" v-for="item in props.items" :key="item._id">
+          <v-card-title>
+            <p>{{item.data.name}}<span class="font-weight-light pl-2">{{item.data.role}}</span></p>
+          </v-card-title>
             <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="150px" cover></v-img>
-            <v-card-title>
-                <input :value="item.data.name" :label="item.data.name" disabled />
+            <v-card-text class="pl-0">
+            <v-card-subtitle>
+                {{item.data.email}}
                 <v-card-subtitle>
-                    - {{item.status}}
-                </v-card-subtitle>
-            </v-card-title>
+                 <span v-if="props.userId === item._id"> - Me -</span>
+            </v-card-subtitle>
+          </v-card-subtitle>
 
-            <v-card-actions v-if='editemood === item._id'>
-                <v-radio-group inline v-model="radioGroup">
-                    <v-radio v-for="data in props.roles" :key="data+item._id" :disabled="item.data.role === data" :label="data" :value="data"></v-radio>
-                </v-radio-group>
+          </v-card-text>
+            <v-card-actions v-if="props.userId !== item._id && item.data.role === 'admin'" >
+              <UserProfile @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles" :data="item.data" />
 
-                <v-divider />
-                <v-btn color="primary" variant="outlined" icon="mdi-check" size="small" @click.stop="$emit('buttonEvent',{id: item._id, name:newName ,role: radioGroup, operation: 'updateRole'}); edite(item._id)" />
+                <v-spacer></v-spacer>
+                <DeleteUser @deleteEventHandler='redirectDeleteEventHandler' :data="item.data" />
 
-                <v-btn class="ml-2" color="red" variant="outlined" icon="mdi-window-close" size="small" @click="edite(item._id)" />
-            </v-card-actions>
-            <v-card-actions v-else>
-                <v-btn color="primary" variant="text" @click.stop="edite(item._id)">
-                    Update
-                </v-btn>
-                <v-btn color="red-lighten-2" variant="text" @click="$emit('buttonEvent',{id:item._id,operation: 'delete'})">
-                    Delete
-                </v-btn>
             </v-card-actions>
 
         </v-card>

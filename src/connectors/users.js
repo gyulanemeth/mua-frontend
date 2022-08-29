@@ -130,10 +130,10 @@ export default function (fetch, apiUrl) {
   }
 
   const patchEmail = async function (formData) {
-    if (!formData || !formData.id || !formData.accountId || !formData.newEmail) {
-      throw new RouteError('User ID, Account ID And New Email Is Required')
+    if (!formData || !formData.id || !formData.accountId || !formData.newEmail || !formData.newEmailAgain) {
+      throw new RouteError('User ID, Account ID, New Email and New Email Confirm Is Required')
     }
-    const res = await updateEmail({ id: formData.id, accountId: formData.accountId }, { newEmail: formData.newEmail })
+    const res = await updateEmail({ id: formData.id, accountId: formData.accountId }, { newEmail: formData.newEmail, newEmailAgain: formData.newEmailAgain })
     return res
   }
 

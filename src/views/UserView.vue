@@ -3,41 +3,66 @@ import { watchEffect, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import UsersList from '../components/UsersList.vue'
-import stores from '../stores/index.js'
+import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import alerts from '../alerts/alert.js'
 
+const currentUserAndAccountStore = await useCurrentUserAndAccountStore()
 const router = useRouter()
 const alert = alerts()
 
 const data = ref()
 const roles = ref()
+const accountName = ref()
+const userId = ref()
+
 let store
 
 async function loadData () {
-  const currentAccountStore = await stores().currentUserAndAccountStore()
-  store = stores().usersStore()
-  if (currentAccountStore.account === null) {
+  store = useUsersStore()
+  if (currentUserAndAccountStore.account === null) {
     useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
     return router.push('/')
   }
-  store.params = { accountId: currentAccountStore.account._id }
-  await store.load()
-  data.value = store.items
-  const config = await store.config()
-  roles.value = config.role
-}
 
-async function eventHandler (data) {
-  if (data.operation === 'updateRole') {
-    store.patchRole(data.id, { role: data.role })
-  }
-  if (data.operation === 'delete') {
-    const confirm = await alert.confirmAlert('do you want to Delete the record?')
-    if (confirm.isConfirmed) {
-      store.deleteOne(data.id)
+  if (!currentUserAndAccountStore.user.name) {
+    await currentUserAndAccountStore.readOneUser()
+    if (!currentUserAndAccountStore.user.name) {
+      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User Id not found please login' })
+      return router.push('/')
     }
   }
+  accountName.value = currentUserAndAccountStore.account.name
+  userId.value = currentUserAndAccountStore.user._id
+  store.params = { accountId: currentUserAndAccountStore.account._id }
+  await store.load()
+  data.value = store.items
+  if (currentUserAndAccountStore.user.role === 'admin') {
+    const config = await store.config()
+    roles.value = config.role
+  }
+}
+
+async function handleUpdateRole (params) {
+  const res = await store.patchRole(params.id, { role: params.role })
+  if (!res.message) {
+    alert.message('User role updated successfully')
+  }
+}
+
+async function handleDeleteUser (params) {
+  const res = await store.deleteOne(params.id)
+  if (!res.message) {
+    alert.message('Account Deleted successfully')
+    if (currentUserAndAccountStore.user._id === params.id) {
+      await currentUserAndAccountStore.logout()
+    }
+  }
+}
+
+async function handleInviteMember (params, statusCallBack) {
+  const res = await currentUserAndAccountStore.sendInvitation(params.email)
+  statusCallBack(!res.message)
 }
 
 async function searchBarHandler (filter) {
@@ -56,5 +81,5 @@ watchEffect(async () => {
 </script>
 
   <template>
-    <UsersList :items="data" :roles="roles" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
+    <UsersList :items="data" :currentAccName="accountName" :userId="userId" :roles="roles" @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
   </template>

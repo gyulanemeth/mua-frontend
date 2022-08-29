@@ -1,7 +1,7 @@
 <script setup>
-import stores from '../stores/index.js'
+import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
-const store = stores().currentUserAndAccountStore()
+const store = useCurrentUserAndAccountStore()
 
 function redirect () {
   const getToken = localStorage.getItem('accessToken')
@@ -11,14 +11,26 @@ function redirect () {
 </script>
 
 <template>
+  <v-card class="elevation-4">
 
-<v-navigation-drawer permanent>
-    <v-list>
-        <v-list-item prepend-icon="mdi-file-document" title="Me" to="/me"></v-list-item>
-        <v-list-item prepend-icon="mdi-file-document" title="Account Settings" to="/account"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-group" title="Account Users" to="/users"></v-list-item>
-        <v-list-item prepend-icon="mdi-account-group" title="App" @click="redirect"></v-list-item>
-    </v-list>
-</v-navigation-drawer>
+      <v-navigation-drawer color="grey-lighten-2" rail permanent >
+        <v-list bg-color="grey-lighten-2" density="compact" nav>
+          <v-list-item active-class="text-white"  prepend-icon="mdi-shield-account-variant-outline"  />
 
+          <v-list-item  active-class="text-white" active prepend-icon="mdi-account-group-outline" />
+
+          <v-list-item  active-class="text-white" prepend-icon="mdi-email-variant" @click="redirect" />
+        </v-list>
+
+      </v-navigation-drawer>
+
+      <v-navigation-drawer class="elevation-2" permanent>
+        <v-list>
+          <v-list-item title="My Profile" to="/me" />
+       <v-list-item title="Account Settings" to="/account" />
+       <v-list-item title="Account Users" to="/users" />
+        </v-list>
+      </v-navigation-drawer>
+
+  </v-card>
 </template>
