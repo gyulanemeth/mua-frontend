@@ -27,16 +27,12 @@ function redirectUpdateRoleEventHandler (data) {
   emit('updateRoleEventHandler', data)
 }
 
-function nextPage () {
-  emit('loadMore', page.value + 1)
-}
-
 window.onscroll = () => {
-  let bottomOfWindow = Math.trunc(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+  const bottomOfWindow = Math.trunc(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight
   if (bottomOfWindow) {
     emit('loadMore', page.value + 1)
   }
-};
+}
 
 </script>
 

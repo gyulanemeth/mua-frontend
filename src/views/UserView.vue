@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import UsersList from '../components/UsersList.vue'
@@ -16,38 +16,35 @@ const roles = ref()
 const accountName = ref()
 const currentUser = ref()
 
-let store
+const store = useUsersStore()
+if (currentUserAndAccountStore.account === null) {
+  useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+  router.push('/')
+}
 
-  store = useUsersStore()
-  if (currentUserAndAccountStore.account === null) {
-    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
-     router.push('/')
-  }
-
+if (!currentUserAndAccountStore.user.name) {
+  await currentUserAndAccountStore.readOneUser()
   if (!currentUserAndAccountStore.user.name) {
-    await currentUserAndAccountStore.readOneUser()
-    if (!currentUserAndAccountStore.user.name) {
-      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User Id not found please login' })
-       router.push('/')
-    }
+    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User Id not found please login' })
+    router.push('/')
   }
+}
+if (!currentUserAndAccountStore.account.name) {
+  await currentUserAndAccountStore.readOne()
   if (!currentUserAndAccountStore.account.name) {
-    await currentUserAndAccountStore.readOne()
-    if (!currentUserAndAccountStore.account.name) {
-      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
-       router.push('/')
-    }
+    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+    router.push('/')
   }
-  accountName.value = currentUserAndAccountStore.account.name
-  currentUser.value = currentUserAndAccountStore.user
-  store.params = { accountId: currentUserAndAccountStore.account._id }
-  await store.load()
-  data.value = store.items
-  if (currentUserAndAccountStore.user.role === 'admin') {
-    const config = await store.config()
-    roles.value = config.role
-  }
-
+}
+accountName.value = currentUserAndAccountStore.account.name
+currentUser.value = currentUserAndAccountStore.user
+store.params = { accountId: currentUserAndAccountStore.account._id }
+await store.load()
+data.value = store.items
+if (currentUserAndAccountStore.user.role === 'admin') {
+  const config = await store.config()
+  roles.value = config.role
+}
 
 async function handleUpdateRole (params) {
   const res = await store.patchRole(params.id, { role: params.role })
