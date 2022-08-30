@@ -41,9 +41,9 @@ function redirect() {
 
     <v-navigation-drawer class="elevation-2" permanent>
         <v-list>
-            <v-list-item title="My Profile" to="/me" />
-            <v-list-item title="Account Settings" to="/account" />
-            <v-list-item title="Account Users" to="/users" />
+            <v-list-item active-class="text-info" title="My Profile" to="/me" />
+            <v-list-item active-class="text-info" title="Account Settings" to="/account" />
+            <v-list-item active-class="text-info" title="Account Users" to="/users" />
         </v-list>
     </v-navigation-drawer>
 
