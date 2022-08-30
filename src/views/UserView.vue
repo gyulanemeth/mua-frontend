@@ -18,27 +18,41 @@ const currentUser = ref()
 
 const store = useUsersStore()
 if (currentUserAndAccountStore.account === null) {
-  useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+  useSystemMessagesStore().addError({
+    status: 404,
+    name: 'NOT_FOUND',
+    message: 'Account Id not found please login'
+  })
   router.push('/')
 }
 
 if (!currentUserAndAccountStore.user.name) {
   await currentUserAndAccountStore.readOneUser()
   if (!currentUserAndAccountStore.user.name) {
-    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'User Id not found please login' })
+    useSystemMessagesStore().addError({
+      status: 404,
+      name: 'NOT_FOUND',
+      message: 'User Id not found please login'
+    })
     router.push('/')
   }
 }
 if (!currentUserAndAccountStore.account.name) {
   await currentUserAndAccountStore.readOne()
   if (!currentUserAndAccountStore.account.name) {
-    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+    useSystemMessagesStore().addError({
+      status: 404,
+      name: 'NOT_FOUND',
+      message: 'Account Id not found please login'
+    })
     router.push('/')
   }
 }
 accountName.value = currentUserAndAccountStore.account.name
 currentUser.value = currentUserAndAccountStore.user
-store.params = { accountId: currentUserAndAccountStore.account._id }
+store.params = {
+  accountId: currentUserAndAccountStore.account._id
+}
 await store.load()
 data.value = store.items
 if (currentUserAndAccountStore.user.role === 'admin') {
@@ -46,8 +60,10 @@ if (currentUserAndAccountStore.user.role === 'admin') {
   roles.value = config.role
 }
 
-async function handleUpdateRole (params) {
-  const res = await store.patchRole(params.id, { role: params.role })
+async function handleUpdateRole(params) {
+  const res = await store.patchRole(params.id, {
+    role: params.role
+  })
   if (!res.message) {
     alert.message('User role updated successfully')
     await store.load()
@@ -55,7 +71,7 @@ async function handleUpdateRole (params) {
   }
 }
 
-async function handleDeleteUser (params) {
+async function handleDeleteUser(params) {
   const res = await store.deleteOne(params.id)
   if (!res.message) {
     alert.message('Account Deleted successfully')
@@ -67,7 +83,7 @@ async function handleDeleteUser (params) {
   }
 }
 
-async function handleInviteMember (params, statusCallBack) {
+async function handleInviteMember(params, statusCallBack) {
   const res = await currentUserAndAccountStore.sendInvitation(params.email)
   if (!res.message) {
     await store.load()
@@ -76,7 +92,7 @@ async function handleInviteMember (params, statusCallBack) {
   }
 }
 
-async function loadMore (params) {
+async function loadMore(params) {
   if (store.items.length !== store.count) {
     store.skip = params * 10
     await store.loadMore()
@@ -84,11 +100,15 @@ async function loadMore (params) {
   }
 }
 
-async function searchBarHandler (filter) {
+async function searchBarHandler(filter) {
   if (filter === '') {
     store.filter = {}
   } else {
-    store.filter = { $text: { $search: `"${filter}"` } }
+    store.filter = {
+      $text: {
+        $search: `"${filter}"`
+      }
+    }
   }
   await store.load()
   data.value = store.items
@@ -96,6 +116,9 @@ async function searchBarHandler (filter) {
 
 </script>
 
-  <template>
-    <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
-  </template>
+
+<template>
+
+<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+
+</template>
