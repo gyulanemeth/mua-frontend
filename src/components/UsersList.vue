@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import Invite from '../components/InviteMembers.vue'
-import DeleteUser from '../components/deleteMyAccount.vue'
+import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
 
 const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler'])

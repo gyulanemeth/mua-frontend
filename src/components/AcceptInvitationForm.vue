@@ -18,8 +18,6 @@ tokenData.value = jwtDecode(route.query.token)
 const appIcon = window.config.appIcon
 const title = window.config.title
 
-
-
 </script>
 
 <template>

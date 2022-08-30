@@ -19,6 +19,9 @@ async function loadData () {
   }
   if (route.query.token) {
     tokenData.value = jwtDecode(route.query.token)
+    if (tokenData.value.account) {
+      tokenData.value.accounts = [tokenData.value.account]
+    }
     if (route.name === 'login-select') {
       formData.value = { btnText: 'Sign in', header: 'Sign in to your account' }
     }

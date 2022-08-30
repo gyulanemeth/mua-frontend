@@ -13,11 +13,10 @@ const data = ref({})
 const cb = ref(false)
 
 if (props.tokenData.user) {
-  data.value.email = props.tokenData.user.email
+  data.value.email = ref(props.tokenData.user.email)
 }
 if (props.tokenData.account) {
-  props.tokenData.accounts = [props.tokenData.account]
-  data.value.account = props.tokenData.account._id
+  data.value.account = ref(props.tokenData.account._id)
 }
 
 const appIcon = window.config.appIcon
