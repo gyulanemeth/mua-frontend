@@ -14,7 +14,7 @@ const alert = alerts()
 const data = ref()
 const roles = ref()
 const accountName = ref()
-const userId = ref()
+const currentUser = ref()
 
 let store
 
@@ -33,7 +33,7 @@ async function loadData () {
     }
   }
   accountName.value = currentUserAndAccountStore.account.name
-  userId.value = currentUserAndAccountStore.user._id
+  currentUser.value = currentUserAndAccountStore.user
   store.params = { accountId: currentUserAndAccountStore.account._id }
   await store.load()
   data.value = store.items
@@ -81,5 +81,5 @@ watchEffect(async () => {
 </script>
 
   <template>
-    <UsersList :items="data" :currentAccName="accountName" :userId="userId" :roles="roles" @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+    <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
   </template>

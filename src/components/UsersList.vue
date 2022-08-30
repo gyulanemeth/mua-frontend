@@ -9,7 +9,7 @@ const props = defineProps({
   items: Array,
   roles: Array,
   currentAccName: String,
-  userId: String
+  currentUser: Object
 })
 
 const filter = ref('')
@@ -57,17 +57,20 @@ function redirectUpdateRoleEventHandler (data) {
             <v-card-subtitle>
                 {{item.data.email}}
                 <v-card-subtitle>
-                 <span v-if="props.userId === item._id"> - Me -</span>
+                 <span v-if="props.currentUser._id === item._id"> - Me -</span>
             </v-card-subtitle>
           </v-card-subtitle>
 
           </v-card-text>
-            <v-card-actions v-if="props.userId !== item._id && item.data.role === 'admin'" >
+            <v-card-actions v-if="props.currentUser._id !== item._id && props.currentUser.role === 'admin'" >
               <UserProfile @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles" :data="item.data" />
 
                 <v-spacer></v-spacer>
                 <DeleteUser @deleteEventHandler='redirectDeleteEventHandler' :data="item.data" />
 
+            </v-card-actions>
+            <v-card-actions v-if="props.currentUser._id === item._id">
+              <v-btn color="info" class="text-white" to="/me" >View profile</v-btn>
             </v-card-actions>
 
         </v-card>
