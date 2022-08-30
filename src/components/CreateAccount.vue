@@ -7,16 +7,19 @@ const data = ref({
   account: {}
 })
 
+const appIcon = window.config.appIcon
+const title = window.config.title
+
 </script>
 
 <template>
   <v-form class="d-flex flex-column justify-center align-center h-screen">
     <v-card elevation="0" class="w-25">
       <v-card-text align="center" >
-          <v-icon size="77" color="info" icon="mdi-weather-hurricane" />
+          <v-icon size="77" color="info" :icon="appIcon" />
       </v-card-text>
       <v-card-title class="justify-center py-0">
-        <h4 class="text-h4">  Administration Panel </h4>
+        <h4 class="text-h4">  {{title}} </h4>
       </v-card-title>
     </v-card>
   <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">

@@ -15,12 +15,15 @@ const menuItems = [{
   path: '/users'
 }]
 
+const appName = window.config.appName
+const appIcon = window.config.appIcon
+
 </script>
 
 <template>
   <v-app-bar v-if="store.user" class="elevation-0">
-    <v-app-bar-nav-icon size="60" color="info" icon="mdi-weather-hurricane" />
-    <v-app-bar-title class=" text-h4" >MUA admin's UI</v-app-bar-title>
+    <v-app-bar-nav-icon size="60" color="info" :icon="appIcon" />
+    <v-app-bar-title class=" text-h4" >{{appName}}</v-app-bar-title>
     <v-spacer></v-spacer>
     <v-btn icon>
       <v-icon>mdi-magnify</v-icon>

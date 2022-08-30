@@ -5,7 +5,6 @@ import ErrorMessage from './components/ErrorMessage.vue'
 import { useCurrentUserAndAccountStore } from './stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
-
 </script>
 <template>
   <v-app>
