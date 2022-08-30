@@ -14,7 +14,7 @@ function redirect() {
 
 <v-card class="elevation-4">
 
-    <v-navigation-drawer color="grey-lighten-2" rail permanent>
+    <v-navigation-drawer color="grey-lighten-2" rail rail-width="60" permanent>
 
         <v-list bg-color="grey-lighten-2" density="compact" nav>
             <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
