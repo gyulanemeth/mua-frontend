@@ -4,7 +4,7 @@ import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
 
-const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler'])
+const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore'])
 const props = defineProps({
   items: Array,
   roles: Array,
@@ -13,6 +13,7 @@ const props = defineProps({
 })
 
 const filter = ref('')
+const page = ref(0)
 
 function redirectDeleteEventHandler (data) {
   emit('deleteEventHandler', data)
@@ -25,6 +26,17 @@ function redirectInviteEventHandler (data, cb) {
 function redirectUpdateRoleEventHandler (data) {
   emit('updateRoleEventHandler', data)
 }
+
+function nextPage () {
+  emit('loadMore', page.value + 1)
+}
+
+window.onscroll = () => {
+  let bottomOfWindow = Math.trunc(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+  if (bottomOfWindow) {
+    emit('loadMore', page.value + 1)
+  }
+};
 
 </script>
 
