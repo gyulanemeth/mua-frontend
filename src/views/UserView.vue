@@ -32,6 +32,13 @@ async function loadData () {
       return router.push('/')
     }
   }
+  if (!currentUserAndAccountStore.account.name) {
+    await currentUserAndAccountStore.readOne()
+    if (!currentUserAndAccountStore.account.name) {
+      useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
+      return router.push('/')
+    }
+  }
   accountName.value = currentUserAndAccountStore.account.name
   currentUser.value = currentUserAndAccountStore.user
   store.params = { accountId: currentUserAndAccountStore.account._id }
