@@ -13,7 +13,7 @@ const route = useRoute()
 const tokenData = ref({})
 const formData = ref()
 
-async function loadData() {
+async function loadData () {
   if (route.name === 'login') {
     formData.value = {
       btnText: 'Sign in',
@@ -40,11 +40,11 @@ async function loadData() {
   }
 }
 
-async function handleForgotPasswordResetEvent(params) {
+async function handleForgotPasswordResetEvent (params) {
   await store.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
 }
 
-async function handleForgotPasswordEvent(params, statusCallBack) {
+async function handleForgotPasswordEvent (params, statusCallBack) {
   const res = await store.sendForgotPassword({
     email: params.email,
     accountId: params.account
@@ -54,23 +54,22 @@ async function handleForgotPasswordEvent(params, statusCallBack) {
   }
 }
 
-async function handleGetLoginAccountEvent(params, statusCallBack) {
+async function handleGetLoginAccountEvent (params, statusCallBack) {
   const res = await store.loginGetAccounts(params)
   if (!res.message) {
     statusCallBack(true)
   }
 }
 
-async function handleLoginEvent(params) {
+async function handleLoginEvent (params) {
   await store.login(route.query.token, params.password, params.account)
 }
 
-watchEffect(async() => {
+watchEffect(async () => {
   loadData()
 })
 
 </script>
-
 
 <template>
 

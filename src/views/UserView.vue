@@ -60,7 +60,7 @@ if (currentUserAndAccountStore.user.role === 'admin') {
   roles.value = config.role
 }
 
-async function handleUpdateRole(params) {
+async function handleUpdateRole (params) {
   const res = await store.patchRole(params.id, {
     role: params.role
   })
@@ -71,7 +71,7 @@ async function handleUpdateRole(params) {
   }
 }
 
-async function handleDeleteUser(params) {
+async function handleDeleteUser (params) {
   const res = await store.deleteOne(params.id)
   if (!res.message) {
     alert.message('Account Deleted successfully')
@@ -83,7 +83,7 @@ async function handleDeleteUser(params) {
   }
 }
 
-async function handleInviteMember(params, statusCallBack) {
+async function handleInviteMember (params, statusCallBack) {
   const res = await currentUserAndAccountStore.sendInvitation(params.email)
   if (!res.message) {
     await store.load()
@@ -92,7 +92,7 @@ async function handleInviteMember(params, statusCallBack) {
   }
 }
 
-async function loadMore(params) {
+async function loadMore (params) {
   if (store.items.length !== store.count) {
     store.skip = params * 10
     await store.loadMore()
@@ -100,7 +100,7 @@ async function loadMore(params) {
   }
 }
 
-async function searchBarHandler(filter) {
+async function searchBarHandler (filter) {
   if (filter === '') {
     store.filter = {}
   } else {
@@ -115,7 +115,6 @@ async function searchBarHandler(filter) {
 }
 
 </script>
-
 
 <template>
 

@@ -14,7 +14,7 @@ const alert = alerts()
 
 const data = ref()
 
-async function loadData() {
+async function loadData () {
   if (route.name === 'verify-email') {
     const res = await store.patchEmailConfirm(route.query.token)
     if (!res.message) {
@@ -45,24 +45,24 @@ async function loadData() {
   }
 }
 
-async function handleUpdateUserName(params) {
+async function handleUpdateUserName (params) {
   const res = await store.patchUserName(params)
   if (res) {
     await alert.message('Name updated successfully')
   }
 }
 
-async function handleUpdatePassword(params, statusCallBack) {
+async function handleUpdatePassword (params, statusCallBack) {
   const res = await store.patchPassword(params.oldPassword, params.newPassword, params.confirmNewPassword)
   if (!res.message) {
     await alert.message('Password updated successfully')
   }
 }
-async function handleUpdateEmail(params, statusCallBack) {
+async function handleUpdateEmail (params, statusCallBack) {
   const res = await store.patchEmail(params.newEmail, params.confirmNewEmail)
   statusCallBack(!res.message)
 }
-async function handleDeleteMyAccount(params) {
+async function handleDeleteMyAccount (params) {
   store = useUsersStore()
   const res = await store.deleteOne(params.id)
   if (!res.message) {
@@ -72,12 +72,11 @@ async function handleDeleteMyAccount(params) {
   }
 }
 
-watchEffect(async() => {
+watchEffect(async () => {
   loadData()
 })
 
 </script>
-
 
 <template>
 

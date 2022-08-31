@@ -19,7 +19,6 @@ const appIcon = window.config.appIcon
 
 </script>
 
-
 <template>
 
 <v-app-bar v-if="store.user" class="elevation-0 pl-0 ml-0">

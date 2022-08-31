@@ -3,7 +3,7 @@ import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
 
-function redirect() {
+function redirect () {
   const getToken = localStorage.getItem('accessToken')
   window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
 }

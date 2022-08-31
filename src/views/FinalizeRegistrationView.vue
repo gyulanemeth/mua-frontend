@@ -15,7 +15,7 @@ const alert = alerts()
 const data = ref()
 const formData = ref()
 
-async function loadData() {
+async function loadData () {
   if (route.name === 'accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
     formData.value = {
@@ -31,17 +31,16 @@ async function loadData() {
   }
 }
 
-async function handleAcceptInvitationEvent(params) {
+async function handleAcceptInvitationEvent (params) {
   await new Promise(resolve => setTimeout(resolve, 5000))
   await store.acceptInvitation(route.query.token, params.newPassword, params.newPasswordAgain, params.name)
 }
 
-watchEffect(async() => {
+watchEffect(async () => {
   loadData()
 })
 
 </script>
-
 
 <template>
 

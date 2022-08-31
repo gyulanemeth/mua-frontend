@@ -16,15 +16,15 @@ const props = defineProps({
 const filter = ref('')
 const page = ref(0)
 
-function redirectDeleteEventHandler(data) {
+function redirectDeleteEventHandler (data) {
   emit('deleteEventHandler', data)
 }
 
-function redirectInviteEventHandler(data, cb) {
+function redirectInviteEventHandler (data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectUpdateRoleEventHandler(data) {
+function redirectUpdateRoleEventHandler (data) {
   emit('updateRoleEventHandler', data)
 }
 
@@ -36,7 +36,6 @@ window.onscroll = () => {
 }
 
 </script>
-
 
 <template>
 

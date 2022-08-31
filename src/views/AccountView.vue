@@ -11,7 +11,7 @@ const router = useRouter()
 
 const data = ref()
 
-async function loadData() {
+async function loadData () {
   if (!store.account.name) {
     await store.readOne()
   }
@@ -26,26 +26,25 @@ async function loadData() {
   }
 }
 
-async function handleUpdateAccountName(params) {
+async function handleUpdateAccountName (params) {
   const res = await store.patchAccountName(params)
   if (res) {
     await alert.message('Name updated successfully')
   }
 }
 
-async function handleUpdateUrlFriendlyName(params) {
+async function handleUpdateUrlFriendlyName (params) {
   const res = await store.patchUrlFriendlyName(params)
   if (!res.message) {
     await alert.message('urlFriendlyName updated successfully')
   }
 }
 
-watchEffect(async() => {
+watchEffect(async () => {
   loadData()
 })
 
 </script>
-
 
 <template>
 

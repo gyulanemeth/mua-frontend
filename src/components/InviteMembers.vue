@@ -38,7 +38,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">Account</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="currentAccount" name="name" disabled v-model="data['name']" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="currentAccount" name="name" disabled v-model="data.name" required />
                 </v-col>
             </v-row>
             <v-row align="center">
@@ -46,7 +46,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">Email address</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="email" type="email" v-model="data['email']" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="email" type="email" v-model="data.email" required />
                 </v-col>
             </v-row>
             <v-row align="center">
@@ -54,7 +54,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">Confirm e-mail address</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="confirmEmail" type="email" v-model="data['confirmEmail']" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="confirmEmail" type="email" v-model="data.confirmEmail" required />
                 </v-col>
             </v-row>
 

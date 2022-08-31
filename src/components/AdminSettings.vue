@@ -6,12 +6,11 @@ const props = defineProps({
   data: Object
 })
 
-function redirectDeleteHandler(data) {
+function redirectDeleteHandler (data) {
   emit('deleteEventHandler', data)
 }
 
 </script>
-
 
 <template >
 

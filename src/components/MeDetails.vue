@@ -16,16 +16,16 @@ const changeTab = (tabId) => {
   tab.value = tabId
 }
 
-async function redirectUpdateNameHandler(data) {
+async function redirectUpdateNameHandler (data) {
   emit('updateNameHandler', data)
 }
-async function redirectUpdateEmailHandler(data, cb) {
+async function redirectUpdateEmailHandler (data, cb) {
   emit('updateEmailHandler', data, cb)
 }
-async function redirectUpdatePasswordHandler(data) {
+async function redirectUpdatePasswordHandler (data) {
   emit('updatePasswordHandler', data)
 }
-async function redirectDeleteHandler(data) {
+async function redirectDeleteHandler (data) {
   emit('deleteMyAccountHandler', data)
 }
 
@@ -33,7 +33,6 @@ const route = useRoute()
 const tab = ref(route.query.tab)
 
 </script>
-
 
 <template>
 

@@ -19,7 +19,6 @@ const title = window.config.title
 
 </script>
 
-
 <template>
 
 <v-form class="d-flex flex-column justify-center align-center h-screen">
