@@ -1,19 +1,30 @@
 <script setup>
+import { onMounted } from 'vue'
+
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import ErrorMessage from './components/ErrorMessage.vue'
-import stores from './stores/index.js'
+import { useCurrentUserAndAccountStore } from './stores/index.js'
 
-const store = stores().currentUserAndAccountStore()
+const store = useCurrentUserAndAccountStore()
+
+onMounted(() => {
+  document.title = window.config.appTitle
+})
 
 </script>
+
 <template>
-  <v-app>
+
+<v-app>
     <NavBar v-if="store.loggedIn" />
     <SideBar v-if="store.loggedIn" />
-    <v-main >
-      <ErrorMessage/>
-      <router-view/>
+    <v-main>
+        <ErrorMessage/>
+        <Suspense>
+            <router-view/>
+        </Suspense>
     </v-main>
-  </v-app>
+</v-app>
+
 </template>

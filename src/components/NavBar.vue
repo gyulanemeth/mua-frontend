@@ -1,8 +1,7 @@
 <script setup>
+import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
-import stores from '../stores/index.js'
-
-const store = stores().currentUserAndAccountStore()
+const store = useCurrentUserAndAccountStore()
 
 const menuItems = [{
   title: 'Me',
@@ -15,18 +14,25 @@ const menuItems = [{
   path: '/users'
 }]
 
+const appName = window.config.appName
+const appIcon = window.config.appIcon
+
 </script>
 
 <template>
 
-<v-app-bar v-if="store.user">
-    <v-app-bar-title>MUA Account's UI</v-app-bar-title>
-    <v-avatar color="secondary">
-        Pic
-    </v-avatar>
+<v-app-bar v-if="store.user" class="elevation-0 pl-0 ml-0">
+    <v-app-bar-nav-icon size="60" color="info" :icon="appIcon" />
+    <v-app-bar-title class=" text-h4">{{appName}}</v-app-bar-title>
+    <v-spacer></v-spacer>
+
     <v-menu location="bottom " origin="end top">
         <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-dots-vertical" v-bind="props" />
+            <v-avatar size="large" color="grey-darken-3">
+                <v-btn v-bind="props">
+                    Pic
+                </v-btn>
+            </v-avatar>
         </template>
         <v-list>
             <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path" :value="item.title">
@@ -37,13 +43,6 @@ const menuItems = [{
             </v-list-item>
         </v-list>
     </v-menu>
-</v-app-bar>
-
-<v-app-bar v-else>
-    <v-app-bar-title>MUA Account's UI</v-app-bar-title>
-    <v-btn variant="text" to="/">
-        Login
-    </v-btn>
 </v-app-bar>
 
 </template>

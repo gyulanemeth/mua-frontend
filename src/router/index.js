@@ -3,10 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import UserView from '../views/UserView.vue'
 import MeView from '../views/MeView.vue'
 import AccountView from '../views/AccountView.vue'
-import SetAndReSetPasswordView from '../views/SetAndReSetPasswordView.vue'
-import EmailAndNameFormView from '../views/EmailAndNameFormView.vue'
-import LoginView from '../views/LoginView.vue'
+import FinalizeRegistrationView from '../views/FinalizeRegistrationView.vue'
 import CreateAccountView from '../views/CreateAccountView.vue'
+import LoginAndResetView from '../views/LoginAndResetView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,12 +18,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'login',
-      component: LoginView
+      component: LoginAndResetView
+    },
+    {
+      path: '/login-select',
+      name: 'login-select',
+      component: LoginAndResetView
     },
     {
       path: '/finalize-registration',
       name: 'finalize-registration',
-      component: LoginView
+      component: FinalizeRegistrationView
     },
     {
       path: '/create-account',
@@ -32,14 +36,9 @@ const router = createRouter({
       component: CreateAccountView
     },
     {
-      path: '/login-select',
-      name: 'login-select',
-      component: LoginView
-    },
-    {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: EmailAndNameFormView
+      component: LoginAndResetView
     },
     {
       path: '/me',
@@ -47,23 +46,8 @@ const router = createRouter({
       component: MeView
     },
     {
-      path: '/patch-user-name',
-      name: 'patch-user-name',
-      component: MeView
-    },
-    {
-      path: '/patch-email',
-      name: 'patch-email',
-      component: EmailAndNameFormView
-    },
-    {
       path: '/verify-email',
       name: 'verify-email',
-      component: MeView
-    },
-    {
-      path: '/patch-password',
-      name: 'patch-password',
       component: MeView
     },
     {
@@ -72,34 +56,14 @@ const router = createRouter({
       component: AccountView
     },
     {
-      path: '/patch-account-name',
-      name: 'patch-account-name',
-      component: AccountView
-    },
-    {
-      path: '/patch-urlFriendlyName',
-      name: 'patch-urlFriendlyName',
-      component: AccountView
-    },
-    {
-      path: '/forgot-password',
-      name: 'forgot-password',
-      component: EmailAndNameFormView
-    },
-    {
       path: '/forgot-password/reset',
       name: 'forgot-password-reset',
-      component: SetAndReSetPasswordView
-    },
-    {
-      path: '/invitation',
-      name: 'invite',
-      component: EmailAndNameFormView
+      component: LoginAndResetView
     },
     {
       path: '/invitation/accept',
       name: 'accept-invitation',
-      component: SetAndReSetPasswordView
+      component: FinalizeRegistrationView
     }
   ]
 })

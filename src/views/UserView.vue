@@ -1,42 +1,102 @@
 <script setup>
-import { watchEffect, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import UsersList from '../components/UsersList.vue'
-import stores from '../stores/index.js'
+import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import alerts from '../alerts/alert.js'
 
+const currentUserAndAccountStore = await useCurrentUserAndAccountStore()
 const router = useRouter()
 const alert = alerts()
 
 const data = ref()
 const roles = ref()
-let store
+const accountName = ref()
+const currentUser = ref()
 
-async function loadData () {
-  const currentAccountStore = await stores().currentUserAndAccountStore()
-  store = stores().usersStore()
-  if (currentAccountStore.account === null) {
-    useSystemMessagesStore().addError({ status: 404, name: 'NOT_FOUND', message: 'Account Id not found please login' })
-    return router.push('/')
+const store = useUsersStore()
+if (currentUserAndAccountStore.account === null) {
+  useSystemMessagesStore().addError({
+    status: 404,
+    name: 'NOT_FOUND',
+    message: 'Account Id not found please login'
+  })
+  router.push('/')
+}
+
+if (!currentUserAndAccountStore.user.name) {
+  await currentUserAndAccountStore.readOneUser()
+  if (!currentUserAndAccountStore.user.name) {
+    useSystemMessagesStore().addError({
+      status: 404,
+      name: 'NOT_FOUND',
+      message: 'User Id not found please login'
+    })
+    router.push('/')
   }
-  store.params = { accountId: currentAccountStore.account._id }
-  await store.load()
-  data.value = store.items
+}
+if (!currentUserAndAccountStore.account.name) {
+  await currentUserAndAccountStore.readOne()
+  if (!currentUserAndAccountStore.account.name) {
+    useSystemMessagesStore().addError({
+      status: 404,
+      name: 'NOT_FOUND',
+      message: 'Account Id not found please login'
+    })
+    router.push('/')
+  }
+}
+accountName.value = currentUserAndAccountStore.account.name
+currentUser.value = currentUserAndAccountStore.user
+store.params = {
+  accountId: currentUserAndAccountStore.account._id
+}
+await store.load()
+data.value = store.items
+if (currentUserAndAccountStore.user.role === 'admin') {
   const config = await store.config()
   roles.value = config.role
 }
 
-async function eventHandler (data) {
-  if (data.operation === 'updateRole') {
-    store.patchRole(data.id, { role: data.role })
+async function handleUpdateRole (params) {
+  const res = await store.patchRole(params.id, {
+    role: params.role
+  })
+  if (!res.message) {
+    alert.message('User role updated successfully')
+    await store.load()
+    data.value = store.items
   }
-  if (data.operation === 'delete') {
-    const confirm = await alert.confirmAlert('do you want to Delete the record?')
-    if (confirm.isConfirmed) {
-      store.deleteOne(data.id)
+}
+
+async function handleDeleteUser (params) {
+  const res = await store.deleteOne(params.id)
+  if (!res.message) {
+    alert.message('Account Deleted successfully')
+    await store.load()
+    data.value = store.items
+    if (currentUserAndAccountStore.user._id === params.id) {
+      await currentUserAndAccountStore.logout()
     }
+  }
+}
+
+async function handleInviteMember (params, statusCallBack) {
+  const res = await currentUserAndAccountStore.sendInvitation(params.email)
+  if (!res.message) {
+    await store.load()
+    data.value = store.items
+    statusCallBack(true)
+  }
+}
+
+async function loadMore (params) {
+  if (store.items.length !== store.count) {
+    store.skip = params * 10
+    await store.loadMore()
+    data.value = store.items
   }
 }
 
@@ -44,17 +104,20 @@ async function searchBarHandler (filter) {
   if (filter === '') {
     store.filter = {}
   } else {
-    store.filter = { $text: { $search: `"${filter}"` } }
+    store.filter = {
+      $text: {
+        $search: `"${filter}"`
+      }
+    }
   }
   await store.load()
   data.value = store.items
 }
 
-watchEffect(async () => {
-  loadData()
-})
 </script>
 
-  <template>
-    <UsersList :items="data" :roles="roles" @buttonEvent="eventHandler" @searchEvent="searchBarHandler" />
-  </template>
+<template>
+
+<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+
+</template>
