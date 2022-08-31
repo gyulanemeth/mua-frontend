@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted } from 'vue'
+
 import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import ErrorMessage from './components/ErrorMessage.vue'
@@ -12,15 +13,19 @@ onMounted(() => {
 })
 
 </script>
+
+
 <template>
-  <v-app>
+
+<v-app>
     <NavBar v-if="store.loggedIn" />
     <SideBar v-if="store.loggedIn" />
-    <v-main >
-      <ErrorMessage/>
-      <Suspense>
-      <router-view/>
-    </Suspense>
+    <v-main>
+        <ErrorMessage/>
+        <Suspense>
+            <router-view/>
+        </Suspense>
     </v-main>
-  </v-app>
+</v-app>
+
 </template>

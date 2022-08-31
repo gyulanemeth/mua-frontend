@@ -9,7 +9,7 @@ const props = defineProps({
 const name = ref(props.name)
 const urlFriendlyName = ref(props.urlFriendlyName)
 
-const editemood = ref()
+const editMood = ref()
 
 </script>
 
@@ -25,13 +25,13 @@ const editemood = ref()
             <v-col>
                 <p class="font-weight-bold">Name</p>
             </v-col>
-            <v-text-field hide-details density="compact" :disabled='editemood !== "name"' color="info" variant="underlined" :placeholder="props.name" name="name" v-model="name" type="text" required />
-            <template v-if='editemood === "name"'>
-                <v-btn color="info" variant="text" icon="mdi-check" size="small" @click.stop="$emit('updateNameHandler', name);editemood = false" />
-                <v-btn class="ml-2" color="error" variant="text" icon="mdi-window-close" size="small" @click='editemood = false' />
+            <v-text-field hide-details density="compact" :disabled='editMood !== "name"' color="info" variant="underlined" :placeholder="props.name" name="name" v-model="name" type="text" required />
+            <template v-if='editMood === "name"'>
+                <v-btn color="info" variant="text" icon="mdi-check" size="small" @click.stop="$emit('updateNameHandler', name);editMood = false" />
+                <v-btn class="ml-2" color="error" variant="text" icon="mdi-window-close" size="small" @click='editMood = false' />
             </template>
             <template v-else>
-                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editemood = "name"' />
+                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMood = "name"' />
             </template>
 
         </v-row>
@@ -39,13 +39,13 @@ const editemood = ref()
             <v-col>
                 <p class="font-weight-bold">urlFriendlyName</p>
             </v-col>
-            <v-text-field hide-details density="compact" :disabled='editemood !== "urlFriendlyName"' color="info" variant="underlined" :placeholder="props.urlFriendlyName" name="urlFriendlyName" v-model="urlFriendlyName" type="text" required />
-            <template v-if='editemood === "urlFriendlyName"'>
-                <v-btn color="info" variant="text" icon="mdi-check" size="small" @click.stop="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editemood = false" />
-                <v-btn class="ml-2" color="error" variant="text" icon="mdi-window-close" size="small" @click='editemood = false' />
+            <v-text-field hide-details density="compact" :disabled='editMood !== "urlFriendlyName"' color="info" variant="underlined" :placeholder="props.urlFriendlyName" name="urlFriendlyName" v-model="urlFriendlyName" type="text" required />
+            <template v-if='editMood === "urlFriendlyName"'>
+                <v-btn color="info" variant="text" icon="mdi-check" size="small" @click.stop="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editMood = false" />
+                <v-btn class="ml-2" color="error" variant="text" icon="mdi-window-close" size="small" @click='editMood = false' />
             </template>
             <template v-else>
-                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editemood = "urlFriendlyName"' />
+                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMood = "urlFriendlyName"' />
             </template>
 
         </v-row>
