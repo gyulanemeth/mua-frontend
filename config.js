@@ -4,6 +4,6 @@ window.config = {
   appBaseUrl: 'http://app.emailfox.link/',
   appName: 'MUA Account\'s UI',
   appTitle: 'MUA Account\'s UI',
-  appIcon: 'mdi-weather-hurricane',
+  appIcon: 'https://codebluefox.com/wp-content/uploads/2022/08/Blue-Fox-Pvt-LTd-04.png',
   title: 'Account Panel'
 }
