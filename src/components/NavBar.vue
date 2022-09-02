@@ -1,5 +1,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
+import jwtDecode from 'jwt-decode'
+
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
@@ -18,7 +20,7 @@ const menuItems = [{
 
 const appName = window.config.appName
 const appIcon = window.config.appIcon
-
+const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === 'admin'
 </script>
 
 <template>
@@ -38,13 +40,18 @@ const appIcon = window.config.appIcon
 
     <v-menu location="bottom " origin="end top">
         <template v-slot:activator="{ props }">
-          <v-badge color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
+          <v-badge v-if="checkTypeAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
             <v-avatar size="large" color="error">
                 <v-btn v-bind="props">
                     Pic
                 </v-btn>
             </v-avatar>
           </v-badge>
+          <v-avatar v-else size="large" color="grey-darken-3">
+              <v-btn v-bind="props">
+                  Pic
+              </v-btn>
+          </v-avatar>
         </template>
         <v-list>
             <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path" :value="item.title">
