@@ -162,7 +162,7 @@ export default (connectors) => {
       },
       async readOne () {
         try {
-          if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+          if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             this.account = { _id: localStorage.getItem('accountId') }
           }
           if (this.account === null || this.account._id === undefined) {
@@ -177,7 +177,7 @@ export default (connectors) => {
       },
       async readOneUser () {
         try {
-          if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+          if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             if (window.location.pathname.split('/').includes('me')) {
               localStorage.removeItem('accessToken')
               localStorage.removeItem('accountId')
@@ -189,7 +189,7 @@ export default (connectors) => {
             }
             return this.user
           }
-          if (this.user === null || this.account === null || this.user._id === undefined || this.account._id === undefined) {
+          if (!this.user || !this.account || !this.user._id || !this.account._id) {
             throw new RouteError('user ID Is Required')
           }
 
