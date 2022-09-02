@@ -34,7 +34,6 @@ const appIcon = window.config.appIcon
   <span class="text-h4 ma-0 pt-0"> {{ route.name === "me"? "My Profile": route.name === "users"? "Account Users": route.name === "account" ? "Account Settings" : null }}
     </span>
 
-
     <v-spacer></v-spacer>
 
     <v-menu location="bottom " origin="end top">
