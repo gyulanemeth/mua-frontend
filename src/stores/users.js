@@ -16,7 +16,16 @@ export default (connectors) => {
       loadMore: loadMore(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
       deleteOne: deleteOne(connectors.user.deleteOne, useSystemMessagesStore().addError, { optimistic: false }),
       patchRole: patchOne(connectors.user.patchRole, useSystemMessagesStore().addError, { optimistic: false }),
-      config: connectors.config.getConfig
+      config: connectors.config.getConfig,
+      async deleteMyAccount ({id, password, accountId}) {
+      try {
+        const res = await connectors.user.deleteMyAccount({ id, password, accountId })
+        return res
+      } catch (e) {
+        useSystemMessagesStore().addError(e)
+        return e
+      }
+    },
     }
   })
 

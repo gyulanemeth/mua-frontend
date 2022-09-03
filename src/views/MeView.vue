@@ -62,7 +62,7 @@ async function handleUpdateEmail (params, statusCallBack) {
 }
 async function handleDeleteMyAccount (params) {
   store = useUsersStore()
-  const res = await store.deleteOne(params.id)
+  const res = await store.deleteMyAccount(params)
   if (!res.message) {
     alert.message('Account Deleted successfully')
     store = useCurrentUserAndAccountStore()

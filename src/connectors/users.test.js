@@ -426,4 +426,39 @@ describe('test accounts connectors', () => {
 
     await expect(users(fetch, apiUrl).user.patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
   })
+
+
+  test('test deleteMyAccount admin', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: {permissionToken: 'permissionToken'} })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.deleteMyAccount({ id: '123', password: '142536', accountId:'112233' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/112233/users/123',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer permissionToken'
+        }
+      })
+    expect(res).toEqual({ permissionToken: 'permissionToken' })
+  })
+
+
+    test('test deleteMyAccount admin error ', async () => {
+      const fetch = vi.fn()
+      fetch.mockResolvedValue({
+        ok: true,
+        headers: { get: () => 'application/json' },
+        json: () => Promise.resolve({ result: {permissionToken: 'permissionToken'} })
+      })
+      await expect(users(fetch, apiUrl).user.deleteMyAccount({})).rejects.toThrowError('Password and User\'s Id Is Required')
+    })
 })

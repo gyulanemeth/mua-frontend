@@ -48,8 +48,15 @@ describe('users Store', () => {
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
 
+    const mockDeleteMyAccount = ({id, password, accountId}) => {
+      if (!id || !password || !accountId) {
+        throw new RouteError('Password and User\'s Id Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
+
     return {
-      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole },
+      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deleteMyAccount: mockDeleteMyAccount },
       config: { getConfig: mockGetConfig }
     }
   }
@@ -96,5 +103,21 @@ describe('users Store', () => {
     store.params = { accountId: '12test' }
     const res = await store.patchRole('14test14', { role: 'admin' })
     expect(res.role).toEqual('admin')
+  })
+
+  test('test success delete My Account', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    await store.load()
+    const res = await store.deleteMyAccount({id:123456, password: 123123, accountId:112233})
+    expect(res).toEqual({name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
+  })
+
+  test('test error delete My Account', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    await store.load()
+    const res = await store.deleteMyAccount({})
+    expect(res.message).toEqual('Password and User\'s Id Is Required')
   })
 })

@@ -12,6 +12,11 @@ export default function (fetch, apiUrl) {
     return { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
   }
 
+  const generateDeleteHeaders = () => {
+    return { Authorization: `Bearer ${localStorage.getItem('permission') || localStorage.getItem('accessToken')}` }
+  }
+
+
   const generateUserRoute = (params, query) => `/v1/accounts/${params.accountId}/users${params.id ? '/' + params.id : ''}`
 
   const generateAccessTokenRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/access-token`
@@ -32,9 +37,12 @@ export default function (fetch, apiUrl) {
 
   const generateGetConfigRoute = () => '/v1/config'
 
+  const generateDeleteMyAccountRoute = () => '/v1/accounts/permission/delete'
+
+
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
-  const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
+  const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateDeleteHeaders)
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
@@ -44,6 +52,7 @@ export default function (fetch, apiUrl) {
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
+  const delMyAccount = createPostConnector(fetch, apiUrl, generateDeleteMyAccountRoute, generateAdditionalHeaders)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -129,6 +138,19 @@ export default function (fetch, apiUrl) {
     return res
   }
 
+  const deleteMyAccount = async function ({id, password, accountId}) {
+  if (!id || !password || !accountId) {
+    throw new RouteError('Password and User\'s Id Is Required')
+  }
+  let res = await delMyAccount({},{password})
+  if(res.permissionToken){
+    localStorage.setItem('permission', res.permissionToken)
+    res = await deleteOne({id, accountId})
+    localStorage.removeItem('permission')
+  }
+  return res
+}
+
   const patchEmail = async function (formData) {
     if (!formData || !formData.id || !formData.accountId || !formData.newEmail || !formData.newEmailAgain) {
       throw new RouteError('User ID, Account ID, New Email and New Email Confirm Is Required')
@@ -148,7 +170,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm },
+    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deleteMyAccount },
     config: { getConfig }
   }
 }
