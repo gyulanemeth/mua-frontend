@@ -46,7 +46,11 @@ const resetForm = () => {
                     <p class="font-weight-bold">Email address</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="email" type="email" v-model="data.email" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="email" type="email"
+                    :placeholder="data.email ||'your@email.com'"
+                    :value="data.email"
+                    @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
+                    required />
                 </v-col>
             </v-row>
             <v-row align="center">
@@ -54,7 +58,11 @@ const resetForm = () => {
                     <p class="font-weight-bold">Confirm e-mail address</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="confirmEmail" type="email" v-model="data.confirmEmail" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="confirmEmail" type="email"
+                    :placeholder="data.confirmEmail ||'your@email.com'"
+                    :value="data.confirmEmail"
+                    @update:modelValue="res => data.confirmEmail = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
+                     required />
                 </v-col>
             </v-row>
 

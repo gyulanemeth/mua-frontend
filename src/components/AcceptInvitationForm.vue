@@ -43,10 +43,19 @@ const title = window.config.title
 
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.name" required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="********" name="newPassword" label="New Password" type="password" v-model="data.newPassword" required />
+            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            name="newPassword" label="New Password" type="password"
+            :placeholder="data.newPassword ||'********'"
+            :value="data.newPassword"
+            @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+            required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="********" name="newPasswordAgain" label="Confirm New Password" type="password" v-model="data.newPasswordAgain" required
-            />
+            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            name="newPasswordAgain" label="Confirm New Password" type="password"
+            :placeholder="data.newPasswordAgain ||'********'"
+            :value="data.newPasswordAgain"
+            @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+            required />
             <v-checkbox label="I am human." color="info" value="I am human" hide-details></v-checkbox>
             <v-col>
                 <v-btn color="info" @click="$emit('handleAcceptInvitationHandler',data)">{{props.formData.btnText}}</v-btn>

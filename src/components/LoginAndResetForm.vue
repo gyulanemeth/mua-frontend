@@ -40,7 +40,10 @@ const title = window.config.title
     <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
         <v-card-text align="center">
             <h6 class="text-h6">{{props.formData.header}}</h6>
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="your@email.com" name="email" label="Email" v-model="data.email" :disabled="!!cb || !!props.tokenData.user" type="email"
+            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" :disabled="!!cb || !!props.tokenData.user" type="email" name="email" label="Email"
+            :placeholder="data.email ||'your@email.com'"
+            :value="data.email"
+            @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
             required />
             <v-select v-if="props.tokenData.accounts || props.tokenData.account " hide-details v-model="data.account" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :disabled="!!cb" :items="props.tokenData.accounts" item-title="name"
             item-value="_id" label="Select Account" name="account" />
@@ -48,7 +51,12 @@ const title = window.config.title
             <div v-if="props.tokenData.accounts && props.formData.btnText === 'Sign in' ">
                 <v-btn v-if="!cb" color="info" @click="cb='signIn'">Continue</v-btn>
                 <div v-if="cb">
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="*********" name="password" label="Password" v-model="data.password" type="password" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    name="password" label="Password" type="password"
+                    :placeholder="data.password ||'********'"
+                    :value="data.password"
+                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                    required />
                     <p class="mt-4 pa-4">Forget your password?
                         <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" :to="`/forgot-password?token=${route.query.token}`">Reset it here.</router-link>
                     </p>
@@ -60,8 +68,18 @@ const title = window.config.title
             <div v-if="props.tokenData.account">
                 <v-btn v-if="!cb" color="info" @click="cb=true">Continue</v-btn>
                 <div v-if="cb">
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="*********" name="password" label="New Password" v-model="data.password" type="password" required />
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="*********" name="confirmPassword" label="Confirm New Password" v-model="data.confirmPassword" type="password" required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    name="password" label="New Password" type="password"
+                    :placeholder="data.password ||'********'"
+                    :value="data.password"
+                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                     required />
+                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    name="confirmPassword" label="Confirm New Password" type="password"
+                    :placeholder="data.confirmPassword ||'********'"
+                    :value="data.confirmPassword"
+                    @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                     required />
                     <v-checkbox label="I am human." color="info" value="I am human" hide-details></v-checkbox>
                     <v-btn color="info" @click="$emit('handleForgotPasswordResetHandler', data )">{{props.formData.btnText}}</v-btn>
                     <button hidden @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data )" />
