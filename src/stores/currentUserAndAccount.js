@@ -138,8 +138,8 @@ export default (connectors) => {
           if (this.account === null || this.account._id === undefined) {
             throw new RouteError('account ID Is Required')
           }
-          await connectors.invitation.send({ email, id: this.account._id })
-          router.push('/users')
+          const res = await connectors.invitation.send({ email, id: this.account._id })
+          return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
