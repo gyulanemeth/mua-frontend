@@ -48,15 +48,15 @@ describe('users Store', () => {
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
 
-    const mockDeleteMyAccount = ({ id, password, accountId }) => {
-      if (!id || !password || !accountId) {
-        throw new RouteError('Password and User\'s Id Is Required')
+    const mockDeletePermission = (password) => {
+      if (!password) {
+        throw new RouteError('Password Is Required')
       }
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
 
     return {
-      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deleteMyAccount: mockDeleteMyAccount },
+      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deletePermission: mockDeletePermission },
       config: { getConfig: mockGetConfig }
     }
   }
@@ -91,7 +91,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     await store.load()
-    await store.deleteOne(store.items[0]._id)
+    await store.delete(store.items[0]._id)
     expect(store.items.length).toEqual(3)
     expect(store.items[0].data.name).toEqual('user2')
   })
@@ -105,19 +105,19 @@ describe('users Store', () => {
     expect(res.role).toEqual('admin')
   })
 
-  test('test success delete My Account', async () => {
+  test('test success delete ', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     await store.load()
-    const res = await store.deleteMyAccount({ id: 123456, password: 123123, accountId: 112233 })
+    const res = await store.deleteOne({ id: store.items[0]._id, password: 123123, accountId: 112233 })
     expect(res).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
   })
 
-  test('test error delete My Account', async () => {
+  test('test error delete', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     await store.load()
-    const res = await store.deleteMyAccount({})
-    expect(res.message).toEqual('Password and User\'s Id Is Required')
+    const res = await store.deleteOne({})
+    expect(res.message).toEqual('Password Is Required')
   })
 })

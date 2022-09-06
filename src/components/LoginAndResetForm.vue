@@ -40,7 +40,7 @@ const title = window.config.title
     <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
         <v-card-text align="center">
             <h6 class="text-h6">{{props.formData.header}}</h6>
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" :disabled="!!cb || !!props.tokenData.user" type="email" name="email" label="Email"
+            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
             :placeholder="data.email ||'your@email.com'"
             :value="data.email"
             @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"

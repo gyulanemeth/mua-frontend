@@ -64,7 +64,7 @@ async function handleUpdateRole (params) {
 }
 
 async function handleDeleteUser (params) {
-  const res = await store.deleteOne(params.id)
+  const res = await store.deleteOne(params)
   if (!res.message) {
     alert.message('Account Deleted successfully')
     await store.load()

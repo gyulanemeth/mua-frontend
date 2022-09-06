@@ -4,16 +4,13 @@ import {
   createPatchConnector,
   createDeleteConnector
 } from 'standard-json-api-connectors'
+import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
     return { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
-  }
-
-  const generateDeleteHeaders = () => {
-    return { Authorization: `Bearer ${localStorage.getItem('permission') || localStorage.getItem('accessToken')}` }
   }
 
   const generateUserRoute = (params, query) => `/v1/accounts/${params.accountId}/users${params.id ? '/' + params.id : ''}`
@@ -36,11 +33,11 @@ export default function (fetch, apiUrl) {
 
   const generateGetConfigRoute = () => '/v1/config'
 
-  const generateDeleteMyAccountRoute = () => '/v1/accounts/permission/delete'
+  const generateDeletePermissionRoute = (params) => `/v1/${params.type}/permission/delete`
 
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
-  const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, generateDeleteHeaders)
+  const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
@@ -50,7 +47,8 @@ export default function (fetch, apiUrl) {
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
-  const delMyAccount = createPostConnector(fetch, apiUrl, generateDeleteMyAccountRoute, generateAdditionalHeaders)
+  const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
+  const delPermissionAdmin = createPostConnector(fetch, window.config.adminApiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -133,20 +131,21 @@ export default function (fetch, apiUrl) {
       throw new RouteError('User ID and Account ID Is Required')
     }
     const res = await del({ id: data.id, accountId: data.accountId })
+    localStorage.removeItem('delete-permission-token')
     return res
   }
 
-  const deleteMyAccount = async function ({ id, password, accountId }) {
-    if (!id || !password || !accountId) {
-      throw new RouteError('Password and User\'s Id Is Required')
+  const deletePermission = async function (password) {
+    if (!password) {
+      throw new RouteError('Password Is Required')
     }
-    let res = await delMyAccount({}, { password })
-    if (res.permissionToken) {
-      localStorage.setItem('permission', res.permissionToken)
-      res = await deleteOne({ id, accountId })
-      localStorage.removeItem('permission')
+    let res
+    if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+      res = await delPermissionAdmin({ type: 'admins' }, { password })
+    } else {
+      res = await delPermissionUser({ type: 'accounts' }, { password })
     }
-    return res
+    localStorage.setItem('delete-permission-token', res.permissionToken)
   }
 
   const patchEmail = async function (formData) {
@@ -168,7 +167,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deleteMyAccount },
+    user: { list, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
     config: { getConfig }
   }
 }

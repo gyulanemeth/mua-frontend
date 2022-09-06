@@ -60,9 +60,9 @@ async function handleUpdateEmail (params, statusCallBack) {
   const res = await store.patchEmail(params.newEmail, params.confirmNewEmail)
   statusCallBack(!res.message)
 }
-async function handleDeleteMyAccount (params) {
+async function handleDeleteEvent (params) {
   store = useUsersStore()
-  const res = await store.deleteMyAccount(params)
+  const res = await store.deleteOne(params)
   if (!res.message) {
     alert.message('Account Deleted successfully')
     store = useCurrentUserAndAccountStore()
@@ -74,6 +74,6 @@ async function handleDeleteMyAccount (params) {
 
 <template>
 
-<MeDetails v-if="data" :data="data" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteMyAccount' />
+<MeDetails v-if="data" :data="data" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
 
 </template>
