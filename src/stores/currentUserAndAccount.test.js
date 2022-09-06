@@ -287,7 +287,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '12test12' }
     const res = await store.sendInvitation('user1@gmail.com')
-    expect(res).toEqual(undefined)
+    expect(res.success).toEqual(true)
   })
 
   test('test success createOne', async () => {
