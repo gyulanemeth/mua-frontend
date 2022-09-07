@@ -1,5 +1,5 @@
 <script setup>
-import { watchEffect, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import AccountDetails from '../components/AccountDetails.vue'
@@ -11,20 +11,18 @@ const router = useRouter()
 
 const data = ref()
 
-async function loadData () {
-  if (!store.account.name) {
-    await store.readOne()
-  }
-  data.value = store.account
-  if (store.account === null) {
+if (!store.account || !store.account.name) {
+  await store.readOne()
+  if (!store.account) {
     useSystemMessagesStore().addError({
       status: 404,
       name: 'NOT_FOUND',
       message: 'Account data not found please login'
     })
-    return router.push('/')
+    router.push('/')
   }
 }
+data.value = store.account
 
 async function handleUpdateAccountName (params) {
   const res = await store.patchAccountName(params)
@@ -39,10 +37,6 @@ async function handleUpdateUrlFriendlyName (params) {
     await alert.message('urlFriendlyName updated successfully')
   }
 }
-
-watchEffect(async () => {
-  loadData()
-})
 
 </script>
 

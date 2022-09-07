@@ -17,18 +17,10 @@ const accountName = ref()
 const currentUser = ref()
 
 const store = useUsersStore()
-if (currentUserAndAccountStore.account === null) {
-  useSystemMessagesStore().addError({
-    status: 404,
-    name: 'NOT_FOUND',
-    message: 'Account Id not found please login'
-  })
-  router.push('/')
-}
 
-if (!currentUserAndAccountStore.user.name) {
+if (!currentUserAndAccountStore.user.role) {
   await currentUserAndAccountStore.readOneUser()
-  if (!currentUserAndAccountStore.user.name) {
+  if (!currentUserAndAccountStore.user.role) {
     useSystemMessagesStore().addError({
       status: 404,
       name: 'NOT_FOUND',
@@ -37,7 +29,7 @@ if (!currentUserAndAccountStore.user.name) {
     router.push('/')
   }
 }
-if (!currentUserAndAccountStore.account.name) {
+if (!currentUserAndAccountStore.account || !currentUserAndAccountStore.account.name) {
   await currentUserAndAccountStore.readOne()
   if (!currentUserAndAccountStore.account.name) {
     useSystemMessagesStore().addError({
@@ -72,7 +64,7 @@ async function handleUpdateRole (params) {
 }
 
 async function handleDeleteUser (params) {
-  const res = await store.deleteOne(params.id)
+  const res = await store.deleteOne(params)
   if (!res.message) {
     alert.message('Account Deleted successfully')
     await store.load()

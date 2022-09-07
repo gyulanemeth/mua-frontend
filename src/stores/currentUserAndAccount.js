@@ -14,6 +14,7 @@ export default (connectors) => {
 
   if (query.get('token') && query.get('accountId')) {
     localStorage.setItem('accessToken', query.get('token'))
+    localStorage.setItem('accountId', query.get('accountId'))
   }
 
   const storedAccessToken = localStorage.getItem('accessToken')
@@ -87,12 +88,18 @@ export default (connectors) => {
         }
       },
       logout () {
-        router.push('/')
+        if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('accountId')
+          window.location.href = `${window.config.adminsAppBaseUrl}me`
+        } else {
+          router.push('/')
+        }
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
         this.accessToken = null
         this.user = null
         this.account = null
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('loginToken')
       },
 
       async  sendForgotPassword (data) {
@@ -131,8 +138,8 @@ export default (connectors) => {
           if (this.account === null || this.account._id === undefined) {
             throw new RouteError('account ID Is Required')
           }
-          await connectors.invitation.send({ email, id: this.account._id })
-          router.push('/users')
+          const res = await connectors.invitation.send({ email, id: this.account._id })
+          return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -155,6 +162,9 @@ export default (connectors) => {
       },
       async readOne () {
         try {
+          if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+            this.account = { _id: localStorage.getItem('accountId') }
+          }
           if (this.account === null || this.account._id === undefined) {
             throw new RouteError('account ID Is Required')
           }
@@ -167,10 +177,19 @@ export default (connectors) => {
       },
       async readOneUser () {
         try {
-          if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
-            window.location.href = `${window.config.adminsAppBaseUrl}me`
+          if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+            if (window.location.pathname.split('/').includes('me')) {
+              localStorage.removeItem('accessToken')
+              localStorage.removeItem('accountId')
+              window.location.href = `${window.config.adminsAppBaseUrl}me`
+            } else {
+              const tokenData = jwtDecode(localStorage.getItem('accessToken'))
+              this.user = tokenData.user
+              this.user.role = tokenData.type
+            }
+            return this.user
           }
-          if (this.user === null || this.account === null || this.user._id === undefined || this.account._id === undefined) {
+          if (!this.user || !this.account || !this.user._id || !this.account._id) {
             throw new RouteError('user ID Is Required')
           }
 

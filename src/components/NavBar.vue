@@ -1,7 +1,11 @@
 <script setup>
+import { useRoute } from 'vue-router'
+import jwtDecode from 'jwt-decode'
+
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
+const route = useRoute()
 
 const menuItems = [{
   title: 'Me',
@@ -16,23 +20,38 @@ const menuItems = [{
 
 const appName = window.config.appName
 const appIcon = window.config.appIcon
-
+const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === 'admin'
 </script>
 
 <template>
 
-<v-app-bar v-if="store.user" class="elevation-0 pl-0 ml-0">
-    <v-app-bar-nav-icon size="60" color="info" :icon="appIcon" />
-    <v-app-bar-title class=" text-h4">{{appName}}</v-app-bar-title>
+<v-app-bar v-if="store.user" height="100" class="elevation-0 pl-0 ml-0">
+    <v-avatar size="60" >
+      <v-img :src="appIcon" cover></v-img>
+    </v-avatar>
+
+   <v-col cols="2">
+    <span class="text-h4 mx-1 pt-0 "> {{appName}} </span>
+  </v-col>
+  <span class="text-h4 ma-0 pt-0"> {{ route.name === "me"? "My Profile": route.name === "users"? "Account Users": route.name === "account" ? "Account Settings" : null }}
+    </span>
+
     <v-spacer></v-spacer>
 
     <v-menu location="bottom " origin="end top">
         <template v-slot:activator="{ props }">
-            <v-avatar size="large" color="grey-darken-3">
+          <v-badge v-if="checkTypeAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
+            <v-avatar size="large" color="error">
                 <v-btn v-bind="props">
                     Pic
                 </v-btn>
             </v-avatar>
+          </v-badge>
+          <v-avatar v-else size="large" color="grey-darken-3">
+              <v-btn v-bind="props">
+                  Pic
+              </v-btn>
+          </v-avatar>
         </template>
         <v-list>
             <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path" :value="item.title">

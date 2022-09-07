@@ -18,6 +18,12 @@ describe('test accounts connectors', () => {
     }
   }
 
+  global.window = {
+    config: {
+      adminApiBaseUrl: 'http://admins-api.emailfox.link'
+    }
+  }
+
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
   })
@@ -339,7 +345,7 @@ describe('test accounts connectors', () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+          Authorization: 'Bearer ' + localStorage.getItem('delete-permission-token')
         }
       })
 
@@ -425,5 +431,67 @@ describe('test accounts connectors', () => {
     })
 
     await expect(users(fetch, apiUrl).user.patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
+  })
+
+  test('test delete permission admin', async () => {
+    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNTE2MjM5MDIyfQ.7leGQ_Qr3r-fI2lG2grYSpxmWCTI6zhTb_jrDrMhx8g')
+
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.deletePermission('142536')
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'http://admins-api.emailfox.link/v1/admins/permission/delete',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: '142536' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(undefined)
+  })
+
+  test('test delete permission admin', async () => {
+    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InVzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.XsGS9q8_wzQVn6-6n2XBT1r1-l6qAyY9EAXWj165OY4')
+
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.deletePermission('142536')
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/permission/delete',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: '142536' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(undefined)
+  })
+
+  test('test delete permission admin error ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+    await expect(users(fetch, apiUrl).user.deletePermission()).rejects.toThrowError('Password Is Required')
   })
 })

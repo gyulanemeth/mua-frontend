@@ -238,6 +238,18 @@ describe('Current User And Account Store', () => {
     expect(store.accessToken).toEqual(null)
   })
 
+  test('test logOut Admin', async () => {
+    const token = jwt.sign({ type: 'admin', data: 'token' }, secrets)
+    window.location.search = { token, accountId: '112233' }
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    store.accessToken = token
+    store.user = { name: 'test' }
+    await store.logout()
+    expect(store.user).toEqual(null)
+    expect(store.accessToken).toEqual(null)
+  })
+
   test('test success send forgot Password', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
@@ -275,7 +287,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '12test12' }
     const res = await store.sendInvitation('user1@gmail.com')
-    expect(res).toEqual(undefined)
+    expect(res.success).toEqual(true)
   })
 
   test('test success createOne', async () => {
@@ -453,11 +465,20 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '123123' }
     store.user = { _id: '123123' }
-    const token = jwt.sign({ type: 'admin' }, secrets)
+    const token = jwt.sign({ type: 'admin', user: { name: 'userName', _id: '123123' } }, secrets)
     localStorage.setItem('accessToken', token)
-
     const res = await store.readOneUser()
-    expect(res).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
+    expect(res).toEqual({ role: 'admin', name: 'userName', _id: '123123' })
+  })
+
+  test('test readOneUser /me success ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    window.location.pathname = '/me'
+    store.account = { }
+    store.user = {}
+    const res = await store.readOneUser()
+    expect(res.message).toEqual(undefined)
   })
 
   test('test readOneUser fail ', async () => {
@@ -465,6 +486,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { }
     store.user = {}
+    localStorage.removeItem('accessToken')
     const res = await store.readOneUser()
     expect(res.message).toEqual('user ID Is Required')
   })
@@ -500,6 +522,7 @@ describe('Current User And Account Store', () => {
   test('test readOne account id undefined ', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
+    localStorage.removeItem('accountId')
     store.account = {}
     const res = await store.readOne()
     expect(res.message).toEqual('account ID Is Required')
