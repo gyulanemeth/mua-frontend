@@ -23,11 +23,11 @@ const editMode = ref()
 
           <v-row align="center" class="mt-3">
               <v-col>
-                  <p class="font-weight-bold">Name</p>
+                  <p class="font-weight-bold">{{$t('accountDetails.nameLabel')}}</p>
               </v-col>
               <v-text-field hide-details density="compact" :disabled='editMode !== "name"' color="info" variant="underlined"
               name="name" type="text"
-              :placeholder="name ||'User Name'"
+              :placeholder="name ||$t('accountDetails.namePlaceholder')"
               :value="name"
               @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')"
               required />
@@ -42,10 +42,10 @@ const editMode = ref()
           </v-row>
           <v-row align="center" class="mt-3">
               <v-col>
-                  <p class="font-weight-bold">urlFriendlyName</p>
+                  <p class="font-weight-bold">{{$t('accountDetails.urlFriendlyNameLabel')}}</p>
               </v-col>
               <v-text-field hide-details density="compact" :disabled='editMode !== "urlFriendlyName"' color="info" variant="underlined" name="urlFriendlyName"
-              :placeholder="urlFriendlyName ||'./urlFriendlyName'"
+              :placeholder="urlFriendlyName ||$t('accountDetails.urlFriendlyNamePlaceholder')"
               :value="urlFriendlyName"
               @update:modelValue="res => urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
               type="text" required />

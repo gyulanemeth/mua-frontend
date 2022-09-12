@@ -44,19 +44,19 @@ const title = window.config.title
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.name" required />
 
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-            name="newPassword" label="New Password" type="password"
-            :placeholder="data.newPassword ||'********'"
+            name="newPassword" :label="$t('acceptInvitationForm.newPasswordLabel')" type="password"
+            :placeholder="data.newPassword ||$t('acceptInvitationForm.newPasswordPlaceholder')"
             :value="data.newPassword"
             @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required />
 
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-            name="newPasswordAgain" label="Confirm New Password" type="password"
-            :placeholder="data.newPasswordAgain ||'********'"
+            name="newPasswordAgain" :label="$t('acceptInvitationForm.confirmNewPasswordLabel')" type="password"
+            :placeholder="data.newPasswordAgain ||$t('acceptInvitationForm.confirmNewPasswordPlaceholder')"
             :value="data.newPasswordAgain"
             @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required />
-            <v-checkbox label="I am human." color="info" value="I am human" hide-details></v-checkbox>
+            <v-checkbox :label="$t('acceptInvitationForm.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
             <v-col>
                 <v-btn color="info" @click="$emit('handleAcceptInvitationHandler',data)">{{props.formData.btnText}}</v-btn>
                 <button hidden @click.enter.prevent="$emit('handleAcceptInvitationHandler',data)" />
@@ -64,9 +64,9 @@ const title = window.config.title
         </v-card-text>
         <v-card-text align="center" v-if="cb">
 
-            <h2 class="mt-4">Password changed</h2>
-            <p class="mt-4">Your password has been changed. You will be automatically logged in in 5 seconds. Please
-                <router-link tag="span" style="text-decoration: none; color: inherit;" to="/me" class="font-weight-bold">click here</router-link> if you are not redirected.</p>
+            <h2 class="mt-4">{{$t('acceptInvitationForm.cb.header')}}</h2>
+            <p class="mt-4">{{$t('acceptInvitationForm.cb.message')}}
+                <router-link tag="span" style="text-decoration: none; color: inherit;" to="/me" class="font-weight-bold">{{$t('acceptInvitationForm.cb.cbBtn')}}</router-link> {{$t('acceptInvitationForm.cb.subMessage')}}</p>
 
         </v-card-text>
 

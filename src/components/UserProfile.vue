@@ -15,7 +15,7 @@ const dialog = ref()
 
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
-        <v-btn color="info" class="text-white" v-bind="props">View profile</v-btn>
+        <v-btn color="info" class="text-white" v-bind="props">{{$t('userProfile.openBtn')}}</v-btn>
 
     </template>
     <v-card min-width="600" class="d-flex flex-column justify-center">
@@ -26,13 +26,13 @@ const dialog = ref()
             </v-col>
 
             <v-row align="center" class="pb-10">
-                <h3 class="font-weight-bold">Account Overview</h3>
+                <h3 class="font-weight-bold">{{$t('userProfile.overviewTitle')}}</h3>
                 <v-divider />
             </v-row>
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Name</p>
+                    <p class="font-weight-bold">{{$t('userProfile.nameLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
@@ -42,7 +42,7 @@ const dialog = ref()
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">E-mail</p>
+                    <p class="font-weight-bold">{{$t('userProfile.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
@@ -52,7 +52,7 @@ const dialog = ref()
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Role</p>
+                    <p class="font-weight-bold">{{$t('userProfile.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-select hide-details v-model="role" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
@@ -61,7 +61,7 @@ const dialog = ref()
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Profile picture</p>
+                    <p class="font-weight-bold">{{$t('userProfile.picLabel')}}</p>
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
@@ -72,9 +72,9 @@ const dialog = ref()
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false">Save changes</v-btn>
+            <v-btn color="info" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false">{{$t('userProfile.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" @click="dialog=false; password=null">close</v-btn>
+            <v-btn color="info" @click="dialog=false">{{$t('userProfile.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

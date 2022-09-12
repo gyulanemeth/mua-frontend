@@ -33,7 +33,7 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
    <v-col cols="2">
     <span class="text-h4 mx-1 pt-0 "> {{appName}} </span>
   </v-col>
-  <span class="text-h4 ma-0 pt-0"> {{ route.name === "me"? "My Profile": route.name === "users"? "Account Users": route.name === "account" ? "Account Settings" : null }}
+  <span class="text-h4 ma-0 pt-0"> {{ route.name === "me"? $t('navBar.title.me'): route.name === "users"? $t('navBar.title.users'): route.name === "account" ? $t('navBar.title.account') : null }}
     </span>
 
     <v-spacer></v-spacer>
@@ -43,13 +43,13 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
           <v-badge v-if="checkTypeAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
             <v-avatar size="large" color="error">
                 <v-btn v-bind="props">
-                    Pic
+                      {{$t('navBar.picLabel')}}
                 </v-btn>
             </v-avatar>
           </v-badge>
           <v-avatar v-else size="large" color="grey-darken-3">
               <v-btn v-bind="props">
-                  Pic
+                  {{$t('navBar.picLabel')}}
               </v-btn>
           </v-avatar>
         </template>
@@ -58,7 +58,7 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
             <v-list-item @click="store.logout()">
-                <v-list-item-title> Logout </v-list-item-title>
+                <v-list-item-title>   {{$t('navBar.logoutBtn')}} </v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>

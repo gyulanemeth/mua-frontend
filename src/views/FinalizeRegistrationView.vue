@@ -2,12 +2,14 @@
 import { watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
+import { useI18n } from 'vue-i18n'
 
 import AcceptInvitationForm from '../components/AcceptInvitationForm.vue'
 
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 import alerts from '../alerts/alert.js'
 
+const { tm } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 const alert = alerts()
@@ -19,8 +21,8 @@ async function loadData () {
   if (route.name === 'accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
     formData.value = {
-      btnText: 'Create Account',
-      header: 'Set up your account'
+      btnText: tm('acceptInvitationForm.btnText'),
+      header: tm('acceptInvitationForm.header')
     }
   }
   if (route.name === 'finalize-registration' && route.query.token) {
