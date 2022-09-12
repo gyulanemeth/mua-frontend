@@ -23,25 +23,25 @@ const resetForm = () => {
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
         <v-btn v-if="route.name === 'me'" color="error" class="mt-10 text-white" v-bind="props">Delete</v-btn>
-        <v-btn v-else color="error" variant="text" v-bind="props">Delete</v-btn>
+        <v-btn v-else color="error" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
 
     </template>
     <v-card class="d-flex flex-column justify-center">
 
         <v-card-text align="start">
             <v-col align="center" class="pb-10">
-                <v-toolbar-title class="font-weight-bold text-error">Are you sure you want to delete “{{props.data.name}}”?</v-toolbar-title>
-                <v-toolbar-title class="text-error">Doing so will fully delete this record forever, which cannot be reversed.</v-toolbar-title>
+                <v-toolbar-title class="font-weight-bold text-error">{{$t('deleteMyAccount.header')}} “{{props.data.name}}”?</v-toolbar-title>
+                <v-toolbar-title class="text-error">{{$t('deleteMyAccount.subheader')}}</v-toolbar-title>
             </v-col>
 
             <v-row align="center" class="pb-10">
-                <h3 class="font-weight-bold">Account Overview</h3>
+                <h3 class="font-weight-bold">{{$t('deleteMyAccount.overviewTitle')}}</h3>
                 <v-divider />
             </v-row>
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Name</p>
+                    <p class="font-weight-bold">{{$t('deleteMyAccount.nameLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
@@ -51,7 +51,7 @@ const resetForm = () => {
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">E-mail</p>
+                    <p class="font-weight-bold">{{$t('deleteMyAccount.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
@@ -61,7 +61,7 @@ const resetForm = () => {
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Role</p>
+                    <p class="font-weight-bold">{{$t('deleteMyAccount.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
                     <v-select hide-details density="compact" color="info" disabled class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" name="role" :label="props.data.role" />
@@ -70,7 +70,7 @@ const resetForm = () => {
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">Profile picture</p>
+                    <p class="font-weight-bold">{{$t('deleteMyAccount.picLabel')}}</p>
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
@@ -80,17 +80,17 @@ const resetForm = () => {
             </v-row>
             <v-col>
                 <v-row align="center" class="py-10">
-                    <h3 class="font-weight-bold">Please type your password to proceed with deleting your account:</h3>
+                    <h3 class="font-weight-bold">{{$t('deleteMyAccount.passwordConfirmationHeader')}}</h3>
                     <v-divider />
                 </v-row>
 
                 <v-row align="center">
                     <v-col>
-                        <p class="font-weight-bold">Password</p>
+                        <p class="font-weight-bold">{{$t('deleteMyAccount.passwordLabel')}}</p>
                     </v-col>
                     <v-text-field hide-details density="compact" color="info" class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
                     name="password" type="password"
-                    :placeholder="password ||'********'"
+                    :placeholder="password ||$t('deleteMyAccount.passwordPlaceholder')"
                     :value="password"
                     @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                      required />
@@ -99,9 +99,9 @@ const resetForm = () => {
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm">Delete</v-btn>
+            <v-btn color="error" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm">{{$t('deleteMyAccount.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" @click="resetForm">close</v-btn>
+            <v-btn color="info" @click="resetForm">{{$t('deleteMyAccount.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

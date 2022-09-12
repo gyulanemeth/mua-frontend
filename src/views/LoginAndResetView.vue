@@ -2,11 +2,13 @@
 import { watchEffect, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
+import { useI18n } from 'vue-i18n'
 
 import LoginAndResetForm from '../components/LoginAndResetForm.vue'
 
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
+const { tm } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
@@ -16,8 +18,8 @@ const formData = ref()
 async function loadData () {
   if (route.name === 'login') {
     formData.value = {
-      btnText: 'Sign in',
-      header: 'Sign in to your account'
+      btnText: tm('loginAndResetForm.loginBtnText'),
+      header: tm('loginAndResetForm.loginHeader')
     }
   }
   if (route.query.token) {
@@ -27,14 +29,14 @@ async function loadData () {
     }
     if (route.name === 'login-select') {
       formData.value = {
-        btnText: 'Sign in',
-        header: 'Sign in to your account'
+        btnText: tm('loginAndResetForm.loginBtnText'),
+        header: tm('loginAndResetForm.loginHeader')
       }
     }
     if (route.name === 'forgot-password' || route.name === 'forgot-password-reset') {
       formData.value = {
-        btnText: 'Reset Password',
-        header: 'Password recovery'
+        btnText: tm('loginAndResetForm.resetBtnText'),
+        header: tm('loginAndResetForm.resetHeader')
       }
     }
   }

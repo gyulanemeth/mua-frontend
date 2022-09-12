@@ -41,24 +41,24 @@ const title = window.config.title
         <v-card-text align="center">
             <h6 class="text-h6">{{props.formData.header}}</h6>
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
-            :placeholder="data.email ||'your@email.com'"
+            :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')"
             :value="data.email"
             @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
             required />
             <v-select v-if="props.tokenData.accounts || props.tokenData.account " hide-details v-model="data.account" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :disabled="!!cb" :items="props.tokenData.accounts" item-title="name"
-            item-value="_id" label="Select Account" name="account" />
+            item-value="_id" :label="$t('loginAndResetForm.selectLabel')" name="account" />
 
-            <div v-if="props.tokenData.accounts && props.formData.btnText === 'Sign in' ">
-                <v-btn v-if="!cb" color="info" @click="cb='signIn'">Continue</v-btn>
+            <div v-if="props.tokenData.accounts && props.formData.btnText === $t('loginAndResetForm.loginBtnText') ">
+                <v-btn v-if="!cb" color="info" @click="cb='signIn'">{{$t('loginAndResetForm.nextBtn')}}</v-btn>
                 <div v-if="cb">
                     <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-                    name="password" label="Password" type="password"
-                    :placeholder="data.password ||'********'"
+                    name="password" :label="$t('loginAndResetForm.passwordLabel')" type="password"
+                    :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
                     :value="data.password"
                     @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
-                    <p class="mt-4 pa-4">Forget your password?
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" :to="`/forgot-password?token=${route.query.token}`">Reset it here.</router-link>
+                    <p class="mt-4 pa-4">{{$t('loginAndResetForm.forgotHeader')}}
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" :to="`/forgot-password?token=${route.query.token}`">{{$t('loginAndResetForm.forgotBtn')}}</router-link>
                     </p>
                     <v-btn color="info" @click="$emit('handleLoginHandler', data )">{{props.formData.btnText}}</v-btn>
                     <button hidden @click.enter.prevent="$emit('handleLoginHandler', data )" />
@@ -66,44 +66,44 @@ const title = window.config.title
             </div>
 
             <div v-if="props.tokenData.account">
-                <v-btn v-if="!cb" color="info" @click="cb=true">Continue</v-btn>
+                <v-btn v-if="!cb" color="info" @click="cb=true">{{$t('loginAndResetForm.submitBtn')}}</v-btn>
                 <div v-if="cb">
                     <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-                    name="password" label="New Password" type="password"
-                    :placeholder="data.password ||'********'"
+                    name="password" :label="$t('loginAndResetForm.newPasswordLabel')" type="password"
+                    :placeholder="data.password ||$t('loginAndResetForm.newPasswordPlaceholder')"
                     :value="data.password"
                     @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                      required />
                     <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-                    name="confirmPassword" label="Confirm New Password" type="password"
-                    :placeholder="data.confirmPassword ||'********'"
+                    name="confirmPassword" :label="$t('loginAndResetForm.confirmNewPasswordLabel')" type="password"
+                    :placeholder="data.confirmPassword ||$t('loginAndResetForm.confirmNewPasswordPlaceholder')"
                     :value="data.confirmPassword"
                     @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                      required />
-                    <v-checkbox label="I am human." color="info" value="I am human" hide-details></v-checkbox>
+                    <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
                     <v-btn color="info" @click="$emit('handleForgotPasswordResetHandler', data )">{{props.formData.btnText}}</v-btn>
                     <button hidden @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data )" />
                 </div>
             </div>
 
-            <div v-if="props.tokenData.accounts && !props.tokenData.account && props.formData.btnText === 'Reset Password'">
+            <div v-if="props.tokenData.accounts && !props.tokenData.account && props.formData.btnText === $t('loginAndResetForm.resetBtnText')">
                 <div v-if="cb !== 'reset'">
-                    <v-checkbox label="I am human." color="info" value="I am human" hide-details></v-checkbox>
+                    <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
                     <v-btn color="info" @click="$emit('handleForgotPasswordHandler', data, (res)=>{cb=res})">{{props.formData.btnText}}</v-btn>
                     <button hidden @click.enter.prevent="$emit('handleForgotPasswordHandler', data, (res)=>{cb=res})" />
                 </div>
-                <p v-if="cb === 'reset'" class="mt-4">To continue resetting your password, please check your inbox and click the link we sent you.</p>
+                <p v-if="cb === 'reset'" class="mt-4">{{$t('loginAndResetForm.cb.resetMessage')}}</p>
             </div>
 
             <div v-if="!props.tokenData.accounts">
                 <div v-if="!cb">
                     <v-btn color="info" @click="$emit('handleGetLoginAccountsHandler', data.email, (res)=>{cb=res})">{{props.formData.btnText}}</v-btn>
                     <p class="mt-4 pa-4">
-                        Don't have account?
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/create-account">Create new account.</router-link>
+                        {{$t('loginAndResetForm.cb.forgotMessage')}}
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/create-account">{{$t('loginAndResetForm.cb.forgotCbBtn')}}</router-link>
                     </p>
                 </div>
-                <p v-else class="mt-4">To continue logging in, please check your inbox and click the link we sent you.</p>
+                <p v-else class="mt-4">{{$t('loginAndResetForm.cb.loginMessage')}}</p>
                 <button hidden @click.enter.prevent="$emit('handleGetLoginAccountsHandler', data.email, (res)=>{cb=res})" />
             </div>
 
