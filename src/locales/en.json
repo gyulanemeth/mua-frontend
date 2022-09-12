@@ -33,9 +33,9 @@
     "header": "Change E-mail Address",
     "currentEmailLabel":"Current E-mail Address",
     "newEmailLabel":"New E-mail Address",
-    "newEmailPlaceHolder":"your@email.com",
+    "newEmailPlaceHolder":"your{'@'}email.com",
     "confirmEmailLabel":"Confirm New E-mail Address",
-    "confirmEmailPlaceHolder":"your@email.com",
+    "confirmEmailPlaceHolder":"your{'@'}email.com",
     "submitBtn": "Change my E-mail",
     "verifyMessage": "You have successfully verified your new e-mail address.",
     "cb":{
@@ -65,7 +65,7 @@
     "userSection": {
       "header": "User Data:",
       "emailLabel": "Email",
-      "emailPlaceHolder": "your@email.com",
+      "emailPlaceHolder": "your{'@'}email.com",
       "newPasswordLabel": "New Password",
       "newPasswordPlaceholder": "********",
       "confirmNewPasswordLabel": "Confirm New Password",
@@ -94,9 +94,9 @@
     "header": "Invite New Members",
     "accountLabel": "Account",
     "emailLabel": "Email address",
-    "emailPlaceHolder": "your@email.com",
+    "emailPlaceHolder": "your{'@'}email.com",
     "confirmEmailLabel": "Confirm e-mail address",
-    "confirmEmailPlaceHolder": "your@email.com",
+    "confirmEmailPlaceHolder": "your{'@'}email.com",
     "cb": {
       "header": "Invitation sent.",
       "cbBtn": "Invite ANOTHER"
@@ -109,7 +109,7 @@
     "loginBtnText": "Sign in",
     "resetHeader":"Password recovery",
     "resetBtnText": "Reset Password",
-    "emailPlaceHolder": "your@email.com",
+    "emailPlaceHolder": "your{'@'}email.com",
     "selectLabel": "Select Account",
     "nextBtn": "Continue",
     "passwordLabel": "Password",
