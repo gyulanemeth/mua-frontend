@@ -8,6 +8,8 @@ function redirect () {
   window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
 }
 
+const appIcon = window.config.appDashboardIcon
+const appName = window.config.appDashboardName
 </script>
 
 <template>
@@ -18,20 +20,32 @@ function redirect () {
 
         <v-list bg-color="grey-lighten-2" density="compact" nav>
             <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
+              <v-tooltip
+                  activator="parent"
+                  location="end top" origin="start center"
+                  >Admin Account</v-tooltip>
                 <v-list-item-icon class="text-black">
                     mdi-shield-account-variant-outline
                 </v-list-item-icon>
             </v-list-item>
 
             <v-list-item class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
+              <v-tooltip
+                  activator="parent"
+                  location="end top" origin="start center"
+                  >Account</v-tooltip>
                 <v-list-item-icon class="text-black">
                     mdi-account-group-outline
                 </v-list-item-icon>
             </v-list-item>
 
             <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white" @click="redirect">
+              <v-tooltip
+                  activator="parent"
+                  location="end top" origin="start center"
+                  >{{appName}}</v-tooltip>
                 <v-list-item-icon class="text-black">
-                    mdi-email-variant
+                    {{appIcon}}
                 </v-list-item-icon>
             </v-list-item>
 
