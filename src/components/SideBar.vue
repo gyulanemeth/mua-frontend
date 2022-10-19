@@ -1,15 +1,20 @@
 <script setup>
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useRouter } from 'vue-router'
 
 const store = useCurrentUserAndAccountStore()
+const router = useRouter()
 
-function redirect () {
-  const getToken = localStorage.getItem('accessToken')
-  window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
+function redirect (to) {
+  if(to === 'app'){
+    const getToken = localStorage.getItem('accessToken')
+    window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
+  }else{
+    router.push(to)
+  }
 }
 
-const appIcon = window.config.appDashboardIcon
-const appName = window.config.appDashboardName
+const sideBarIcons = window.config.sideBarIcons
 </script>
 
 <template>
@@ -39,13 +44,13 @@ const appName = window.config.appDashboardName
                 </v-list-item-icon>
             </v-list-item>
 
-            <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white" @click="redirect">
+            <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" @click="redirect(item.url)">
               <v-tooltip
                   activator="parent"
                   location="end top" origin="start center"
-                  >{{appName}}</v-tooltip>
+                  >{{item.name}}</v-tooltip>
                 <v-list-item-icon class="text-black">
-                    {{appIcon}}
+                    {{item.icon}}
                 </v-list-item-icon>
             </v-list-item>
 
