@@ -6,10 +6,10 @@ const store = useCurrentUserAndAccountStore()
 const router = useRouter()
 
 function redirect (to) {
-  if(to === 'app'){
+  if (to === 'app') {
     const getToken = localStorage.getItem('accessToken')
     window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
-  }else{
+  } else {
     router.push(to)
   }
 }

@@ -7,5 +7,5 @@ window.config = {
   appTitle: 'MUA Account\'s UI',
   appIcon: 'https://codebluefox.com/wp-content/uploads/2022/08/Blue-Fox-Pvt-LTd-04.png',
   title: 'Account Panel',
-  sideBarIcons: [{name: 'Email Application' , icon: 'mdi-email-variant', url:'app' }]
+  sideBarIcons: [{ name: 'Email Application', icon: 'mdi-email-variant', url: 'app' }]
 }
