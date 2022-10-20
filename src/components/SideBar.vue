@@ -1,13 +1,11 @@
 <script setup>
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import { useRouter } from 'vue-router'
 
 const store = useCurrentUserAndAccountStore()
-const router = useRouter()
 
 function redirect (url) {
-    const getToken = localStorage.getItem('accessToken')
-    window.open(url({accountId: store.account._id, token: getToken  }), "_blank")
+  const getToken = localStorage.getItem('accessToken')
+  return url({ accountId: store.account._id, token: getToken })
 }
 
 const sideBarIcons = window.config.sideBarIcons
@@ -17,7 +15,7 @@ const sideBarIcons = window.config.sideBarIcons
 
 <v-card class="elevation-4">
 
-    <v-navigation-drawer color="grey-lighten-2" rail rail-width="60" permanent>
+    <v-navigation-drawer color="grey-lighten-2" rail rail-width="65" permanent>
 
         <v-list bg-color="grey-lighten-2" density="compact" nav>
             <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
@@ -39,8 +37,8 @@ const sideBarIcons = window.config.sideBarIcons
                     mdi-account-group-outline
                 </v-list-item-icon>
             </v-list-item>
-
-            <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" @click="redirect(item.url)">
+            <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" >
+              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url)">
               <v-tooltip
                   activator="parent"
                   location="end top" origin="start center"
@@ -48,8 +46,8 @@ const sideBarIcons = window.config.sideBarIcons
                 <v-list-item-icon class="text-black">
                     {{item.icon}}
                 </v-list-item-icon>
+              </v-btn>
             </v-list-item>
-
         </v-list>
 
     </v-navigation-drawer>
