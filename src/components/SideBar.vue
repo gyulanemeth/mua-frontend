@@ -5,13 +5,9 @@ import { useRouter } from 'vue-router'
 const store = useCurrentUserAndAccountStore()
 const router = useRouter()
 
-function redirect (to) {
-  if (to === 'app') {
+function redirect (url) {
     const getToken = localStorage.getItem('accessToken')
-    window.location.href = `${window.config.appBaseUrl}account/${store.account._id}?token=${getToken}`
-  } else {
-    router.push(to)
-  }
+    window.open(url({accountId: store.account._id, token: getToken  }), "_blank")
 }
 
 const sideBarIcons = window.config.sideBarIcons
