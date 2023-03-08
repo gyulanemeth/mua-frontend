@@ -63,6 +63,7 @@ export default (connectors) => {
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/me')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -127,6 +128,7 @@ export default (connectors) => {
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/me')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -153,8 +155,8 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-
           router.push('/me')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -208,6 +210,7 @@ export default (connectors) => {
           await connectors.user.patchName({ id: this.user._id, name, accountId: this.account._id })
           this.user.name = name
           router.push('/me')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -221,6 +224,7 @@ export default (connectors) => {
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
           router.push('/account')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -234,6 +238,7 @@ export default (connectors) => {
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
           router.push('/account')
+          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e

@@ -5,7 +5,9 @@ import { useRouter } from 'vue-router'
 import AccountDetails from '../components/AccountDetails.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import alerts from '../alerts/alert.js'
 
+const alert = alerts()
 const store = useCurrentUserAndAccountStore()
 const router = useRouter()
 

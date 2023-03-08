@@ -17,8 +17,11 @@ onMounted(() => {
 <template>
 
 <v-app>
-    <NavBar v-if="store.loggedIn" />
-    <SideBar v-if="store.loggedIn" />
+    <div v-if="store.loggedIn">
+        <NavBar  />
+        <SideBar />
+    </div>
+    
     <v-main>
         <ErrorMessage/>
         <Suspense>
