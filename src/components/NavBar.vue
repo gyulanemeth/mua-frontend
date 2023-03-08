@@ -42,13 +42,13 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
         <template v-slot:activator="{ props }">
           <v-badge v-if="checkTypeAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
             <v-avatar size="large" color="error">
-                <v-btn v-bind="props">
+                <v-btn data-test-id="navbarMenu" v-bind="props">
                       {{$t('navBar.picLabel')}}
                 </v-btn>
             </v-avatar>
           </v-badge>
           <v-avatar v-else size="large" color="grey-darken-3">
-              <v-btn v-bind="props">
+              <v-btn data-test-id="navbarMenu" v-bind="props">
                   {{$t('navBar.picLabel')}}
               </v-btn>
           </v-avatar>
@@ -57,7 +57,7 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
             <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path" :value="item.title">
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="store.logout()">
+            <v-list-item data-test-id="navbarMenu-logout" @click="store.logout()">
                 <v-list-item-title>   {{$t('navBar.logoutBtn')}} </v-list-item-title>
             </v-list-item>
         </v-list>

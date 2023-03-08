@@ -31,6 +31,7 @@ const title = window.config.title
       <v-text-field
       hide-details
       density="compact"
+      data-test-id="createAccount-accNameField"
       class=" elevation-2 my-5 pt-2 pl-3 rounded"
       color="info"
       variant="plain"
@@ -45,6 +46,7 @@ const title = window.config.title
       hide-details
       density="compact"
       class=" elevation-2 my-5 pt-2 pl-3 rounded"
+      data-test-id="createAccount-urlFriendlyNameField"
       color="info"
       variant="plain"
       name="urlFriendlyName"
@@ -58,27 +60,28 @@ const title = window.config.title
 
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="email" type="email" :label="$t('createAccount.userSection.emailLabel')"
              :placeholder="data.user.email ||$t('createAccount.userSection.emailPlaceHolder')"
+             data-test-id="createAccount-emailField"
              :value="data.user.email"
              @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
              required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.user.name" required />
+            <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"  class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.user.name" required />
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-            name="newPassword" :label="$t('createAccount.userSection.newPasswordLabel')" type="password"
+            name="newPassword" data-test-id="createAccount-newPasswordField" :label="$t('createAccount.userSection.newPasswordLabel')" type="password"
             :placeholder="data.user.password ||$t('createAccount.userSection.newPasswordPlaceholder')"
             :value="data.user.password"
             @update:modelValue="res => data.user.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required />
 
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
-            name="newPasswordAgain" :label="$t('createAccount.userSection.confirmNewPasswordLabel')" type="password"
+            name="newPasswordAgain" data-test-id="createAccount-newPasswordAgainField" :label="$t('createAccount.userSection.confirmNewPasswordLabel')" type="password"
             :placeholder="data.user.newPasswordAgain ||$t('createAccount.userSection.confirmNewPasswordPlaceholder')"
             :value="data.user.newPasswordAgain"
             @update:modelValue="res => data.user.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required/>
             <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" @click="$emit('buttonEvent',data)">{{$t('createAccount.submitBtn')}}</v-btn>
+                <v-btn color="info" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">{{$t('createAccount.submitBtn')}}</v-btn>
                 <button hidden @click.enter.prevent="$emit('buttonEvent',data)" />
             </v-col>
         </v-card-text>

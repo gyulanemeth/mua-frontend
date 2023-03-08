@@ -22,8 +22,8 @@ const resetForm = () => {
 
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
-        <v-btn v-if="route.name === 'me'" color="error" class="mt-10 text-white" v-bind="props">Delete</v-btn>
-        <v-btn v-else color="error" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
+        <v-btn v-if="route.name === 'me'" data-test-id="open-deleteAccount-dialog" color="error" class="mt-10 text-white" v-bind="props">Delete</v-btn>
+        <v-btn v-else color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
 
     </template>
     <v-card class="d-flex flex-column justify-center">
@@ -88,7 +88,7 @@ const resetForm = () => {
                     <v-col>
                         <p class="font-weight-bold">{{$t('deleteMyAccount.passwordLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details density="compact" color="info" class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
+                    <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="info" class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
                     name="password" type="password"
                     :placeholder="password ||$t('deleteMyAccount.passwordPlaceholder')"
                     :value="password"
@@ -99,9 +99,9 @@ const resetForm = () => {
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm">{{$t('deleteMyAccount.submitBtn')}}</v-btn>
+            <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm">{{$t('deleteMyAccount.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" @click="resetForm">{{$t('deleteMyAccount.closeBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('deleteMyAccount.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

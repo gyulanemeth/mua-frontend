@@ -1,11 +1,13 @@
 <script setup>
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import jwtDecode from 'jwt-decode'
 
 const store = useCurrentUserAndAccountStore()
 
 function redirect (url) {
   const getToken = localStorage.getItem('accessToken')
-  return url({ accountId: store.account._id, token: getToken })
+  const accountId = store.account? store.account._id : jwtDecode(getToken).account._id
+  return url({ accountId, token: getToken })
 }
 
 const sideBarIcons = window.config.sideBarIcons
@@ -54,9 +56,9 @@ const sideBarIcons = window.config.sideBarIcons
 
     <v-navigation-drawer class="elevation-2" permanent>
         <v-list>
-            <v-list-item active-class="text-info" :title="$t('sideBar.me')" to="/me" />
-            <v-list-item active-class="text-info" :title="$t('sideBar.account')" to="/account" />
-            <v-list-item active-class="text-info" :title="$t('sideBar.users')" to="/users" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" to="/me" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" to="/account" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" to="/users" />
         </v-list>
     </v-navigation-drawer>
 
