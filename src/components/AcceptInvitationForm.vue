@@ -41,16 +41,16 @@ const title = window.config.title
             <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="name" type="text" :value="tokenData.account.urlFriendlyName" :placeholder="tokenData.account.urlFriendlyName" disabled required
             />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.name" required />
+            <v-text-field hide-details density="compact" data-test-id="acceptInvitation-nameField" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.name" required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordField" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
             name="newPassword" :label="$t('acceptInvitationForm.newPasswordLabel')" type="password"
             :placeholder="data.newPassword ||$t('acceptInvitationForm.newPasswordPlaceholder')"
             :value="data.newPassword"
             @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordAgainField" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
             name="newPasswordAgain" :label="$t('acceptInvitationForm.confirmNewPasswordLabel')" type="password"
             :placeholder="data.newPasswordAgain ||$t('acceptInvitationForm.confirmNewPasswordPlaceholder')"
             :value="data.newPasswordAgain"
@@ -58,13 +58,13 @@ const title = window.config.title
             required />
             <v-checkbox :label="$t('acceptInvitationForm.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" @click="$emit('handleAcceptInvitationHandler',data)">{{props.formData.btnText}}</v-btn>
+                <v-btn color="info" data-test-id="acceptInvitation-submitBtn" @click="$emit('handleAcceptInvitationHandler',data)">{{props.formData.btnText}}</v-btn>
                 <button hidden @click.enter.prevent="$emit('handleAcceptInvitationHandler',data)" />
             </v-col>
         </v-card-text>
         <v-card-text align="center" v-if="cb">
 
-            <h2 class="mt-4">{{$t('acceptInvitationForm.cb.header')}}</h2>
+            <h2 class="mt-4" data-test-id="acceptInvitation-headerCb" >{{$t('acceptInvitationForm.cb.header')}}</h2>
             <p class="mt-4">{{$t('acceptInvitationForm.cb.message')}}
                 <router-link tag="span" style="text-decoration: none; color: inherit;" to="/me" class="font-weight-bold">{{$t('acceptInvitationForm.cb.cbBtn')}}</router-link> {{$t('acceptInvitationForm.cb.subMessage')}}</p>
 

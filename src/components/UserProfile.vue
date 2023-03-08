@@ -15,7 +15,7 @@ const dialog = ref()
 
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
-        <v-btn color="info" class="text-white" v-bind="props">{{$t('userProfile.openBtn')}}</v-btn>
+        <v-btn color="info" data-test-id="open-userProfile" class="text-white" v-bind="props">{{$t('userProfile.openBtn')}}</v-btn>
 
     </template>
     <v-card min-width="600" class="d-flex flex-column justify-center">
@@ -55,7 +55,7 @@ const dialog = ref()
                     <p class="font-weight-bold">{{$t('userProfile.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-select hide-details v-model="role" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
+                    <v-select hide-details data-test-id="userProfile-selectRole" v-model="role" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
                 </v-col>
             </v-row>
 
@@ -72,9 +72,9 @@ const dialog = ref()
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false">{{$t('userProfile.submitBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="userProfile-submitBtn" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false">{{$t('userProfile.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" @click="dialog=false">{{$t('userProfile.closeBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="userProfile-cancelBtn" @click="dialog=false">{{$t('userProfile.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

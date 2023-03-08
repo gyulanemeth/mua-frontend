@@ -23,7 +23,7 @@ const resetForm = () => {
 
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
-        <v-btn prepend-icon="mdi-account-plus" variant="outlined" color="info" v-bind="props">
+        <v-btn prepend-icon="mdi-account-plus" data-test-id="open-inviteDialog" variant="outlined" color="info" v-bind="props">
             {{$t('inviteMembers.openBtn')}}
         </v-btn>
     </template>
@@ -46,7 +46,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{$t('inviteMembers.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="email" type="email"
+                    <v-text-field hide-details data-test-id="inviteMember-emailField" density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="email" type="email"
                     :placeholder="data.email || $t('inviteMembers.emailPlaceHolder')"
                     :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
@@ -58,7 +58,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{$t('inviteMembers.confirmEmailLabel')}}</p>
                 </v-col>
                 <v-col cols="8" align='center'>
-                    <v-text-field hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="confirmEmail" type="email"
+                    <v-text-field hide-details density="compact" data-test-id="inviteMember-emailAgainField" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" name="confirmEmail" type="email"
                     :placeholder="data.confirmEmail || $t('inviteMembers.confirmEmailPlaceHolder')"
                     :value="data.confirmEmail"
                     @update:modelValue="res => data.confirmEmail = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
@@ -67,13 +67,13 @@ const resetForm = () => {
             </v-row>
 
             <v-row v-if="cb" class="justify-center">
-                <p class="font-weight-bold">{{$t('inviteMembers.cb.header')}}</p>
+                <p class="font-weight-bold" data-test-id="inviteMember-headerCb" >{{$t('inviteMembers.cb.header')}}</p>
             </v-row>
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" v-if="!cb" @click="$emit('inviteEventHandler',data, (res)=>{cb = res; resetForm()})">{{$t('inviteMembers.submitBtn')}}</v-btn>
-            <v-btn color="info" v-else @click="cb=null">{{$t('inviteMembers.cb.cbBtn')}}</v-btn>
-            <v-btn color="info" @click="dialog=false; cb=undefined; resetForm()">{{$t('inviteMembers.closeBtn')}}</v-btn>
+            <v-btn color="info" v-if="!cb" data-test-id="inviteMember-submitBtn" @click="$emit('inviteEventHandler',data, (res)=>{cb = res; resetForm()})">{{$t('inviteMembers.submitBtn')}}</v-btn>
+            <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb=null">{{$t('inviteMembers.cb.cbBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialog=false; cb=undefined; resetForm()">{{$t('inviteMembers.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>
