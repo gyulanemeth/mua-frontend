@@ -21,7 +21,7 @@ onMounted(() => {
         <NavBar  />
         <SideBar />
     </div>
-    
+
     <v-main>
         <ErrorMessage/>
         <Suspense>

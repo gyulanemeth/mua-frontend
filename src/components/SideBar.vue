@@ -6,7 +6,7 @@ const store = useCurrentUserAndAccountStore()
 
 function redirect (url) {
   const getToken = localStorage.getItem('accessToken')
-  const accountId = store.account? store.account._id : jwtDecode(getToken).account._id
+  const accountId = store.account ? store.account._id : jwtDecode(getToken).account._id
   return url({ accountId, token: getToken })
 }
 

@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 
 import infiniteListState from 'pinia-list-store/src/state/infinite.js'
-import deleteOneUser from 'pinia-list-store/src/actions/deleteOne.js'
 import load from 'pinia-list-store/src/actions/load.js'
 import loadMore from 'pinia-list-store/src/actions/loadMore.js'
 import patchOne from 'pinia-list-store/src/actions/patchOne.js'
@@ -19,7 +18,7 @@ export default (connectors) => {
       async deleteOne ({ id, password, accountId }) {
         try {
           await connectors.user.deletePermission(password)
-          const res = await connectors.user.deleteOne({id,accountId})
+          const res = await connectors.user.deleteOne({ id, accountId })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
