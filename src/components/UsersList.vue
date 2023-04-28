@@ -46,7 +46,7 @@ window.onscroll = () => {
         </v-col>
         <v-spacer />
         <v-col cols="5">
-            <v-text-field hide-details density="compact" label="Search" variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary" @change="$emit('searchEvent',filter)"></v-text-field>
+            <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search" variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary" @change="$emit('searchEvent',filter)"></v-text-field>
         </v-col>
 
         <v-col class="pt-3">
@@ -59,11 +59,11 @@ window.onscroll = () => {
     <v-layout class="d-flex flex-wrap">
         <v-card class="mx-2 my-5 align-self-start " min-width="275" v-for="item in props.items" :key="item._id">
             <v-card-title>
-                <p>{{item.data.name}}<span class="font-weight-light pl-2">{{item.data.role}}</span></p>
+                <p data-test-id="userList-card-0-name">{{item.data.name}}<span class="font-weight-light pl-2">{{item.data.role}}</span></p>
             </v-card-title>
             <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="150px" cover></v-img>
             <v-card-text class="pl-0">
-                <v-card-subtitle>
+                <v-card-subtitle >
                     {{item.data.email}}
                     <v-card-subtitle>
                         <span v-if="props.currentUser._id === item._id"> - Me -</span>
@@ -71,7 +71,7 @@ window.onscroll = () => {
                 </v-card-subtitle>
 
             </v-card-text>
-            <v-card-actions v-if="props.currentUser._id !== item._id && props.currentUser.role === 'admin'">
+            <v-card-actions data-test-id="userList-card-0-action" v-if="props.currentUser._id !== item._id && props.currentUser.role === 'admin'">
                 <UserProfile @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles" :data="item.data" />
 
                 <v-spacer></v-spacer>

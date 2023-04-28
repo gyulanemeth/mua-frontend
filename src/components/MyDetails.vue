@@ -24,17 +24,17 @@ const editMode = ref()
             <v-col>
                 <p class="font-weight-bold">{{$t('myDetails.nameLabel')}}</p>
             </v-col>
-            <v-text-field hide-details density="compact" :disabled='!editMode' color="info" variant="underlined" name="name" type="text"
+            <v-text-field hide-details density="compact" data-test-id="meDetails-meTab-nameField" :disabled='!editMode' color="info" variant="underlined" name="name" type="text"
             :placeholder="name ||$t('myDetails.namePlaceHolder')"
             :value="name"
             @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')"
             required />
             <template v-if='editMode'>
-                <v-btn color="info" variant="text" icon="mdi-check" size="small" @click.stop="$emit('updateNameHandler', name);editMode = false" />
-                <v-btn class="ml-2" color="error" variant="text" icon="mdi-window-close" size="small" @click='editMode = false' />
+                <v-btn color="info" variant="text" icon="mdi-check" data-test-id="meDetails-meTab-confirmNameEditBtn" size="small" @click.stop="$emit('updateNameHandler', name);editMode = false" />
+                <v-btn class="ml-2" color="error" variant="text" data-test-id="meDetails-meTab-cancelNameEditBtn" icon="mdi-window-close" size="small" @click='editMode = false' />
             </template>
             <template v-else>
-                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = true' />
+                <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" data-test-id="meDetails-meTab-editNameBtn" size="small" @click='editMode = true' />
             </template>
 
         </v-row>

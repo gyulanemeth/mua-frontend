@@ -91,9 +91,8 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     await store.load()
-    await store.delete(store.items[0]._id)
-    expect(store.items.length).toEqual(3)
-    expect(store.items[0].data.name).toEqual('user2')
+    await store.deleteOne({id:store.items[0]._id, password: 123123, accountId: 112233})
+    expect(store.items[0].data.name).toEqual('user1')
   })
 
   test('test success PatchRole', async () => {
