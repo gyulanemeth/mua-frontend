@@ -1,15 +1,13 @@
 <script setup>
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import jwtDecode from 'jwt-decode'
 
 const store = useCurrentUserAndAccountStore()
 
 function redirect (url) {
-  const getToken = localStorage.getItem('accessToken')
-  const accountId = store.account ? store.account._id : jwtDecode(getToken).account._id
-  return url({ accountId, token: getToken })
+  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken') })
 }
 
+const adminUrl = window.config.adminsAppBaseUrl
 const sideBarIcons = window.config.sideBarIcons
 </script>
 
@@ -20,14 +18,16 @@ const sideBarIcons = window.config.sideBarIcons
     <v-navigation-drawer color="grey-lighten-2" rail rail-width="65" permanent>
 
         <v-list bg-color="grey-lighten-2" density="compact" nav>
-            <v-list-item class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
-              <v-tooltip
+            <v-list-item v-if="store.checkAdmin" class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
+             <a style="text-decoration: none;" :href="adminUrl">
+                <v-tooltip
                   activator="parent"
                   location="end top" origin="start center"
                   >Admin Account</v-tooltip>
                 <v-list-item-icon class="text-black">
                     mdi-shield-account-variant-outline
                 </v-list-item-icon>
+                </a>
             </v-list-item>
 
             <v-list-item class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
