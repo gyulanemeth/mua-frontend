@@ -51,6 +51,16 @@ export default (connectors) => {
     getters: {
       loggedIn () {
         return !!this.accessToken
+      },
+      getAccountId(){
+        if (this.account) {
+          return this.account._id
+        }
+        const getToken = jwtDecode(localStorage.getItem('accessToken'))
+        if (getToken.account && getToken.account._id) {
+          return getToken.account._id
+        }
+        return localStorage.getItem('accountId')
       }
     },
     actions: {

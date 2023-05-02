@@ -1,13 +1,10 @@
 <script setup>
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import jwtDecode from 'jwt-decode'
 
 const store = useCurrentUserAndAccountStore()
 
 function redirect (url) {
-  const getToken = localStorage.getItem('accessToken')
-  const accountId = store.account ? store.account._id : jwtDecode(getToken).account._id
-  return url({ accountId, token: getToken })
+  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken') })
 }
 
 const sideBarIcons = window.config.sideBarIcons
