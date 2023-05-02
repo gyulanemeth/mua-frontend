@@ -20,7 +20,6 @@ const menuItems = [{
 
 const appName = window.config.appName
 const appIcon = window.config.appIcon
-const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === 'admin'
 </script>
 
 <template>
@@ -40,7 +39,7 @@ const checkTypeAdmin = jwtDecode(localStorage.getItem('accessToken')).type === '
 
     <v-menu location="bottom " origin="end top">
         <template v-slot:activator="{ props }">
-          <v-badge v-if="checkTypeAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
+          <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34" icon="mdi-shield-account-variant-outline">
             <v-avatar size="large" color="error">
                 <v-btn data-test-id="navbarMenu" v-bind="props">
                       {{$t('navBar.picLabel')}}

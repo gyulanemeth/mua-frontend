@@ -61,6 +61,9 @@ export default (connectors) => {
           return getToken.account._id
         }
         return localStorage.getItem('accountId')
+      },
+      checkAdmin (){
+        return jwtDecode(localStorage.getItem('accessToken')).type === 'admin'
       }
     },
     actions: {
