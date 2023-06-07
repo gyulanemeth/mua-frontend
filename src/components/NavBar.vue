@@ -1,7 +1,5 @@
 <script setup>
 import { useRoute } from 'vue-router'
-import jwtDecode from 'jwt-decode'
-
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
