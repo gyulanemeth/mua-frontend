@@ -5,7 +5,7 @@ import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
 
-const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore'])
+const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore', 'searchEvent'])
 const props = defineProps({
   items: Array,
   roles: Array,

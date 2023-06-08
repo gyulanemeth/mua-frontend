@@ -97,9 +97,8 @@ async function searchBarHandler (filter) {
     store.filter = {}
   } else {
     store.filter = {
-      $text: {
-        $search: `"${filter}"`
-      }
+      $regex: filter,
+      $options: 'i'
     }
   }
   await store.load()
