@@ -1,6 +1,5 @@
 <script setup >
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
 
 import Settings from './AdminSettings.vue'
 import ChangeEmail from './ChangeEmail.vue'
@@ -29,8 +28,7 @@ async function redirectDeleteHandler (data) {
   emit('deleteMyAccountHandler', data)
 }
 
-const route = useRoute()
-const tab = ref(route.query.tab)
+const tab = ref('me')
 
 </script>
 
