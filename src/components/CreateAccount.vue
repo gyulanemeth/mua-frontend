@@ -62,7 +62,7 @@ const title = window.config.title
              :placeholder="data.user.email ||$t('createAccount.userSection.emailPlaceHolder')"
              data-test-id="createAccount-emailField"
              :value="data.user.email"
-             @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
+             @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
              required />
 
             <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"  class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.user.name" required />
