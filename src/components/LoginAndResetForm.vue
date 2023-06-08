@@ -43,7 +43,7 @@ const title = window.config.title
             <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
             :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')"
             :value="data.email"
-            @update:modelValue="res => data.email = res.replace(/[^a-z0-9@ \.,_-]/gim, '')"
+            @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
             required />
             <v-select v-if="props.tokenData.accounts || props.tokenData.account " data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :disabled="!!cb" :items="props.tokenData.accounts" item-title="name"
             item-value="_id" :label="$t('loginAndResetForm.selectLabel')" name="account" />
