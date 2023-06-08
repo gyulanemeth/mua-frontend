@@ -105,7 +105,7 @@ export default (connectors) => {
         if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
           localStorage.removeItem('accessToken')
           localStorage.removeItem('accountId')
-          window.location.href = `${window.config.adminsAppBaseUrl}me`
+          window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
         } else {
           router.push('/')
         }
