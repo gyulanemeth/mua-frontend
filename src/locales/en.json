@@ -180,5 +180,6 @@
     "bodyPart2": "Please",
     "redirectBtn": "click here",
     "bodyPart3": "if you are not redirected"
-  }
+  },
+  "processing": "processing..."
 }

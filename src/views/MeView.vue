@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 import MeDetails from '../components/MeDetails.vue'
 import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
@@ -11,6 +12,7 @@ let store = useCurrentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
 const alert = alerts()
+const { tm } = useI18n()
 
 const data = ref()
 
@@ -18,6 +20,7 @@ if (route.name === 'verify-email') {
   const res = await store.patchEmailConfirm(route.query.token)
   if (!res.message) {
     router.push('/me')
+    alert.message(tm('changeEmail.verifyMessage'))
   }
 } else if (!store.user || !store.user.name) {
   await store.readOneUser()
@@ -41,9 +44,7 @@ async function handleUpdateUserName (params) {
 
 async function handleUpdatePassword (params, statusCallBack) {
   const res = await store.patchPassword(params.oldPassword, params.newPassword, params.confirmNewPassword)
-  if (!res.message) {
-    await alert.message('Password updated successfully')
-  }
+  statusCallBack(!res.message)
 }
 async function handleUpdateEmail (params, statusCallBack) {
   const res = await store.patchEmail(params.newEmail, params.confirmNewEmail)

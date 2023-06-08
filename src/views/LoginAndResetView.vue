@@ -42,8 +42,9 @@ async function loadData () {
   }
 }
 
-async function handleForgotPasswordResetEvent (params) {
+async function handleForgotPasswordResetEvent (params, statusCallBack) {
   await store.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
+  statusCallBack()
 }
 
 async function handleForgotPasswordEvent (params, statusCallBack) {
@@ -51,20 +52,17 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
     email: params.email,
     accountId: params.account
   })
-  if (!res.message) {
-    statusCallBack('reset')
-  }
+  statusCallBack(!res.message && 'reset')
 }
 
 async function handleGetLoginAccountEvent (params, statusCallBack) {
   const res = await store.loginGetAccounts(params)
-  if (!res.message) {
-    statusCallBack(true)
-  }
+  statusCallBack(!res.message)
 }
 
-async function handleLoginEvent (params) {
+async function handleLoginEvent (params, statusCallBack) {
   await store.login(route.query.token, params.password, params.account)
+  statusCallBack(true)
 }
 
 watchEffect(async () => {
