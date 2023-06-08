@@ -27,7 +27,7 @@ export default (connectors) => {
      window.location.pathname !== '/create-account' &&
      window.location.pathname !== '/' &&
      window.location.pathname !== '/verify-email') {
-      router.push('/')
+      router.push('/redirectToLoginMessage')
     }
   } else {
     if (query.get('token') && query.get('accountId')) {
@@ -52,7 +52,7 @@ export default (connectors) => {
       loggedIn () {
         return !!this.accessToken
       },
-      getAccountId(){
+      getAccountId () {
         if (this.account) {
           return this.account._id
         }
@@ -62,7 +62,7 @@ export default (connectors) => {
         }
         return localStorage.getItem('accountId')
       },
-      checkAdmin (){
+      checkAdmin () {
         return jwtDecode(localStorage.getItem('accessToken')).type === 'admin'
       }
     },
