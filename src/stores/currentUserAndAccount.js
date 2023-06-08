@@ -18,18 +18,7 @@ export default (connectors) => {
   }
 
   const storedAccessToken = localStorage.getItem('accessToken')
-  if (!storedAccessToken || Date.now() >= jwtDecode(storedAccessToken).exp * 1000) {
-    if (window.location.pathname !== '/forgot-password/reset' &&
-     window.location.pathname !== '/forgot-password' &&
-     window.location.pathname !== '/finalize-registration' &&
-     window.location.pathname !== '/login-select' &&
-     window.location.pathname !== '/invitation/accept' &&
-     window.location.pathname !== '/create-account' &&
-     window.location.pathname !== '/' &&
-     window.location.pathname !== '/verify-email') {
-      router.push('/')
-    }
-  } else {
+  if (storedAccessToken) {
     if (query.get('token') && query.get('accountId')) {
       storage.account = { _id: query.get('accountId') }
     } else {
