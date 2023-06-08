@@ -97,8 +97,18 @@ async function searchBarHandler (filter) {
     store.filter = {}
   } else {
     store.filter = {
-      $regex: filter,
-      $options: 'i'
+      $or: [{
+        name: {
+          $regex: filter,
+          $options: 'i'
+        }
+      },
+      {
+        email: {
+          $regex: filter,
+          $options: 'i'
+        }
+      }]
     }
   }
   await store.load()
