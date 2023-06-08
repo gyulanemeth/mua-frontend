@@ -29,6 +29,8 @@ const editMode = ref()
               name="name" type="text"
               :placeholder="name ||$t('accountDetails.namePlaceholder')"
               :value="name"
+              @keydown.enter="$emit('updateNameHandler', name);editMode = false"
+              @keydown.esc="editMode = false; name= props.name"
               @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')"
               required />
               <template v-if='editMode === "name"'>
@@ -47,11 +49,13 @@ const editMode = ref()
               <v-text-field hide-details data-test-id="accountDetails-urlFriendlyNameField" density="compact" :disabled='editMode !== "urlFriendlyName"' color="info" variant="underlined" name="urlFriendlyName"
               :placeholder="urlFriendlyName ||$t('accountDetails.urlFriendlyNamePlaceholder')"
               :value="urlFriendlyName"
+              @keydown.enter="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editMode = false"
+              @keydown.esc="editMode = false; urlFriendlyName= props.urlFriendlyName"
               @update:modelValue="res => urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
               type="text" required />
               <template v-if='editMode === "urlFriendlyName"'>
                   <v-btn color="info" variant="text" data-test-id="accountDetails--confirmUrlFriendlyNameEdit" icon="mdi-check" size="small" @click.stop="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editMode = false" />
-                  <v-btn class="ml-2" color="error"  data-test-id="accountDetails-cancelUrlFriendlyNameEdit" variant="text" icon="mdi-window-close" size="small" @click='editMode = false' />
+                  <v-btn class="ml-2" color="error"  data-test-id="accountDetails-cancelUrlFriendlyNameEdit" variant="text" icon="mdi-window-close" size="small" @click='editMode = false; urlFriendlyName= props.urlFriendlyName' />
               </template>
               <template v-else>
                   <v-btn color="info" variant="text" data-test-id="accountDetails-editUrlFriendlyNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "urlFriendlyName"' />
