@@ -33,9 +33,10 @@ async function loadData () {
   }
 }
 
-async function handleAcceptInvitationEvent (params) {
+async function handleAcceptInvitationEvent (params, statusCallBack) {
   await new Promise(resolve => setTimeout(resolve, 5000))
   await store.acceptInvitation(route.query.token, params.newPassword, params.newPasswordAgain, params.name)
+  statusCallBack()
 }
 
 watchEffect(async () => {

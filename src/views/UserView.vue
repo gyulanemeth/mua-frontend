@@ -77,10 +77,10 @@ async function handleDeleteUser (params) {
 
 async function handleInviteMember (params, statusCallBack) {
   const res = await currentUserAndAccountStore.sendInvitation(params.email)
+  statusCallBack(!res.message)
   if (!res.message) {
     await store.load()
     data.value = store.items
-    statusCallBack(true)
   }
 }
 
