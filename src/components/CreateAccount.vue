@@ -81,7 +81,9 @@ const title = window.config.title
             required/>
             <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">{{$t('createAccount.submitBtn')}}</v-btn>
+                <v-btn color="info" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">
+                    {{$t('createAccount.submitBtn')}}
+                </v-btn>
                 <button hidden @click.enter.prevent="$emit('buttonEvent',data)" />
             </v-col>
         </v-card-text>
