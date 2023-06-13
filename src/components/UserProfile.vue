@@ -9,6 +9,8 @@ const props = defineProps({
 const role = ref(props.data.role)
 const dialog = ref()
 
+// checkkkk
+
 </script>
 
 <template>
@@ -65,7 +67,7 @@ const dialog = ref()
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
-                        <v-img src="https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg" class="align-self-stretch" cover/>
+                        <v-img :src="props.data.avatar || 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'" class="align-self-stretch" cover/>
                     </v-avatar>
                 </v-col>
             </v-row>

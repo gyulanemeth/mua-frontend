@@ -299,8 +299,47 @@ export default (connectors) => {
           useSystemMessagesStore().addError(e)
           return e
         }
+      },
+      async uploadUserAvatar (formData) {
+        try {
+          const res = await connectors.user.uploadAvatar({ accountId: this.account._id, id: this.user._id }, formData)
+          this.user.avatar = res.avatar
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async deleteUserAvatar () {
+        try {
+          const res = await connectors.user.deleteAvatar({ accountId: this.account._id, id: this.user._id })
+          delete this.user.avatar
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async uploadAccountAvatar (formData) {
+        try {
+          const res = await connectors.account.uploadAvatar({ id: this.account._id }, formData)
+          this.account.avatar = res.avatar
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async deleteAccountAvatar () {
+        try {
+          const res = await connectors.account.deleteAvatar({ id: this.account._id })
+          delete this.account.avatar
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
       }
-
     }
   })
 

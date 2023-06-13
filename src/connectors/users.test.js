@@ -494,4 +494,70 @@ describe('test accounts connectors', () => {
     })
     await expect(users(fetch, apiUrl).user.deletePermission()).rejects.toThrowError('Password Is Required')
   })
+
+  test('test upload user Avatar ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.uploadAvatar({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/112233Test/users/123test123/upload-avatar',
+      {
+        method: 'POST',
+        body: { test: 'test' },
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test upload with undefined input ', async () => { // admin
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(users(fetch, apiUrl).user.uploadAvatar()).rejects.toThrowError('param and form Data Is Required')
+  })
+
+  test('test delete user Avatar ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.deleteAvatar({ id: '123test123', accountId: '1122test' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/1122test/users/123test123/delete-avatar',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test delete with undefined input ', async () => { // admin
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(users(fetch, apiUrl).user.deleteAvatar()).rejects.toThrowError('Account and User Id Is Required')
+  })
 })
