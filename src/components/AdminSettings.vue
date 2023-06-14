@@ -19,7 +19,7 @@ const settings = ref({})
 const alert = alerts()
 const store = useCurrentUserAndAccountStore()
 await store.readOne()
-const defaultProfilePicture = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
+const defaultProfilePicture = import.meta.env.BASE_URL + 'placeholder.jpg'
 const profilePicture = ref(store.account.profilePicture)
 
 const submit = async () => {
@@ -38,7 +38,7 @@ const submit = async () => {
 }
 
 const removeProfilePicture = () => {
-  profilePicture.value = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
+  profilePicture.value = import.meta.env.BASE_URL + 'placeholder.jpg'
   settings.value.profilePicture = null
   profilePicture.value = null
 }

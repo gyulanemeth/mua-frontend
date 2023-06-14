@@ -9,7 +9,7 @@ const componentProps = defineProps({
 
 const name = ref(componentProps.name)
 const email = ref(componentProps.email)
-const profilePicture = ref(componentProps.profilePicture || 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg')
+const profilePicture = ref(componentProps.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 const processing = ref(false)
 
 const emit = defineEmits(['uploadProfilePictureHandler', 'deleteProfilePictureHandler'])
@@ -20,7 +20,7 @@ const handledeleteProfilePicture = () => {
   processing.value = true
   emit('deleteProfilePictureHandler', (res) => {
     if (res) {
-        profilePicture.value = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
+      profilePicture.value = import.meta.env.BASE_URL + 'placeholder.jpg'
     }
     processing.value = false
   })
@@ -32,7 +32,7 @@ const handleFileChange = (event) => {
   formData.append('profilePicture', event.target.files[0])
   emit('uploadProfilePictureHandler', formData, (url) => {
     if (url) {
-        profilePicture.value = url
+      profilePicture.value = url
     }
     processing.value = false
   })
@@ -101,7 +101,7 @@ const openFileInput = () => {
 
                             <v-container v-if="isHovering"
                                 class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
-                                <v-btn v-if="componentProps.avatar" @click="handledeleteProfilePicture" color="white"
+                                <v-btn v-if="componentProps.profilePicture" @click="handledeleteProfilePicture" color="white"
                                     class="align-center" variant="text" icon="mdi-delete-forever-outline" size="small" />
                                 <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
                                     icon="mdi-camera-plus-outline" size="small" />

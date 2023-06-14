@@ -623,19 +623,6 @@ describe('Current User And Account Store', () => {
     expect(res.message).toEqual('Account and User Id Is Required')
   })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   test('test success uploadProfilePicture', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
