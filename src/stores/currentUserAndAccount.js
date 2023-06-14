@@ -300,40 +300,40 @@ export default (connectors) => {
           return e
         }
       },
-      async uploadUserAvatar (formData) {
+      async uploadUserProfilePicture (formData) {
         try {
-          const res = await connectors.user.uploadAvatar({ accountId: this.account._id, id: this.user._id }, formData)
-          this.user.avatar = res.avatar
+          const res = await connectors.user.uploadProfilePicture({ accountId: this.account._id, id: this.user._id }, formData)
+          this.user.profilePicture = res.profilePicture
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async deleteUserAvatar () {
+      async deleteUserProfilePicture () {
         try {
-          const res = await connectors.user.deleteAvatar({ accountId: this.account._id, id: this.user._id })
-          delete this.user.avatar
+          const res = await connectors.user.deleteProfilePicture({ accountId: this.account._id, id: this.user._id })
+          delete this.user.profilePicture
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async uploadAccountAvatar (formData) {
+      async uploadAccountProfilePicture (formData) {
         try {
-          const res = await connectors.account.uploadAvatar({ id: this.account._id }, formData)
-          this.account.avatar = res.avatar
+          const res = await connectors.account.uploadProfilePicture({ id: this.account._id }, formData)
+          this.account.profilePicture = res.profilePicture
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async deleteAccountAvatar () {
+      async deleteAccountProfilePicture () {
         try {
-          const res = await connectors.account.deleteAvatar({ id: this.account._id })
-          delete this.account.avatar
+          const res = await connectors.account.deleteProfilePicture({ id: this.account._id })
+          delete this.account.profilePicture
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

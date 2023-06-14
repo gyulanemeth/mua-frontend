@@ -49,7 +49,7 @@ export default function (fetch, apiUrl) {
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
   const delPermissionAdmin = createPostConnector(fetch, window.config.adminApiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
-  const deleteAvatarRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/delete-avatar`, generateAdditionalHeaders)
+  const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -167,11 +167,11 @@ export default function (fetch, apiUrl) {
     return res
   }
 
-  const uploadAvatar = async function (params, formData) {
+  const uploadProfilePicture = async function (params, formData) {
     if (!params || !params.id || !params.accountId || !formData) {
       throw new RouteError('param and form Data Is Required')
     }
-    const url = `${apiUrl}/v1/accounts/${params.accountId}/users/${params.id}/upload-avatar`
+    const url = `${apiUrl}/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`
 
     const requestOptions = {
       method: 'POST',
@@ -183,16 +183,16 @@ export default function (fetch, apiUrl) {
     return res.result
   }
 
-  const deleteAvatar = async function (params) {
+  const deleteProfilePicture = async function (params) {
     if (!params || !params.id || !params.accountId) {
       throw new RouteError('Account and User Id Is Required')
     }
-    const res = await deleteAvatarRoute(params)
+    const res = await deleteProfilePictureRoute(params)
     return res
   }
 
   return {
-    user: { list, deleteAvatar, uploadAvatar, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
+    user: { list, deleteProfilePicture, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
     config: { getConfig }
   }
 }

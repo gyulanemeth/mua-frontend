@@ -61,7 +61,7 @@ window.onscroll = () => {
             <v-card-title>
                 <p data-test-id="userList-card-0-name">{{item.data.name}}<span class="font-weight-light pl-2">{{item.data.role}}</span></p>
             </v-card-title>
-            <v-img :src="item.data.avatar || 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'" height="150px" cover></v-img>
+            <v-img :src="item.data.profilePicture || 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'" height="150px" cover></v-img>
             <v-card-text class="pl-0">
                 <v-card-subtitle >
                     {{item.data.email}}

@@ -495,7 +495,7 @@ describe('test accounts connectors', () => {
     await expect(users(fetch, apiUrl).user.deletePermission()).rejects.toThrowError('Password Is Required')
   })
 
-  test('test upload user Avatar ', async () => {
+  test('test upload user profilePicture ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
       ok: true,
@@ -504,10 +504,10 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.uploadAvatar({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
+    const res = await users(fetch, apiUrl).user.uploadProfilePicture({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233Test/users/123test123/upload-avatar',
+      'https:/mua/accounts/v1/accounts/112233Test/users/123test123/profile-picture',
       {
         method: 'POST',
         body: { test: 'test' },
@@ -525,10 +525,10 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.uploadAvatar()).rejects.toThrowError('param and form Data Is Required')
+    await expect(users(fetch, apiUrl).user.uploadProfilePicture()).rejects.toThrowError('param and form Data Is Required')
   })
 
-  test('test delete user Avatar ', async () => {
+  test('test delete user profilePicture ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
       ok: true,
@@ -537,10 +537,10 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.deleteAvatar({ id: '123test123', accountId: '1122test' })
+    const res = await users(fetch, apiUrl).user.deleteProfilePicture({ id: '123test123', accountId: '1122test' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/1122test/users/123test123/delete-avatar',
+      'https:/mua/accounts/v1/accounts/1122test/users/123test123/profile-picture',
       {
         method: 'DELETE',
         headers: {
@@ -558,6 +558,6 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.deleteAvatar()).rejects.toThrowError('Account and User Id Is Required')
+    await expect(users(fetch, apiUrl).user.deleteProfilePicture()).rejects.toThrowError('Account and User Id Is Required')
   })
 })

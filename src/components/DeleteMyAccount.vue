@@ -99,7 +99,7 @@ const resetForm = () => {
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm">{{$t('deleteMyAccount.submitBtn')}}</v-btn>
+            <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()">{{$t('deleteMyAccount.submitBtn')}}</v-btn>
             <v-spacer />
             <v-btn color="info" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('deleteMyAccount.closeBtn')}}</v-btn>
         </v-card-actions>

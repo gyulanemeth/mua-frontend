@@ -44,7 +44,7 @@ export default function (fetch, apiUrl) {
   const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('invitationToken')}` }))
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
-  const deleteAvatarRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/delete-avatar`, generateAdditionalHeaders)
+  const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/profile-picture`, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
@@ -153,11 +153,11 @@ export default function (fetch, apiUrl) {
     return res.loginToken
   }
 
-  const uploadAvatar = async function (params, formData) {
+  const uploadProfilePicture = async function (params, formData) {
     if (!params || !params.id || !formData) {
       throw new RouteError('param and form Data Is Required')
     }
-    const url = `${apiUrl}/v1/accounts/${params.id}/upload-avatar/`
+    const url = `${apiUrl}/v1/accounts/${params.id}/profile-picture/`
 
     const requestOptions = {
       method: 'POST',
@@ -169,16 +169,16 @@ export default function (fetch, apiUrl) {
     return res.result
   }
 
-  const deleteAvatar = async function (params) {
+  const deleteProfilePicture = async function (params) {
     if (!params || !params.id) {
       throw new RouteError('Account Id Is Required')
     }
-    const res = await deleteAvatarRoute(params)
+    const res = await deleteProfilePictureRoute(params)
     return res
   }
 
   return {
-    account: { list, uploadAvatar, deleteAvatar, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
+    account: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept },
     forgotPassword: { send: sendForgotPassword, reset }
   }

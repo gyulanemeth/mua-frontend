@@ -40,7 +40,7 @@ const appIcon = window.config.appIcon
         <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34"
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
-            <v-img style="cursor: pointer;" v-if="store.user && store.user.avatar" :src="store.user.avatar" v-bind="props"
+            <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture" v-bind="props"
               class="align-self-stretch" cover />
             <v-btn v-else data-test-id="navbarMenu" v-bind="props">
               {{ $t('navBar.picLabel') }}
@@ -48,7 +48,7 @@ const appIcon = window.config.appIcon
           </v-avatar>
         </v-badge>
         <v-avatar v-else size="large" color="grey-darken-3">
-          <v-img style="cursor: pointer;" v-if="store.user && store.user.avatar" :src="store.user.avatar" v-bind="props"
+          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture" v-bind="props"
             class="align-self-stretch" cover />
           <v-btn v-else data-test-id="navbarMenu" v-bind="props">
             {{ $t('navBar.picLabel') }}

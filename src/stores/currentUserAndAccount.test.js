@@ -167,28 +167,28 @@ describe('Current User And Account Store', () => {
       return 'success'
     }
 
-    const mockUploadUserAvatar = async function (params, formData) {
+    const mockUploadUserProfilePicture = async function (params, formData) {
       if (!params || !params.id || !params.accountId || !formData) {
         throw new RouteError('param and form Data Is Required')
       }
-      return { success: true, avatar: 'test' }
+      return { success: true, profilePicture: 'test' }
     }
 
-    const mockDeleteUserAvatar = async function (params) {
+    const mockDeleteUserProfilePicture = async function (params) {
       if (!params || !params.id || !params.accountId) {
         throw new RouteError('Account and User Id Is Required')
       }
       return { success: true }
     }
 
-    const mockUploadAccountAvatar = async function (params, formData) {
+    const mockUploadAccountProfilePicture = async function (params, formData) {
       if (!params || !params.id || !formData) {
         throw new RouteError('param and form Data Is Required')
       }
-      return { success: true, avatar: 'test' }
+      return { success: true, profilePicture: 'test' }
     }
 
-    const mockDeleteAccountAvatar = async function (params) {
+    const mockDeleteAccountProfilePicture = async function (params) {
       if (!params || !params.id) {
         throw new RouteError('Account Id Is Required')
       }
@@ -196,10 +196,10 @@ describe('Current User And Account Store', () => {
     }
 
     return {
-      account: { deleteAvatar: mockDeleteAccountAvatar, uploadAvatar: mockUploadAccountAvatar, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
+      account: { deleteProfilePicture: mockDeleteAccountProfilePicture, uploadProfilePicture: mockUploadAccountProfilePicture, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { deleteAvatar: mockDeleteUserAvatar, uploadAvatar: mockUploadUserAvatar, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
+      user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
     }
   }
 
@@ -587,39 +587,39 @@ describe('Current User And Account Store', () => {
     expect(res.message).toEqual('Valid Token Is Required')
   })
 
-  test('test success uploadAvatar', async () => {
+  test('test success uploadProfilePicture', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = { _id: '123test123' }
-    const res = await userStore.uploadUserAvatar({ avatar: 'test' })
+    const res = await userStore.uploadUserProfilePicture({ profilePicture: 'test' })
     expect(res.success).toEqual(true)
   })
 
-  test('test success deleteAvatar', async () => {
+  test('test success deleteProfilePicture', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = { _id: '123test123' }
-    const res = await userStore.deleteUserAvatar()
+    const res = await userStore.deleteUserProfilePicture()
     expect(res.success).toEqual(true)
   })
 
-  test('test uploadAvatar params error', async () => {
+  test('test uploadProfilePicture params error', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = {}
-    const res = await userStore.uploadUserAvatar()
+    const res = await userStore.uploadUserProfilePicture()
     expect(res.message).toEqual('param and form Data Is Required')
   })
 
-  test('test success deleteAvatar params error', async () => {
+  test('test success deleteProfilePicture params error', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = {}
     userStore.account = {}
-    const res = await userStore.deleteUserAvatar()
+    const res = await userStore.deleteUserProfilePicture()
     expect(res.message).toEqual('Account and User Id Is Required')
   })
 
@@ -636,39 +636,39 @@ describe('Current User And Account Store', () => {
 
 
 
-  test('test success uploadAvatar', async () => {
+  test('test success uploadProfilePicture', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = { _id: '123test123' }
-    const res = await userStore.uploadAccountAvatar({ avatar: 'test' })
+    const res = await userStore.uploadAccountProfilePicture({ profilePicture: 'test' })
     expect(res.success).toEqual(true)
   })
 
-  test('test success deleteAvatar', async () => {
+  test('test success deleteProfilePicture', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = { _id: '123test123' }
-    const res = await userStore.deleteAccountAvatar()
+    const res = await userStore.deleteAccountProfilePicture()
     expect(res.success).toEqual(true)
   })
 
-  test('test uploadAvatar params error', async () => {
+  test('test uploadProfilePicture params error', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = {}
-    const res = await userStore.uploadAccountAvatar()
+    const res = await userStore.uploadAccountProfilePicture()
     expect(res.message).toEqual('param and form Data Is Required')
   })
 
-  test('test success deleteAvatar params error', async () => {
+  test('test success deleteProfilePicture params error', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const userStore = currentUser()
     userStore.user = {}
     userStore.account = {}
-    const res = await userStore.deleteAccountAvatar()
+    const res = await userStore.deleteAccountProfilePicture()
     expect(res.message).toEqual('Account Id Is Required')
   })
 })

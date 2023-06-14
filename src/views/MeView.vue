@@ -59,13 +59,13 @@ async function handleDeleteEvent (params) {
   }
 }
 
-async function uploadAvatar (params, statusCallBack) {
-  const res = await store.uploadUserAvatar(params)
-  statusCallBack(res.avatar)
+async function uploadProfilePicture (params, statusCallBack) {
+  const res = await store.uploadUserProfilePicture(params)
+  statusCallBack(res.profilePicture)
 }
 
-async function deleteAvatar (statusCallBack) {
-  const res = await store.deleteUserAvatar()
+async function deleteProfilePicture (statusCallBack) {
+  const res = await store.deleteUserProfilePicture()
   statusCallBack(res)
 }
 
@@ -73,6 +73,6 @@ async function deleteAvatar (statusCallBack) {
 
 <template>
 
-<MeDetails v-if="data" :data="data" @deleteAvatarHandler="deleteAvatar" @uploadAvatarHandler="uploadAvatar" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
+<MeDetails v-if="data" :data="data" @deleteProfilePictureHandler="deleteProfilePicture" @uploadProfilePictureHandler="uploadProfilePicture" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
 
 </template>

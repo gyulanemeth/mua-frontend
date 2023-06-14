@@ -4,14 +4,14 @@ import DeleteMyAccount from './DeleteMyAccount.vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 import alerts from '../alerts/alert.js'
 
-const emit = defineEmits(['deleteEventHandler', 'uploadAvatarHandler', 'deleteAvatarHandler'])
+const emit = defineEmits(['deleteEventHandler', 'uploadProfilePictureHandler', 'deleteProfilePictureHandler'])
 const props = defineProps({
   data: Object
 })
 function redirectDeleteHandler (data) {
   emit('deleteEventHandler', data)
 }
-// check data and set avatar pic
+
 const processing = ref(false)
 const btnProcessing = ref(false)
 
@@ -19,17 +19,17 @@ const settings = ref({})
 const alert = alerts()
 const store = useCurrentUserAndAccountStore()
 await store.readOne()
-const defaultAvatar = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
-const avatar = ref(store.account.avatar)
+const defaultProfilePicture = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
+const profilePicture = ref(store.account.profilePicture)
 
 const submit = async () => {
   btnProcessing.value = true
   let res
-  if (settings.value.avatar === null) {
-    res = await store.deleteAccountAvatar()
-  } else if (settings.value.avatar) {
-    res = await store.uploadAccountAvatar(settings.value.avatar)
-    avatar.value = res.avatar
+  if (settings.value.profilePicture === null) {
+    res = await store.deleteAccountProfilePicture()
+  } else if (settings.value.profilePicture) {
+    res = await store.uploadAccountProfilePicture(settings.value.profilePicture)
+    profilePicture.value = res.profilePicture
   }
   if (res && !res.message) {
     alert.message('Updated Successfully')
@@ -37,30 +37,30 @@ const submit = async () => {
   btnProcessing.value = false
 }
 
-const removeAvatar = () => {
-  avatar.value = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
-  settings.value.avatar = null
-  avatar.value = null
+const removeProfilePicture = () => {
+  profilePicture.value = 'https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg'
+  settings.value.profilePicture = null
+  profilePicture.value = null
 }
 
 const handleFileChange = (event) => {
   processing.value = true
   const formData = new FormData()
-  formData.append('avatar', event.target.files[0])
-  settings.value.avatar = formData
+  formData.append('profilePicture', event.target.files[0])
+  settings.value.profilePicture = formData
   previewImage(event.target.files[0])
   processing.value = false
 }
 
 const openFileInput = () => {
-  const fileInput = document.getElementById('accountSettingAvatar')
+  const fileInput = document.getElementById('accountSettingProfilePicture')
   fileInput.click()
 }
 
 const previewImage = (file) => {
   const reader = new FileReader()
   reader.onload = () => {
-    avatar.value = reader.result
+    profilePicture.value = reader.result
   }
   reader.readAsDataURL(file)
 }
@@ -88,17 +88,17 @@ const previewImage = (file) => {
             </v-progress-circular>
           </div>
 
-          <v-img v-else :src="avatar || defaultAvatar" height="150px" cover></v-img>
-          <input ref="fileInput" type="file" id="accountSettingAvatar" style="display: none" @change="handleFileChange">
+          <v-img v-else :src="profilePicture || defaultProfilePicture" height="150px" cover></v-img>
+          <input ref="fileInput" type="file" id="accountSettingProfilePicture" style="display: none" @change="handleFileChange">
 
           <v-card-title class="justify-center py-0">
-            <v-btn v-if="avatar" @click="removeAvatar" color="red" variant="text" icon="mdi-delete-forever-outline"
+            <v-btn v-if="profilePicture" @click="removeProfilePicture" color="red" variant="text" icon="mdi-delete-forever-outline"
               size="small" />
             <v-btn v-else color="grey-lighten-1" @click="openFileInput" variant="text" icon="mdi-image-plus"
               size="small" />
           </v-card-title>
           <v-row class="justify-center py-3 ">
-            <p v-if="avatar">{{ $t('adminSettings.picDeleteSubmit') }}</p>
+            <p v-if="profilePicture">{{ $t('adminSettings.picDeleteSubmit') }}</p>
             <p v-else>{{ $t('adminSettings.picSubmit') }}</p>
           </v-row>
         </v-card>
