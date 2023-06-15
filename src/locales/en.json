@@ -24,6 +24,7 @@
     "header" : "Account Settings",
     "picLabel": "New Profile Picture",
     "picSubmit": "Upload",
+    "picDeleteSubmit": "Remove",
     "inputLabel": "Real user settings will be here",
     "inputPlaceholder": "Real user settings will be here",
     "btnLabel": "Update Settings",

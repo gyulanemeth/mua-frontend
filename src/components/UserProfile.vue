@@ -8,6 +8,7 @@ const props = defineProps({
 
 const role = ref(props.data.role)
 const dialog = ref()
+const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 
 </script>
 
@@ -65,7 +66,7 @@ const dialog = ref()
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
-                        <v-img src="https://selective.agency/wp-content/uploads/2018/02/placeholder-600x300.jpg" class="align-self-stretch" cover/>
+                        <v-img :src="profilePicture" class="align-self-stretch" cover/>
                     </v-avatar>
                 </v-col>
             </v-row>

@@ -60,10 +60,20 @@ async function handleDeleteEvent (params) {
   }
 }
 
+async function uploadProfilePicture (params, statusCallBack) {
+  const res = await store.uploadUserProfilePicture(params)
+  statusCallBack(res.profilePicture)
+}
+
+async function deleteProfilePicture (statusCallBack) {
+  const res = await store.deleteUserProfilePicture()
+  statusCallBack(res)
+}
+
 </script>
 
 <template>
 
-<MeDetails v-if="data" :data="data" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
+<MeDetails v-if="data" :data="data" @deleteProfilePictureHandler="deleteProfilePicture" @uploadProfilePictureHandler="uploadProfilePicture" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
 
 </template>

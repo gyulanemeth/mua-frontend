@@ -299,8 +299,47 @@ export default (connectors) => {
           useSystemMessagesStore().addError(e)
           return e
         }
+      },
+      async uploadUserProfilePicture (formData) {
+        try {
+          const res = await connectors.user.uploadProfilePicture({ accountId: this.account._id, id: this.user._id }, formData)
+          this.user.profilePicture = res.profilePicture
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async deleteUserProfilePicture () {
+        try {
+          const res = await connectors.user.deleteProfilePicture({ accountId: this.account._id, id: this.user._id })
+          delete this.user.profilePicture
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async uploadLogo (formData) {
+        try {
+          const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
+          this.account.profilePicture = res.profilePicture
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async deleteLogo () {
+        try {
+          const res = await connectors.account.deleteLogo({ id: this.account._id })
+          delete this.account.profilePicture
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
       }
-
     }
   })
 

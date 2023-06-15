@@ -167,11 +167,39 @@ describe('Current User And Account Store', () => {
       return 'success'
     }
 
+    const mockUploadUserProfilePicture = async function (params, formData) {
+      if (!params || !params.id || !params.accountId || !formData) {
+        throw new RouteError('param and form Data Is Required')
+      }
+      return { success: true, profilePicture: 'test' }
+    }
+
+    const mockDeleteUserProfilePicture = async function (params) {
+      if (!params || !params.id || !params.accountId) {
+        throw new RouteError('Account and User Id Is Required')
+      }
+      return { success: true }
+    }
+
+    const mockUploadLogo = async function (params, formData) {
+      if (!params || !params.id || !formData) {
+        throw new RouteError('param and form Data Is Required')
+      }
+      return { success: true, profilePicture: 'test' }
+    }
+
+    const mockDeleteLogo = async function (params) {
+      if (!params || !params.id) {
+        throw new RouteError('Account Id Is Required')
+      }
+      return { success: true }
+    }
+
     return {
-      account: { patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
+      account: { deleteLogo: mockDeleteLogo, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
+      user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
     }
   }
 
@@ -390,7 +418,7 @@ describe('Current User And Account Store', () => {
   test('test patchAccountName fail  id required ', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    store.account = { }
+    store.account = {}
     const res = await store.patchAccountName('user2')
     expect(res.message).toEqual('User ID Is Required')
   })
@@ -475,7 +503,7 @@ describe('Current User And Account Store', () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
     window.location.pathname = '/me'
-    store.account = { }
+    store.account = {}
     store.user = {}
     const res = await store.readOneUser()
     expect(res.message).toEqual(undefined)
@@ -484,7 +512,7 @@ describe('Current User And Account Store', () => {
   test('test readOneUser fail ', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    store.account = { }
+    store.account = {}
     store.user = {}
     localStorage.removeItem('accessToken')
     const res = await store.readOneUser()
@@ -557,5 +585,77 @@ describe('Current User And Account Store', () => {
     const userStore = currentUser()
     const res = await userStore.patchEmailConfirm('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNTE2MjM5MDIyfQ.L8i6g3PfcHlioHCCPURC9pmXT7gdJpx3kOoyAfNUwCc')
     expect(res.message).toEqual('Valid Token Is Required')
+  })
+
+  test('test success uploadProfilePicture', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = { _id: '123test123' }
+    const res = await userStore.uploadUserProfilePicture({ profilePicture: 'test' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test success deleteProfilePicture', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = { _id: '123test123' }
+    const res = await userStore.deleteUserProfilePicture()
+    expect(res.success).toEqual(true)
+  })
+
+  test('test uploadProfilePicture params error', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = {}
+    const res = await userStore.uploadUserProfilePicture()
+    expect(res.message).toEqual('param and form Data Is Required')
+  })
+
+  test('test success deleteProfilePicture params error', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = {}
+    userStore.account = {}
+    const res = await userStore.deleteUserProfilePicture()
+    expect(res.message).toEqual('Account and User Id Is Required')
+  })
+
+  test('test success uploadLogo', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = { _id: '123test123' }
+    const res = await userStore.uploadLogo({ logo: 'test' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test success deleteLogo', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = { _id: '123test123' }
+    const res = await userStore.deleteLogo()
+    expect(res.success).toEqual(true)
+  })
+
+  test('test uploadLogo params error', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = { _id: '12test12' }
+    userStore.account = {}
+    const res = await userStore.uploadLogo()
+    expect(res.message).toEqual('param and form Data Is Required')
+  })
+
+  test('test success logo params error', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const userStore = currentUser()
+    userStore.user = {}
+    userStore.account = {}
+    const res = await userStore.deleteLogo()
+    expect(res.message).toEqual('Account Id Is Required')
   })
 })

@@ -6,7 +6,7 @@ import ChangeEmail from './ChangeEmail.vue'
 import ChangePassword from './ChangePassword.vue'
 import MyDetails from './MyDetails.vue'
 
-const emit = defineEmits(['updateNameHandler', 'updateEmailHandler', 'updatePasswordHandler', 'deleteMyAccountHandler'])
+const emit = defineEmits(['updateNameHandler', 'deleteProfilePictureHandler', 'uploadProfilePictureHandler', 'updateEmailHandler', 'updatePasswordHandler', 'deleteMyAccountHandler'])
 const props = defineProps({
   data: Object
 })
@@ -15,6 +15,12 @@ const changeTab = (tabId) => {
   tab.value = tabId
 }
 
+async function redirectDeleteProfilePictureHandler (cb) {
+  emit('deleteProfilePictureHandler', cb)
+}
+async function redirectUploadProfilePictureHandler (data, cb) {
+  emit('uploadProfilePictureHandler', data, cb)
+}
 async function redirectUpdateNameHandler (data) {
   emit('updateNameHandler', data)
 }
@@ -58,7 +64,7 @@ const tab = ref('me')
                 <v-window v-model="tab">
 
                     <v-window-item value="me">
-                        <MyDetails @updateNameHandler="redirectUpdateNameHandler" @changeTab="changeTab" :email="props.data.email" :name="props.data.name" />
+                        <MyDetails @updateNameHandler="redirectUpdateNameHandler" @deleteProfilePictureHandler="redirectDeleteProfilePictureHandler" @uploadProfilePictureHandler="redirectUploadProfilePictureHandler" @changeTab="changeTab" :email="props.data.email" :name="props.data.name" :profilePicture="props.data.profilePicture" />
                     </v-window-item>
 
                     <v-window-item value="changePassword">

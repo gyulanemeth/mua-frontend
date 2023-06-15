@@ -44,6 +44,7 @@ export default function (fetch, apiUrl) {
   const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('invitationToken')}` }))
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
+  const deleteLogoRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/logo`, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
@@ -152,8 +153,32 @@ export default function (fetch, apiUrl) {
     return res.loginToken
   }
 
+  const uploadLogo = async function (params, formData) {
+    if (!params || !params.id || !formData) {
+      throw new RouteError('param and form Data Is Required')
+    }
+    const url = `${apiUrl}/v1/accounts/${params.id}/logo/`
+
+    const requestOptions = {
+      method: 'POST',
+      headers: generateAdditionalHeaders(),
+      body: formData
+    }
+    let res = await fetch(url, requestOptions)
+    res = await res.json()
+    return res.result
+  }
+
+  const deleteLogo = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('Account Id Is Required')
+    }
+    const res = await deleteLogoRoute(params)
+    return res
+  }
+
   return {
-    account: { list, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
+    account: { list, uploadLogo, deleteLogo, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept },
     forgotPassword: { send: sendForgotPassword, reset }
   }
