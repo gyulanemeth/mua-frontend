@@ -38,7 +38,7 @@ const submit = async () => {
 }
 
 const removeLogo = () => {
-    logo.value = import.meta.env.BASE_URL + 'placeholder.jpg'
+  logo.value = import.meta.env.BASE_URL + 'placeholder.jpg'
   settings.value.logo = null
   logo.value = null
 }

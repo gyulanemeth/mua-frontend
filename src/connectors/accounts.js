@@ -44,7 +44,7 @@ export default function (fetch, apiUrl) {
   const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('invitationToken')}` }))
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
-  const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/profile-picture`, generateAdditionalHeaders)
+  const deleteLogoRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/logo`, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
@@ -153,11 +153,11 @@ export default function (fetch, apiUrl) {
     return res.loginToken
   }
 
-  const uploadProfilePicture = async function (params, formData) {
+  const uploadLogo = async function (params, formData) {
     if (!params || !params.id || !formData) {
       throw new RouteError('param and form Data Is Required')
     }
-    const url = `${apiUrl}/v1/accounts/${params.id}/profile-picture/`
+    const url = `${apiUrl}/v1/accounts/${params.id}/logo/`
 
     const requestOptions = {
       method: 'POST',
@@ -169,16 +169,16 @@ export default function (fetch, apiUrl) {
     return res.result
   }
 
-  const deleteProfilePicture = async function (params) {
+  const deleteLogo = async function (params) {
     if (!params || !params.id) {
       throw new RouteError('Account Id Is Required')
     }
-    const res = await deleteProfilePictureRoute(params)
+    const res = await deleteLogoRoute(params)
     return res
   }
 
   return {
-    account: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
+    account: { list, uploadLogo, deleteLogo, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept },
     forgotPassword: { send: sendForgotPassword, reset }
   }

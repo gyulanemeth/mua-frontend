@@ -320,9 +320,9 @@ export default (connectors) => {
           return e
         }
       },
-      async uploadAccountProfilePicture (formData) {
+      async uploadLogo (formData) {
         try {
-          const res = await connectors.account.uploadProfilePicture({ id: this.account._id }, formData)
+          const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
           this.account.profilePicture = res.profilePicture
           return res
         } catch (e) {
@@ -330,9 +330,9 @@ export default (connectors) => {
           return e
         }
       },
-      async deleteAccountProfilePicture () {
+      async deleteLogo () {
         try {
-          const res = await connectors.account.deleteProfilePicture({ id: this.account._id })
+          const res = await connectors.account.deleteLogo({ id: this.account._id })
           delete this.account.profilePicture
           return res
         } catch (e) {
