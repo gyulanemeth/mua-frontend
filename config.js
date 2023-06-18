@@ -16,7 +16,7 @@ window.config = {
     {
       name: 'Design System',
       icon: 'mdi-palette-outline',
-      url: (params) => `http://app.emailfox.link/accounts/${params.accountId}/design-system?token=${params.token}`
+      url: (params) => `http://app.emailfox.link/accounts/${params.accountId}/design-systems?token=${params.token}`
     },
     {
       name: 'Projects',
