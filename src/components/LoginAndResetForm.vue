@@ -131,7 +131,7 @@ const title = window.config.title
 
                 <div v-if="!props.tokenData.accounts">
                     <div v-if="!cb">
-                        <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-getLoginAccountsBtn"
+                        <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                             @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? props.formData.btnText : '' }}
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
