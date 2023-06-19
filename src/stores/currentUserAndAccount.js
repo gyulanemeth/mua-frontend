@@ -27,7 +27,7 @@ export default (connectors) => {
     }
     storage.user = jwtDecode(storedAccessToken).user
     storage.accessToken = storedAccessToken
-    if (route.name === 'loginWithUrlFriendlyName') {
+    if (route.name === 'loginWithUrlFriendlyName' || route.name === 'login' ) {
       router.push(`/${route.params.urlFriendlyName}/users`)
     }
   }
