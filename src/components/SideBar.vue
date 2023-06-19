@@ -1,17 +1,20 @@
 <script setup>
 import { computed } from 'vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useRoute } from 'vue-router'
 
 const store = useCurrentUserAndAccountStore()
+const route = useRoute()
 
-function redirect (url) {
-  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken') })
+function redirect (url, urlFriendlyName) {
+  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken'), urlFriendlyName })
 }
 
 const menuPaths = computed(() => {
   const account = store.account
   if (account && account.urlFriendlyName) {
     const urlFriendlyName = account.urlFriendlyName
+
     return {
       mePath: `/${urlFriendlyName}/me`,
       accountPath: `/${urlFriendlyName}/account`,
@@ -58,7 +61,7 @@ const sideBarIcons = window.config.sideBarIcons
                 </v-list-item-icon>
             </v-list-item>
             <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" >
-              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url)">
+              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
               <v-tooltip
                   activator="parent"
                   location="end top" origin="start center"
