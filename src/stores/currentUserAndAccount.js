@@ -264,7 +264,6 @@ export default (connectors) => {
           if (!token || !tokenData || Date.now() >= tokenData.exp * 1000) {
             throw new RouteError('Valid Token Is Required')
           }
-          console.log('loginToken');
           const loginToken = await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
