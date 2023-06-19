@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
@@ -7,6 +7,7 @@ import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
   const router = useRouter() || [] // [] for test
+  const route = useRoute() || [] // [] for test
 
   const storage = {}
 
@@ -26,8 +27,8 @@ export default (connectors) => {
     }
     storage.user = jwtDecode(storedAccessToken).user
     storage.accessToken = storedAccessToken
-    if (window.location.pathname === '/') {
-      router.push(`/${storage.account.urlFriendlyName}/users`)
+    if (route.name === 'loginWithUrlFriendlyName') {
+      router.push(`/${route.params.urlFriendlyName}/users`)
     }
   }
 
