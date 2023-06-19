@@ -560,4 +560,36 @@ describe('test accounts connectors', () => {
     })
     await expect(users(fetch, apiUrl).user.deleteProfilePicture()).rejects.toThrowError('Account and User Id Is Required')
   })
+
+  test('test login with urlFriendlyName ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/123/urlFriendlyName-login',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: 'userPassword', email: 'test@tes123.com' }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res).toEqual('Token')
+  })
+
+  test('test login with urlFriendlyName undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).user.loginWithUrlFriendlyName()).rejects.toThrowError('User Password Is Required')
+  })
 })

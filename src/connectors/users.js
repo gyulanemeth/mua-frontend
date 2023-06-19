@@ -35,6 +35,8 @@ export default function (fetch, apiUrl) {
 
   const generateDeletePermissionRoute = (params) => `/v1/${params.type}/permission/delete`
 
+  const generateLoginWithUrlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/urlFriendlyName-login`
+
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
@@ -50,6 +52,7 @@ export default function (fetch, apiUrl) {
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
   const delPermissionAdmin = createPostConnector(fetch, window.config.adminApiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
+  const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -97,6 +100,17 @@ export default function (fetch, apiUrl) {
       throw new RouteError('User Password Is Required')
     }
     const res = await postLogin({ id: formData.accountId }, { password: formData.password })
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
+    return res.loginToken
+  }
+
+  const loginWithUrlFriendlyName = async function (formData) {
+    if (!formData || !formData.password || !formData.urlFriendlyName) {
+      throw new RouteError('User Password Is Required')
+    }
+    const res = await postLoginUrlFriendlyName({ id: formData.urlFriendlyName }, { password: formData.password, email: formData.email })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
@@ -192,7 +206,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, deleteProfilePicture, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
+    user: { list, deleteProfilePicture, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
     config: { getConfig }
   }
 }

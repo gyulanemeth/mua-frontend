@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
@@ -6,6 +7,23 @@ const store = useCurrentUserAndAccountStore()
 function redirect (url) {
   return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken') })
 }
+
+const menuPaths = computed(() => {
+  const account = store.account
+  if (account && account.urlFriendlyName) {
+    const urlFriendlyName = account.urlFriendlyName
+    return {
+      mePath: `/${urlFriendlyName}/me`,
+      accountPath: `/${urlFriendlyName}/account`,
+      usersPath: `/${urlFriendlyName}/users`
+    }
+  }
+  return {
+    mePath: '/default/me',
+    accountPath: '/default/account',
+    usersPath: '/default/users'
+  }
+})
 
 const adminUrl = window.config.adminsAppBaseUrl
 const sideBarIcons = window.config.sideBarIcons
@@ -56,9 +74,9 @@ const sideBarIcons = window.config.sideBarIcons
 
     <v-navigation-drawer class="elevation-2" permanent>
         <v-list>
-            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" to="/me" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" to="/account" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" to="/users" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" :to="menuPaths.mePath" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" :to="menuPaths.accountPath" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" :to="menuPaths.usersPath" />
         </v-list>
     </v-navigation-drawer>
 

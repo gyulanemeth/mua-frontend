@@ -22,6 +22,13 @@ async function loadData () {
       header: tm('loginAndResetForm.loginHeader')
     }
   }
+  if (route.name === 'loginWithUrlFriendlyName') {
+    formData.value = {
+      btnText: tm('loginAndResetForm.loginBtnText'),
+      header: tm('loginAndResetForm.loginHeader'),
+      urlFriendlyName: true
+    }
+  }
   if (route.query.token) {
     tokenData.value = jwtDecode(route.query.token)
     if (tokenData.value.account) {
@@ -60,6 +67,11 @@ async function handleGetLoginAccountEvent (params, statusCallBack) {
   statusCallBack(!res.message)
 }
 
+async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
+  const res = await store.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
+  statusCallBack(!res.message)
+}
+
 async function handleLoginEvent (params, statusCallBack) {
   await store.login(route.query.token, params.password, params.account)
   statusCallBack(true)
@@ -73,6 +85,6 @@ watchEffect(async () => {
 
 <template>
 
-<LoginAndResetForm v-if="formData" :formData='formData' :tokenData="tokenData" @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent" @handleForgotPasswordHandler="handleForgotPasswordEvent" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
+<LoginAndResetForm v-if="formData" :formData='formData' :tokenData="tokenData" @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent" @handleForgotPasswordHandler="handleForgotPasswordEvent" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
 
 </template>

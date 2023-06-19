@@ -35,22 +35,30 @@ describe('Current User And Account Store', () => {
 
   const mokeConnector = () => {
     const mockLoginGetAccounts = (formData) => {
-      if (formData === undefined || formData.email === undefined) {
+      if (!formData || !formData.email) {
         throw new RouteError('User Email Is Required')
       }
       return { success: true }
     }
 
     const mockLogin = (formData) => {
-      if (formData === undefined || formData.password === undefined || formData.accountId === undefined) {
+      if (!formData || !formData.password || !formData.accountId) {
         throw new RouteError('User Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
       return token
     }
 
+    const mockLoginWithUrlFriendlyName = (formData) => {
+      if (!formData || !formData.password || !formData.urlFriendlyName) {
+        throw new RouteError('User Password Is Required')
+      }
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' } }, secrets)
+      return token
+    }
+
     const mockSendForgetPasssword = (data) => {
-      if (data === undefined || data.email === undefined || data.id === undefined) {
+      if (!data || !data.email || !data.id) {
         throw new RouteError('Email Is Required')
       }
       return { success: true }
@@ -66,7 +74,7 @@ describe('Current User And Account Store', () => {
     }
 
     const mockReset = async function (formData) {
-      if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+      if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
         throw new RouteError('User Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
@@ -74,14 +82,14 @@ describe('Current User And Account Store', () => {
     }
 
     const mockSendInvitation = async function (data) {
-      if (data === undefined || data.id === undefined || data.email === undefined) {
+      if (!data || !data.id || !data.email) {
         throw new RouteError('Email Is Required')
       }
       return { success: true }
     }
 
     const mockAccept = async function (formData) {
-      if (formData === undefined || formData.id === undefined || formData.token === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+      if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
         throw new RouteError('Accouunt Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
@@ -89,46 +97,46 @@ describe('Current User And Account Store', () => {
     }
 
     const mockUserReadOne = (data) => {
-      if (data === undefined || data.accountId === undefined || data.id === undefined) {
+      if (!data || !data.accountId || !data.id) {
         throw new RouteError('ID And Account ID Is Required')
       }
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
     const mockAccountReadOne = (id) => {
-      if (id === undefined) {
+      if (!id) {
         throw new RouteError('Admin ID Is Required')
       }
       return { name: 'user1', urlFriendlyName: 'urlFriendlyName1', _id: '12test12' }
     }
 
     const mockPatchUserName = async function (data) {
-      if (data === undefined || data.id === undefined || data.accountId === undefined || data.name === undefined) {
+      if (!data || !data.id || !data.accountId || !data.name) {
         throw new RouteError('User ID, Account ID And New Name Is Required')
       }
       return data.name
     }
     const mockPatchAccountName = async function (formData) {
-      if (formData === undefined || formData.id === undefined || formData.name === undefined) {
+      if (!formData || !formData.id || !formData.name) {
         throw new RouteError('Account ID And New Name Is Required')
       }
       return formData.name
     }
     const mockPatchAccountUrlFriendlyName = async function (formData) {
-      if (formData === undefined || formData.id === undefined || formData.urlFriendlyName === undefined) {
+      if (!formData || !formData.id || !formData.urlFriendlyName) {
         throw new RouteError('Account ID And New urlFriendlyName Is Required')
       }
       return formData.urlFriendlyName
     }
 
     const mockPatchPassword = async function (formData) {
-      if (formData === undefined || formData.id === undefined || formData.accountId === undefined || formData.oldPassword === undefined || formData.newPassword === undefined || formData.newPasswordAgain === undefined) {
+      if (!formData || !formData.id || !formData.accountId || !formData.oldPassword || !formData.newPassword || !formData.newPasswordAgain) {
         throw new RouteError('User ID, Account ID And New Password Is Required')
       }
       return { success: true }
     }
 
     const mockgetAccessToken = (data) => {
-      if (data === undefined || data.accountId === undefined || data.id === undefined) {
+      if (!data || !data.accountId || !data.id) {
         throw new RouteError('ID And Account ID Is Required')
       }
       const token = jwt.sign(
@@ -199,7 +207,7 @@ describe('Current User And Account Store', () => {
       account: { deleteLogo: mockDeleteLogo, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
+      user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
     }
   }
 
@@ -267,7 +275,7 @@ describe('Current User And Account Store', () => {
   })
 
   test('test logOut Admin', async () => {
-    const token = jwt.sign({ type: 'admin', data: 'token' }, secrets)
+    const token = jwt.sign({ type: 'admin', account: { urlFriendlyName: 'urlFriendlyName1' } }, secrets)
     window.location.search = { token, accountId: '112233' }
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
@@ -481,7 +489,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '123123' }
     store.user = { _id: '123123' }
-    const token = jwt.sign({ type: 'user' }, secrets)
+    const token = jwt.sign({ type: 'user', account: { urlFriendlyName: 'urlFriendlyName1' } }, secrets)
     localStorage.setItem('accessToken', token)
 
     const res = await store.readOneUser()
@@ -493,7 +501,7 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = { _id: '123123' }
     store.user = { _id: '123123' }
-    const token = jwt.sign({ type: 'admin', user: { name: 'userName', _id: '123123' } }, secrets)
+    const token = jwt.sign({ type: 'admin', user: { name: 'userName', _id: '123123' }, account: { urlFriendlyName: 'urlFriendlyName1' } }, secrets)
     localStorage.setItem('accessToken', token)
     const res = await store.readOneUser()
     expect(res).toEqual({ role: 'admin', name: 'userName', _id: '123123' })
@@ -657,5 +665,22 @@ describe('Current User And Account Store', () => {
     userStore.account = {}
     const res = await userStore.deleteLogo()
     expect(res.message).toEqual('Account Id Is Required')
+  })
+
+  test('test success login with UrlFriendlyName', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const token = jwt.sign(
+      { type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    await store.loginWithUrlFriendlyName({ password: 'password', urlFriendlyName: 'urlFriendlyName', email: 'test@test.com' })
+    expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
+    expect(store.accessToken).toEqual(token)
+  })
+
+  test('test success login with UrlFriendlyName input error ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const res = await store.loginWithUrlFriendlyName({})
+    expect(res.message).toEqual('User Password Is Required')
   })
 })
