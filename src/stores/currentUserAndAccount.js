@@ -7,8 +7,6 @@ import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
   const router = useRouter() || [] // [] for test
-  const route = useRoute() || [] // [] for test
-
   const storage = {}
 
   const query = new URLSearchParams(window.location.search)
@@ -27,9 +25,6 @@ export default (connectors) => {
     }
     storage.user = jwtDecode(storedAccessToken).user
     storage.accessToken = storedAccessToken
-    if (route.name === 'loginWithUrlFriendlyName' || route.name === 'login') {
-      router.push(`/${route.params.urlFriendlyName}/users`)
-    }
   }
 
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
