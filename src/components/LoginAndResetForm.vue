@@ -12,6 +12,7 @@ const route = useRoute()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
+const checkbox = ref()
 
 if (props.tokenData.user) {
   data.value.email = ref(props.tokenData.user.email)
@@ -102,26 +103,26 @@ const title = window.config.title
                             :value="data.confirmPassword"
                             @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" value="I am human"
+                        <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
-                        <v-btn color="info" data-test-id="loginAndResetForm-submitBtn"
+                        <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
                             @click="$emit('handleForgotPasswordResetHandler', data)">{{ props.formData.btnText }}</v-btn>
-                        <button hidden @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data)" />
+                        <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data)" />
                     </div>
                 </div>
 
                 <div
                     v-if="props.tokenData.accounts && !props.tokenData.account && props.formData.btnText === $t('loginAndResetForm.resetBtnText')">
                     <div v-if="cb !== 'reset'">
-                        <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" value="I am human"
+                        <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
-                        <v-btn color="info" data-test-id="loginAndResetForm-forgotPasswordBtn"
+                        <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-forgotPasswordBtn"
                             @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res? cb = res: null; processing = false })">
                             {{ !processing ? props.formData.btnText : '' }}
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
-                        <button hidden
+                        <button hidden :disabled="!checkbox"
                             @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res? cb = res: null; processing = false })" />
                     </div>
                     <p v-if="cb === 'reset'" data-test-id="loginAndResetForm-forgotPasswordCb" class="mt-4">
@@ -145,7 +146,7 @@ const title = window.config.title
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>
-                    <button hidden
+                    <button hidden :disabled="!checkbox"
                         @click.enter.prevent="$emit('handleGetLoginAccountsHandler', data.email, (res) => { res? cb = res: null; })" />
                 </div>
 

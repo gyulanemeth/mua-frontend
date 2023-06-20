@@ -13,6 +13,7 @@ const processing = ref(false)
 const tokenData = ref()
 const data = ref({})
 const cb = ref()
+const checkbox = ref()
 tokenData.value = jwtDecode(route.query.token)
 
 const appIcon = window.config.appIcon
@@ -62,10 +63,10 @@ const title = window.config.title
                     :value="data.newPasswordAgain"
                     @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
-                <v-checkbox :label="$t('acceptInvitationForm.checkboxLabel')" color="info" value="I am human"
+                <v-checkbox :label="$t('acceptInvitationForm.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
                 <v-col>
-                    <v-btn color="info" data-test-id="acceptInvitation-submitBtn"
+                    <v-btn color="info" data-test-id="acceptInvitation-submitBtn" :disabled="!checkbox"
                         @click="processing = true; $emit('handleAcceptInvitationHandler', data, () => { processing = false })">
                         {{ !processing ? props.formData.btnText : '' }}
 
@@ -73,7 +74,7 @@ const title = window.config.title
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
 
                     </v-btn>
-                    <button hidden
+                    <button hidden :disabled="!checkbox"
                         @click.enter.prevent="$emit('handleAcceptInvitationHandler', data, () => { processing = false })" />
                 </v-col>
             </v-card-text>

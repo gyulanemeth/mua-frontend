@@ -9,6 +9,8 @@ const data = ref({
 const appIcon = window.config.appIcon
 const title = window.config.title
 
+const checkbox = ref()
+
 </script>
 
 <template>
@@ -79,12 +81,12 @@ const title = window.config.title
             :value="data.user.newPasswordAgain"
             @update:modelValue="res => data.user.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required/>
-            <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" value="I am human" hide-details></v-checkbox>
+            <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" v-model="checkbox" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">
+                <v-btn color="info" :disabled="!checkbox" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">
                     {{$t('createAccount.submitBtn')}}
                 </v-btn>
-                <button hidden @click.enter.prevent="$emit('buttonEvent',data)" />
+                <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data)" />
             </v-col>
         </v-card-text>
     </v-card>
