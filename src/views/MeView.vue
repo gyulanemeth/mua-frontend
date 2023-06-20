@@ -20,7 +20,7 @@ if (route.name === 'verify-email') {
   const res = await store.patchEmailConfirm(route.query.token)
   if (!res.message) {
     await store.readOne()
-    router.push('/me')
+    router.push(`/${store.account.urlFriendlyName}/me`)
     alert.message(tm('changeEmail.verifyMessage'))
   }
 } else if (!store.user || !store.user.name) {

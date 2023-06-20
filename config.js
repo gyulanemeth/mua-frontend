@@ -11,17 +11,17 @@ window.config = {
     {
       name: 'Email Application',
       icon: 'mdi-email-variant',
-      url: (params) => `http://app.emailfox.link/accounts/${params.accountId}?token=${params.token}`
+      url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}?token=${params.token}&accountId=${params.accountId}`
     },
     {
       name: 'Design System',
       icon: 'mdi-palette-outline',
-      url: (params) => `http://app.emailfox.link/accounts/${params.accountId}/design-systems?token=${params.token}`
+      url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}/design-system?token=${params.token}&accountId=${params.accountId}`
     },
     {
       name: 'Projects',
       icon: 'mdi-card-account-details-outline',
-      url: (params) => `http://app.emailfox.link/accounts/${params.accountId}/projects?token=${params.token}`
+      url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}/projects?token=${params.token}&accountId=${params.accountId}`
     }
   ]
 }

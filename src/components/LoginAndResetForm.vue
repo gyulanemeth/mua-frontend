@@ -46,6 +46,15 @@ const title = window.config.title
                     :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
                     :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
+
+                <v-text-field v-if="props.formData.urlFriendlyName" hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded"
+                    color="info" variant="plain" name="password" data-test-id="loginAndResetForm-passwordField"
+                    :label="$t('loginAndResetForm.passwordLabel')" type="password"
+                    :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
+                    :value="data.password"
+                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                    required />
+
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account"
                     data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
                     density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
@@ -132,7 +141,7 @@ const title = window.config.title
                 <div v-if="!props.tokenData.accounts">
                     <div v-if="!cb">
                         <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                            @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
+                            @click="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? props.formData.btnText : '' }}
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}

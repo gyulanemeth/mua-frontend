@@ -1,20 +1,24 @@
 <script setup>
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
-const menuItems = [{
-  title: 'Me',
-  path: '/me'
-}, {
-  title: 'Account Settings',
-  path: '/account'
-}, {
-  title: 'Account Users',
-  path: '/users'
-}]
+const menuItems = computed(() => {
+  const urlFriendlyName = route.params.urlFriendlyName
+  return [{
+    title: 'Me',
+    path: `/${urlFriendlyName}/me`
+  }, {
+    title: 'Account Settings',
+    path: `/${urlFriendlyName}/account`
+  }, {
+    title: 'Account Users',
+    path: `/${urlFriendlyName}/users`
+  }]
+})
 
 const appName = window.config.appName
 const appIcon = window.config.appIcon

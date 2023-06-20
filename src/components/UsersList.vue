@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
+
+const route = useRoute()
 
 const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore', 'searchEvent'])
 const props = defineProps({
@@ -85,7 +88,7 @@ const profilePicture = (item) => {
 
                 </v-card-actions>
                 <v-card-actions v-if="props.currentUser._id === item._id">
-                    <v-btn color="info" class="text-white" to="/me">{{ $t('userList.openBtn') }}</v-btn>
+                    <v-btn color="info" class="text-white" :to="`/${route.params.urlFriendlyName}/me`">{{ $t('userList.openBtn') }}</v-btn>
                 </v-card-actions>
 
             </v-card>

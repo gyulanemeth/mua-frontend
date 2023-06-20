@@ -13,13 +13,18 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/users',
+      path: '/:urlFriendlyName/users',
       name: 'users',
       component: UserView
     },
     {
       path: '/',
       name: 'login',
+      component: LoginAndResetView
+    },
+    {
+      path: '/:urlFriendlyName',
+      name: 'loginWithUrlFriendlyName',
       component: LoginAndResetView
     },
     {
@@ -43,7 +48,7 @@ const router = createRouter({
       component: LoginAndResetView
     },
     {
-      path: '/me',
+      path: '/:urlFriendlyName/me',
       name: 'me',
       component: MeView
     },
@@ -53,7 +58,7 @@ const router = createRouter({
       component: MeView
     },
     {
-      path: '/account',
+      path: '/:urlFriendlyName/account',
       name: 'account',
       component: AccountView
     },
@@ -76,7 +81,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (localStorage.getItem('accessToken') && to.path !== '/redirectToLoginMessage' && to.path !== '/login-select') {
+  if (localStorage.getItem('accessToken') && to.name !== 'redirectToLoginMessage' && to.name !== 'login-select') {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
@@ -84,17 +89,21 @@ router.beforeEach((to, from, next) => {
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
     }
   }
-
+  if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName') ) {
+    window.location.href = `/${to.params.urlFriendlyName}/users`
+  }
+  
   if (!localStorage.getItem('accessToken') &&
-  to.path !== '/forgot-password/reset' &&
-  to.path !== '/forgot-password' &&
-  to.path !== '/finalize-registration' &&
-  to.path !== '/login-select' &&
-  to.path !== '/invitation/accept' &&
-  to.path !== '/create-account' &&
-  to.path !== '/' &&
-  to.path !== '/verify-email' &&
-  to.path !== '/redirectToLoginMessage') {
+  to.name !== 'forgot-password-reset' &&
+  to.name !== 'forgot-password' &&
+  to.name !== 'finalize-registration' &&
+  to.name !== 'login-select' &&
+  to.name !== 'accept-invitation' &&
+  to.name !== 'create-account' &&
+  to.name !== 'login' &&
+  to.name !== 'loginWithUrlFriendlyName' &&
+  to.name !== 'verify-email' &&
+  to.name !== 'redirectToLoginMessage') {
     window.location.href = '/redirectToLoginMessage'
   } else next()
 })

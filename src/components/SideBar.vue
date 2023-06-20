@@ -1,11 +1,32 @@
 <script setup>
+import { computed } from 'vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useRoute } from 'vue-router'
 
 const store = useCurrentUserAndAccountStore()
+const route = useRoute()
 
-function redirect (url) {
-  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken') })
+function redirect (url, urlFriendlyName) {
+  return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken'), urlFriendlyName })
 }
+
+const menuPaths = computed(() => {
+  const account = store.account
+  if (account && account.urlFriendlyName) {
+    const urlFriendlyName = account.urlFriendlyName
+
+    return {
+      mePath: `/${urlFriendlyName}/me`,
+      accountPath: `/${urlFriendlyName}/account`,
+      usersPath: `/${urlFriendlyName}/users`
+    }
+  }
+  return {
+    mePath: '/default/me',
+    accountPath: '/default/account',
+    usersPath: '/default/users'
+  }
+})
 
 const adminUrl = window.config.adminsAppBaseUrl
 const sideBarIcons = window.config.sideBarIcons
@@ -40,7 +61,7 @@ const sideBarIcons = window.config.sideBarIcons
                 </v-list-item-icon>
             </v-list-item>
             <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" >
-              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url)">
+              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
               <v-tooltip
                   activator="parent"
                   location="end top" origin="start center"
@@ -56,9 +77,9 @@ const sideBarIcons = window.config.sideBarIcons
 
     <v-navigation-drawer class="elevation-2" permanent>
         <v-list>
-            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" to="/me" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" to="/account" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" to="/users" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" :to="menuPaths.mePath" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" :to="menuPaths.accountPath" />
+            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" :to="menuPaths.usersPath" />
         </v-list>
     </v-navigation-drawer>
 

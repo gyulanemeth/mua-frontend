@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
@@ -7,7 +7,6 @@ import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
   const router = useRouter() || [] // [] for test
-
   const storage = {}
 
   const query = new URLSearchParams(window.location.search)
@@ -26,9 +25,6 @@ export default (connectors) => {
     }
     storage.user = jwtDecode(storedAccessToken).user
     storage.accessToken = storedAccessToken
-    if (window.location.pathname === '/') {
-      router.push('/users')
-    }
   }
 
   const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
@@ -64,7 +60,21 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push('/me')
+          router.push(`/${this.account.urlFriendlyName}/me`)
+          return true
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async loginWithUrlFriendlyName (params) {
+        try {
+          const loginToken = await connectors.user.loginWithUrlFriendlyName({ password: params.password, urlFriendlyName: params.urlFriendlyName, email: params.email })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
+          router.push(`/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -129,7 +139,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push('/me')
+          router.push(`/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -157,7 +167,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push('/me')
+          router.push(`/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -211,7 +221,7 @@ export default (connectors) => {
           }
           await connectors.user.patchName({ id: this.user._id, name, accountId: this.account._id })
           this.user.name = name
-          router.push('/me')
+          router.push(`/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -225,7 +235,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
-          router.push('/account')
+          router.push(`/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -239,7 +249,7 @@ export default (connectors) => {
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
-          router.push('/account')
+          router.push(`/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -283,7 +293,7 @@ export default (connectors) => {
             throw new RouteError('User ID And Account ID Is Required')
           }
           const res = await connectors.user.patchEmail({ id: this.user._id, accountId: this.account._id, newEmail, newEmailAgain })
-          router.push('/me')
+          router.push(`/${this.account.urlFriendlyName}/me`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -297,7 +307,7 @@ export default (connectors) => {
             throw new RouteError('Valid Token Is Required')
           }
           const res = await connectors.user.patchEmailConfirm({ id: tokenData.user._id, accountId: tokenData.account._id, token })
-          router.push('/')
+          router.push(`/${tokenData.account.urlFriendlyName}/`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
