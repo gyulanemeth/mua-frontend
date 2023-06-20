@@ -572,7 +572,7 @@ describe('test accounts connectors', () => {
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).user.loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/123/login/url-Friendly-Name',
+      'https:/mua/accounts/v1/accounts/123/login/url-friendly-name',
       {
         method: 'POST',
         body: JSON.stringify({ password: 'userPassword', email: 'test@tes123.com' }),

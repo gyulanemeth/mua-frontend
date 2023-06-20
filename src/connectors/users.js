@@ -35,7 +35,7 @@ export default function (fetch, apiUrl) {
 
   const generateDeletePermissionRoute = (params) => `/v1/${params.type}/permission/delete`
 
-  const generateLoginWithUrlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/login/url-Friendly-Name`
+  const generateLoginWithUrlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/login/url-friendly-name`
 
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
