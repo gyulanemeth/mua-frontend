@@ -264,7 +264,11 @@ export default (connectors) => {
           if (!token || !tokenData || Date.now() >= tokenData.exp * 1000) {
             throw new RouteError('Valid Token Is Required')
           }
-          this.user = await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
+          const loginToken = await connectors.account.finalizeRegistration({ id: tokenData.user._id, accountId: tokenData.account._id, token })
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })          
           router.push('/')
           return { success: true }
         } catch (e) {
