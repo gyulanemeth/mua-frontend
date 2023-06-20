@@ -108,7 +108,10 @@ export default function (fetch, apiUrl) {
     localStorage.setItem('registrationToken', data.token)
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
     localStorage.removeItem('registrationToken')
-    return res
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
+    return res.loginToken
   }
 
   const sendInvitation = async function (data) {

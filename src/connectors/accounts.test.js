@@ -286,12 +286,11 @@ describe('test accounts connectors', () => {
     fetch.mockResolvedValue({
       ok: true,
       headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { id: '12qw', name: 'userName', email: 'userEmail' } })
+      json: () => Promise.resolve({ result: { loginToken: 'test' } })
     })
 
     const spy = vi.spyOn(fetch, 'impl')
     const res = await accounts(fetch, apiUrl).account.finalizeRegistration({ id: '123', accountId: '112233', token: 'token' })
-
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/finalize-registration',
       {
@@ -301,7 +300,7 @@ describe('test accounts connectors', () => {
           Authorization: 'Bearer token'
         }
       })
-    expect(res).toEqual({ id: '12qw', name: 'userName', email: 'userEmail' })
+    expect(res).toEqual('test')
   })
 
   test('test finalizeRegistration with undefined input ', async () => {

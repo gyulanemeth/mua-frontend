@@ -1,5 +1,5 @@
 <script setup >
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 
 const props = defineProps({
   name: String,
@@ -10,6 +10,20 @@ const name = ref(props.name)
 const urlFriendlyName = ref(props.urlFriendlyName)
 
 const editMode = ref()
+
+const nameInput = ref()
+const setNameFocus = () => {
+  nextTick(() => {
+    nameInput.value.focus()
+  })
+}
+
+const urlFriendlyNameInput = ref()
+const setUrlFriendlyNameFocus = () => {
+  nextTick(() => {
+    urlFriendlyNameInput.value.focus()
+  })
+}
 
 </script>
 
@@ -26,7 +40,7 @@ const editMode = ref()
                   <p class="font-weight-bold">{{$t('accountDetails.nameLabel')}}</p>
               </v-col>
               <v-text-field hide-details density="compact" data-test-id="accountDetails-nameField" :disabled='editMode !== "name"' color="info" variant="underlined"
-              name="name" type="text"
+              name="name" type="text" ref="nameInput"
               :placeholder="name ||$t('accountDetails.namePlaceholder')"
               :value="name"
               @keydown.enter="$emit('updateNameHandler', name);editMode = false"
@@ -38,7 +52,7 @@ const editMode = ref()
                   <v-btn class="ml-2" color="error" data-test-id="accountDetails-cancelmNameEditBtn" variant="text" icon="mdi-window-close" size="small" @click='editMode = false' />
               </template>
               <template v-else>
-                  <v-btn color="info" variant="text" data-test-id="accountDetails-editNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "name"' />
+                  <v-btn color="info" variant="text" data-test-id="accountDetails-editNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "name"; setNameFocus()' />
               </template>
 
           </v-row>
@@ -48,7 +62,7 @@ const editMode = ref()
               </v-col>
               <v-text-field hide-details data-test-id="accountDetails-urlFriendlyNameField" density="compact" :disabled='editMode !== "urlFriendlyName"' color="info" variant="underlined" name="urlFriendlyName"
               :placeholder="urlFriendlyName ||$t('accountDetails.urlFriendlyNamePlaceholder')"
-              :value="urlFriendlyName"
+              :value="urlFriendlyName" ref="urlFriendlyNameInput"
               @keydown.enter="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editMode = false"
               @keydown.esc="editMode = false; urlFriendlyName= props.urlFriendlyName"
               @update:modelValue="res => urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
@@ -58,7 +72,7 @@ const editMode = ref()
                   <v-btn class="ml-2" color="error"  data-test-id="accountDetails-cancelUrlFriendlyNameEdit" variant="text" icon="mdi-window-close" size="small" @click='editMode = false; urlFriendlyName= props.urlFriendlyName' />
               </template>
               <template v-else>
-                  <v-btn color="info" variant="text" data-test-id="accountDetails-editUrlFriendlyNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "urlFriendlyName"' />
+                  <v-btn color="info" variant="text" data-test-id="accountDetails-editUrlFriendlyNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "urlFriendlyName"; setUrlFriendlyNameFocus()' />
               </template>
 
           </v-row>

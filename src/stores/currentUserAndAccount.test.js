@@ -155,11 +155,11 @@ describe('Current User And Account Store', () => {
       return token
     }
 
-    const mockFinalizeRegistration = (data) => {
+    const mockFinalizeRegistration = async (data) => {
       if (!data || !data.id || !data.accountId || !data.token) {
         throw new RouteError('User Id And Account Id Is Required')
       }
-      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+      return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlciI6eyJfaWQiOiIxMnRlc3QxMiJ9LCJhY2NvdW50Ijp7Il9pZCI6IjEyM3Rlc3QxMjMifSwiaWF0IjoxNTE2MjM5MDIyfQ.dmLGrl7qt43fb34XQQqYA1AirTvWErg_9hnOAA8OmG8'
     }
 
     const mockPatchEmail = async function (formData) {
