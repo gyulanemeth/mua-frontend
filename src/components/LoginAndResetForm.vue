@@ -146,6 +146,7 @@ const title = window.config.title
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
+                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
                         <p class="mt-4 pa-4">
                             {{ $t('loginAndResetForm.cb.forgotMessage') }}
                             <router-link data-test-id="loginAndResetForm-createAccountBtn"
