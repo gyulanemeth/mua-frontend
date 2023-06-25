@@ -156,8 +156,6 @@ const title = window.config.title
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="$emit('handleGetLoginAccountsHandler', data.email, (res) => { res? cb = res: null; })" />
                 </div>
 
             </v-card-text>
