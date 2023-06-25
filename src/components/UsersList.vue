@@ -79,12 +79,12 @@ const profilePicture = (item) => {
 
                 </v-card-text>
                 <v-card-actions data-test-id="userList-card-0-action"
-                    v-if="props.currentUser._id !== item._id && props.currentUser.role === 'admin'">
+                    v-if="props.currentUser._id !== item._id ">
                     <UserProfile @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles"
                         :data="item.data" />
 
                     <v-spacer></v-spacer>
-                    <DeleteUser @deleteEventHandler='redirectDeleteEventHandler' :data="item.data" />
+                    <DeleteUser v-if="props.currentUser.role === 'admin'" @deleteEventHandler='redirectDeleteEventHandler' :data="item.data" />
 
                 </v-card-actions>
                 <v-card-actions v-if="props.currentUser._id === item._id">
