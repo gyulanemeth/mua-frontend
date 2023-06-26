@@ -4,7 +4,8 @@ import { ref, nextTick } from 'vue'
 const componentProps = defineProps({
   name: String,
   urlFriendlyName: String,
-  logo: String
+  logo: String,
+  role: Boolean
 })
 
 const emit = defineEmits(['uploadLogoHandler', 'deleteLogoHandler'])
@@ -82,7 +83,7 @@ const openFileInput = () => {
                   <v-btn color="info" variant="text" data-test-id="accountDetails-confirmNameEditBtn" icon="mdi-check" size="small" @click.stop="$emit('updateNameHandler', name);editMode = false" />
                   <v-btn class="ml-2" color="error" data-test-id="accountDetails-cancelmNameEditBtn" variant="text" icon="mdi-window-close" size="small" @click='editMode = false' />
               </template>
-              <template v-else>
+              <template v-else-if="props.role">
                   <v-btn color="info" variant="text" data-test-id="accountDetails-editNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "name"; setNameFocus()' />
               </template>
 
@@ -102,7 +103,7 @@ const openFileInput = () => {
                   <v-btn color="info" variant="text" data-test-id="accountDetails--confirmUrlFriendlyNameEdit" icon="mdi-check" size="small" @click.stop="$emit('updateUrlFriendlyNameHandler', urlFriendlyName);editMode = false" />
                   <v-btn class="ml-2" color="error"  data-test-id="accountDetails-cancelUrlFriendlyNameEdit" variant="text" icon="mdi-window-close" size="small" @click='editMode = false; urlFriendlyName= componentProps.urlFriendlyName' />
               </template>
-              <template v-else>
+              <template v-else-if="props.role">
                   <v-btn color="info" variant="text" data-test-id="accountDetails-editUrlFriendlyNameBtn" class="ma-2" icon="mdi-pencil-outline" size="small" @click='editMode = "urlFriendlyName"; setUrlFriendlyNameFocus()' />
               </template>
 

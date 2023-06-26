@@ -117,6 +117,7 @@
   },
   "loginAndResetForm": {
     "loginHeader":"Sign in to your account",
+    "loginUrlFriendlyNameHeader": "Sign in to {name} account",
     "loginBtnText": "Sign in",
     "resetHeader":"Password recovery",
     "resetBtnText": "Reset Password",

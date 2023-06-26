@@ -56,7 +56,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('userProfile.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-select hide-details data-test-id="userProfile-selectRole" v-model="role" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
+                    <v-select hide-details data-test-id="userProfile-selectRole" v-model="role" :disabled="!props.roles" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
                 </v-col>
             </v-row>
 
