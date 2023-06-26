@@ -6,6 +6,7 @@ const data = ref({
   account: {}
 })
 
+const cb = ref()
 const appIcon = window.config.appIcon
 const title = window.config.title
 
@@ -15,7 +16,7 @@ const checkbox = ref()
 
 <template>
 
-<v-form class="d-flex flex-column justify-center align-center h-screen">
+<v-form v-if="!cb"  class="d-flex flex-column justify-center align-center h-screen">
     <v-card elevation="0" class="w-25">
         <v-card-text align="center">
             <v-avatar size="80" >
@@ -83,13 +84,28 @@ const checkbox = ref()
             required/>
             <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" v-model="checkbox" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" :disabled="!checkbox" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data)">
+                <v-btn color="info" :disabled="!checkbox" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data, (res)=>{cb = res})">
                     {{$t('createAccount.submitBtn')}}
                 </v-btn>
-                <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data)" />
+                <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data , (res)=>{cb = res})" />
             </v-col>
         </v-card-text>
     </v-card>
 </v-form>
+
+<v-form v-else class="d-flex flex-column justify-center align-center h-screen">
+
+<v-card  class="  rounded-xl  elevation-2  d-flex flex-column justify-center align-right  " width="40%">
+        <v-card-text align="left">
+            <h4 class="text-h6 text-center text-green">{{$t('createAccount.cbHeader')}}</h4>
+
+                <p class="mt-3 pa-2">{{$t('createAccount.cbMessagePart1')}}</p>
+                <p class="pa-2">{{$t('createAccount.cbMessagePart2')}}</p>
+                <p class="pa-2">{{$t('createAccount.cbMessagePart3', {name: 'test123'})}}</p>
+                <p class="pa-2 text-center ">{{$t('createAccount.cbMessagePart4')}}</p>
+
+        </v-card-text>
+    </v-card>
+    </v-form>
 
 </template>
