@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const props = defineProps({
-    formData: Object,
-    tokenData: Object
+  formData: Object,
+  tokenData: Object
 })
 
 const route = useRoute()
@@ -15,10 +15,10 @@ const processing = ref(false)
 const checkbox = ref()
 
 if (props.tokenData.user) {
-    data.value.email = ref(props.tokenData.user.email)
+  data.value.email = ref(props.tokenData.user.email)
 }
 if (props.tokenData.account) {
-    data.value.account = ref(props.tokenData.account._id)
+  data.value.account = ref(props.tokenData.account._id)
 }
 
 const appIcon = window.config.appIcon
@@ -149,7 +149,7 @@ const title = window.config.title
 
                         <p class="mt-4 pa-4">
                         <p v-if="props.formData.urlFriendlyName">{{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}
-                            <router-link 
+                            <router-link
                                 data-test-id="loginAndResetForm-createAccountBtn"
                                 style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
                                     $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>

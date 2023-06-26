@@ -73,7 +73,7 @@ const router = createRouter({
       component: FinalizeRegistrationView
     },
     {
-      path: '/redirectToLoginMessage',
+      path: '/:urlFriendlyName/redirectToLoginMessage',
       name: 'redirectToLoginMessage',
       component: RedirectToLoginMessage
     }
@@ -89,10 +89,10 @@ router.beforeEach((to, from, next) => {
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
     }
   }
-  if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName') ) {
+  if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
     window.location.href = `/${to.params.urlFriendlyName}/users`
   }
-  
+
   if (!localStorage.getItem('accessToken') &&
   to.name !== 'forgot-password-reset' &&
   to.name !== 'forgot-password' &&
@@ -104,7 +104,11 @@ router.beforeEach((to, from, next) => {
   to.name !== 'loginWithUrlFriendlyName' &&
   to.name !== 'verify-email' &&
   to.name !== 'redirectToLoginMessage') {
-    window.location.href = '/redirectToLoginMessage'
+    if (to.params.urlFriendlyName) {
+      window.location.href = '/' + to.params.urlFriendlyName + '/redirectToLoginMessage'
+    } else {
+      window.location.href = '/'
+    }
   } else next()
 })
 
