@@ -46,6 +46,6 @@ async function handleUpdateUrlFriendlyName (params) {
 
 <template>
 
-<AccountDetails v-if="data" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :name="data.name" :role="store.user.role === 'admin'" :urlFriendlyName="data.urlFriendlyName" />
+<AccountDetails v-if="data" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :name="data.name" :role="store.user && store.user.role === 'admin'" :urlFriendlyName="data.urlFriendlyName" />
 
 </template>
