@@ -8,7 +8,7 @@ import LoginAndResetForm from '../components/LoginAndResetForm.vue'
 
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
-const { tm } = useI18n()
+const { t } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
@@ -18,14 +18,14 @@ const formData = ref()
 async function loadData () {
   if (route.name === 'login') {
     formData.value = {
-      btnText: tm('loginAndResetForm.loginBtnText'),
-      header: tm('loginAndResetForm.loginHeader')
+      btnText: t('loginAndResetForm.loginBtnText'),
+      header: t('loginAndResetForm.loginHeader')
     }
   }
   if (route.name === 'loginWithUrlFriendlyName') {
     formData.value = {
-      btnText: tm('loginAndResetForm.loginBtnText'),
-      header: tm('loginAndResetForm.loginHeader'),
+      btnText: t('loginAndResetForm.loginBtnText'),
+      header: t('loginAndResetForm.loginUrlFriendlyNameHeader', { name: route.params.urlFriendlyName }),
       urlFriendlyName: true
     }
   }
@@ -36,14 +36,14 @@ async function loadData () {
     }
     if (route.name === 'login-select') {
       formData.value = {
-        btnText: tm('loginAndResetForm.loginBtnText'),
-        header: tm('loginAndResetForm.loginHeader')
+        btnText: t('loginAndResetForm.loginBtnText'),
+        header: t('loginAndResetForm.loginHeader')
       }
     }
     if (route.name === 'forgot-password' || route.name === 'forgot-password-reset') {
       formData.value = {
-        btnText: tm('loginAndResetForm.resetBtnText'),
-        header: tm('loginAndResetForm.resetHeader')
+        btnText: t('loginAndResetForm.resetBtnText'),
+        header: t('loginAndResetForm.resetHeader')
       }
     }
   }

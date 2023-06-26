@@ -23,7 +23,7 @@ if (props.tokenData.account) {
 
 const appIcon = window.config.appIcon
 const title = window.config.title
-
+const url = ref(window.location.hostname + route.fullPath)
 </script>
 
 <template>
@@ -40,7 +40,9 @@ const title = window.config.title
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
             <v-card-text align="center">
-                <h6 class="text-h6">{{ props.formData.header }}</h6>
+                <h6 class="text-h6">{{ props.formData.header }} </h6>
+                <h6 v-if="props.formData.urlFriendlyName" class="text-subtitle-1">(({{ url }}))</h6>
+
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
                     :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
@@ -153,6 +155,12 @@ const title = window.config.title
                                 data-test-id="loginAndResetForm-createAccountBtn"
                                 style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
                                     $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
+                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
+                        <p class="mt-4 pa-4">
+                            {{ $t('loginAndResetForm.cb.forgotMessage') }}
+                            <router-link data-test-id="loginAndResetForm-createAccountBtn"
+                                style="text-decoration: none;  color: inherit;" class="font-weight-bold"
+                                to="/create-account">{{ $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
                         </p>
 
                         {{ $t('loginAndResetForm.cb.forgotMessage') }}
@@ -163,8 +171,6 @@ const title = window.config.title
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="$emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; })" />
                 </div>
 
             </v-card-text>
