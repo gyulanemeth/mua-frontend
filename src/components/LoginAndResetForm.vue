@@ -147,7 +147,7 @@ const title = window.config.title
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
 
-                        <p class="mt-4 pa-4">
+                        <div class="mt-4 pa-4">
                         <p v-if="props.formData.urlFriendlyName">{{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}
                             <router-link
                                 data-test-id="loginAndResetForm-createAccountBtn"
@@ -159,7 +159,7 @@ const title = window.config.title
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
                             style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
                                 $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
-                        </p>
+                        </div>
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>
