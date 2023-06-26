@@ -89,10 +89,10 @@ router.beforeEach((to, from, next) => {
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
     }
   }
-  if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName') ) {
+  if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
     window.location.href = `/${to.params.urlFriendlyName}/users`
   }
-  
+
   if (!localStorage.getItem('accessToken') &&
   to.name !== 'forgot-password-reset' &&
   to.name !== 'forgot-password' &&

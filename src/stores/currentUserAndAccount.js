@@ -278,7 +278,7 @@ export default (connectors) => {
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
-          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })          
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/')
           return { success: true }
         } catch (e) {
