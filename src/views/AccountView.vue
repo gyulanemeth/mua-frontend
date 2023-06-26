@@ -10,8 +10,10 @@ import alerts from '../alerts/alert.js'
 const alert = alerts()
 const store = useCurrentUserAndAccountStore()
 const router = useRouter()
-
 const data = ref()
+if (!store.user || !store.user.role) {
+  store.readOneUser()
+}
 
 if (!store.account || !store.account.name) {
   await store.readOne()
@@ -28,7 +30,7 @@ data.value = store.account
 
 async function handleUpdateAccountName (params) {
   const res = await store.patchAccountName(params)
-  if (res) {
+  if (!res.message) {
     await alert.message('Name updated successfully')
   }
 }
@@ -44,6 +46,6 @@ async function handleUpdateUrlFriendlyName (params) {
 
 <template>
 
-<AccountDetails v-if="data" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
+<AccountDetails v-if="data" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :name="data.name" :role="store.user && store.user.role === 'admin'" :urlFriendlyName="data.urlFriendlyName" />
 
 </template>
