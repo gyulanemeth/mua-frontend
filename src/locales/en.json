@@ -18,7 +18,8 @@
     "nameLabel":"Name",
     "namePlaceholder": "User Name",
     "urlFriendlyNameLabel": "urlFriendlyName",
-    "urlFriendlyNamePlaceholder": "./urlFriendlyName"
+    "urlFriendlyNamePlaceholder": "./urlFriendlyName",
+    "picLabel": "Account Avatar"
   },
   "adminSettings": {
     "header" : "Account Settings",
@@ -28,7 +29,16 @@
     "inputLabel": "Real user settings will be here",
     "inputPlaceholder": "Real user settings will be here",
     "btnLabel": "Update Settings",
-    "deleteLabel": "Delete Account"
+    "noteHeader": "Please note the following before proceeding:",
+    "noteFooter": "Ensure your decision aligns with your accounts goals. Please be aware that you can recover it by being reinvited by another user.",
+    "noteuserPoint1": "Deleted users permanently lose access privileges and permissions.",
+    "noteuserPoint2": "All actions performed by deleted users will no longer be attributed to them.",
+    "noteadminPoint1": "At least one admin must remain in the system. If the last admin is deleted, the deletion will be unsuccessful.",
+    "noteadminPoint2": "Deleted admins permanently lose access privileges and permissions.",
+    "noteadminPoint3": "All actions performed by deleted admins will no longer be attributed to them.",
+    "noteadminPoint4": "Deleted admins cannot manage user accounts or assign roles",
+    "deleteuserLabel": "Delete User",
+    "deleteadminLabel": "Delete Admin"
   },
   "changeEmail" : {
     "header": "Change E-mail Address",

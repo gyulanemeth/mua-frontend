@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
@@ -278,7 +278,7 @@ export default (connectors) => {
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
-          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })          
+          this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           router.push('/')
           return { success: true }
         } catch (e) {
@@ -337,7 +337,7 @@ export default (connectors) => {
       async uploadLogo (formData) {
         try {
           const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
-          this.account.profilePicture = res.profilePicture
+          this.account.logo = res.logo
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -347,7 +347,7 @@ export default (connectors) => {
       async deleteLogo () {
         try {
           const res = await connectors.account.deleteLogo({ id: this.account._id })
-          delete this.account.profilePicture
+          delete this.account.logo
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

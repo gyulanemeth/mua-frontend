@@ -105,7 +105,6 @@ const openFileInput = () => {
                             <input ref="fileInput" type="file" style="display: none" @change="handleFileChange">
 
                         <v-expand-transition>
-
                             <v-container v-if="isHovering"
                                 class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
                                 <v-btn v-if="componentProps.profilePicture" @click="handledeleteProfilePicture" color="white"
