@@ -106,7 +106,7 @@ export default (connectors) => {
           localStorage.removeItem('accountId')
           window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
         } else {
-          router.push('/')
+         router.push('/'+ window.location.pathname.split('/')[1])
         }
         localStorage.removeItem('accessToken')
         localStorage.removeItem('loginToken')
