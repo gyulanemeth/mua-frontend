@@ -155,14 +155,8 @@ const url = ref(window.location.hostname + route.fullPath)
                                 data-test-id="loginAndResetForm-createAccountBtn"
                                 style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
                                     $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
-                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
-                        <p class="mt-4 pa-4">
-                            {{ $t('loginAndResetForm.cb.forgotMessage') }}
-                            <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                                style="text-decoration: none;  color: inherit;" class="font-weight-bold"
-                                to="/create-account">{{ $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
                         </p>
-
+                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
                         {{ $t('loginAndResetForm.cb.forgotMessage') }}
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
                             style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
