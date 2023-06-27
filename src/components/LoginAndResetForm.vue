@@ -49,13 +49,12 @@ const url = ref(window.location.hostname + route.fullPath)
                     :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
-                <v-text-field v-if="props.formData.urlFriendlyName" hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded"
-                    color="info" variant="plain" name="password" data-test-id="loginAndResetForm-passwordField"
-                    :label="$t('loginAndResetForm.passwordLabel')" type="password"
-                    :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
+                <v-text-field v-if="props.formData.urlFriendlyName" hide-details density="compact"
+                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="password"
+                    data-test-id="loginAndResetForm-passwordField" :label="$t('loginAndResetForm.passwordLabel')"
+                    type="password" :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
                     :value="data.password"
-                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
-                    required />
+                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
 
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account"
                     data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
@@ -118,7 +117,8 @@ const url = ref(window.location.hostname + route.fullPath)
                             hide-details></v-checkbox>
                         <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
                             @click="$emit('handleForgotPasswordResetHandler', data)">{{ props.formData.btnText }}</v-btn>
-                        <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data)" />
+                        <button hidden :disabled="!checkbox"
+                            @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data)" />
                     </div>
                 </div>
 
@@ -128,13 +128,13 @@ const url = ref(window.location.hostname + route.fullPath)
                         <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
                         <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-forgotPasswordBtn"
-                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res? cb = res: null; processing = false })">
+                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? props.formData.btnText : '' }}
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
                         <button hidden :disabled="!checkbox"
-                            @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res? cb = res: null; processing = false })" />
+                            @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
                     </div>
                     <p v-if="cb === 'reset'" data-test-id="loginAndResetForm-forgotPasswordCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.resetMessage') }}</p>
@@ -143,18 +143,25 @@ const url = ref(window.location.hostname + route.fullPath)
                 <div v-if="!props.tokenData.accounts">
                     <div v-if="!cb">
                         <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                            @click="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })">
+                            @click="processing = true; $emit(props.formData.urlFriendlyName ? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName ? { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? props.formData.btnText : '' }}
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
-                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
-                        <p class="mt-4 pa-4">
-                            {{ $t('loginAndResetForm.cb.forgotMessage') }}
-                            <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                                style="text-decoration: none;  color: inherit;" class="font-weight-bold"
-                                to="/create-account">{{ $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
+
+                        <div class="mt-4 pa-4">
+                        <p v-if="props.formData.urlFriendlyName">{{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}
+                            <router-link
+                                data-test-id="loginAndResetForm-createAccountBtn"
+                                style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
+                                    $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
                         </p>
+                        <button hidden  @click.enter.prevent="processing = true; $emit( props.formData.urlFriendlyName? 'handleLoginWithUrlFriendlyName' : 'handleGetLoginAccountsHandler', props.formData.urlFriendlyName? {email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName } : data.email, (res) => { res ? cb = res : null; processing = false })" />
+                        {{ $t('loginAndResetForm.cb.forgotMessage') }}
+                        <router-link data-test-id="loginAndResetForm-createAccountBtn"
+                            style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
+                                $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
+                        </div>
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>

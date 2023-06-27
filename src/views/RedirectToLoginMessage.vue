@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const countDown = ref(5)
+const route = useRoute()
+const url = ref('/' + (route.params.urlFriendlyName || ''))
 function redirect () {
   if (countDown.value === 0) {
-    window.location.href = '/'
+    window.location.href = url.value
   } else {
     countDown.value = countDown.value - 1
   }
@@ -28,7 +31,7 @@ setInterval(redirect, 1000)
       <v-card-text class="text-center">
         {{ $t('redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('redirectToLoginMessage.bodyPart1')
         }}<br /> {{ $t('redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
-          href="/"><b> {{ $t('redirectToLoginMessage.redirectBtn') }} </b></a> {{
+          :href="url"><b> {{ $t('redirectToLoginMessage.redirectBtn') }} </b></a> {{
             $t('redirectToLoginMessage.bodyPart3') }}
 
       </v-card-text>
