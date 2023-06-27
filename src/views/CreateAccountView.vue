@@ -6,7 +6,7 @@ const store = useCurrentUserAndAccountStore()
 
 async function eventHandler (data, statusCallBack) {
   const res = await store.createAccount(data)
-  statusCallBack(!!res.success)
+  statusCallBack(res.success)
 }
 
 </script>

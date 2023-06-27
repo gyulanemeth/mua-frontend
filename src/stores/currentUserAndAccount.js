@@ -84,7 +84,6 @@ export default (connectors) => {
       async createAccount (formData) {
         try {
           await connectors.account.createOne(formData)
-          router.push('/')
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
