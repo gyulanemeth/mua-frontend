@@ -23,7 +23,7 @@ if (props.tokenData.account) {
 
 const appIcon = window.config.appIcon
 const title = window.config.title
-const url = ref(window.location.hostname + route.fullPath)
+const url = ref(window.location.href)
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const url = ref(window.location.hostname + route.fullPath)
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
             <v-card-text align="center">
                 <h6 class="text-h6">{{ props.formData.header }} </h6>
-                <h6 v-if="props.formData.urlFriendlyName" class="text-subtitle-1">(({{ url }}))</h6>
+                <h6 v-if="props.formData.urlFriendlyName" class="text-subtitle-1">({{ url }})</h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
