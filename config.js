@@ -9,18 +9,18 @@ window.config = {
   title: 'Account Panel',
   sideBarIcons: [
     {
-      name: 'Email Application',
-      icon: 'mdi-email-variant',
+      name: 'Dashboard',
+      icon: 'mdi-view-dashboard',
       url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}?token=${params.token}&accountId=${params.accountId}`
     },
     {
-      name: 'Design System',
+      name: 'Design Systems',
       icon: 'mdi-palette-outline',
       url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}/design-systems?token=${params.token}&accountId=${params.accountId}`
     },
     {
       name: 'Projects',
-      icon: 'mdi-card-account-details-outline',
+      icon: 'mdi-folder-multiple-outline',
       url: (params) => `http://app.emailfox.link/accounts/${params.urlFriendlyName}/projects?token=${params.token}&accountId=${params.accountId}`
     }
   ]
