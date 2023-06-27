@@ -66,6 +66,13 @@
   },
   "createAccount": {
     "header": "Create New Account",
+    "cbHeader": "Account Created Successfully",
+    "cbMessagePart1": "To complete your account creation, please verify your email address. Check your inbox for an email from us containing a verification link. Click on the link to confirm your email and gain full access to our application.",
+    "cbMessagePart2": "If you don’t see the email, remember to check your spam folder. For assistance, click “Resend Verification Email” below.",
+    "cbMessagePart3": "Thank you for choosing {name}. Feel free to reach out to our support team for any questions.",
+    "cbMessagePart4": "Happy exploring!",
+    "loginMessage": "Ready to get going?", 
+    "loginBtn": "Sign in",   
     "accountSection": {
       "header": "Account Data:",
       "nameLabel": "Account Name",
