@@ -150,6 +150,12 @@ const url = ref(window.location.href)
                         </v-btn>
 
                         <div class="mt-4 pa-4">
+                            <p v-if="props.formData.urlFriendlyName">{{ $t('loginAndResetForm.forgotHeader') }}
+                                <router-link
+                                    data-test-id="loginAndResetForm-createAccountBtn"
+                                    style="text-decoration: none;  color: inherit;" class="font-weight-bold" :to="`/${route.params.urlFriendlyName}/forgot-password`">{{
+                                        $t('loginAndResetForm.forgotBtn') }}</router-link>
+                            </p>
                         <p v-if="props.formData.urlFriendlyName">{{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}
                             <router-link
                                 data-test-id="loginAndResetForm-createAccountBtn"

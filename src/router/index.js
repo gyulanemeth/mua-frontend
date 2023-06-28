@@ -96,16 +96,16 @@ router.beforeEach((to, from, next) => {
         localStorage.removeItem('accountId')
         window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
       } else {
-        next({ path: `/${to.params.urlFriendlyName}/` });
+        next({ path: `/${to.params.urlFriendlyName}/` })
       }
       localStorage.removeItem('accessToken')
       localStorage.removeItem('loginToken')
     }
-    next({ path: `/${to.params.urlFriendlyName}/users` });
+    next({ path: `/${to.params.urlFriendlyName}/users` })
   }
 
-  if (to.name === 'create-account' && localStorage.getItem('accessToken') ) {
-    next({path: '/' +to.params.urlFriendlyName + '/users'})
+  if (to.name === 'create-account' && localStorage.getItem('accessToken')) {
+    next({ path: '/' + to.params.urlFriendlyName + '/users' })
   }
 
   if (!localStorage.getItem('accessToken') &&

@@ -1,6 +1,6 @@
 <script setup>
 import { watchEffect, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 import { useI18n } from 'vue-i18n'
 
@@ -11,9 +11,12 @@ import { useCurrentUserAndAccountStore } from '../stores/index.js'
 const { t } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
+const router = useRouter()
+
 
 const tokenData = ref({})
 const formData = ref()
+const accountData = ref()
 
 async function loadData () {
   if (route.name === 'login') {
@@ -23,9 +26,14 @@ async function loadData () {
     }
   }
   if (route.name === 'loginWithUrlFriendlyName') {
+
+    accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
+    if (!accountData.value.count) {
+      return router.push('/404Page')
+    }
     formData.value = {
       btnText: t('loginAndResetForm.loginBtnText'),
-      header: t('loginAndResetForm.loginUrlFriendlyNameHeader', { name: route.params.urlFriendlyName }),
+      header: t('loginAndResetForm.loginUrlFriendlyNameHeader', { name: accountData.value.items[0].name }),
       urlFriendlyName: true
     }
   }
