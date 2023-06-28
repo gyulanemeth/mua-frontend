@@ -93,6 +93,10 @@ router.beforeEach((to, from, next) => {
     window.location.href = `/${to.params.urlFriendlyName}/users`
   }
 
+  if (to.name === 'create-account' && localStorage.getItem('accessToken') ) {
+    next({path: '/' +to.params.urlFriendlyName + '/users'})
+  }
+
   if (!localStorage.getItem('accessToken') &&
   to.name !== 'forgot-password-reset' &&
   to.name !== 'forgot-password' &&
