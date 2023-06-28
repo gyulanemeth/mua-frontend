@@ -86,11 +86,22 @@ router.beforeEach((to, from, next) => {
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
-      window.location.href = window.location.hostname + '/redirectToLoginMessage'
+      return window.location.href = window.location.hostname + '/redirectToLoginMessage'
     }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
-    window.location.href = `/${to.params.urlFriendlyName}/users`
+    if (to.query.logout) {
+      if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('accountId')
+        window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
+      } else {
+        next({ path: `/${to.params.urlFriendlyName}/` });
+      }
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('loginToken')
+    }
+    next({ path: `/${to.params.urlFriendlyName}/users` });
   }
 
   if (to.name === 'create-account' && localStorage.getItem('accessToken') ) {
