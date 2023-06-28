@@ -86,7 +86,7 @@ router.beforeEach((to, from, next) => {
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
-      window.location.href = window.location.hostname + '/redirectToLoginMessage'
+      return window.location.href = window.location.hostname + '/redirectToLoginMessage'
     }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
@@ -101,7 +101,6 @@ router.beforeEach((to, from, next) => {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('loginToken')
     }
-    
     next({ path: `/${to.params.urlFriendlyName}/users` });
   }
 
