@@ -86,7 +86,8 @@ router.beforeEach((to, from, next) => {
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
-      return window.location.href = window.location.hostname + '/redirectToLoginMessage'
+      window.location.href = window.location.hostname + '/redirectToLoginMessage'
+      return 'done'
     }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
@@ -95,30 +96,31 @@ router.beforeEach((to, from, next) => {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
+        return 'done'
       } else {
-        next({ path: `/${to.params.urlFriendlyName}/` });
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
+        return next({ path: `/${to.params.urlFriendlyName}/` })
       }
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('loginToken')
-    }
-    next({ path: `/${to.params.urlFriendlyName}/users` });
+    } 
+    return next({ path: `/${to.params.urlFriendlyName}/users` })
   }
 
-  if (to.name === 'create-account' && localStorage.getItem('accessToken') ) {
-    next({path: '/' +to.params.urlFriendlyName + '/users'})
+  if (to.name === 'create-account' && localStorage.getItem('accessToken')) {
+    return next({ path: '/' + to.params.urlFriendlyName + '/users' })
   }
 
   if (!localStorage.getItem('accessToken') &&
-  to.name !== 'forgot-password-reset' &&
-  to.name !== 'forgot-password' &&
-  to.name !== 'finalize-registration' &&
-  to.name !== 'login-select' &&
-  to.name !== 'accept-invitation' &&
-  to.name !== 'create-account' &&
-  to.name !== 'login' &&
-  to.name !== 'loginWithUrlFriendlyName' &&
-  to.name !== 'verify-email' &&
-  to.name !== 'redirectToLoginMessage') {
+    to.name !== 'forgot-password-reset' &&
+    to.name !== 'forgot-password' &&
+    to.name !== 'finalize-registration' &&
+    to.name !== 'login-select' &&
+    to.name !== 'accept-invitation' &&
+    to.name !== 'create-account' &&
+    to.name !== 'login' &&
+    to.name !== 'loginWithUrlFriendlyName' &&
+    to.name !== 'verify-email' &&
+    to.name !== 'redirectToLoginMessage') {
     if (to.params.urlFriendlyName) {
       window.location.href = '/' + to.params.urlFriendlyName + '/redirectToLoginMessage'
     } else {
