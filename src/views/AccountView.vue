@@ -64,5 +64,4 @@ async function handleDeleteLogo (statusCallBack) {
 
 <AccountDetails v-if="data" @uploadLogoHandler="handleUploadLogo" @deleteLogoHandler="handleDeleteLogo" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :role="store.user && store.user.role === 'admin'" :logo="data.logo" :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
 
-
 </template>
