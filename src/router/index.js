@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
-      return 'done'
+      return
     }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
@@ -96,18 +96,25 @@ router.beforeEach((to, from, next) => {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
-        return 'done'
+        return
       } else {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('loginToken')
         return next({ path: `/${to.params.urlFriendlyName}/` })
       }
-    } 
+    }
     return next({ path: `/${to.params.urlFriendlyName}/users` })
   }
 
   if (to.name === 'create-account' && localStorage.getItem('accessToken')) {
-    return next({ path: '/' + to.params.urlFriendlyName + '/users' })
+    const tokenData = jwtDecode(localStorage.getItem('accessToken'))
+    if (tokenData.type === 'admin') {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('accountId')
+      window.location.href = `${window.config.adminsAppBaseUrl}accounts`
+      return
+    }
+    return next({ path: '/' + tokenData.account.urlFriendlyName + '/users' })
   }
 
   if (!localStorage.getItem('accessToken') &&
