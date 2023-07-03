@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
-      return 
+      return
     }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {

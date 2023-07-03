@@ -8,6 +8,7 @@ import LoginWithUrlFriendlyNameForm from '../components/LoginWithUrlFriendlyName
 import ResetPasswordForm from '../components/ResetPasswordForm.vue'
 
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
@@ -21,7 +22,12 @@ async function loadData () {
   if (route.name === 'loginWithUrlFriendlyName') {
     accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
     if (!accountData.value.count) {
-      return router.push('/404Page')
+      useSystemMessagesStore().addError({
+        status: 404,
+        name: 'NOT_FOUND',
+        message: 'Account not found'
+      })
+      return router.push('/')
     }
     formData.value = {
       accountName: accountData.value.items[0].name,
@@ -30,7 +36,16 @@ async function loadData () {
   }
   if (route.query) {
     if (route.query.token) {
-      tokenData.value = jwtDecode(route.query.token)
+      try {
+        tokenData.value = jwtDecode(route.query.token)
+      } catch (error) {
+        useSystemMessagesStore().addError({
+          status: 400,
+          name: 'VALIDATION_ERROR',
+          message: 'Invalid token'
+        })
+        router.push('/')
+      }
       if (tokenData.value.account) {
         tokenData.value.accounts = [tokenData.value.account]
       }
@@ -42,9 +57,21 @@ async function loadData () {
       } else if (route.query.urlFriendlyName) {
         accountData.value = await store.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
         if (!accountData.value.count) {
-          return router.push('/404Page')
+          useSystemMessagesStore().addError({
+            status: 404,
+            name: 'NOT_FOUND',
+            message: 'Account not found'
+          })
+          return router.push('/')
         }
         formData.value = { account: accountData.value.items[0] }
+      } else {
+        useSystemMessagesStore().addError({
+          status: 400,
+          name: 'VALIDATION_ERROR',
+          message: 'urlFriendlyName not found'
+        })
+        return router.push('/')
       }
     }
   }
