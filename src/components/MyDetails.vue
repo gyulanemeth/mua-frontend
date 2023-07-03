@@ -7,9 +7,11 @@ const componentProps = defineProps({
   profilePicture: String
 })
 
+const cdnBaseUrl = window.config.cdnBaseUrl
+
 const name = ref(componentProps.name)
 const email = ref(componentProps.email)
-const profilePicture = ref(componentProps.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
+const profilePicture = ref(componentProps.profilePicture ? cdnBaseUrl + componentProps.profilePicture : import.meta.env.BASE_URL + 'placeholder.jpg')
 const processing = ref(false)
 
 const emit = defineEmits(['uploadProfilePictureHandler', 'deleteProfilePictureHandler'])
@@ -39,7 +41,7 @@ const handleFileChange = (event) => {
   formData.append('profilePicture', event.target.files[0])
   emit('uploadProfilePictureHandler', formData, (url) => {
     if (url) {
-      profilePicture.value = url
+      profilePicture.value = cdnBaseUrl + url
     }
     processing.value = false
   })

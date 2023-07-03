@@ -3,6 +3,7 @@ window.config = {
   adminApiBaseUrl: 'http://admins-api.emailfox.link',
   adminsAppBaseUrl: 'http://admins.emailfox.link/',
   appBaseUrl: 'http://app.emailfox.link/',
+  cdnBaseUrl: 'http://localhost:10007/',
   appName: 'MUA Account\'s UI',
   appTitle: 'MUA Account\'s UI',
   appIcon: 'https://codebluefox.com/wp-content/uploads/2022/08/Blue-Fox-Pvt-LTd-04.png',
