@@ -31,7 +31,7 @@ const url = ref(window.location.href)
             <v-card-text align="center">
                 <h6 class="text-h6">{{ $t('loginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
-                        props.formData.urlFriendlyName
+                        props.formData.accountName
                 }) }} </h6>
                 <h6 class="text-subtitle-1">({{ url }})</h6>
 

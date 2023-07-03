@@ -21,12 +21,13 @@ const accountData = ref()
 async function loadData () {
   if (route.name === 'loginWithUrlFriendlyName') {
     accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
+
     if (accountData.value.message) {
       return router.push('/')
     }
     formData.value = {
-      accountName: accountData.value.items[0].name,
-      urlFriendlyName: accountData.value.items[0].urlFriendlyName
+      accountName: accountData.value.name,
+      urlFriendlyName: accountData.value.urlFriendlyName
     }
   }
   if (route.query) {
@@ -54,7 +55,7 @@ async function loadData () {
         if (accountData.value.message) {
           return router.push('/')
         }
-        formData.value = { account: accountData.value.items[0] }
+        formData.value = { account: accountData.value }
       } else {
         useSystemMessagesStore().addError({
           status: 400,
