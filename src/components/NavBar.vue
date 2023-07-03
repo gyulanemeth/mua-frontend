@@ -1,12 +1,15 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useCurrentUserAndAccountStore, useAdminsStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
+const adminsStore = useAdminsStore()
 const route = useRoute()
+const adminProfilePicture = ref()
 
-const menuItems = computed(() => {
+
+const menuItems = computed(async () => {
   const urlFriendlyName = route.params.urlFriendlyName
   return [{
     title: 'Me',
@@ -44,16 +47,16 @@ const appIcon = window.config.appIcon
         <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34"
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
-            <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture" v-bind="props"
-              class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;" v-if="adminsStore.admin && adminsStore.admin.profilePicture"
+              :src="adminsStore.admin.profilePicture" v-bind="props" class="align-self-stretch" cover />
             <v-btn v-else data-test-id="navbarMenu" v-bind="props">
               {{ $t('navBar.picLabel') }}
             </v-btn>
           </v-avatar>
         </v-badge>
         <v-avatar v-else size="large" color="grey-darken-3">
-          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture" v-bind="props"
-            class="align-self-stretch" cover />
+          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture"
+            v-bind="props" class="align-self-stretch" cover />
           <v-btn v-else data-test-id="navbarMenu" v-bind="props">
             {{ $t('navBar.picLabel') }}
           </v-btn>
