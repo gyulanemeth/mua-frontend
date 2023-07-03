@@ -96,30 +96,38 @@ router.beforeEach((to, from, next) => {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
+        return
       } else {
-        next({ path: `/${to.params.urlFriendlyName}/` })
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('loginToken')
+        return next({ path: `/${to.params.urlFriendlyName}/` })
       }
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('loginToken')
     }
-    next({ path: `/${to.params.urlFriendlyName}/users` })
+    return next({ path: `/${to.params.urlFriendlyName}/users` })
   }
 
   if (to.name === 'create-account' && localStorage.getItem('accessToken')) {
-    next({ path: '/' + to.params.urlFriendlyName + '/users' })
+    const tokenData = jwtDecode(localStorage.getItem('accessToken'))
+    if (tokenData.type === 'admin') {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('accountId')
+      window.location.href = `${window.config.adminsAppBaseUrl}accounts`
+      return
+    }
+    return next({ path: '/' + tokenData.account.urlFriendlyName + '/users' })
   }
 
   if (!localStorage.getItem('accessToken') &&
-  to.name !== 'forgot-password-reset' &&
-  to.name !== 'forgot-password' &&
-  to.name !== 'finalize-registration' &&
-  to.name !== 'login-select' &&
-  to.name !== 'accept-invitation' &&
-  to.name !== 'create-account' &&
-  to.name !== 'login' &&
-  to.name !== 'loginWithUrlFriendlyName' &&
-  to.name !== 'verify-email' &&
-  to.name !== 'redirectToLoginMessage') {
+    to.name !== 'forgot-password-reset' &&
+    to.name !== 'forgot-password' &&
+    to.name !== 'finalize-registration' &&
+    to.name !== 'login-select' &&
+    to.name !== 'accept-invitation' &&
+    to.name !== 'create-account' &&
+    to.name !== 'login' &&
+    to.name !== 'loginWithUrlFriendlyName' &&
+    to.name !== 'verify-email' &&
+    to.name !== 'redirectToLoginMessage') {
     if (to.params.urlFriendlyName) {
       window.location.href = '/' + to.params.urlFriendlyName + '/redirectToLoginMessage'
     } else {
