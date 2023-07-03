@@ -21,12 +21,7 @@ const accountData = ref()
 async function loadData () {
   if (route.name === 'loginWithUrlFriendlyName') {
     accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
-    if (!accountData.value.count) {
-      useSystemMessagesStore().addError({
-        status: 404,
-        name: 'NOT_FOUND',
-        message: 'Account not found'
-      })
+    if (accountData.value.message) {
       return router.push('/')
     }
     formData.value = {
@@ -56,12 +51,7 @@ async function loadData () {
         formData.value = { email: tokenData.value.user.email, account: route.query.account ? tokenData.value.accounts.find(ele => ele._id === route.query.account) : tokenData.value.account }
       } else if (route.query.urlFriendlyName) {
         accountData.value = await store.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
-        if (!accountData.value.count) {
-          useSystemMessagesStore().addError({
-            status: 404,
-            name: 'NOT_FOUND',
-            message: 'Account not found'
-          })
+        if (accountData.value.message) {
           return router.push('/')
         }
         formData.value = { account: accountData.value.items[0] }
