@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router'
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
-function redirect (url, urlFriendlyName) {
+function redirect(url, urlFriendlyName) {
   return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken'), urlFriendlyName })
 }
 
@@ -33,56 +33,50 @@ const sideBarIcons = window.config.sideBarIcons
 </script>
 
 <template>
-
-<v-card class="elevation-4">
+  <v-card class="elevation-4">
 
     <v-navigation-drawer color="grey-lighten-2" rail rail-width="65" permanent>
+      <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column" density="compact" nav>
+        <v-list-item v-if="store.checkAdmin" class="justify-center align-center"
+          active-class=" elevation-4 text-white bg-white">
+          <a style="text-decoration: none;" :href="adminUrl">
+            <v-tooltip activator="parent" location="end top" origin="start center">Admin Account</v-tooltip>
+            <v-list-item-icon class="text-black">
+              mdi-shield-account-variant-outline
+            </v-list-item-icon>
+          </a>
+        </v-list-item>
 
-        <v-list bg-color="grey-lighten-2" density="compact" nav>
-            <v-list-item v-if="store.checkAdmin" class="justify-center align-center" active-class=" elevation-4 text-white bg-white">
-             <a style="text-decoration: none;" :href="adminUrl">
-                <v-tooltip
-                  activator="parent"
-                  location="end top" origin="start center"
-                  >Admin Account</v-tooltip>
-                <v-list-item-icon class="text-black">
-                    mdi-shield-account-variant-outline
-                </v-list-item-icon>
-                </a>
-            </v-list-item>
-
-            <v-list-item class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
-              <v-tooltip
-                  activator="parent"
-                  location="end top" origin="start center"
-                  >Account</v-tooltip>
-                <v-list-item-icon class="text-black">
-                    mdi-account-group-outline
-                </v-list-item-icon>
-            </v-list-item>
-            <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" active-class=" elevation-4 text-white bg-white" >
-              <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
-              <v-tooltip
-                  activator="parent"
-                  location="end top" origin="start center"
-                  >{{item.name}}</v-tooltip>
-                <v-list-item-icon class="text-black">
-                    {{item.icon}}
-                </v-list-item-icon>
-              </v-btn>
-            </v-list-item>
-        </v-list>
+        <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center"
+          active-class=" elevation-4 text-white bg-white">
+          <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
+            <v-tooltip activator="parent" location="end top" origin="start center">{{ item.name }}</v-tooltip>
+            <v-list-item-icon class="text-black">
+              {{ item.icon }}
+            </v-list-item-icon>
+          </v-btn>
+        </v-list-item>
+        <v-spacer />
+        <v-list-item class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
+          <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
+          <v-list-item-icon class="text-black">
+            mdi-account-group-outline
+          </v-list-item-icon>
+        </v-list-item>
+      </v-list>
 
     </v-navigation-drawer>
 
     <v-navigation-drawer class="elevation-2" permanent>
-        <v-list>
-            <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')" :to="menuPaths.mePath" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')" :to="menuPaths.accountPath" />
-            <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')" :to="menuPaths.usersPath" />
-        </v-list>
+      <v-list>
+        <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')"
+          :to="menuPaths.mePath" />
+        <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')"
+          :to="menuPaths.accountPath" />
+        <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')"
+          :to="menuPaths.usersPath" />
+      </v-list>
     </v-navigation-drawer>
 
-</v-card>
-
+  </v-card>
 </template>
