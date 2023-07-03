@@ -352,6 +352,15 @@ export default (connectors) => {
           useSystemMessagesStore().addError(e)
           return e
         }
+      },
+      async getAccountByUrlFriendlyName (urlFriendlyName) {
+        try {
+          const res = await connectors.account.getAccountByUrlFriendlyName({ urlFriendlyName })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
       }
     }
   })

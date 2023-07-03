@@ -52,6 +52,41 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' }], count: 1 })
   })
 
+  test('test get account by urlFriendlyName', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName({ urlFriendlyName: 'urlFriendlyNameExample1' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/by-url-friendly-name/urlFriendlyNameExample1',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+
+    expect(res).toEqual({ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' })
+  })
+
+  test('test get account by urlFriendlyName undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName()).rejects.toThrowError('Account UrlFriendlyName Is Required')
+  })
+
   test('test readOne account', async () => {
     const fetch = vi.fn()
 

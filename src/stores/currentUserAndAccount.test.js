@@ -168,6 +168,14 @@ describe('Current User And Account Store', () => {
       }
       return 'success'
     }
+
+    const mockGetAccountByUrlFriendlyName = async function (params) {
+      if (!params || !params.urlFriendlyName) {
+        throw new RouteError('Account urlFriendlyName Is Required')
+      }
+      return 'success'
+    }
+
     const mockPatchEmailConfirm = async function (formData) {
       if (!formData || !formData.id || !formData.accountId || !formData.token) {
         throw new RouteError('User ID, Account ID and token Is Required')
@@ -204,7 +212,7 @@ describe('Current User And Account Store', () => {
     }
 
     return {
-      account: { deleteLogo: mockDeleteLogo, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
+      account: { deleteLogo: mockDeleteLogo, getAccountByUrlFriendlyName: mockGetAccountByUrlFriendlyName, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
       invitation: { send: mockSendInvitation, accept: mockAccept },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
@@ -232,6 +240,20 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     const res = await store.loginGetAccounts('12123password')
     expect(res).toEqual({ success: true })
+  })
+
+  test('test success get account by urlFriendlyName', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const res = await store.getAccountByUrlFriendlyName('12123password')
+    expect(res).toEqual('success')
+  })
+
+  test('test get account by urlFriendlyName invalid input', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const res = await store.getAccountByUrlFriendlyName()
+    expect(res.message).toEqual('Account urlFriendlyName Is Required')
   })
 
   test('test login get accounts error invalid ', async () => {

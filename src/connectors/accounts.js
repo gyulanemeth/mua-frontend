@@ -14,9 +14,11 @@ export default function (fetch, apiUrl) {
 
   const generateAccountRoute = (params) => `/v1/accounts${params.id ? '/' + params.id : ''}`
 
+  const generatePatchurlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/urlFriendlyName`
+
   const generatePatchNameRoute = (params) => `/v1/accounts/${params.id}/name`
 
-  const generatePatchurlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/urlFriendlyName`
+  const generateAccountByUrlFriendlyNameRoute = (params) => `/v1/accounts/by-url-friendly-name/${params.urlFriendlyName}`
 
   const generateCheckAvailabilityRoute = () => '/v1/accounts/check-availability'
 
@@ -45,9 +47,18 @@ export default function (fetch, apiUrl) {
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
   const deleteLogoRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/logo`, generateAdditionalHeaders)
+  const getByUrlFriendlyName = createGetConnector(fetch, apiUrl, generateAccountByUrlFriendlyNameRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
+    return res
+  }
+
+  const getAccountByUrlFriendlyName = async function (param, query) {
+    if (!param || !param.urlFriendlyName) {
+      throw new RouteError('Account UrlFriendlyName Is Required')
+    }
+    const res = await getByUrlFriendlyName(param, query)
     return res
   }
 
@@ -181,7 +192,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    account: { list, uploadLogo, deleteLogo, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
+    account: { list, uploadLogo, deleteLogo, getAccountByUrlFriendlyName, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept },
     forgotPassword: { send: sendForgotPassword, reset }
   }
