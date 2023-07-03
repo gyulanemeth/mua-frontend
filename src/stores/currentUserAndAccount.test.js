@@ -170,7 +170,7 @@ describe('Current User And Account Store', () => {
     }
 
     const mockGetAccountByUrlFriendlyName = async function (params) {
-      if (!params || !params.id ) {
+      if (!params || !params.id) {
         throw new RouteError('Account urlFriendlyName Is Required')
       }
       return 'success'
