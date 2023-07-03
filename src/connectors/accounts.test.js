@@ -62,7 +62,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName({ id: 'urlFriendlyNameExample1' })
+    const res = await accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName({ urlFriendlyName: 'urlFriendlyNameExample1' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/by-url-friendly-name/urlFriendlyNameExample1',

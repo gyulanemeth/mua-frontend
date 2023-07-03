@@ -18,7 +18,7 @@ export default function (fetch, apiUrl) {
 
   const generatePatchNameRoute = (params) => `/v1/accounts/${params.id}/name`
 
-  const generateAccountByUrlFriendlyNameRoute = (params) => `/v1/accounts/by-url-friendly-name/${params.id}`
+  const generateAccountByUrlFriendlyNameRoute = (params) => `/v1/accounts/by-url-friendly-name/${params.urlFriendlyName}`
 
   const generateCheckAvailabilityRoute = () => '/v1/accounts/check-availability'
 
@@ -55,7 +55,7 @@ export default function (fetch, apiUrl) {
   }
 
   const getAccountByUrlFriendlyName = async function (param, query) {
-    if (!param || !param.id) {
+    if (!param || !param.urlFriendlyName) {
       throw new RouteError('Account UrlFriendlyName Is Required')
     }
     const res = await getByUrlFriendlyName(param, query)

@@ -355,7 +355,7 @@ export default (connectors) => {
       },
       async getAccountByUrlFriendlyName (urlFriendlyName) {
         try {
-          const res = await connectors.account.getAccountByUrlFriendlyName({ id: urlFriendlyName })
+          const res = await connectors.account.getAccountByUrlFriendlyName({ urlFriendlyName })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
