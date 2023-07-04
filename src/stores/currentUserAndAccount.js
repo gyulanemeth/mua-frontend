@@ -316,7 +316,7 @@ export default (connectors) => {
       async uploadUserProfilePicture (formData) {
         try {
           const res = await connectors.user.uploadProfilePicture({ accountId: this.account._id, id: this.user._id }, formData)
-          this.user.profilePicture = res.profilePicture
+          this.user.profilePicturePath = res.profilePicturePath
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -326,7 +326,7 @@ export default (connectors) => {
       async deleteUserProfilePicture () {
         try {
           const res = await connectors.user.deleteProfilePicture({ accountId: this.account._id, id: this.user._id })
-          delete this.user.profilePicture
+          delete this.user.profilePicturePath
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -336,7 +336,7 @@ export default (connectors) => {
       async uploadLogo (formData) {
         try {
           const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
-          this.account.logo = res.logo
+          this.account.logoPath = res.logoPath
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -346,7 +346,7 @@ export default (connectors) => {
       async deleteLogo () {
         try {
           const res = await connectors.account.deleteLogo({ id: this.account._id })
-          delete this.account.logo
+          delete this.account.logoPath
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

@@ -44,7 +44,7 @@ async function handleUpdateUrlFriendlyName (params) {
 
 async function handleUploadLogo (params, statusCallBack) {
   const res = await store.uploadLogo(params)
-  statusCallBack(res.logo)
+  statusCallBack(res.logoPath)
   if (res) {
     await alert.message('Updated Successfully')
   }
@@ -62,6 +62,6 @@ async function handleDeleteLogo (statusCallBack) {
 
 <template>
 
-<AccountDetails v-if="data" @uploadLogoHandler="handleUploadLogo" @deleteLogoHandler="handleDeleteLogo" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :role="store.user && store.user.role === 'admin'" :logo="data.logo" :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
+<AccountDetails v-if="data" @uploadLogoHandler="handleUploadLogo" @deleteLogoHandler="handleDeleteLogo" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :role="store.user && store.user.role === 'admin'" :logoPath="data.logoPath" :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
 
 </template>
