@@ -24,7 +24,14 @@ describe('Current User And Account Store', () => {
   }
   global.window = {
     config: {
-      accountsApiBaseUrl: 'http://accounts-api.emailfox.link'
+      accountsApiBaseUrl: 'http://accounts-api.emailfox.link',
+      sideBarIcons: [{
+        icon: 'testIcon',
+        url: () => {
+          return 'path'
+        },
+        name: 'test'
+    }]
     },
     location: {
       pathname: ''
