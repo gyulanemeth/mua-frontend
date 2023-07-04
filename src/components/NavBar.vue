@@ -1,12 +1,22 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useCurrentUserAndAccountStore, useAdminsStore } from '../stores/index.js'
 
 const store = useCurrentUserAndAccountStore()
+const adminsStore = useAdminsStore()
 const route = useRoute()
+const profilePicturePath = ref()
 
-const menuItems = computed(() => {
+onMounted(async () => {
+  if ( store.checkAdmin && !adminsStore.admin) {
+    await adminsStore.readOne();
+    profilePicturePath.value = adminsStore.admin.profilePicturePath
+  }
+})
+
+
+const menuItems = computed(async () => {
   const urlFriendlyName = route.params.urlFriendlyName
   return [{
     title: 'Me',
@@ -45,8 +55,8 @@ const appIcon = window.config.appIcon
         <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34"
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
-            <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicturePath" :src="cdnBaseUrl + store.user.profilePicturePath" v-bind="props"
-              class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;" v-if="profilePicturePath"
+              :src="cdnBaseUrl + profilePicturePath" v-bind="props" class="align-self-stretch" cover />
             <v-btn v-else data-test-id="navbarMenu" v-bind="props">
               {{ $t('navBar.picLabel') }}
             </v-btn>
