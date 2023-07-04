@@ -8,7 +8,8 @@ import useSystemMessagesStore from './systemMessages.js'
 export default (connectors) => {
   const router = useRouter() || [] // [] for test
   const storage = {}
-
+  
+  const dashboardPath = window.config.sideBarIcons.find(ele => ele.icon === 'mdi-view-dashboard')
   const query = new URLSearchParams(window.location.search)
 
   if (query.get('token') && query.get('accountId')) {
@@ -60,7 +61,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          window.location.href = dashboardPath.url({ accountId: this.account._id, token: localStorage.getItem('accessToken'), urlFriendlyName: this.account.urlFriendlyName })
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -74,7 +75,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          window.location.href = dashboardPath.url({ accountId: this.account._id, token: localStorage.getItem('accessToken'), urlFriendlyName: this.account.urlFriendlyName })
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
