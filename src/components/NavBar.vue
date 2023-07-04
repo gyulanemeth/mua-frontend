@@ -6,7 +6,16 @@ import { useCurrentUserAndAccountStore, useAdminsStore } from '../stores/index.j
 const store = useCurrentUserAndAccountStore()
 const adminsStore = useAdminsStore()
 const route = useRoute()
-const adminProfilePicture = ref()
+const profilePicturePath = ref()
+
+onMounted(async () => {
+  if ( store.checkAdmin && !adminsStore.admin) {
+    await adminsStore.readOne();
+    profilePicturePath.value = adminsStore.admin
+  }else{
+    
+  }
+})
 
 
 const menuItems = computed(async () => {
@@ -47,8 +56,8 @@ const appIcon = window.config.appIcon
         <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34"
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
-            <v-img style="cursor: pointer;" v-if="adminsStore.admin && adminsStore.admin.profilePicture"
-              :src="adminsStore.admin.profilePicture" v-bind="props" class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;" v-if="profilePicturePath"
+              :src="profilePicturePath" v-bind="props" class="align-self-stretch" cover />
             <v-btn v-else data-test-id="navbarMenu" v-bind="props">
               {{ $t('navBar.picLabel') }}
             </v-btn>
