@@ -9,7 +9,7 @@ const props = defineProps({
 const cdnBaseUrl = window.config.cdnBaseUrl
 const role = ref(props.data.role)
 const dialog = ref()
-const profilePicture = ref(props.data.profilePicture ? cdnBaseUrl + props.data.profilePicture : import.meta.env.BASE_URL + 'placeholder.jpg')
+const profilePicture = ref(props.data.profilePicturePath ? cdnBaseUrl + props.data.profilePicturePath : import.meta.env.BASE_URL + 'placeholder.jpg')
 
 </script>
 
