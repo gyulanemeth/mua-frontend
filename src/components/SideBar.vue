@@ -6,7 +6,7 @@ import { useRoute } from 'vue-router'
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
-function redirect(url, urlFriendlyName) {
+function redirect (url, urlFriendlyName) {
   return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken'), urlFriendlyName })
 }
 

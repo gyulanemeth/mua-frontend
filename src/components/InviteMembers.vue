@@ -75,7 +75,7 @@ const resetForm = () => {
             </v-card-text>
             <v-card-actions>
                 <v-btn color="info" v-if="!cb" data-test-id="inviteMember-submitBtn"
-                    @click="processing = true; $emit('inviteEventHandler', data, (res) => { cb = res; resetForm(); processing = false })">
+                    @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })">
                     {{ !processing ? $t('inviteMembers.submitBtn') : '' }}
                     <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                         indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}

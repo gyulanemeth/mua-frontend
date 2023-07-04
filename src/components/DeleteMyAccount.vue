@@ -6,6 +6,8 @@ const props = defineProps({
   data: Object
 })
 
+const cdnBaseUrl = window.config.cdnBaseUrl
+
 const route = useRoute()
 
 const password = ref()
@@ -16,7 +18,7 @@ const resetForm = () => {
   dialog.value = false
 }
 
-const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
+const profilePicture = ref(props.data.profilePicturePath ? cdnBaseUrl + props.data.profilePicturePath : import.meta.env.BASE_URL + 'placeholder.jpg')
 
 </script>
 

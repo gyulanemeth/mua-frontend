@@ -11,7 +11,7 @@ const profilePicturePath = ref()
 onMounted(async () => {
   if ( store.checkAdmin && !adminsStore.admin) {
     await adminsStore.readOne();
-    profilePicturePath.value = adminsStore.admin
+    profilePicturePath.value = adminsStore.admin.profilePicturePath
   }
 })
 
@@ -30,6 +30,7 @@ const menuItems = computed(async () => {
   }]
 })
 
+const cdnBaseUrl = window.config.cdnBaseUrl
 const appName = window.config.appName
 const appIcon = window.config.appIcon
 </script>
@@ -55,15 +56,15 @@ const appIcon = window.config.appIcon
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
             <v-img style="cursor: pointer;" v-if="profilePicturePath"
-              :src="profilePicturePath" v-bind="props" class="align-self-stretch" cover />
+              :src="cdnBaseUrl + profilePicturePath" v-bind="props" class="align-self-stretch" cover />
             <v-btn v-else data-test-id="navbarMenu" v-bind="props">
               {{ $t('navBar.picLabel') }}
             </v-btn>
           </v-avatar>
         </v-badge>
         <v-avatar v-else size="large" color="grey-darken-3">
-          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture"
-            v-bind="props" class="align-self-stretch" cover />
+          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicturePath" :src="cdnBaseUrl + store.user.profilePicturePath" v-bind="props"
+            class="align-self-stretch" cover />
           <v-btn v-else data-test-id="navbarMenu" v-bind="props">
             {{ $t('navBar.picLabel') }}
           </v-btn>
