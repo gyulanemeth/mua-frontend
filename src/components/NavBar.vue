@@ -12,8 +12,6 @@ onMounted(async () => {
   if ( store.checkAdmin && !adminsStore.admin) {
     await adminsStore.readOne();
     profilePicturePath.value = adminsStore.admin
-  }else{
-    
   }
 })
 
