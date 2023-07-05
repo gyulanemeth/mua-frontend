@@ -1,5 +1,6 @@
 <script setup >
 import { ref, nextTick } from 'vue'
+import ImgCropper from './ImageCropper.vue'
 
 const componentProps = defineProps({
   name: String,
@@ -19,6 +20,8 @@ const emit = defineEmits(['uploadProfilePictureHandler', 'deleteProfilePictureHa
 
 const editMode = ref()
 const nameInput = ref()
+const showCropperDialog = ref(false)
+const imageFile = ref(false)
 
 const setFocus = () => {
   nextTick(() => {
@@ -36,16 +39,26 @@ const handledeleteProfilePicture = () => {
   })
 }
 
-const handleFileChange = (event) => {
-  processing.value = true
+const uploadProfilePicture = (image) => {
+  showCropperDialog.value = false
   const formData = new FormData()
-  formData.append('profilePicture', event.target.files[0])
+  formData.append('profilePicture', image)
   emit('uploadProfilePictureHandler', formData, (url) => {
     if (url) {
       profilePicture.value = cdnBaseUrl + url
     }
     processing.value = false
   })
+}
+
+const handleFileChange = (event) => {
+  processing.value = true
+  const reader = new FileReader()
+  reader.onload = () => {
+    imageFile.value = reader.result
+    showCropperDialog.value = true
+  }
+  reader.readAsDataURL(event.target.files[0])
 }
 
 const openFileInput = () => {
@@ -122,6 +135,7 @@ const openFileInput = () => {
                 </v-hover>
             </v-col>
         </v-col>
+        <ImgCropper v-if="imageFile" :profilePicture="imageFile" :showCropperDialog="showCropperDialog" @uploadProfilePictureHandler="uploadProfilePicture" @closeCropperHandler="processing = false; showCropperDialog = false" />
     </v-layout>
 </template>
 
