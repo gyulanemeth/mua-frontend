@@ -8,6 +8,7 @@ import FinalizeRegistrationView from '../views/FinalizeRegistrationView.vue'
 import CreateAccountView from '../views/CreateAccountView.vue'
 import LoginAndResetView from '../views/LoginAndResetView.vue'
 import RedirectToLoginMessage from '../views/RedirectToLoginMessage.vue'
+import { useCurrentUserAndAccountStore } from '../stores/index.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,7 +81,12 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  const store = useCurrentUserAndAccountStore()
+  if (to.params.urlFriendlyName && to.params.urlFriendlyName === 'undefined' ) {
+    await store.readOne()
+    next({path: to.path.replace('undefined', store.account.urlFriendlyName)})
+  }
   if (localStorage.getItem('accessToken') && to.name !== 'redirectToLoginMessage' && to.name !== 'login-select') {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
