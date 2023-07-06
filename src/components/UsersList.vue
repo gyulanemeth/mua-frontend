@@ -6,8 +6,6 @@ import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
 
-const cdnBaseUrl = window.config.cdnBaseUrl
-
 const route = useRoute()
 
 const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore', 'searchEvent'])
@@ -40,7 +38,7 @@ window.onscroll = () => {
   }
 }
 const profilePicture = (item) => {
-  return item.data.profilePicturePath ? cdnBaseUrl + item.data.profilePicturePath : import.meta.env.BASE_URL + 'placeholder.jpg'
+  return item.data.profilePicturePath || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 </script>
 

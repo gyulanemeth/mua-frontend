@@ -11,11 +11,10 @@ const componentProps = defineProps({
 
 const emit = defineEmits(['uploadLogoHandler', 'deleteLogoHandler'])
 
-const cdnBaseUrl = window.config.cdnBaseUrl
 
 const name = ref(componentProps.name)
 const urlFriendlyName = ref(componentProps.urlFriendlyName)
-const logo = ref(componentProps.logoPath ? cdnBaseUrl + componentProps.logoPath : import.meta.env.BASE_URL + 'placeholder.jpg')
+const logo = ref(componentProps.logoPath || import.meta.env.BASE_URL + 'placeholder.jpg')
 const editMode = ref()
 const nameInput = ref()
 const processing = ref()
@@ -53,7 +52,7 @@ const uploadlogo = (image) => {
   formData.append('logo', image)
   emit('uploadLogoHandler', formData, (url) => {
     if (url) {
-      logo.value = cdnBaseUrl + url
+      logo.value = url
     }
     processing.value = false
   })
