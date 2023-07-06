@@ -38,7 +38,7 @@ window.onscroll = () => {
   }
 }
 const profilePicture = (item) => {
-  return item.data.profilePicturePath || import.meta.env.BASE_URL + 'placeholder.jpg'
+  return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 </script>
 
