@@ -194,7 +194,7 @@ describe('Current User And Account Store', () => {
       if (!params || !params.id || !params.accountId || !formData) {
         throw new RouteError('param and form Data Is Required')
       }
-      return { profilePicturePath: 'test' }
+      return { profilePicture: 'test' }
     }
 
     const mockDeleteUserProfilePicture = async function (params) {
@@ -208,7 +208,7 @@ describe('Current User And Account Store', () => {
       if (!params || !params.id || !formData) {
         throw new RouteError('param and form Data Is Required')
       }
-      return { success: true, profilePicturePath: 'test' }
+      return { success: true, profilePicture: 'test' }
     }
 
     const mockDeleteLogo = async function (params) {
@@ -629,8 +629,8 @@ describe('Current User And Account Store', () => {
     const userStore = currentUser()
     userStore.user = { _id: '12test12' }
     userStore.account = { _id: '123test123' }
-    const res = await userStore.uploadUserProfilePicture({ profilePicturePath: 'test' })
-    expect(res.profilePicturePath).toEqual('test')
+    const res = await userStore.uploadUserProfilePicture({ profilePicture: 'test' })
+    expect(res.profilePicture).toEqual('test')
   })
 
   test('test success deleteProfilePicture', async () => {

@@ -5,7 +5,7 @@ import ImgCropper from './ImageCropper.vue'
 const componentProps = defineProps({
   name: String,
   urlFriendlyName: String,
-  logoPath: String,
+  logo: String,
   role: Boolean
 })
 
@@ -14,7 +14,7 @@ const emit = defineEmits(['uploadLogoHandler', 'deleteLogoHandler'])
 
 const name = ref(componentProps.name)
 const urlFriendlyName = ref(componentProps.urlFriendlyName)
-const logo = ref(componentProps.logoPath || import.meta.env.BASE_URL + 'placeholder.jpg')
+const logo = ref(componentProps.logo || import.meta.env.BASE_URL + 'placeholder.jpg')
 const editMode = ref()
 const nameInput = ref()
 const processing = ref()
@@ -143,8 +143,8 @@ const openFileInput = () => {
 
               <v-expand-transition>
 
-                <v-container v-if="isHovering" class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
-                  <v-btn v-if="componentProps.logoPath" @click="handleDeleteAccountLogo" color="white" class="align-center"
+                <v-container v-if="isHovering && componentProps.role" class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
+                  <v-btn v-if="componentProps.logo" @click="handleDeleteAccountLogo" color="white" class="align-center"
                     variant="text" icon="mdi-delete-forever-outline" size="small" />
                   <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
                     icon="mdi-camera-plus-outline" size="small" />
