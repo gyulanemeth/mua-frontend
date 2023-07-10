@@ -19,7 +19,7 @@ onMounted(() => {
 <template>
 
 <v-app>
-    <div v-if="store.loggedIn && route.name !=='login' && route.name !=='loginWithUrlFriendlyName' && route.name !== 'forgot-password-reset' && route.name !== 'accept-invitation'">
+    <div v-if="store.loggedIn && route.meta.requiresAuth ">
         <NavBar  />
         <SideBar />
     </div>

@@ -9,6 +9,7 @@ import CreateAccountView from '../views/CreateAccountView.vue'
 import LoginAndResetView from '../views/LoginAndResetView.vue'
 import RedirectToLoginMessage from '../views/RedirectToLoginMessage.vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,68 +17,115 @@ const router = createRouter({
     {
       path: '/:urlFriendlyName/users',
       name: 'users',
-      component: UserView
+      component: UserView,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: '/',
       name: 'login',
-      component: LoginAndResetView
+      component: LoginAndResetView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/:urlFriendlyName',
       name: 'loginWithUrlFriendlyName',
-      component: LoginAndResetView
+      component: LoginAndResetView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/login-select',
       name: 'login-select',
-      component: LoginAndResetView
+      component: LoginAndResetView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/finalize-registration',
       name: 'finalize-registration',
-      component: FinalizeRegistrationView
+      component: FinalizeRegistrationView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/create-account',
       name: 'create-account',
-      component: CreateAccountView
+      component: CreateAccountView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: LoginAndResetView
+      component: LoginAndResetView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/:urlFriendlyName/me',
       name: 'me',
-      component: MeView
+      component: MeView,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: '/verify-email',
       name: 'verify-email',
-      component: MeView
+      component: MeView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/:urlFriendlyName/account',
       name: 'account',
-      component: AccountView
+      component: AccountView,
+      meta: {
+        requiresAuth: true,
+      }
     },
     {
       path: '/forgot-password/reset',
       name: 'forgot-password-reset',
-      component: LoginAndResetView
+      component: LoginAndResetView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/invitation/accept',
       name: 'accept-invitation',
-      component: FinalizeRegistrationView
+      component: FinalizeRegistrationView,
+      meta: {
+        requiresAuth: false,
+      }
     },
     {
       path: '/:urlFriendlyName/redirectToLoginMessage',
       name: 'redirectToLoginMessage',
-      component: RedirectToLoginMessage
-    }
+      component: RedirectToLoginMessage,
+      meta: {
+        requiresAuth: false,
+      }
+    },
+    {
+      path: '/:catchAll(.*)',
+      name: 'notFound', 
+      component: NotFoundView,
+      meta: {
+        requiresAuth: false,
+      }
+    },
   ]
 })
 
