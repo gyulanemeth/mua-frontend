@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 import { useRoute } from 'vue-router'
 
@@ -25,6 +25,12 @@ const menuPaths = computed(() => {
     mePath: '/default/me',
     accountPath: '/default/account',
     usersPath: '/default/users'
+  }
+})
+
+onMounted(async () => {
+  if (!store.account || !store.account.name ) {
+    await store.readOne()
   }
 })
 
@@ -57,9 +63,15 @@ const sideBarIcons = window.config.sideBarIcons
           </v-btn>
         </v-list-item>
         <v-spacer />
-        <v-list-item class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
+       
+        <v-avatar size="large" v-if="store.account && store.account.logo">
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-          <v-list-item-icon class="text-black">
+            <v-img style="cursor: pointer;" 
+             :src="store.account.logo" class="align-self-stretch" cover />
+          </v-avatar>
+          <v-list-item v-else class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
+            <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
+            <v-list-item-icon  class="text-black">
             mdi-account-group-outline
           </v-list-item-icon>
         </v-list-item>
