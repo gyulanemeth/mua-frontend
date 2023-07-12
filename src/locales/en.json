@@ -72,6 +72,7 @@
     "cbMessagePart3": "Thank you for choosing {name}. Feel free to reach out to our support team for any questions.",
     "cbMessagePart4": "Happy exploring!",
     "loginMessage": "Ready to get going?", 
+    "redirectTologinMessage": "Already have an account?",
     "loginBtn": "Sign in",   
     "accountSection": {
       "header": "Account Data:",
@@ -141,6 +142,8 @@
     "confirmNewPasswordLabel": "Confirm New Password",
     "confirmNewPasswordPlaceholder": "********",
     "checkboxLabel": "I am human.",
+    "redirectToLoginMessage":"Ready to log in?",
+    "redirectToLoginBtn": "Click here",
     "cb":{
       "resetMessage": "To continue resetting your password, please check your inbox and click the link we sent you.",
       "forgotMessage": "Don't have account?",

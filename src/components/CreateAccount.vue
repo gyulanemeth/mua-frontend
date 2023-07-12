@@ -89,6 +89,11 @@ const checkbox = ref()
                 </v-btn>
                 <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data , (res)=>{cb = res})" />
             </v-col>
+            <p class="text-center">{{$t('createAccount.redirectTologinMessage')}}
+                    <router-link style="text-decoration: none; color: inherit;"
+                        class="font-weight-bold"
+                        :to="`/`">{{$t('createAccount.loginBtn')}}</router-link>
+                </p>
         </v-card-text>
     </v-card>
 </v-form>
