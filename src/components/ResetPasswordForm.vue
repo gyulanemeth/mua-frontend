@@ -88,7 +88,11 @@ const title = window.config.title
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
                         <button hidden :disabled="!checkbox"
-                            @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
+                        @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
+                        <p class="mt-4 pa-4">{{ $t('loginAndResetForm.redirectToLoginMessage') }}
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/">{{
+                            $t('loginAndResetForm.redirectToLoginBtn') }}</router-link>
+                    </p>
                     </div>
                     <p v-if="cb === 'reset'" data-test-id="loginAndResetForm-forgotPasswordCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.resetMessage') }}</p>
