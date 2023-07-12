@@ -45,6 +45,7 @@ async function handleUpdateUrlFriendlyName (params) {
 async function handleUploadLogo (params, statusCallBack) {
   const res = await store.uploadLogo(params)
   statusCallBack(res.logo)
+  data.value = store.account
   if (res) {
     await alert.message('Updated Successfully')
   }
@@ -53,6 +54,7 @@ async function handleUploadLogo (params, statusCallBack) {
 async function handleDeleteLogo (statusCallBack) {
   const res = await store.deleteLogo()
   statusCallBack(!res.message)
+  data.value = store.account
   if (!res.message) {
     await alert.message('Updated Successfully')
   }
