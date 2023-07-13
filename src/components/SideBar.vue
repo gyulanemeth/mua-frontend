@@ -29,7 +29,7 @@ const menuPaths = computed(() => {
 })
 
 onMounted(async () => {
-  if (!store.account || !store.account.name ) {
+  if (!store.account || !store.account.name) {
     await store.readOne()
   }
 })
@@ -63,11 +63,11 @@ const sideBarIcons = window.config.sideBarIcons
           </v-btn>
         </v-list-item>
         <v-spacer />
-       
+
         <v-avatar size="large" v-if="store.account && store.account.logo">
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-            <v-img style="cursor: pointer;" 
-             :src="store.account.logo" class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;"
+             :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
           <v-list-item v-else class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>

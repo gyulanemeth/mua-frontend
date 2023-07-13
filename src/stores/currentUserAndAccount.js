@@ -8,7 +8,7 @@ import useSystemMessagesStore from './systemMessages.js'
 export default (connectors) => {
   const router = useRouter() || [] // [] for test
   const storage = {}
-  
+
   const dashboardPath = window.config.sideBarIcons.find(ele => ele.icon === 'mdi-view-dashboard')
   const query = new URLSearchParams(window.location.search)
 

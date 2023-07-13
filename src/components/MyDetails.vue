@@ -43,7 +43,7 @@ const uploadProfilePicture = (image) => {
   formData.append('profilePicture', image)
   emit('uploadProfilePictureHandler', formData, (url) => {
     if (url) {
-      profilePicture.value = url
+      profilePicture.value = url + '?' + Date.now()
     }
     processing.value = false
   })
