@@ -7,7 +7,7 @@ import {
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
-import PayloadTooLargeError from '../errors/PayloadTooLargeError.js'
+import { ConnectorError } from '../errors/ConnectorError.js'
 
 
 export default function (fetch, apiUrl) {
@@ -197,7 +197,7 @@ export default function (fetch, apiUrl) {
     let res = await fetch(url, requestOptions)
     res = await res.json()
     if (res.error) {
-      throw new PayloadTooLargeError(res.error.message) 
+      throw new ConnectorError(res.status, res.error.name, res.error.message) 
     }
     return res.result
   }
