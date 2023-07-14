@@ -8,7 +8,6 @@ import {
 import RouteError from '../errors/RouteError.js'
 import { ConnectorError } from '../errors/ConnectorError.js'
 
-
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
     return { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
@@ -183,7 +182,7 @@ export default function (fetch, apiUrl) {
     let res = await fetch(url, requestOptions)
     res = await res.json()
     if (res.error) {
-      throw new ConnectorError(res.status, res.error.name, res.error.message) 
+      throw new ConnectorError(res.status, res.error.name, res.error.message)
     }
     return res.result
   }

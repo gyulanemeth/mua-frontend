@@ -9,12 +9,11 @@ const route = useRoute()
 const profilePicture = ref()
 
 onMounted(async () => {
-  if ( store.checkAdmin && !adminsStore.admin) {
-    await adminsStore.readOne();
+  if (store.checkAdmin && !adminsStore.admin) {
+    await adminsStore.readOne()
     profilePicture.value = adminsStore.admin.profilePicture
   }
 })
-
 
 const menuItems = computed(async () => {
   const urlFriendlyName = route.params.urlFriendlyName

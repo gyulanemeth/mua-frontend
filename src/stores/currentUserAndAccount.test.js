@@ -31,7 +31,7 @@ describe('Current User And Account Store', () => {
           return 'path'
         },
         name: 'test'
-    }]
+      }]
     },
     location: {
       pathname: ''

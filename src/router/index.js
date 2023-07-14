@@ -19,7 +19,7 @@ const router = createRouter({
       name: 'users',
       component: UserView,
       meta: {
-        requiresAuth: true,
+        requiresAuth: true
       }
     },
     {
@@ -27,7 +27,7 @@ const router = createRouter({
       name: 'login',
       component: LoginAndResetView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -35,7 +35,7 @@ const router = createRouter({
       name: 'loginWithUrlFriendlyName',
       component: LoginAndResetView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -43,7 +43,7 @@ const router = createRouter({
       name: 'login-select',
       component: LoginAndResetView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -51,7 +51,7 @@ const router = createRouter({
       name: 'finalize-registration',
       component: FinalizeRegistrationView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -59,7 +59,7 @@ const router = createRouter({
       name: 'create-account',
       component: CreateAccountView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -67,7 +67,7 @@ const router = createRouter({
       name: 'forgot-password',
       component: LoginAndResetView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -75,7 +75,7 @@ const router = createRouter({
       name: 'me',
       component: MeView,
       meta: {
-        requiresAuth: true,
+        requiresAuth: true
       }
     },
     {
@@ -83,7 +83,7 @@ const router = createRouter({
       name: 'verify-email',
       component: MeView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -91,7 +91,7 @@ const router = createRouter({
       name: 'account',
       component: AccountView,
       meta: {
-        requiresAuth: true,
+        requiresAuth: true
       }
     },
     {
@@ -99,7 +99,7 @@ const router = createRouter({
       name: 'forgot-password-reset',
       component: LoginAndResetView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -107,7 +107,7 @@ const router = createRouter({
       name: 'accept-invitation',
       component: FinalizeRegistrationView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
@@ -115,25 +115,25 @@ const router = createRouter({
       name: 'redirectToLoginMessage',
       component: RedirectToLoginMessage,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
     },
     {
       path: '/:catchAll(.*)',
-      name: 'notFound', 
+      name: 'notFound',
       component: NotFoundView,
       meta: {
-        requiresAuth: false,
+        requiresAuth: false
       }
-    },
+    }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
   const store = useCurrentUserAndAccountStore()
-  if (to.params.urlFriendlyName && to.params.urlFriendlyName === 'undefined' ) {
+  if (to.params.urlFriendlyName && to.params.urlFriendlyName === 'undefined') {
     await store.readOne()
-    next({path: to.path.replace('undefined', store.account.urlFriendlyName)})
+    next({ path: to.path.replace('undefined', store.account.urlFriendlyName) })
   }
   if (localStorage.getItem('accessToken') && to.name !== 'redirectToLoginMessage' && to.name !== 'login-select') {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
