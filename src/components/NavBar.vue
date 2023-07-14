@@ -11,11 +11,11 @@ const profilePicture = ref()
 onMounted(async () => {
   if (store.checkAdmin && !adminsStore.admin) {
     await adminsStore.readOne()
-    profilePicture.value = adminsStore.admin.profilePicture
+    profilePicture.value = adminsStore.admin.profilePicture + '?' + Date.now()
   }
 })
 
-const menuItems = computed(async () => {
+const menuItems = computed(() => {
   const urlFriendlyName = route.params.urlFriendlyName
   return [{
     title: 'Me',
@@ -61,7 +61,7 @@ const appIcon = window.config.appIcon
           </v-avatar>
         </v-badge>
         <v-avatar v-else size="large" color="grey-darken-3">
-          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture" v-bind="props"
+          <v-img style="cursor: pointer;" v-if="store.user && store.user.profilePicture" :src="store.user.profilePicture+ '?' +Date.now()" v-bind="props"
             class="align-self-stretch" cover />
           <v-btn v-else data-test-id="navbarMenu" v-bind="props">
             {{ $t('navBar.picLabel') }}

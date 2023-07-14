@@ -66,7 +66,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
-                        <v-img :src="profilePicture" class="align-self-stretch" cover/>
+                        <v-img :src="profilePicture+ '?' +Date.now()" class="align-self-stretch" cover/>
                     </v-avatar>
                 </v-col>
             </v-row>

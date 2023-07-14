@@ -49,7 +49,7 @@ const uploadlogo = (image) => {
   formData.append('logo', image)
   emit('uploadLogoHandler', formData, (url) => {
     if (url) {
-      logo.value = url
+      logo.value = url + '?' + Date.now()
     }
     processing.value = false
   })
