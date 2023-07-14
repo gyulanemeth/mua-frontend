@@ -11,7 +11,6 @@ const componentProps = defineProps({
 
 const emit = defineEmits(['uploadLogoHandler', 'deleteLogoHandler'])
 
-
 const name = ref(componentProps.name)
 const urlFriendlyName = ref(componentProps.urlFriendlyName)
 const logo = ref(componentProps.logo || import.meta.env.BASE_URL + 'placeholder.jpg')
@@ -44,15 +43,13 @@ const handleDeleteAccountLogo = () => {
   })
 }
 
-
-
 const uploadlogo = (image) => {
   showCropperDialog.value = false
   const formData = new FormData()
   formData.append('logo', image)
   emit('uploadLogoHandler', formData, (url) => {
     if (url) {
-      logo.value = url
+      logo.value = url + '?' + Date.now()
     }
     processing.value = false
   })

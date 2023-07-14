@@ -11,7 +11,7 @@ const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
 onMounted(() => {
-    document.title = window.config.appTitle
+  document.title = window.config.appTitle
 })
 
 </script>
