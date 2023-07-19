@@ -52,7 +52,7 @@ const profilePicture = (item) => {
             <v-col cols="5">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
                     variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
-                    @change="$emit('searchEvent', filter)"></v-text-field>
+                    @input="$emit('searchEvent', filter)"></v-text-field>
             </v-col>
 
             <v-col class="pt-3">
