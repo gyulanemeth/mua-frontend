@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
-import { useThrottleFn } from '@vueuse/core'
+import { useDebounceFn  } from '@vueuse/core'
 
 const route = useRoute()
 
@@ -20,7 +20,7 @@ const props = defineProps({
 const filter = ref('')
 const page = ref(0)
 
-const throttledFn = useThrottleFn(() => {
+const debouncedFn = useDebounceFn (() => {
   emit('searchEvent',filter.value)
 }, 500)
 
@@ -57,7 +57,7 @@ const profilePicture = (item) => {
             <v-col cols="5">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
                     variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
-                    @input="throttledFn"></v-text-field>
+                    @input="debouncedFn"></v-text-field>
             </v-col>
 
             <v-col class="pt-3">
