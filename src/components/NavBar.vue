@@ -18,7 +18,7 @@ onMounted(async () => {
 const menuItems = computed(() => {
   const urlFriendlyName = route.params.urlFriendlyName
   return [{
-    title: 'Me',
+    title: 'My profile',
     path: `/${urlFriendlyName}/me`
   }, {
     title: 'Account Settings',
@@ -69,9 +69,14 @@ const appIcon = window.config.appIcon
         </v-avatar>
       </template>
       <v-list>
-        <v-list-item v-for="item in menuItems" :key="item.title" :to="item.path" :value="item.title">
+        <div v-for="(item, i) in menuItems" :key="item.title" >
+        <v-list-item :to="item.path" :value="item.title">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
+
+        <v-divider v-if="i === 0"></v-divider>
+</div>
+        <v-divider></v-divider>
         <v-list-item data-test-id="navbarMenu-logout" @click="store.logout()">
           <v-list-item-title> {{ $t('navBar.logoutBtn') }} </v-list-item-title>
         </v-list-item>
