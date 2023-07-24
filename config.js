@@ -6,7 +6,7 @@ window.config = {
   cdnBaseUrl: 'http://localhost:10007/',
   appName: 'MUA Account\'s UI',
   appTitle: 'MUA Account\'s UI',
-  appIcon: 'https://codebluefox.com/wp-content/uploads/2022/08/Blue-Fox-Pvt-LTd-04.png',
+  appIcon: 'https://bluefox.email/assets/bluefoxemail-logo.png',
   title: 'Account Panel',
   sideBarIcons: [
     {
