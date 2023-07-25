@@ -73,10 +73,10 @@ const openFileInput = () => {
 </script>
 
 <template>
-  <v-container class="mx-6 pt-0">
+  <v-container class="my-n3 mx-0 pt-0">
     <v-layout class="d-flex flex-wrap w-75">
       <v-col class="pt-3">
-        <h3 class="font-weight-bold">{{ componentProps.name }}</h3>
+        <h3 class="font-weight-bold">{{ $t('accountDetails.detailsLabel') }}</h3>
         <v-divider />
 
         <v-row align="center" class="mt-3">

@@ -63,22 +63,19 @@ const sideBarIcons = window.config.sideBarIcons
           </v-btn>
         </v-list-item>
         <v-spacer />
-
+        <v-menu location="bottom " origin="end top">
+      <template v-slot:activator="{ props }">
         <v-avatar size="large" v-if="store.account && store.account.logo">
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-            <v-img style="cursor: pointer;" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
           <v-list-item v-else class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-            <v-list-item-icon  class="text-black">
+            <v-list-item-icon v-bind="props"  class="text-black">
             mdi-account-group-outline
           </v-list-item-icon>
         </v-list-item>
-      </v-list>
-
-    </v-navigation-drawer>
-
-    <v-navigation-drawer class="elevation-2" permanent>
+      </template>
       <v-list>
         <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')"
           :to="menuPaths.mePath" />
@@ -87,7 +84,8 @@ const sideBarIcons = window.config.sideBarIcons
         <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')"
           :to="menuPaths.usersPath" />
       </v-list>
+    </v-menu>
+  </v-list>
     </v-navigation-drawer>
-
   </v-card>
 </template>
