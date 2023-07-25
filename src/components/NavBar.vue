@@ -20,12 +20,6 @@ const menuItems = computed(() => {
   return [{
     title: 'My profile',
     path: `/${urlFriendlyName}/me`
-  }, {
-    title: 'Account Settings',
-    path: `/${urlFriendlyName}/account`
-  }, {
-    title: 'Account Users',
-    path: `/${urlFriendlyName}/users`
   }]
 })
 
@@ -76,14 +70,11 @@ const appIcon = window.config.appIcon
         </v-avatar>
       </template>
       <v-list>
-        <div v-for="(item, i) in menuItems" :key="item.title" >
+        <div v-for="item in menuItems" :key="item.title" >
         <v-list-item :to="item.path" :value="item.title">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
-
-        <v-divider v-if="i === 0"></v-divider>
 </div>
-        <v-divider></v-divider>
         <v-list-item data-test-id="navbarMenu-logout" @click="store.logout()">
           <v-list-item-title> {{ $t('navBar.logoutBtn') }} </v-list-item-title>
         </v-list-item>
