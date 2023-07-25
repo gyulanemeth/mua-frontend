@@ -77,8 +77,6 @@ const sideBarIcons = window.config.sideBarIcons
         </v-list-item>
       </template>
       <v-list>
-        <v-list-item active-class="text-info" data-test-id="sideBar-meTab" :title="$t('sideBar.me')"
-          :to="menuPaths.mePath" />
         <v-list-item active-class="text-info" data-test-id="sideBar-accountTab" :title="$t('sideBar.account')"
           :to="menuPaths.accountPath" />
         <v-list-item active-class="text-info" data-test-id="sideBar-userTab" :title="$t('sideBar.users')"
