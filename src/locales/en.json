@@ -19,7 +19,8 @@
     "namePlaceholder": "User Name",
     "urlFriendlyNameLabel": "urlFriendlyName",
     "urlFriendlyNamePlaceholder": "./urlFriendlyName",
-    "picLabel": "Account Avatar"
+    "picLabel": "Account Avatar",
+    "detailsLabel": "Account Details"
   },
   "adminSettings": {
     "header" : "Account Settings",
@@ -172,9 +173,9 @@
   },
   "navBar": {
     "title": {
-      "me":"My Profile",
-      "users":"Account Users",
-      "account": "Account Settings"
+      "me":"Profile",
+      "users":"Users",
+      "account": "Settings"
     },
     "picLabel": "Pic",
     "logoutBtn": "Logout"

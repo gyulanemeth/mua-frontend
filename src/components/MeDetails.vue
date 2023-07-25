@@ -40,15 +40,7 @@ const tab = ref('me')
 
 <template>
 
-<v-container class="elevation-0 mx-6 pt-0 rounded">
-    <v-layout class="d-flex flex-wrap align-end justify-end">
-
-        <p class="text-h4" data-test-id="meDetails-userName">{{props.data.name}}
-         <span class="text-subtitle-1 font-weight-bold ">{{props.data.role}}</span>
-       </p>
-
-        <v-spacer />
-    </v-layout>
+<v-container class="elevation-0 my-n3 mx-0 pt-0 rounded">
 
     <v-layout class="d-flex flex-wrap">
         <v-card class="w-100">

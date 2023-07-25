@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import Invite from '../components/InviteMembers.vue'
 import DeleteUser from '../components/DeleteMyAccount.vue'
 import UserProfile from '../components/UserProfile.vue'
-import { useDebounceFn  } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core'
 
 const route = useRoute()
 
@@ -20,8 +20,8 @@ const props = defineProps({
 const filter = ref('')
 const page = ref(0)
 
-const debouncedFn = useDebounceFn (() => {
-  emit('searchEvent',filter.value)
+const debouncedFn = useDebounceFn(() => {
+  emit('searchEvent', filter.value)
 }, 500)
 
 function redirectDeleteEventHandler (data) {
@@ -48,10 +48,11 @@ const profilePicture = (item) => {
 </script>
 
 <template>
-    <v-container class="mx-6 pt-0">
+    <v-container class="my-n3 mx-0 pt-0">
         <v-layout class="d-flex flex-wrap">
-            <v-col cols="2" class="pt-3">
-                <p class="text-h6">{{ props.currentAccName }} </p>
+
+            <v-col class="pt-3">
+                <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
             </v-col>
             <v-spacer />
             <v-col cols="5">
@@ -60,9 +61,6 @@ const profilePicture = (item) => {
                     @input="debouncedFn"></v-text-field>
             </v-col>
 
-            <v-col class="pt-3">
-                <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
-            </v-col>
             <v-divider />
 
         </v-layout>
