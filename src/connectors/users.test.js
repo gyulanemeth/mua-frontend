@@ -283,6 +283,38 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
   })
 
+  test('test reSendfinalizeRegistrationEmail', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', email: 'example@gmail.com' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).user.reSendfinalizeRegistrationEmail({ userId: '123', accountId: '112233' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/112233/users/123/resend-finalize-registration',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
+  })
+
+  test('test reSendfinalizeRegistrationEmail with undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(users(fetch, apiUrl).user.reSendfinalizeRegistrationEmail()).rejects.toThrowError('User Id And Account Id Is Required')
+  })
+
   test('test patchPassword with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({

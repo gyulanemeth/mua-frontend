@@ -18,7 +18,7 @@ const appIcon = window.config.appIcon
     </v-card>
       <v-card class="pa-5 ma-5 elevation-4 w-50">
         <v-card-text class="text-center">
-          
+
           <v-icon icon="mdi-magnify-remove-outline" color="info" size="90"></v-icon>
 
         </v-card-text>

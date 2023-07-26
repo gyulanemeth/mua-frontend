@@ -84,6 +84,13 @@ async function handleInviteMember (params, statusCallBack) {
   }
 }
 
+async function handleReInviteMember (params) {
+  const res = await currentUserAndAccountStore.reSendInvitation(params.email)
+  if (!res.message) {
+    alert.message('Invitation sent successfully')
+  }
+}
+
 async function loadMore (params) {
   if (store.items.length !== store.count) {
     store.skip = params * 10
@@ -119,6 +126,6 @@ async function searchBarHandler (filter) {
 
 <template>
 
-<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"  @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>

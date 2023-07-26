@@ -95,6 +95,13 @@ describe('Current User And Account Store', () => {
       return { success: true }
     }
 
+    const mockReSendInvitation = async function (data) {
+      if (!data || !data.id || !data.email) {
+        throw new RouteError('Email Is Required')
+      }
+      return { success: true }
+    }
+
     const mockAccept = async function (formData) {
       if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
         throw new RouteError('Accouunt Password Is Required')
@@ -218,11 +225,18 @@ describe('Current User And Account Store', () => {
       return { success: true }
     }
 
+    const mockReSendfinalizeRegistrationEmail = async function (data) {
+      if (!data || !data.userId || !data.accountId) {
+        throw new RouteError('User Id And Account Id Is Required')
+      }
+      return { success: true }
+    }
+
     return {
       account: { deleteLogo: mockDeleteLogo, getAccountByUrlFriendlyName: mockGetAccountByUrlFriendlyName, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
-      invitation: { send: mockSendInvitation, accept: mockAccept },
+      invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
     }
   }
 
@@ -355,6 +369,28 @@ describe('Current User And Account Store', () => {
     expect(res.success).toEqual(true)
   })
 
+  test('test success reSendFinalizeRegistration ', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const res = await store.reSendFinalizeRegistration({accountId: '12test12', userId: '1234test1234'})
+    expect(res.success).toEqual(true)
+  })
+
+  test('test error reSendFinalizeRegistration', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    const res = await store.reSendFinalizeRegistration({})
+    expect(res.message).toEqual('User ID and Account ID Is Required')
+  })
+
+  test('test success resend admin Invitation', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    store.account = { _id: '12test12' }
+    const res = await store.reSendInvitation('user1@gmail.com')
+    expect(res.success).toEqual(true)
+  })
+
   test('test success createOne', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
@@ -374,6 +410,14 @@ describe('Current User And Account Store', () => {
     const store = currentUser()
     store.account = {}
     const res = await store.sendInvitation()
+    expect(res.message).toEqual('account ID Is Required')
+  })
+
+  test('test resend admin Invitation undefined account id error', async () => {
+    const currentUser = useCurrentUserAndAccountStore(mokeConnector())
+    const store = currentUser()
+    store.account = {}
+    const res = await store.reSendInvitation()
     expect(res.message).toEqual('account ID Is Required')
   })
 

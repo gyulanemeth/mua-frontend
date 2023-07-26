@@ -118,7 +118,11 @@ const checkbox = ref()
                         class="font-weight-bold"
                         :to="`/`">{{$t('createAccount.loginBtn')}}</router-link>
                 </p>
-
+                <p class="text-center">{{$t('createAccount.resendMessage')}}
+                    <span style="text-decoration: none; cursor: pointer; color: inherit;"
+                        class="font-weight-bold"
+                        @click="$emit('reSendFinalizeRegistrationEvent', {accountId: cb.newAccount._id , userId: cb.newUser._id})">{{$t('createAccount.resendBtn')}}</span>
+                </p>
         </v-card-text>
     </v-card>
     </v-form>

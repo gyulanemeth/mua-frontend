@@ -84,8 +84,8 @@ export default (connectors) => {
       },
       async createAccount (formData) {
         try {
-          await connectors.account.createOne(formData)
-          return { success: true }
+          const res = await connectors.account.createOne(formData)
+          return { ...res, success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -153,6 +153,19 @@ export default (connectors) => {
             throw new RouteError('account ID Is Required')
           }
           const res = await connectors.invitation.send({ email, id: this.account._id })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
+      async reSendInvitation (email) {
+        try {
+          if (this.account === null || this.account._id === undefined) {
+            throw new RouteError('account ID Is Required')
+          }
+          const res = await connectors.invitation.reSend({ email, id: this.account._id })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -263,6 +276,18 @@ export default (connectors) => {
           }
           await connectors.user.patchPassword({ accountId: this.account._id, id: this.user._id, oldPassword, newPassword, newPasswordAgain })
           return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async reSendFinalizeRegistration ({ accountId, userId }) {
+        try {
+          if (accountId === null || userId === undefined) {
+            throw new RouteError('User ID and Account ID Is Required')
+          }
+          const res = await connectors.user.reSendfinalizeRegistrationEmail({ userId, accountId })
+          return { ...res, success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
