@@ -36,7 +36,7 @@ const appIcon = window.config.appIcon
     <v-col >
       <span class="text-h4 mx-1 pt-0 "> {{ appName }} | </span>
 
-    <p v-if="route.name === 'me'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.user.name}}
+    <p v-if="route.name === 'me'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.user.name }}
       {{ $t('navBar.title.me') }}
       <span class="text-subtitle-1 font-weight-bold ">{{store.user.role}}</span>
     </p>

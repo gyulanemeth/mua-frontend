@@ -66,21 +66,23 @@ const profilePicture = (item) => {
         </v-layout>
 
         <v-layout class="d-flex flex-wrap">
-            <v-card class="mx-2 my-5 align-self-start " min-width="275" v-for="item in props.items" :key="item._id">
+            <v-card class="mx-2 my-5 align-self-start " width="350" v-for="item in props.items" :key="item._id">
                 <v-card-title>
                     <p data-test-id="userList-card-0-name">{{ item.data.name }}<span
                             class="font-weight-light pl-2">{{ item.data.role }}</span></p>
                 </v-card-title>
                 <v-img :src="profilePicture(item)" height="150px" cover></v-img>
-                <v-card-text class="pl-0">
+                <v-row class="pa-3">
+                    <v-card-text >
                     <v-card-subtitle>
-                        {{ item.data.email }}
-                        <v-card-subtitle>
-                            <span v-if="props.currentUser._id === item._id"> - Me -</span>
-                        </v-card-subtitle>
+                      {{ item.data.email }}
+                      <v-card-subtitle>
+                        <span v-if="props.currentUser._id === item._id"> - Me -</span>
+                      </v-card-subtitle>
                     </v-card-subtitle>
-
-                </v-card-text>
+                  </v-card-text>
+                    <v-btn color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
+                </v-row>
                 <v-card-actions data-test-id="userList-card-0-action"
                     v-if="props.currentUser._id !== item._id ">
                     <UserProfile @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles"

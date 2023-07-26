@@ -73,6 +73,8 @@
     "cbMessagePart3": "Thank you for choosing {name}. Feel free to reach out to our support team for any questions.",
     "cbMessagePart4": "Happy exploring!",
     "loginMessage": "Ready to get going?", 
+    "resendMessage": "Didn't get the email?",
+    "resendBtn": "Resend it here",   
     "redirectTologinMessage": "Already have an account?",
     "loginBtn": "Sign in",   
     "accountSection": {

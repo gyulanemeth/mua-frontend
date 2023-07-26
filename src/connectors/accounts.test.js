@@ -371,6 +371,29 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  test('test reSendInvitation ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).invitation.reSend({ id: '123', email: 'User@gmail.com' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/123/invitation/resend',
+      {
+        method: 'POST',
+        body: JSON.stringify({ email: 'User@gmail.com' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
   test('test sendInvitation undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -380,6 +403,17 @@ describe('test accounts connectors', () => {
     })
 
     await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email Is Required')
+  })
+
+  test('test sendInvitation undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    await expect(accounts(fetch, apiUrl).invitation.reSend()).rejects.toThrowError('Email Is Required')
   })
 
   test('test accept invitation ', async () => {

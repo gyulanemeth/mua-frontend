@@ -29,6 +29,8 @@ export default function (fetch, apiUrl) {
 
   const generateSendInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/send`
 
+  const generateReSendInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/resend`
+
   const generateAcceptInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/accept`
 
   const generateSendForgotPasswordRoute = (params) => `/v1/accounts/${params.id}/forgot-password/send`
@@ -44,6 +46,7 @@ export default function (fetch, apiUrl) {
   const postCreateAccount = createPostConnector(fetch, apiUrl, generateCreateAccountRoute, generateAdditionalHeaders)
   const postFinalizeRegistration = createPostConnector(fetch, apiUrl, generateFinalizeRegistrationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('registrationToken')}` }))
   const postSendInvitation = createPostConnector(fetch, apiUrl, generateSendInvitationRoute, generateAdditionalHeaders)
+  const postReSendInvitation = createPostConnector(fetch, apiUrl, generateReSendInvitationRoute, generateAdditionalHeaders)
   const postAcceptInvitation = createPostConnector(fetch, apiUrl, generateAcceptInvitationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('invitationToken')}` }))
   const postSendForgotPassword = createPostConnector(fetch, apiUrl, generateSendForgotPasswordRoute)
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
@@ -134,6 +137,14 @@ export default function (fetch, apiUrl) {
     return res
   }
 
+  const reSendInvitation = async function (data) {
+    if (!data || !data.id || !data.email) {
+      throw new RouteError('Email Is Required')
+    }
+    const res = await postReSendInvitation({ id: data.id }, { email: data.email })
+    return res
+  }
+
   const accept = async function (formData) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain || !formData.name) {
       throw new RouteError('Accouunt Password Is Required')
@@ -197,7 +208,7 @@ export default function (fetch, apiUrl) {
 
   return {
     account: { list, uploadLogo, deleteLogo, getAccountByUrlFriendlyName, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
-    invitation: { send: sendInvitation, accept },
+    invitation: { send: sendInvitation, accept, reSend: reSendInvitation },
     forgotPassword: { send: sendForgotPassword, reset }
   }
 }

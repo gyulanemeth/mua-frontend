@@ -38,6 +38,8 @@ export default function (fetch, apiUrl) {
 
   const generateLoginWithUrlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/login/url-friendly-name`
 
+  const generateReFinalizeRegistrationRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.userId}/resend-finalize-registration`
+
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
@@ -54,6 +56,7 @@ export default function (fetch, apiUrl) {
   const delPermissionAdmin = createPostConnector(fetch, window.config.adminApiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
   const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
+  const postReFinalizeRegistration = createPostConnector(fetch, apiUrl, generateReFinalizeRegistrationRoute)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -105,6 +108,14 @@ export default function (fetch, apiUrl) {
       localStorage.setItem('loginToken', res.loginToken)
     }
     return res.loginToken
+  }
+
+  const reSendfinalizeRegistrationEmail = async function (data) {
+    if (!data || !data.userId || !data.accountId) {
+      throw new RouteError('User Id And Account Id Is Required')
+    }
+    const res = await postReFinalizeRegistration({ userId: data.userId, accountId: data.accountId })
+    return res
   }
 
   const loginWithUrlFriendlyName = async function (formData) {
@@ -210,7 +221,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, deleteProfilePicture, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
+    user: { list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
     config: { getConfig }
   }
 }
