@@ -143,6 +143,9 @@ router.beforeEach(async (to, from, next) => {
       window.location.href = window.location.hostname + '/redirectToLoginMessage'
       return
     }
+    if (!store.account) {
+      await store.readOne()
+    }
   }
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
     if (to.query.logout) {
