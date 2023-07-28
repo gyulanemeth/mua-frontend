@@ -48,21 +48,19 @@ const profilePicture = (item) => {
 </script>
 
 <template>
-    <v-container class="my-n3 mx-0 pt-0">
-        <v-layout class="d-flex flex-wrap">
+  <v-col>
+
+        <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
             <v-col class="pt-3">
                 <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
             </v-col>
             <v-spacer />
-            <v-col cols="5">
+            <v-col cols="5" class="pt-1">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
                     variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
                     @input="debouncedFn"></v-text-field>
             </v-col>
-
-            <v-divider />
-
         </v-layout>
 
         <v-layout class="d-flex flex-wrap">
@@ -98,4 +96,5 @@ const profilePicture = (item) => {
 
             </v-card>
         </v-layout>
-    </v-container></template>
+        </v-col>
+    </template>

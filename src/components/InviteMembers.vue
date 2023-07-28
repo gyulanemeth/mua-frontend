@@ -23,10 +23,10 @@ const resetForm = () => {
 <template>
     <v-dialog v-model="dialog" persistent>
         <template v-slot:activator="{ props }">
-            <v-btn prepend-icon="mdi-account-plus" data-test-id="open-inviteDialog" variant="outlined" color="info"
-                v-bind="props">
-                {{ $t('inviteMembers.openBtn') }}
-            </v-btn>
+            <v-btn append-icon="mdi-account-plus" data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
+            v-bind="props">
+            {{ $t('inviteMembers.openBtn') }}
+        </v-btn>
         </template>
         <v-card min-width="800" class="d-flex flex-column justify-center">
             <v-toolbar color="white" align="center">

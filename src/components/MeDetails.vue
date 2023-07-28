@@ -40,7 +40,7 @@ const tab = ref('me')
 
 <template>
 
-<v-container class="elevation-0 my-n3 mx-0 pt-0 rounded">
+<v-col class="elevation-0 my-n3 mx-0 pt-0 rounded">
 
     <v-layout class="d-flex flex-wrap">
         <v-card class="w-100">
@@ -75,6 +75,6 @@ const tab = ref('me')
         </v-card>
 
     </v-layout>
-</v-container>
+</v-col>
 
 </template>
