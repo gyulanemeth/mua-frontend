@@ -198,7 +198,8 @@
     "closeBtn": "Close"
   },
   "userList": {
-    "openBtn": "View profile"
+    "openBtn": "View profile",
+    "resendMessage": "Resend invitation"
   },
   "redirectToLoginMessage": {
     "title":"Login required",
