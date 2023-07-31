@@ -73,8 +73,8 @@ const openFileInput = () => {
 </script>
 
 <template>
-  <v-container class="my-n3 mx-0 pt-0">
-    <v-layout class="d-flex flex-wrap w-75">
+  <v-col>
+    <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0 w-75">
       <v-col class="pt-3">
         <h3 class="font-weight-bold">{{ $t('accountDetails.detailsLabel') }}</h3>
         <v-divider />
@@ -155,7 +155,7 @@ const openFileInput = () => {
       </v-col>
       <ImgCropper v-if="imageFile" :profilePicture="imageFile" :showCropperDialog="showCropperDialog" @uploadProfilePictureHandler="uploadlogo" @closeCropperHandler="processing = false; showCropperDialog = false" />
     </v-layout>
-  </v-container>
+  </v-col>
 </template>
 
 <style scoped>
