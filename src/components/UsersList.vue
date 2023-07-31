@@ -64,7 +64,7 @@ const profilePicture = (item) => {
         </v-layout>
 
         <v-layout class="d-flex flex-wrap">
-            <v-card class="mx-2 my-5 align-self-start " width="350" v-for="item in props.items" :key="item._id">
+            <v-card class="mx-2 my-5 align-self-start " min-width="350" v-for="item in props.items" :key="item._id">
                 <v-card-title>
                     <p data-test-id="userList-card-0-name">{{ item.data.name }}<span
                             class="font-weight-light pl-2">{{ item.data.role }}</span></p>
@@ -79,7 +79,11 @@ const profilePicture = (item) => {
                       </v-card-subtitle>
                     </v-card-subtitle>
                   </v-card-text>
-                    <v-btn color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
+                  <v-tooltip :text="$t('userList.resendMessage')">
+                            <template v-slot:activator="{ props }">
+                                <v-btn v-bind="props" color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
+                            </template>
+                        </v-tooltip>
                 </v-row>
                 <v-card-actions data-test-id="userList-card-0-action"
                     v-if="props.currentUser._id !== item._id ">
