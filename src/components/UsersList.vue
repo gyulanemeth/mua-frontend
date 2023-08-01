@@ -48,7 +48,7 @@ const profilePicture = (item) => {
 </script>
 
 <template>
-  <v-col>
+  <div class="mx-3">
 
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
@@ -100,5 +100,5 @@ const profilePicture = (item) => {
 
             </v-card>
         </v-layout>
-        </v-col>
+      </div>
     </template>
