@@ -372,7 +372,7 @@ describe('Current User And Account Store', () => {
   test('test success reSendFinalizeRegistration ', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    const res = await store.reSendFinalizeRegistration({accountId: '12test12', userId: '1234test1234'})
+    const res = await store.reSendFinalizeRegistration({ accountId: '12test12', userId: '1234test1234' })
     expect(res.success).toEqual(true)
   })
 

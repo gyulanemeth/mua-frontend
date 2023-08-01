@@ -39,11 +39,9 @@ const tab = ref('me')
 </script>
 
 <template>
-
-<v-col class="elevation-0 my-n3 mx-0 pt-0 rounded">
-
+  <div class="mx-3 elevation-0 my-n3 pt-0 rounded">
     <v-layout class="d-flex flex-wrap">
-        <v-card class="w-100">
+      <v-card class="w-100">
             <v-tabs v-model="tab">
               <v-tab value="me" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('meDetails.tabs.meLabel')}}</v-tab>
               <v-tab value="changePassword" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('meDetails.tabs.changePasswordLabel')}}</v-tab>
@@ -53,15 +51,15 @@ const tab = ref('me')
             </v-tabs>
 
             <v-card-text>
-                <v-window v-model="tab">
+              <v-window v-model="tab">
 
-                    <v-window-item value="me">
-                        <MyDetails @updateNameHandler="redirectUpdateNameHandler" @deleteProfilePictureHandler="redirectDeleteProfilePictureHandler" @uploadProfilePictureHandler="redirectUploadProfilePictureHandler" @changeTab="changeTab" :email="props.data.email" :name="props.data.name" :profilePicture="props.data.profilePicture" />
-                    </v-window-item>
+                <v-window-item value="me">
+                  <MyDetails @updateNameHandler="redirectUpdateNameHandler" @deleteProfilePictureHandler="redirectDeleteProfilePictureHandler" @uploadProfilePictureHandler="redirectUploadProfilePictureHandler" @changeTab="changeTab" :email="props.data.email" :name="props.data.name" :profilePicture="props.data.profilePicture" />
+                </v-window-item>
 
                     <v-window-item value="changePassword">
                         <ChangePassword @updatePasswordHandler="redirectUpdatePasswordHandler" />
-                    </v-window-item>
+                      </v-window-item>
 
                     <v-window-item value="changeEmail">
                         <ChangeEmail @updateEmailHandler="redirectUpdateEmailHandler" :email="props.data.email" />
@@ -71,10 +69,9 @@ const tab = ref('me')
                         <Settings @deleteEventHandler="redirectDeleteHandler" :data="props.data" />
                     </v-window-item>
                 </v-window>
-            </v-card-text>
+              </v-card-text>
         </v-card>
 
     </v-layout>
-</v-col>
-
+  </div>
 </template>
