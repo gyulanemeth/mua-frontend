@@ -36,14 +36,14 @@ const appIcon = window.config.appIcon
     <v-col >
       <span class="text-h4 mx-1 pt-0 "> {{ appName }} | </span>
 
-    <p v-if="route.name === 'me'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.user.name }}
-      {{ $t('navBar.title.me') }}
+    <p v-if="route.meta.header === 'myProfile'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.user.name }}
+      {{ $t('navBar.title.myProfile') }}
       <span class="text-subtitle-1 font-weight-bold ">{{store.user.role}}</span>
     </p>
-    <p v-else-if="route.name === 'users'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.account.name}}
+    <p v-else-if="route.meta.header === 'users'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.account.name}}
       {{ $t('navBar.title.users') }}
     </p>
-    <p v-else-if="route.name === 'account'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.account.name}}
+    <p v-else-if="route.meta.header === 'account'" class="d-inline text-h4" data-test-id="meDetails-userName">{{store.account.name}}
       {{ $t('navBar.title.account') }}
     </p>
   </v-col>

@@ -175,7 +175,7 @@
   },
   "navBar": {
     "title": {
-      "me":"Profile",
+      "myProfile":"Profile",
       "users":"Users",
       "account": "Settings"
     },

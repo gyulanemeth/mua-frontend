@@ -19,7 +19,8 @@ const router = createRouter({
       name: 'users',
       component: UserView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'users'
       }
     },
     {
@@ -75,7 +76,8 @@ const router = createRouter({
       name: 'me',
       component: MeView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'myProfile'
       }
     },
     {
@@ -83,7 +85,8 @@ const router = createRouter({
       name: 'changePassword',
       component: MeView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'myProfile'
       }
     },
     {
@@ -91,15 +94,8 @@ const router = createRouter({
       name: 'changeEmail',
       component: MeView,
       meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/:urlFriendlyName/change-password',
-      name: 'changePassword',
-      component: MeView,
-      meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'myProfile'
       }
     },
     {
@@ -107,7 +103,8 @@ const router = createRouter({
       name: 'settings',
       component: MeView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'myProfile'
       }
     },
     {
@@ -123,7 +120,8 @@ const router = createRouter({
       name: 'account',
       component: AccountView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        header: 'account'
       }
     },
     {
