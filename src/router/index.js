@@ -79,6 +79,38 @@ const router = createRouter({
       }
     },
     {
+      path: '/:urlFriendlyName/change-password',
+      name: 'changePassword',
+      component: MeView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:urlFriendlyName/change-email',
+      name: 'changeEmail',
+      component: MeView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:urlFriendlyName/change-password',
+      name: 'changePassword',
+      component: MeView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:urlFriendlyName/settings',
+      name: 'settings',
+      component: MeView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/verify-email',
       name: 'verify-email',
       component: MeView,
