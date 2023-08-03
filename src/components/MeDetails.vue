@@ -1,5 +1,6 @@
 <script setup >
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import Settings from './AdminSettings.vue'
 import ChangeEmail from './ChangeEmail.vue'
@@ -10,6 +11,8 @@ const emit = defineEmits(['updateNameHandler', 'deleteProfilePictureHandler', 'u
 const props = defineProps({
   data: Object
 })
+
+const route = useRoute()
 
 const changeTab = (tabId) => {
   tab.value = tabId
@@ -43,10 +46,10 @@ const tab = ref('me')
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
-              <v-tab value="me" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('meDetails.tabs.meLabel')}}</v-tab>
-              <v-tab value="changePassword" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('meDetails.tabs.changePasswordLabel')}}</v-tab>
-              <v-tab value="changeEmail"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('meDetails.tabs.changeEmailLabel')}}</v-tab>
-              <v-tab value="settings" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('meDetails.tabs.settingsLabel')}}</v-tab>
+              <v-tab value="me" :to="`/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('meDetails.tabs.meLabel')}}</v-tab>
+              <v-tab value="changePassword"  :to="`/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('meDetails.tabs.changePasswordLabel')}}</v-tab>
+              <v-tab value="changeEmail"  :to="`/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('meDetails.tabs.changeEmailLabel')}}</v-tab>
+              <v-tab value="settings"  :to="`/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('meDetails.tabs.settingsLabel')}}</v-tab>
 
             </v-tabs>
 
