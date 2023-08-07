@@ -51,7 +51,7 @@ const appIcon = window.config.appIcon
 
     <v-menu location="bottom " origin="end top">
       <template v-slot:activator="{ props }">
-        <v-badge v-if="store.checkAdmin" color="error" bordered offset-x="10" offset-y="34"
+        <v-badge v-if="store.checkAdmin" color="error" bordered location="bottom end"
           icon="mdi-shield-account-variant-outline">
           <v-avatar size="large" color="error">
             <v-img style="cursor: pointer;" v-if="profilePicture"
