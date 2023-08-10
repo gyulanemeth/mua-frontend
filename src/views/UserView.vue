@@ -99,7 +99,7 @@ async function loadMore (params) {
   }
 }
 
-async function searchBarHandler (filter) {
+async function searchBarHandler (filter, statusCallBack) {
   if (filter === '') {
     store.filter = {}
   } else {
@@ -120,6 +120,7 @@ async function searchBarHandler (filter) {
   }
   await store.load()
   data.value = store.items
+  statusCallBack()
 }
 
 </script>

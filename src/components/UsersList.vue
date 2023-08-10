@@ -19,9 +19,10 @@ const props = defineProps({
 
 const filter = ref('')
 const page = ref(0)
+const loading = ref()
 
 const debouncedFn = useDebounceFn(() => {
-  emit('searchEvent', filter.value)
+  emit('searchEvent', filter.value, () => { loading.value = false })
 }, 500)
 
 function redirectDeleteEventHandler (data) {
@@ -56,7 +57,7 @@ const appIcon = window.config.appIcon
 
             <v-col class="pt-3">
                 <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
-                <div v-if="filter.length === 0 && props.items.length === 0">
+                <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
                 <v-col cols="5">
                 <v-icon  class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
               </v-col>
@@ -68,11 +69,19 @@ const appIcon = window.config.appIcon
             <v-spacer />
             <v-col cols="5" class="pt-1">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
-                    variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
-                    @input="debouncedFn"></v-text-field>
+                    variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
+                    @input="loading = true; debouncedFn()"></v-text-field>
             </v-col>
         </v-layout>
-        <v-layout v-if="props.items.length === 0" :class="`ma-auto d-flex flex-wrap pa-4 ${filter.length > 0 ? 'h-75':'h-50'}`">
+
+        <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
+          <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
+            <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
+            <h4 class="mt-3" >{{ $t('loading') }}</h4>
+          </v-card>
+        </v-layout>
+
+        <v-layout v-else-if="props.items.length === 0" :class="`ma-auto d-flex flex-wrap pa-4 ${filter.length > 0 ? 'h-75':'h-50'}`">
           <v-card class="ma-auto align-self-start elevation-0 text-center" :min-width="filter.length === 0 ? 220: 400">
             <v-avatar size="150">
             <v-img :src="appIcon" cover></v-img>
