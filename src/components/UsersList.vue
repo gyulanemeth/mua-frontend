@@ -45,16 +45,26 @@ window.onscroll = () => {
 const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
+
+const appIcon = window.config.appIcon
 </script>
 
 <template>
-  <div class="mx-3">
+  <div class="mx-3 h-100">
 
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
             <v-col class="pt-3">
                 <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
-            </v-col>
+                <div v-if="filter.length === 0 && props.items.length === 0">
+                <v-col cols="5">
+                <v-icon  class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
+              </v-col>
+              <v-card-text class="pt-0">
+                <p class="font-weight-medium" >{{ $t('emptyList.addFirstElement') }} </p>
+              </v-card-text>
+            </div>
+              </v-col>
             <v-spacer />
             <v-col cols="5" class="pt-1">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
@@ -62,8 +72,24 @@ const profilePicture = (item) => {
                     @input="debouncedFn"></v-text-field>
             </v-col>
         </v-layout>
-
-        <v-layout class="d-flex flex-wrap">
+        <v-layout v-if="props.items.length === 0" :class="`ma-auto d-flex flex-wrap pa-4 ${filter.length > 0 ? 'h-75':'h-50'}`">
+          <v-card class="ma-auto align-self-start elevation-0 text-center" :min-width="filter.length === 0 ? 220: 400">
+            <v-avatar size="150">
+            <v-img :src="appIcon" cover></v-img>
+          </v-avatar>
+            <v-row class="mt-2" >
+               <v-col cols="2" class="pt-3 mr-0 pr-0">
+                   <v-icon color="error" icon="mdi-cancel" size="x-large"></v-icon>
+               </v-col>
+               <v-col cols="10" class="pt-4 ml-0 pl-0">
+                 <h3  v-if="filter.length === 0">{{$t('emptyList.addFirstElement')}}</h3>
+                 <h3  v-else >{{$t('emptyList.searchNoResult')}}</h3>
+                </v-col>
+              </v-row>
+              <h3 class="w-100" v-if="filter.length > 0" >{{ filter }}</h3>
+          </v-card>
+        </v-layout>
+        <v-layout class="d-flex flex-wrap" v-else>
             <v-card class="mx-2 my-5 align-self-start " min-width="350" v-for="item in props.items" :key="item._id">
                 <v-card-title>
                     <p data-test-id="userList-card-0-name">{{ item.data.name }}<span

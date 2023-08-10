@@ -221,6 +221,10 @@
     "bodyPart1": "Please",
     "redirectBtn": "click here",
     "bodyPart2": "to be redirected"
-  }
-  
+  },
+  "emptyList": {
+    "addFirstElement": "Add Your first User.",
+    "searchNoResult": "There are no results for the search term:",
+    "NoElementsYet": "There Are No Users yet"    
+  }  
 }
