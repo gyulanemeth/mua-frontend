@@ -7,6 +7,7 @@ import {
 
 import RouteError from '../errors/RouteError.js'
 import { ConnectorError } from '../errors/ConnectorError.js'
+import checkError from '../helpers/connectorsCatch.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
@@ -54,56 +55,84 @@ export default function (fetch, apiUrl) {
   const getByUrlFriendlyName = createGetConnector(fetch, apiUrl, generateAccountByUrlFriendlyNameRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
-    const res = await getAccountsList({}, query)
-    return res
+    try {
+      const res = await getAccountsList({}, query)
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const getAccountByUrlFriendlyName = async function (param, query) {
     if (!param || !param.urlFriendlyName) {
       throw new RouteError('Account UrlFriendlyName Is Required')
     }
-    const res = await getByUrlFriendlyName(param, query)
-    return res
+    try {
+      const res = await getByUrlFriendlyName(param, query)
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const readOne = async function (id) {
     if (!id) {
       throw new RouteError('Admin ID Is Required')
     }
-    const res = await getAccount(id)
-    return res
+    try {
+      const res = await getAccount(id)
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const patchName = async function (formData) {
     if (!formData || !formData.id || !formData.name) {
       throw new RouteError('Account ID And New Name Is Required')
     }
-    const res = await updateName({ id: formData.id }, { name: formData.name })
-    return res
+    try {
+      const res = await updateName({ id: formData.id }, { name: formData.name })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const patchUrlFriendlyName = async function (formData) {
     if (!formData || !formData.id || !formData.urlFriendlyName) {
       throw new RouteError('Account ID And New urlFriendlyName Is Required')
     }
-    const res = await updateUrlFriendlyName({ id: formData.id }, { urlFriendlyName: formData.urlFriendlyName })
-    return res
+    try {
+      const res = await updateUrlFriendlyName({ id: formData.id }, { urlFriendlyName: formData.urlFriendlyName })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const deleteOne = async function (id) {
     if (!id) {
       throw new RouteError('Account ID Is Required')
     }
-    const res = await del(id)
-    return res
+    try {
+      const res = await del(id)
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const checkAvailability = async function (data) {
     if (!data || !data.urlFriendlyName) {
       throw new RouteError('Account UrlFriendlyName Is Required')
     }
-    const res = await getCheckAvailability({}, { urlFriendlyName: data.urlFriendlyName })
-    return res
+    try {
+      const res = await getCheckAvailability({}, { urlFriendlyName: data.urlFriendlyName })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const createOne = async function (formData) {
@@ -112,71 +141,99 @@ export default function (fetch, apiUrl) {
     } else if (!formData.user || !formData.user.name || !formData.user.email || !formData.user.password) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
-    const res = await postCreateAccount({}, { account: formData.account, user: formData.user })
-    return res
+    try {
+      const res = await postCreateAccount({}, { account: formData.account, user: formData.user })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const finalizeRegistration = async function (data) {
     if (!data || !data.id || !data.accountId || !data.token) {
       throw new RouteError('User Id And Account Id Is Required')
     }
-    localStorage.setItem('registrationToken', data.token)
-    const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
-    localStorage.removeItem('registrationToken')
-    if (res.loginToken) {
-      localStorage.setItem('loginToken', res.loginToken)
+    try {
+      localStorage.setItem('registrationToken', data.token)
+      const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
+      localStorage.removeItem('registrationToken')
+      if (res.loginToken) {
+        localStorage.setItem('loginToken', res.loginToken)
+      }
+      return res.loginToken
+    } catch (error) {
+      checkError(error)
     }
-    return res.loginToken
   }
 
   const sendInvitation = async function (data) {
     if (!data || !data.id || !data.email) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postSendInvitation({ id: data.id }, { email: data.email })
-    return res
+    try {
+      const res = await postSendInvitation({ id: data.id }, { email: data.email })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const reSendInvitation = async function (data) {
     if (!data || !data.id || !data.email) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postReSendInvitation({ id: data.id }, { email: data.email })
-    return res
+    try {
+      const res = await postReSendInvitation({ id: data.id }, { email: data.email })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const accept = async function (formData) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain || !formData.name) {
       throw new RouteError('Accouunt Password Is Required')
     }
-    localStorage.setItem('invitationToken', formData.token)
-    const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
-    if (res.loginToken) {
-      localStorage.setItem('loginToken', res.loginToken)
-      localStorage.removeItem('invitationToken')
+    try {
+      localStorage.setItem('invitationToken', formData.token)
+      const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
+      if (res.loginToken) {
+        localStorage.setItem('loginToken', res.loginToken)
+        localStorage.removeItem('invitationToken')
+      }
+      return res.loginToken
+    } catch (error) {
+      checkError(error)
     }
-    return res.loginToken
   }
 
   const sendForgotPassword = async function (data) {
     if (!data || !data.email || !data.id) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postSendForgotPassword({ id: data.id }, { email: data.email })
-    return res
+    try {
+      const res = await postSendForgotPassword({ id: data.id }, { email: data.email })
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   const reset = async function (formData) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('User Password Is Required')
     }
-    localStorage.setItem('resetPasswordToken', formData.token)
-    const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
-    if (res.loginToken) {
-      localStorage.setItem('loginToken', res.loginToken)
-      localStorage.removeItem('resetPasswordToken')
+    try {
+      localStorage.setItem('resetPasswordToken', formData.token)
+      const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+      if (res.loginToken) {
+        localStorage.setItem('loginToken', res.loginToken)
+        localStorage.removeItem('resetPasswordToken')
+      }
+      return res.loginToken
+    } catch (error) {
+      checkError(error)
     }
-    return res.loginToken
   }
 
   const uploadLogo = async function (params, formData) {
@@ -190,20 +247,28 @@ export default function (fetch, apiUrl) {
       headers: generateAdditionalHeaders(),
       body: formData
     }
-    let res = await fetch(url, requestOptions)
-    res = await res.json()
-    if (res.error) {
-      throw new ConnectorError(res.status, res.error.name, res.error.message)
+    try {
+      let res = await fetch(url, requestOptions)
+      res = await res.json()
+      if (res.error) {
+        throw new ConnectorError(res.status, res.error.name, res.error.message)
+      }
+      return res.result
+    } catch (error) {
+      checkError(error)
     }
-    return res.result
   }
 
   const deleteLogo = async function (params) {
     if (!params || !params.id) {
       throw new RouteError('Account Id Is Required')
     }
-    const res = await deleteLogoRoute(params)
-    return res
+    try {
+      const res = await deleteLogoRoute(params)
+      return res
+    } catch (error) {
+      checkError(error)
+    }
   }
 
   return {

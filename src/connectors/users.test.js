@@ -1,10 +1,11 @@
 import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import users from './users.js'
+import connectorsCatchTest from '../helpers/connectorsCatchTest.js'
 
 const apiUrl = 'https:/mua/accounts'
 
-describe('test accounts connectors', () => {
+describe('test users connectors', () => {
   global.localStorage = {
     data: {},
     getItem (key) {
@@ -25,7 +26,7 @@ describe('test accounts connectors', () => {
   }
 
   beforeEach(async () => {
-    localStorage.setItem('accessToken', 'Token')
+    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNTE2MjM5MDIyfQ.7leGQ_Qr3r-fI2lG2grYSpxmWCTI6zhTb_jrDrMhx8g')
   })
 
   test('test list users', async () => {
@@ -53,6 +54,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 })
   })
 
+  connectorsCatchTest('test list user', (fetch) => users(fetch, apiUrl).user.list, [{ accountId: '123' }])
+
   test('test get config', async () => {
     const fetch = vi.fn()
 
@@ -76,6 +79,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ accountsAppUrl: 'https://accountsAPPUrl', appUrl: 'https://AppUrl', role: ['admin', 'user'] })
   })
+  connectorsCatchTest('test getConfig user', (fetch) => users(fetch, apiUrl).config.getConfig, [])
 
   test('test list users Error', async () => {
     const fetch = vi.fn()
@@ -112,6 +116,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
   })
+  connectorsCatchTest('test readOne user', (fetch) => users(fetch, apiUrl).user.readOne, [{ id: '123', accountId: '112233' }])
 
   test('test readOne account error route error', async () => {
     const fetch = vi.fn()
@@ -148,6 +153,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ accessToken: 'Token' })
   })
+  connectorsCatchTest('test getAccessToken user', (fetch) => users(fetch, apiUrl).user.getAccessToken, [{ id: '123', accountId: '112233' }])
 
   test('test getAccessToken without id ', async () => {
     const fetch = vi.fn()
@@ -179,6 +185,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test loginGetAccounts user', (fetch) => users(fetch, apiUrl).user.loginGetAccounts, [{ email: 'user1@gmail.com' }])
+
   test('test login get accounts with undefined input admin', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -191,13 +199,13 @@ describe('test accounts connectors', () => {
   })
 
   test('test login ', async () => {
+    localStorage.setItem('accessToken', 'Token')
     const fetch = vi.fn()
     fetch.mockResolvedValue({
       ok: true,
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-
     localStorage.setItem('loginToken', 'Token')
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).user.login({ accountId: '123', password: 'userPassword' })
@@ -213,6 +221,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual('Token')
   })
+
+  connectorsCatchTest('test login user', (fetch) => users(fetch, apiUrl).user.login, [{ accountId: '123', password: 'userPassword' }])
 
   test('test login with undefined input ', async () => {
     const fetch = vi.fn()
@@ -249,6 +259,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
   })
 
+  connectorsCatchTest('test patchName user', (fetch) => users(fetch, apiUrl).user.patchName, [{ id: '123', accountId: '112233', name: 'updateUserName' }])
+
   test('test patchName with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -283,6 +295,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
   })
 
+  connectorsCatchTest('test patchPassword user', (fetch) => users(fetch, apiUrl).user.patchPassword, [{ id: '123', accountId: '112233', oldPassword: 'oldPassword', newPassword: 'newPassword', newPasswordAgain: 'newPassword' }])
+
   test('test reSendfinalizeRegistrationEmail', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -304,6 +318,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ _id: '123', name: 'accountName1', email: 'example@gmail.com' })
   })
+
+  connectorsCatchTest('test reSendfinalizeRegistrationEmail user', (fetch) => users(fetch, apiUrl).user.reSendfinalizeRegistrationEmail, [{ userId: '123', accountId: '112233' }])
 
   test('test reSendfinalizeRegistrationEmail with undefined input ', async () => {
     const fetch = vi.fn()
@@ -349,6 +365,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test patchRole user', (fetch) => users(fetch, apiUrl).user.patchRole, [{ id: '123', accountId: '112233' }, { role: 'admin' }])
+
   test('test patchRole with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -383,6 +401,8 @@ describe('test accounts connectors', () => {
 
     expect(res).toEqual({ _id: '123', name: 'Name1', email: 'email@gmail.com' })
   })
+
+  connectorsCatchTest('test deleteOne user', (fetch) => users(fetch, apiUrl).user.deleteOne, [{ id: '123', accountId: '112233' }])
 
   test('test deleteOne without id ', async () => {
     const fetch = vi.fn()
@@ -420,6 +440,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test patchEmail user', (fetch) => users(fetch, apiUrl).user.patchEmail, [{ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' }])
+
   test('test patchEmail with undefined input', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -453,6 +475,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ success: true })
   })
+
+  connectorsCatchTest('test patchEmailConfirm user', (fetch) => users(fetch, apiUrl).user.patchEmailConfirm, [{ id: '123', accountId: '112233', token: 'token' }])
 
   test('test patchEmailConfirm with undefined input admin', async () => {
     const fetch = vi.fn()
@@ -490,6 +514,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual(undefined)
   })
+
+  connectorsCatchTest('test deletePermission user', (fetch) => users(fetch, apiUrl).user.deletePermission, ['142536'])
 
   test('test delete permission admin', async () => {
     localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InVzZXIiLCJpYXQiOjE1MTYyMzkwMjJ9.XsGS9q8_wzQVn6-6n2XBT1r1-l6qAyY9EAXWj165OY4')
@@ -550,6 +576,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test uploadProfilePicture user', (fetch) => users(fetch, apiUrl).user.uploadProfilePicture, [{ id: '123test123', accountId: '112233Test' }, { test: 'test' }])
+
   test('test upload with undefined input ', async () => { // admin
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -583,6 +611,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test deleteProfilePicture user', (fetch) => users(fetch, apiUrl).user.deleteProfilePicture, [{ id: '123test123', accountId: '1122test' }])
+
   test('test delete with undefined input ', async () => { // admin
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -614,6 +644,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual('Token')
   })
+
+  connectorsCatchTest('test loginWithUrlFriendlyName user', (fetch) => users(fetch, apiUrl).user.loginWithUrlFriendlyName, [{ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' }])
 
   test('test login with urlFriendlyName undefined input ', async () => {
     const fetch = vi.fn()

@@ -1,6 +1,7 @@
 import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import accounts from './accounts.js'
+import connectorsCatchTest from '../helpers/connectorsCatchTest.js'
 
 const apiUrl = 'https:/mua/accounts'
 
@@ -52,6 +53,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' }], count: 1 })
   })
 
+  connectorsCatchTest('test list accounts', (fetch) => accounts(fetch, apiUrl).account.list, [])
+
   test('test get account by urlFriendlyName', async () => {
     const fetch = vi.fn()
 
@@ -76,6 +79,8 @@ describe('test accounts connectors', () => {
 
     expect(res).toEqual({ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' })
   })
+
+  connectorsCatchTest('test getAccountByUrlFriendlyName accounts', (fetch) => accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName, [{ urlFriendlyName: 'urlFriendlyNameExample1' }])
 
   test('test get account by urlFriendlyName undefined input ', async () => {
     const fetch = vi.fn()
@@ -111,6 +116,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' })
   })
 
+  connectorsCatchTest('test readOne accounts', (fetch) => accounts(fetch, apiUrl).account.readOne, [{ id: '123' }])
+
   test('test check Availability account', async () => {
     const fetch = vi.fn()
 
@@ -133,6 +140,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ available: true })
   })
+
+  connectorsCatchTest('test checkAvailability accounts', (fetch) => accounts(fetch, apiUrl).account.checkAvailability, [{ urlFriendlyName: 'urlFriendlyNameExample1' }])
 
   test('test check Availability with undefined input ', async () => {
     const fetch = vi.fn()
@@ -181,6 +190,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' })
   })
 
+  connectorsCatchTest('test deleteOne accounts', (fetch) => accounts(fetch, apiUrl).account.deleteOne, [{ id: '123' }])
+
   test('test deleteOne without id ', async () => {
     const fetch = vi.fn()
 
@@ -216,6 +227,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ success: true })
   })
+  connectorsCatchTest('test patchName accounts', (fetch) => accounts(fetch, apiUrl).account.patchName, [{ id: '123', name: 'updateAccpuntName' }])
 
   test('test patchName with undefined input ', async () => {
     const fetch = vi.fn()
@@ -250,6 +262,8 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ success: true })
   })
+
+  connectorsCatchTest('test patchUrlFriendlyName accounts', (fetch) => accounts(fetch, apiUrl).account.patchUrlFriendlyName, [{ id: '123', urlFriendlyName: 'updateUrlFriendlyName' }])
 
   test('test patchUrlFriendlyName with undefined input ', async () => {
     const fetch = vi.fn()
@@ -296,6 +310,8 @@ describe('test accounts connectors', () => {
     })
   })
 
+  connectorsCatchTest('test createOne accounts', (fetch) => accounts(fetch, apiUrl).account.createOne, [{ user: { name: 'userName', email: 'email@email.com', password: 'userPassword' }, account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } }])
+
   test('test createOne with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -338,6 +354,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual('test')
   })
 
+  connectorsCatchTest('test finalizeRegistration accounts', (fetch) => accounts(fetch, apiUrl).account.finalizeRegistration, [{ id: '123', accountId: '112233', token: 'token' }])
+
   test('test finalizeRegistration with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -371,6 +389,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test sendInvitation accounts', (fetch) => accounts(fetch, apiUrl).invitation.send, [{ id: '123', email: 'newUser@gmail.com' }])
+
   test('test reSendInvitation ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -393,6 +413,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ success: true })
   })
+  connectorsCatchTest('test reSendInvitation accounts', (fetch) => accounts(fetch, apiUrl).invitation.reSend, [{ id: '123', email: 'newUser@gmail.com' }])
 
   test('test sendInvitation undefined input ', async () => {
     const fetch = vi.fn()
@@ -439,6 +460,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual('Token')
   })
+  connectorsCatchTest('test accept Invitation accounts', (fetch) => accounts(fetch, apiUrl).invitation.accept, [{ id: '123', token: 'Token', newPassword: 'newPassword', newPasswordAgain: 'newPassword', name: 'newName' }])
 
   test('test accept invitation without password ', async () => {
     const fetch = vi.fn()
@@ -470,6 +492,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual({ success: true })
   })
+  connectorsCatchTest('test forgotPassword send accounts', (fetch) => accounts(fetch, apiUrl).forgotPassword.send, [{ id: '123', email: 'user1@gmail.com' }])
 
   test('test forgotPassword send without email admin', async () => {
     const fetch = vi.fn()
@@ -504,6 +527,7 @@ describe('test accounts connectors', () => {
       })
     expect(res).toEqual('Token')
   })
+  connectorsCatchTest('test forgotPassword reset accounts', (fetch) => accounts(fetch, apiUrl).forgotPassword.reset, [{ id: '123', token: 'Token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' }])
 
   test('test forgotPassword reset with undefined input admin', async () => {
     const fetch = vi.fn()
@@ -539,6 +563,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test upload account logo', (fetch) => accounts(fetch, apiUrl).account.uploadLogo, [{ id: '123test123' }, { test: 'test' }])
+
   test('test upload with undefined input ', async () => { // admin
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -572,6 +598,8 @@ describe('test accounts connectors', () => {
     expect(res).toEqual({ success: true })
   })
 
+  connectorsCatchTest('test delete account logo', (fetch) => accounts(fetch, apiUrl).account.deleteLogo, [{ id: '123test123' }, { test: 'test' }])
+
   test('test delete with undefined input ', async () => { // admin
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -582,107 +610,3 @@ describe('test accounts connectors', () => {
     await expect(accounts(fetch, apiUrl).account.deleteLogo()).rejects.toThrowError('Account Id Is Required')
   })
 })
-
-/*
-  test('test getAccessToken admin', async () => {
-    const fetch = vi.fn()
-    fetch.mockResolvedValue({
-      ok: true,
-      headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { accessToken: 'Token' } })
-    })
-
-    const spy = vi.spyOn(fetch, 'impl')
-    const res = await admin(fetch, apiUrl).admins.getAccessToken({ id: '123' })
-
-    expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/admin/v1/admins/123/access-token',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
-        }
-      })
-    expect(res).toEqual({ accessToken: 'Token' })
-  })
-  test('test patchPassword ', async () => {
-    const fetch = vi.fn()
-
-    fetch.mockResolvedValue({ ok: true, headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { success: true }})})
-
-    const spy = vi.spyOn(fetch,'impl')
-    const res = await accounts(fetch, apiUrl).account.patchPassword({id:"123", oldPassword:"oldPassword", newPassword:"newPassword", newPasswordAgain:"newPassword"});
-    expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/admin/v1/admins/123/password',
-      {
-        method: 'PATCH',
-        body:JSON.stringify({ oldPassword:"oldPassword", newPassword: "newPassword", newPasswordAgain: "newPassword" }),
-        headers: { 'Content-Type': 'application/json',
-        Authorization: 'Bearer '+ localStorage.getItem("accessToken")  }
-      })
-    expect(res).toEqual({ success: true })
-  })
-
-  test('test patchPassword with undefined input admin', async () => {
-    const fetch = vi.fn()
-    fetch.mockResolvedValue({
-      ok: true,
-      headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { success: true } })
-    })
-
-    await expect(admin(fetch, apiUrl).admins.patchPassword({id:"123", newPasswordAgain:"newPassword"})).rejects.toThrowError('Admin ID And New Password Is Required')
-
-  })
-
-    test('test login admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { loginToken: 'Token' } })
-      })
-
-      const spy = vi.spyOn(fetch, 'impl')
-      const res = await admin(fetch, apiUrl).admins.login({ email: 'user1@gmail.com', password: 'user1Password' })
-      expect(spy).toHaveBeenLastCalledWith(
-        'https:/mua/admin/v1/login',
-        {
-          method: 'POST',
-          body: JSON.stringify({ email: 'user1@gmail.com', password: 'user1Password' }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-      expect(res).toEqual( "Token" )
-    })
-
-    test('test login with undefined input admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { loginToken: 'Token' } })
-      })
-
-      await expect(admin(fetch, apiUrl).admins.login()).rejects.toThrowError('Admin Email And Password Is Required')
-    })
-    test('test getConfig admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { accountsApiUrl: 'accountsApiUrl', accountsAppUrl: 'accountsAppUrl', appUrl: 'appUrl' } })
-      })
-
-      const spy = vi.spyOn(fetch, 'impl')
-      const res = await admin(fetch, apiUrl).config.getConfig()
-      expect(spy).toHaveBeenLastCalledWith(
-        'https:/mua/admin/v1/config',
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        })
-      expect(res).toEqual({ accountsApiUrl: 'accountsApiUrl', accountsAppUrl: 'accountsAppUrl', appUrl: 'appUrl' })
-    })
-*/

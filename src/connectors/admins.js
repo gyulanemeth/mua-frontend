@@ -3,6 +3,7 @@ import {
 } from 'standard-json-api-connectors'
 
 import RouteError from '../errors/RouteError.js'
+import checkError from '../helpers/connectorsCatch.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
@@ -16,8 +17,12 @@ export default function (fetch, apiUrl) {
     if (!data || !data.id) {
       throw new RouteError('Admin ID Is Required')
     }
-    const res = await getAdmin({ id: data.id })
-    return res
+    try {
+      const res = await getAdmin({ id: data.id })
+      return res
+    } catch (err) {
+      checkError(err)
+    }
   }
 
   return {

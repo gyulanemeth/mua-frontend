@@ -227,5 +227,11 @@
     "addFirstElement": "Add Your first User.",
     "searchNoResult": "There are no results for the search term:",
     "NoElementsYet": "There Are No Users yet"    
-  }  
+  },
+  "errors": {
+    "corsName": "CORS_ERROR",
+    "corsMessage": "Failed to fetch CORS error, please contact support",
+    "timedOutName":"TIMED_OUT",
+    "timedOutMessage":"Request timed out. Retry later."
+  }
 }

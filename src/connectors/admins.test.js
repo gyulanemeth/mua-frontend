@@ -1,6 +1,7 @@
 import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import admins from './admins.js'
+import connectorsCatchTest from '../helpers/connectorsCatchTest.js'
 
 const apiUrl = 'https:/mua/accounts'
 
@@ -50,6 +51,8 @@ describe('test admins connectors', () => {
       })
     expect(res).toEqual({ _id: '123', name: 'admin name' })
   })
+
+  connectorsCatchTest('test readOne account', (fetch) => admins(fetch, apiUrl).admin.readOne, [{ id: '123' }])
 
   test('test readOne account error route error', async () => {
     const fetch = vi.fn()
