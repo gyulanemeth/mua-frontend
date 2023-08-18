@@ -538,11 +538,14 @@ describe('test accounts connectors', () => {
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).user.uploadProfilePicture({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
 
+    const formData = new FormData()
+    formData.append('profilePicture', { test: 'test' })
+
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233Test/users/123test123/profile-picture',
       {
         method: 'POST',
-        body: { test: 'test' },
+        body: formData,
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
