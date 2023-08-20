@@ -23,6 +23,16 @@ describe('test accounts connectors', () => {
       adminApiBaseUrl: 'http://admins-api.emailfox.link'
     }
   }
+  
+  global.FormData = class FormData {
+    constructor () {
+      this.entries = []
+    }
+
+    append (key, value) {
+      this.entries.push([key, value])
+    }
+  }
 
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
