@@ -2,12 +2,12 @@ import {
   createGetConnector,
   createPostConnector,
   createPatchConnector,
-  createDeleteConnector
+  createDeleteConnector,
+  createPostBinaryConnector
 } from 'standard-json-api-connectors'
 import jwtDecode from 'jwt-decode'
 
 import RouteError from '../errors/RouteError.js'
-import { ConnectorError } from '../errors/ConnectorError.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
@@ -40,6 +40,8 @@ export default function (fetch, apiUrl) {
 
   const generateReFinalizeRegistrationRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.userId}/resend-finalize-registration`
 
+  const generateUploadImage = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`
+
   const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
@@ -57,6 +59,7 @@ export default function (fetch, apiUrl) {
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
   const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
   const postReFinalizeRegistration = createPostConnector(fetch, apiUrl, generateReFinalizeRegistrationRoute)
+  const postUploadImage = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImage, generateAdditionalHeaders)
 
   const getConfig = async function () {
     const res = await getAccountConfig()
@@ -197,19 +200,8 @@ export default function (fetch, apiUrl) {
     if (!params || !params.id || !params.accountId || !formData) {
       throw new RouteError('param and form Data Is Required')
     }
-    const url = `${apiUrl}/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`
-
-    const requestOptions = {
-      method: 'POST',
-      headers: generateAdditionalHeaders(),
-      body: formData
-    }
-    let res = await fetch(url, requestOptions)
-    res = await res.json()
-    if (res.error) {
-      throw new ConnectorError(res.status, res.error.name, res.error.message)
-    }
-    return res.result
+    const res = await postUploadImage({ id: params.id, accountId: params.accountId }, formData)
+    return res
   }
 
   const deleteProfilePicture = async function (params) {

@@ -2,11 +2,11 @@ import {
   createGetConnector,
   createPostConnector,
   createPatchConnector,
-  createDeleteConnector
+  createDeleteConnector,
+  createPostBinaryConnector
 } from 'standard-json-api-connectors'
 
 import RouteError from '../errors/RouteError.js'
-import { ConnectorError } from '../errors/ConnectorError.js'
 
 export default function (fetch, apiUrl) {
   const generateAdditionalHeaders = (params) => {
@@ -37,6 +37,8 @@ export default function (fetch, apiUrl) {
 
   const generateResetForgotPasswordRoute = (params) => `/v1/accounts/${params.id}/forgot-password/reset`
 
+  const generateUploadImageRoute = (params) => `/v1/accounts/${params.id}/logo/`
+
   const getAccountsList = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const getAccount = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
@@ -52,6 +54,7 @@ export default function (fetch, apiUrl) {
   const postResetForgotPassword = createPostConnector(fetch, apiUrl, generateResetForgotPasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('resetPasswordToken')}` }))
   const deleteLogoRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/logo`, generateAdditionalHeaders)
   const getByUrlFriendlyName = createGetConnector(fetch, apiUrl, generateAccountByUrlFriendlyNameRoute, generateAdditionalHeaders)
+  const uploadImage = createPostBinaryConnector(fetch, apiUrl, 'logo', generateUploadImageRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAccountsList({}, query)
@@ -183,19 +186,8 @@ export default function (fetch, apiUrl) {
     if (!params || !params.id || !formData) {
       throw new RouteError('param and form Data Is Required')
     }
-    const url = `${apiUrl}/v1/accounts/${params.id}/logo/`
-
-    const requestOptions = {
-      method: 'POST',
-      headers: generateAdditionalHeaders(),
-      body: formData
-    }
-    let res = await fetch(url, requestOptions)
-    res = await res.json()
-    if (res.error) {
-      throw new ConnectorError(res.status, res.error.name, res.error.message)
-    }
-    return res.result
+    const res = await uploadImage(params, formData)
+    return res
   }
 
   const deleteLogo = async function (params) {

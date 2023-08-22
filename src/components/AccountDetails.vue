@@ -45,9 +45,7 @@ const handleDeleteAccountLogo = () => {
 
 const uploadlogo = (image) => {
   showCropperDialog.value = false
-  const formData = new FormData()
-  formData.append('logo', image)
-  emit('uploadLogoHandler', formData, (url) => {
+  emit('uploadLogoHandler', image, (url) => {
     if (url) {
       logo.value = url + '?' + Date.now()
     }

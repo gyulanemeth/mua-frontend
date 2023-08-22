@@ -23,6 +23,16 @@ describe('test accounts connectors', () => {
     }
   }
 
+  global.FormData = class FormData {
+    constructor () {
+      this.entries = []
+    }
+
+    append (key, value) {
+      this.entries.push([key, value])
+    }
+  }
+
   beforeEach(async () => {
     localStorage.setItem('accessToken', 'Token')
   })
@@ -524,6 +534,9 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
+    const formData = new FormData()
+    formData.append('logo', { test: 'test' })
+
     const spy = vi.spyOn(fetch, 'impl')
     const res = await accounts(fetch, apiUrl).account.uploadLogo({ id: '123test123' }, { test: 'test' })
 
@@ -531,7 +544,7 @@ describe('test accounts connectors', () => {
       'https:/mua/accounts/v1/accounts/123test123/logo/',
       {
         method: 'POST',
-        body: { test: 'test' },
+        body: formData,
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
@@ -582,107 +595,3 @@ describe('test accounts connectors', () => {
     await expect(accounts(fetch, apiUrl).account.deleteLogo()).rejects.toThrowError('Account Id Is Required')
   })
 })
-
-/*
-  test('test getAccessToken admin', async () => {
-    const fetch = vi.fn()
-    fetch.mockResolvedValue({
-      ok: true,
-      headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { accessToken: 'Token' } })
-    })
-
-    const spy = vi.spyOn(fetch, 'impl')
-    const res = await admin(fetch, apiUrl).admins.getAccessToken({ id: '123' })
-
-    expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/admin/v1/admins/123/access-token',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
-        }
-      })
-    expect(res).toEqual({ accessToken: 'Token' })
-  })
-  test('test patchPassword ', async () => {
-    const fetch = vi.fn()
-
-    fetch.mockResolvedValue({ ok: true, headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { success: true }})})
-
-    const spy = vi.spyOn(fetch,'impl')
-    const res = await accounts(fetch, apiUrl).account.patchPassword({id:"123", oldPassword:"oldPassword", newPassword:"newPassword", newPasswordAgain:"newPassword"});
-    expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/admin/v1/admins/123/password',
-      {
-        method: 'PATCH',
-        body:JSON.stringify({ oldPassword:"oldPassword", newPassword: "newPassword", newPasswordAgain: "newPassword" }),
-        headers: { 'Content-Type': 'application/json',
-        Authorization: 'Bearer '+ localStorage.getItem("accessToken")  }
-      })
-    expect(res).toEqual({ success: true })
-  })
-
-  test('test patchPassword with undefined input admin', async () => {
-    const fetch = vi.fn()
-    fetch.mockResolvedValue({
-      ok: true,
-      headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { success: true } })
-    })
-
-    await expect(admin(fetch, apiUrl).admins.patchPassword({id:"123", newPasswordAgain:"newPassword"})).rejects.toThrowError('Admin ID And New Password Is Required')
-
-  })
-
-    test('test login admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { loginToken: 'Token' } })
-      })
-
-      const spy = vi.spyOn(fetch, 'impl')
-      const res = await admin(fetch, apiUrl).admins.login({ email: 'user1@gmail.com', password: 'user1Password' })
-      expect(spy).toHaveBeenLastCalledWith(
-        'https:/mua/admin/v1/login',
-        {
-          method: 'POST',
-          body: JSON.stringify({ email: 'user1@gmail.com', password: 'user1Password' }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-      expect(res).toEqual( "Token" )
-    })
-
-    test('test login with undefined input admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { loginToken: 'Token' } })
-      })
-
-      await expect(admin(fetch, apiUrl).admins.login()).rejects.toThrowError('Admin Email And Password Is Required')
-    })
-    test('test getConfig admin', async () => {
-      const fetch = vi.fn()
-      fetch.mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/json' },
-        json: () => Promise.resolve({ result: { accountsApiUrl: 'accountsApiUrl', accountsAppUrl: 'accountsAppUrl', appUrl: 'appUrl' } })
-      })
-
-      const spy = vi.spyOn(fetch, 'impl')
-      const res = await admin(fetch, apiUrl).config.getConfig()
-      expect(spy).toHaveBeenLastCalledWith(
-        'https:/mua/admin/v1/config',
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        })
-      expect(res).toEqual({ accountsApiUrl: 'accountsApiUrl', accountsAppUrl: 'accountsAppUrl', appUrl: 'appUrl' })
-    })
-*/
