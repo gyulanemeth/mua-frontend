@@ -41,8 +41,8 @@ const sideBarIcons = window.config.sideBarIcons
 <template>
   <v-card class="elevation-4">
 
-    <v-navigation-drawer color="grey-lighten-2" rail rail-width="65" permanent>
-      <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column" density="compact" nav>
+    <v-navigation-drawer color="grey-lighten-2" class="rounded-te-lg" rail rail-width="65" permanent>
+      <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column rounded-te-lg" density="compact" nav>
         <v-list-item v-if="store.checkAdmin" class="justify-center align-center"
           active-class=" elevation-4 text-white bg-white">
           <a style="text-decoration: none;" :href="adminUrl">
