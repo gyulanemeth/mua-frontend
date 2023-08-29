@@ -23,7 +23,7 @@ describe('test accounts connectors', () => {
       adminApiBaseUrl: 'http://admins-api.emailfox.link'
     }
   }
-  
+
   global.FormData = class FormData {
     constructor () {
       this.entries = []

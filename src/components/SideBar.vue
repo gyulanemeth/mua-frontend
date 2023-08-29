@@ -42,8 +42,8 @@ const sideBarIcons = window.config.sideBarIcons
   <v-card class="elevation-4">
 
     <v-navigation-drawer color="grey-lighten-2" class="rounded-te-lg" rail rail-width="65" permanent>
-      <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column rounded-te-lg" density="compact" nav>
-        <v-list-item v-if="store.checkAdmin" class="justify-center align-center"
+      <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column rounded-te-lg justify-center align-center" density="compact" nav>
+        <v-list-item v-if="store.checkAdmin" class="justify-center align-center" width="36" height="36" :style="{ opacity: 0.5 }"
           active-class=" elevation-4 text-white bg-white">
           <a style="text-decoration: none;" :href="adminUrl">
             <v-tooltip activator="parent" location="end top" origin="start center">Admin Account</v-tooltip>
@@ -52,12 +52,11 @@ const sideBarIcons = window.config.sideBarIcons
             </v-list-item-icon>
           </a>
         </v-list-item>
-
-        <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center"
-          active-class=" elevation-4 text-white bg-white">
+        <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" :style="{ opacity: 0.5 }"
+          active-class=" elevation-4 text-white bg-white"  width="36" height="36" >
           <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
             <v-tooltip activator="parent" location="end top" origin="start center">{{ item.name }}</v-tooltip>
-            <v-list-item-icon class="text-black">
+            <v-list-item-icon style="font-size: 20px" class="text-black">
               {{ item.icon }}
             </v-list-item-icon>
           </v-btn>
@@ -69,7 +68,7 @@ const sideBarIcons = window.config.sideBarIcons
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
             <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
-          <v-list-item v-else class="justify-center align-center" active active-class=" elevation-4 text-white bg-white">
+          <v-list-item v-else class="justify-center align-center" style="filter: drop-shadow(0px 2px 2px #999898)" width="36" height="36" active active-class=" elevation-4 text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
             <v-list-item-icon v-bind="props"  class="text-black">
             mdi-account-group-outline
