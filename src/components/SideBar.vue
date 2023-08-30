@@ -68,7 +68,7 @@ const sideBarIcons = window.config.sideBarIcons
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
             <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
-          <v-list-item v-else class="justify-center align-center" style="filter: drop-shadow(0px 2px 2px #999898)" width="36" height="36" active active-class=" elevation-4 text-white bg-white">
+          <v-list-item v-else class="justify-center align-center" width="36" height="36" active active-class=" elevation-4 active-item text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
             <v-list-item-icon v-bind="props"  class="text-black">
             mdi-account-group-outline
@@ -86,3 +86,8 @@ const sideBarIcons = window.config.sideBarIcons
     </v-navigation-drawer>
   </v-card>
 </template>
+<style>
+.active-item {
+  filter: drop-shadow(0px 2px 2px #999898)
+}
+</style>
