@@ -19,7 +19,6 @@ const nameInput = ref()
 const processing = ref()
 const urlFriendlyNameInput = ref()
 const showCropperDialog = ref(false)
-const imageFile = ref(false)
 
 const setNameFocus = () => {
   nextTick(() => {
@@ -53,19 +52,9 @@ const uploadlogo = (image) => {
   })
 }
 
-const handleFileChange = (event) => {
-  processing.value = true
-  const reader = new FileReader()
-  reader.onload = () => {
-    imageFile.value = reader.result
-    showCropperDialog.value = true
-  }
-  reader.readAsDataURL(event.target.files[0])
-}
-
 const openFileInput = () => {
-  const fileInput = document.querySelector('input[type=file]')
-  fileInput.click()
+  processing.value = true
+  showCropperDialog.value = true
 }
 
 </script>
@@ -134,8 +123,6 @@ const openFileInput = () => {
             }}</v-progress-circular>
             <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
               <v-img :src="logo" class="align-self-stretch" cover />
-              <input ref="fileInput" type="file" style="display: none" @change="handleFileChange" accept=".png, .jpeg, .jpg, .gif">
-
               <v-expand-transition>
 
                 <v-container v-if="isHovering && componentProps.role" class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
@@ -151,7 +138,7 @@ const openFileInput = () => {
           </v-hover>
         </v-col>
       </v-col>
-      <ImgCropper v-if="imageFile" :profilePicture="imageFile" :showCropperDialog="showCropperDialog" @uploadProfilePictureHandler="uploadlogo" @closeCropperHandler="processing = false; showCropperDialog = false" />
+      <ImgCropper v-if="showCropperDialog" @uploadProfilePictureHandler="uploadlogo" @closeCropperHandler="processing = false; showCropperDialog = false" />
     </v-layout>
   </div>
 </template>
