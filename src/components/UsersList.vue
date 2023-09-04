@@ -114,7 +114,7 @@ const appIcon = window.config.appIcon
                       </v-card-subtitle>
                     </v-card-subtitle>
                   </v-card-text>
-                  <v-tooltip :text="$t('userList.resendMessage')">
+                  <v-tooltip v-if="props.currentUser.role === 'admin'" :text="$t('userList.resendMessage')">
                             <template v-slot:activator="{ props }">
                                 <v-btn v-bind="props" color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
                             </template>
