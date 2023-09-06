@@ -44,22 +44,18 @@ const sideBarIcons = window.config.sideBarIcons
     <v-navigation-drawer color="grey-lighten-2" class="rounded-te-lg" rail rail-width="65" permanent>
       <v-list bg-color="grey-lighten-2" class="h-100 d-flex flex-column rounded-te-lg justify-center align-center" density="compact" nav>
         <v-list-item v-if="store.checkAdmin" class="justify-center align-center" width="36" height="36" :style="{ opacity: 0.5 }"
-          active-class=" elevation-4 text-white bg-white">
-          <a style="text-decoration: none;" :href="adminUrl">
+          active-class=" elevation-4 text-white bg-white" :href="adminUrl">
             <v-tooltip activator="parent" location="end top" origin="start center">Admin Account</v-tooltip>
             <v-list-item-icon class="text-black">
               mdi-shield-account-variant-outline
             </v-list-item-icon>
-          </a>
         </v-list-item>
-        <v-list-item v-for="(item, i) in sideBarIcons" :key="i" class="justify-center align-center" :style="{ opacity: 0.5 }"
+        <v-list-item v-for="(item, i) in sideBarIcons" :key="i" :href="redirect(item.url, route.params.urlFriendlyName)" class="justify-center align-center" :style="{ opacity: 0.5 }"
           active-class=" elevation-4 text-white bg-white"  width="36" height="36" >
-          <v-btn class="bg-grey-lighten-2 elevation-0" :href="redirect(item.url, route.params.urlFriendlyName)">
             <v-tooltip activator="parent" location="end top" origin="start center">{{ item.name }}</v-tooltip>
             <v-list-item-icon style="font-size: 20px" class="text-black">
               {{ item.icon }}
             </v-list-item-icon>
-          </v-btn>
         </v-list-item>
         <v-spacer />
         <v-menu location="bottom " origin="end top">
