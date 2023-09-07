@@ -27,7 +27,7 @@ const checkbox = ref()
             <h4 class="text-h4">  {{title}} </h4>
         </v-card-title>
     </v-card>
-    <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
+    <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="600px">
         <v-card-text align="center">
             <h6 class="text-h6">{{$t('createAccount.header')}}</h6>
             <h4><v-divider />{{$t('createAccount.accountSection.header')}}<v-divider  class=" mb-6"/></h4 >
