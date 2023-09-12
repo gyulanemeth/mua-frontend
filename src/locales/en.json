@@ -169,9 +169,9 @@
     "header": "My Details",
     "nameLabel": "Name",
     "namePlaceHolder": "User Name",
-    "emailLabel": "E-mail",
+    "emailLabel": "E-mail Address",
     "emailPlaceholder": "E-mail",
-    "picLabel": "Profile picture"
+    "picLabel": "Profile Picture"
   },
   "navBar": {
     "title": {
@@ -191,9 +191,9 @@
     "openBtn": "View profile",
     "overviewTitle":"Account Overview",
     "nameLabel":"Name",
-    "emailLabel":"E-mail",
+    "emailLabel":"E-mail Address",
     "roleLabel":"Role",
-    "picLabel":"Profile picture",
+    "picLabel":"Profile Picture",
     "submitBtn": "Save changes",
     "closeBtn": "Close"
   },
