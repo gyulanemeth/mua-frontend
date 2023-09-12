@@ -27,7 +27,7 @@ const url = ref(window.location.href)
                 <h4 class="text-h4"> {{ title }} </h4>
             </v-card-title>
         </v-card>
-        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="30%">
+        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="600px">
             <v-card-text align="center">
                 <h6 class="text-h6">{{ $t('loginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
