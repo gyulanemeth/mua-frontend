@@ -60,7 +60,7 @@ const sideBarIcons = window.config.sideBarIcons
         <v-spacer />
         <v-menu location="bottom " origin="end top">
       <template v-slot:activator="{ props }">
-        <v-avatar size="large" v-if="store.account && store.account.logo">
+        <v-avatar size="large" :style="{ border: '4px solid #BDBDBD'}" v-if="store.account && store.account.logo">
           <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
             <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
