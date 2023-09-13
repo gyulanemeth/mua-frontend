@@ -1,11 +1,11 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
 import { useRoute } from 'vue-router'
 
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
-
+const menu = ref(false)
 function redirect (url, urlFriendlyName) {
   return url({ accountId: store.getAccountId, token: localStorage.getItem('accessToken'), urlFriendlyName })
 }
@@ -58,10 +58,10 @@ const sideBarIcons = window.config.sideBarIcons
             </v-list-item-icon>
         </v-list-item>
         <v-spacer />
-        <v-menu location="bottom " origin="end top">
+        <v-menu v-model="menu" location="top end" origin="bottom start">
       <template v-slot:activator="{ props }">
         <v-avatar size="large" :style="{ border: '1px solid rgba(0, 0, 0, 0.22)'}" v-if="store.account && store.account.logo">
-          <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
+          <v-tooltip activator="parent" v-if="!menu" location="end top" origin="start center">Account</v-tooltip>
             <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
           <v-list-item v-else class="justify-center align-center" width="36" height="36" active active-class=" elevation-4 active-item text-white bg-white">
