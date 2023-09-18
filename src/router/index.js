@@ -141,7 +141,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/:urlFriendlyName/redirectToLoginMessage',
+      path: '/:urlFriendlyName/redirect-to-login-message',
       name: 'redirectToLoginMessage',
       component: RedirectToLoginMessage,
       meta: {
@@ -170,7 +170,7 @@ router.beforeEach(async (to, from, next) => {
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.removeItem('accessToken')
-      window.location.href = window.location.hostname + '/redirectToLoginMessage'
+      window.location.href = window.location.hostname + '/redirect-to-login-message'
       return
     }
     if (!store.account) {
@@ -216,7 +216,7 @@ router.beforeEach(async (to, from, next) => {
     to.name !== 'verify-email' &&
     to.name !== 'redirectToLoginMessage') {
     if (to.params.urlFriendlyName) {
-      window.location.href = '/' + to.params.urlFriendlyName + '/redirectToLoginMessage'
+      window.location.href = '/' + to.params.urlFriendlyName + '/redirect-to-login-message'
     } else {
       window.location.href = '/'
     }
