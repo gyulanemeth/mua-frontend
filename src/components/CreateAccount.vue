@@ -9,6 +9,7 @@ const data = ref({
 const cb = ref()
 const appIcon = window.config.appIcon
 const title = window.config.title
+const processing = ref(false)
 
 const checkbox = ref()
 
@@ -84,10 +85,15 @@ const checkbox = ref()
             required/>
             <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" v-model="checkbox" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" :disabled="!checkbox" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data, (res)=>{cb = res})">
-                    {{$t('createAccount.submitBtn')}}
+                <v-btn color="info" data-test-id="createAccount-submitBtn" :disabled="!checkbox" @click="processing = true; $emit('buttonEvent',data, (res)=>{cb = res; processing = false})">
+
+                        {{ !processing ? $t('createAccount.submitBtn') : '' }}
+
+                        <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                            indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+
                 </v-btn>
-                <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data , (res)=>{cb = res})" />
+                <button hidden :disabled="!checkbox" @click.enter.prevent="processing = true; $emit('buttonEvent',data , (res)=>{cb = res; processing = false})" />
             </v-col>
             <p class="text-center">{{$t('createAccount.redirectTologinMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
