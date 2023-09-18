@@ -17,7 +17,7 @@ const url = ref(window.location.href)
 
 <template>
     <v-form class="d-flex flex-column justify-center align-center h-screen">
-        <v-card elevation="0" class="w-25">
+        <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
@@ -27,7 +27,7 @@ const url = ref(window.location.href)
                 <h4 class="text-h4"> {{ title }} </h4>
             </v-card-title>
         </v-card>
-        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="600px">
+        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
                 <h6 class="text-h6">{{ $t('loginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
@@ -48,7 +48,7 @@ const url = ref(window.location.href)
 
                 <div>
                     <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                        @click="processing = true; $emit('handleLoginWithUrlFriendlyName',{ email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
+                        @click="processing = true; $emit('handleLoginWithUrlFriendlyName',{ email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName },  (res) => { if(res){processing = false} })">
                         {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
                         <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
@@ -67,7 +67,7 @@ const url = ref(window.location.href)
                                     $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
                         </p>
                         <button hidden
-                            @click.enter.prevent="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })" />
+                            @click.enter.prevent="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" />
                         {{ $t('loginAndResetForm.cb.forgotMessage') }}
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
                             style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{

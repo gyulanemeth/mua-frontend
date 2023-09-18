@@ -88,7 +88,7 @@ async function handleGetLoginAccountEvent (params, statusCallBack) {
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   const res = await store.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
-  statusCallBack(!res.message)
+  statusCallBack(res)
 }
 
 async function handleLoginEvent (params, statusCallBack) {

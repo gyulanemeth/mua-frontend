@@ -76,7 +76,6 @@ export default (connectors) => {
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
           window.location.href = dashboardPath.url({ accountId: this.account._id, token: localStorage.getItem('accessToken'), urlFriendlyName: this.account.urlFriendlyName })
-          return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
