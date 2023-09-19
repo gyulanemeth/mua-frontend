@@ -9,6 +9,7 @@ const data = ref({
 const cb = ref()
 const appIcon = window.config.appIcon
 const title = window.config.title
+const processing = ref(false)
 
 const checkbox = ref()
 
@@ -17,7 +18,7 @@ const checkbox = ref()
 <template>
 
 <v-form v-if="!cb"  class="d-flex flex-column justify-center align-center h-screen">
-    <v-card elevation="0" class="w-25">
+    <v-card elevation="0">
         <v-card-text align="center">
             <v-avatar size="80" >
               <v-img :src="appIcon" cover></v-img>
@@ -27,7 +28,7 @@ const checkbox = ref()
             <h4 class="text-h4">  {{title}} </h4>
         </v-card-title>
     </v-card>
-    <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="600px">
+    <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
         <v-card-text align="center">
             <h6 class="text-h6">{{$t('createAccount.header')}}</h6>
             <h4><v-divider />{{$t('createAccount.accountSection.header')}}<v-divider  class=" mb-6"/></h4 >
@@ -84,10 +85,15 @@ const checkbox = ref()
             required/>
             <v-checkbox :label="$t('createAccount.checkboxLabel')" color="info" v-model="checkbox" hide-details></v-checkbox>
             <v-col>
-                <v-btn color="info" :disabled="!checkbox" data-test-id="createAccount-submitBtn" @click="$emit('buttonEvent',data, (res)=>{cb = res})">
-                    {{$t('createAccount.submitBtn')}}
+                <v-btn color="info" data-test-id="createAccount-submitBtn" :disabled="!checkbox" @click="processing = true; $emit('buttonEvent',data, (res)=>{cb = res; processing = false})">
+
+                        {{ !processing ? $t('createAccount.submitBtn') : '' }}
+
+                        <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                            indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+
                 </v-btn>
-                <button hidden :disabled="!checkbox" @click.enter.prevent="$emit('buttonEvent',data , (res)=>{cb = res})" />
+                <button hidden :disabled="!checkbox" @click.enter.prevent="processing = true; $emit('buttonEvent',data , (res)=>{cb = res; processing = false})" />
             </v-col>
             <p class="text-center">{{$t('createAccount.redirectTologinMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
