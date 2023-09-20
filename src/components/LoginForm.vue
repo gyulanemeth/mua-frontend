@@ -31,7 +31,7 @@ const title = window.config.title
                 </v-avatar>
             </v-card-text>
             <v-card-title class="justify-center py-0">
-                <h4 class="text-h4"> {{ title }} </h4>
+                <h4 class="text-h4 text-center"> {{ title }} </h4>
             </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
@@ -91,14 +91,19 @@ const title = window.config.title
                             <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
-
-                        <div class="mt-4 pa-4">
-                        <button hidden  @click.enter.prevent="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })" />
-                        {{ $t('loginAndResetForm.cb.forgotMessage') }}
+                        <v-container class="mt-4 mb-0 pb-0 pa-4 pl-sm-0 w-100">
+                    <v-row no-gutters class="justify-center align-center">
+                    <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
+                        <p> {{ $t('loginAndResetForm.cb.forgotMessage') }}</p>
+                    </v-col>
+                    <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
                             style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
                                 $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
-                        </div>
+                    </v-col>
+                    </v-row>
+                </v-container>
+                <button hidden  @click.enter.prevent="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })" />
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('loginAndResetForm.cb.loginMessage') }}</p>

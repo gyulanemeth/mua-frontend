@@ -24,7 +24,7 @@ const url = ref(window.location.href)
                 </v-avatar>
             </v-card-text>
             <v-card-title class="justify-center py-0">
-                <h4 class="text-h4"> {{ title }} </h4>
+                <h4 class="text-h4 text-center"> {{ title }} </h4>
             </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
@@ -33,7 +33,7 @@ const url = ref(window.location.href)
                     name:
                         props.formData.accountName
                 }) }} </h6>
-                <h6 class="text-subtitle-1">({{ url }})</h6>
+                <h6 class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" type="email" name="email"
@@ -54,25 +54,46 @@ const url = ref(window.location.href)
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                     </v-btn>
 
-                    <div class=" pa-4">
-                        <p>{{ $t('loginAndResetForm.forgotHeader') }}
-                            <router-link style="text-decoration: none; color: inherit;"
+                    <v-container class="mt-4 mb-0 pb-0 pa-4 pl-sm-0 w-100">
+                    <v-row no-gutters class="justify-center align-center">
+                    <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
+                        <p>{{ $t('loginAndResetForm.forgotHeader') }}</p>
+                    </v-col>
+                    <v-col cols="12" sm="5" class="text-sm-left">
+                        <router-link style="text-decoration: none; color: inherit;"
                                 data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
                                 :to="`/forgot-password?urlFriendlyName=${route.params.urlFriendlyName}`">{{ $t('loginAndResetForm.forgotBtn')
                                 }}</router-link>
-                        </p>
-                        <p>{{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}
+                    </v-col>
+                    </v-row>
+                </v-container>
+                <v-container class="pa-4 my-0 py-0 pl-sm-0 w-100">
+                    <v-row no-gutters class="justify-center align-center">
+                    <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
+                        <p> {{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}</p>
+                    </v-col>
+                    <v-col cols="12" sm="5" class="text-sm-left">
+                      
                             <router-link data-test-id="loginAndResetForm-createAccountBtn"
                                 style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
-                                    $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
-                        </p>
-                        <button hidden
-                            @click.enter.prevent="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" />
-                        {{ $t('loginAndResetForm.cb.forgotMessage') }}
+                                    $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link> 
+                    </v-col>
+                    </v-row>
+                </v-container>
+                <v-container class="pa-4 mt-0 pt-0 pl-sm-0 w-100">
+                    <v-row no-gutters class="justify-center align-center">
+                    <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
+                        <p> {{ $t('loginAndResetForm.cb.forgotMessage') }}</p>
+                    </v-col>
+                    <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                            style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
-                                $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
-                    </div>
+                        style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
+                            $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
+                    </v-col>
+                    </v-row>
+                </v-container>
+                    <button hidden
+                        @click.enter.prevent="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" />
                 </div>
             </v-card-text>
 
