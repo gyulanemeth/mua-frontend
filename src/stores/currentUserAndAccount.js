@@ -378,6 +378,27 @@ export default (connectors) => {
           return e
         }
       },
+      async deleteAccount () {
+        try {
+          const res = await connectors.account.deleteOne({ id: this.account._id })
+          if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('accountId')
+            window.location.href = `${window.config.adminsAppBaseUrl}me`
+          } else {
+            router.push('/')
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('loginToken')
+          }
+          this.accessToken = null
+          this.user = null
+          this.account = null
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async getAccountByUrlFriendlyName (urlFriendlyName) {
         try {
           const res = await connectors.account.getAccountByUrlFriendlyName({ urlFriendlyName })

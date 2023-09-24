@@ -73,10 +73,10 @@ const url = ref(window.location.href)
                         <p> {{ $t('loginAndResetForm.cb.loginToDifferentAccountMessage') }}</p>
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
-                      
+
                             <router-link data-test-id="loginAndResetForm-createAccountBtn"
                                 style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
-                                    $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link> 
+                                    $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
                     </v-col>
                     </v-row>
                 </v-container>
