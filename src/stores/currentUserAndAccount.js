@@ -378,8 +378,9 @@ export default (connectors) => {
           return e
         }
       },
-      async deleteAccount () {
+      async deleteAccount (password) {
         try {
+          await connectors.user.deletePermission(password)
           const res = await connectors.account.deleteOne({ id: this.account._id })
           if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             localStorage.removeItem('accessToken')

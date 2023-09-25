@@ -24,7 +24,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
 
 <v-dialog v-model="dialog" persistent>
     <template v-slot:activator="{ props }">
-        <v-btn v-if="route.name === 'me'" data-test-id="open-deleteAccount-dialog" color="error" class="mt-10 text-white" v-bind="props">Delete</v-btn>
+        <v-btn v-if="route.name === 'settings'" data-test-id="open-deleteAccount-dialog" color="error" variant="outlined" class="mt-10 text-white" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
         <v-btn v-else color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
 
     </template>
