@@ -169,9 +169,8 @@ router.beforeEach(async (to, from, next) => {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
-      localStorage.removeItem('accessToken')
-      window.location.href = window.location.hostname + '/redirect-to-login-message'
-      return
+      localStorage.clear()
+      return next({ path: `${to.params.urlFriendlyName? '/' + to.params.urlFriendlyName: '' }/redirect-to-login-message` })
     }
     if (!store.account) {
       await store.readOne()
@@ -180,13 +179,11 @@ router.beforeEach(async (to, from, next) => {
   if (localStorage.getItem('accessToken') && (to.name === 'login' || to.name === 'loginWithUrlFriendlyName')) {
     if (to.query.logout) {
       if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('accountId')
+        localStorage.clear()
         window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
         return
       } else {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('loginToken')
+        localStorage.clear()
         return next({ path: `/${to.params.urlFriendlyName}/` })
       }
     }
@@ -196,8 +193,7 @@ router.beforeEach(async (to, from, next) => {
   if (to.name === 'create-account' && localStorage.getItem('accessToken')) {
     const tokenData = jwtDecode(localStorage.getItem('accessToken'))
     if (tokenData.type === 'admin') {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('accountId')
+      localStorage.clear()
       window.location.href = `${window.config.adminsAppBaseUrl}accounts`
       return
     }
