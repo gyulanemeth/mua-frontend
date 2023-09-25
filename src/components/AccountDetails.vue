@@ -1,7 +1,10 @@
 <script setup >
 import { ref, nextTick } from 'vue'
 import ImgCropper from './ImageCropper.vue'
+import { useI18n } from 'vue-i18n'
+import DeleteAccount from './DeleteAccount.vue'
 
+const { t } = useI18n()
 const componentProps = defineProps({
   name: String,
   urlFriendlyName: String,
@@ -138,6 +141,21 @@ const openFileInput = () => {
           </v-hover>
         </v-col>
       </v-col>
+
+      <v-layout class="d-flex flex-wrap w-75" v-if="componentProps.role">
+        <v-col class="pt-3">
+            <h3 class="font-weight-bold text-error">{{ $t('accountDetails.deleteLabel') }}</h3>
+            <v-divider color="error" />
+
+                <v-banner color="error" class="text-error my-4">
+                       <v-banner-text class="mt-2 text-error">
+            <div v-html="t('accountDetails.deleteAccountMessage')"></div>
+          </v-banner-text>
+            </v-banner>
+              <DeleteAccount :data="{ name: componentProps.name,  urlFriendlyName: componentProps.urlFriendlyName,  logo: componentProps.logo}"  />
+            </v-col>
+        </v-layout>
+
       <ImgCropper v-if="showCropperDialog" @uploadProfilePictureHandler="uploadlogo" @closeCropperHandler="processing = false; showCropperDialog = false" />
     </v-layout>
   </div>

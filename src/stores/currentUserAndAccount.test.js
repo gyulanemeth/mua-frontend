@@ -232,8 +232,14 @@ describe('Current User And Account Store', () => {
       return { success: true }
     }
 
+    const mockDeleteAccount = async function (params) {
+      if (!params || !params.id) {
+        throw new RouteError('Account ID Is Required')
+      }
+      return { success: true }
+    }
     return {
-      account: { deleteLogo: mockDeleteLogo, getAccountByUrlFriendlyName: mockGetAccountByUrlFriendlyName, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration },
+      account: { deleteLogo: mockDeleteLogo, getAccountByUrlFriendlyName: mockGetAccountByUrlFriendlyName, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration, deleteOne: mockDeleteAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
@@ -645,6 +651,37 @@ describe('Current User And Account Store', () => {
 
     const res = await userStore.patchEmail('testEmail@gmail.com')
     expect(res).toEqual('success')
+  })
+
+  test('test error missing id deleteAccount', async () => {
+    const currentAccount = useCurrentUserAndAccountStore(mokeConnector())
+    const accountStore = currentAccount()
+    accountStore.user = { _id: '12test12' }
+    accountStore.account = {}
+    const res = await accountStore.deleteAccount()
+    expect(res.message).toEqual('Account ID Is Required')
+  })
+
+  test('test success deleteAccount', async () => {
+    const token = jwt.sign({ type: 'token', data: 'token' }, secrets)
+    window.location.search = { token, accountId: '123test123' }
+    const currentAccount = useCurrentUserAndAccountStore(mokeConnector())
+    const accountStore = currentAccount()
+    accountStore.user = { _id: '12test12' }
+    accountStore.account = { _id: '123test123' }
+    const res = await accountStore.deleteAccount()
+    expect(res.success).toEqual(true)
+  })
+
+  test('test success deleteAccount', async () => {
+    const token = jwt.sign({ type: 'admin', account: { urlFriendlyName: 'urlFriendlyName1' } }, secrets)
+    window.location.search = { token, accountId: '112233' }
+    const currentAccount = useCurrentUserAndAccountStore(mokeConnector())
+    const accountStore = currentAccount()
+    accountStore.user = { _id: '12test12' }
+    accountStore.account = { _id: '123test123' }
+    const res = await accountStore.deleteAccount()
+    expect(res.success).toEqual(true)
   })
 
   test('test patchEmail fail admin id required ', async () => {
