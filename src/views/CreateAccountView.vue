@@ -10,7 +10,6 @@ async function createEventHandler (data, statusCallBack) {
   const res = await store.createAccount(data)
   if (res.success) {
     statusCallBack(res)
-    alert.message('Email sent successfully')
   }
 }
 
