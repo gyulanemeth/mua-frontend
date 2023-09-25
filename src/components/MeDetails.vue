@@ -42,7 +42,7 @@ const tab = ref('me')
 </script>
 
 <template>
-  <div class="mx-3 elevation-0 my-n3 pt-0 rounded">
+  <div class="mx-3 elevation-0 rounded">
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
