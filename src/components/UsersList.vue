@@ -55,7 +55,7 @@ const appIcon = window.config.appIcon
 
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
-            <v-col class="pt-3">
+            <v-col class="pt-3 d-flex align-center">
                 <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
                 <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
                 <v-col cols="5">
