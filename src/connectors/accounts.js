@@ -43,7 +43,7 @@ export default function (fetch, apiUrl) {
   const getAccount = createGetConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updateUrlFriendlyName = createPatchConnector(fetch, apiUrl, generatePatchurlFriendlyNameRoute, generateAdditionalHeaders)
-  const del = createDeleteConnector(fetch, apiUrl, generateAccountRoute, generateAdditionalHeaders)
+  const del = createDeleteConnector(fetch, apiUrl, generateAccountRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getCheckAvailability = createGetConnector(fetch, apiUrl, generateCheckAvailabilityRoute)
   const postCreateAccount = createPostConnector(fetch, apiUrl, generateCreateAccountRoute, generateAdditionalHeaders)
   const postFinalizeRegistration = createPostConnector(fetch, apiUrl, generateFinalizeRegistrationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('registrationToken')}` }))

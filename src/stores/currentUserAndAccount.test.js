@@ -238,11 +238,18 @@ describe('Current User And Account Store', () => {
       }
       return { success: true }
     }
+
+    const mockDeletePermission = (password) => {
+      if (!password) {
+        throw new RouteError('Password Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
     return {
       account: { deleteLogo: mockDeleteLogo, getAccountByUrlFriendlyName: mockGetAccountByUrlFriendlyName, uploadLogo: mockUploadLogo, patchName: mockPatchAccountName, patchUrlFriendlyName: mockPatchAccountUrlFriendlyName, createOne: mockCreateOne, readOne: mockAccountReadOne, finalizeRegistration: mockFinalizeRegistration, deleteOne: mockDeleteAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm }
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission }
     }
   }
 
@@ -658,7 +665,7 @@ describe('Current User And Account Store', () => {
     const accountStore = currentAccount()
     accountStore.user = { _id: '12test12' }
     accountStore.account = {}
-    const res = await accountStore.deleteAccount()
+    const res = await accountStore.deleteAccount('123123')
     expect(res.message).toEqual('Account ID Is Required')
   })
 
@@ -669,7 +676,7 @@ describe('Current User And Account Store', () => {
     const accountStore = currentAccount()
     accountStore.user = { _id: '12test12' }
     accountStore.account = { _id: '123test123' }
-    const res = await accountStore.deleteAccount()
+    const res = await accountStore.deleteAccount('123123')
     expect(res.success).toEqual(true)
   })
 
@@ -680,7 +687,7 @@ describe('Current User And Account Store', () => {
     const accountStore = currentAccount()
     accountStore.user = { _id: '12test12' }
     accountStore.account = { _id: '123test123' }
-    const res = await accountStore.deleteAccount()
+    const res = await accountStore.deleteAccount('123123')
     expect(res.success).toEqual(true)
   })
 

@@ -184,7 +184,7 @@ describe('test accounts connectors', () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+          Authorization: 'Bearer ' + localStorage.getItem('delete-permission-token')
         }
       })
 

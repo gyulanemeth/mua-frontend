@@ -25,15 +25,19 @@
     "deleteAccountMessage": "<h3>Please be aware that once you proceed with this action:</h3><ol><li style='margin-top: 10px;' >&#x2022; All data and content associated with your account will be permanently deleted.</li><li style='margin-top: 10px;' >&#x2022; You won't be able to recover any information or access your account again.</li></ol><p style='margin-top: 10px;' >Ensure your decision aligns with your app’s goals. Account deletion is irreversible, and as a result, all related history, settings, and content will be lost forever.</p>"
   },
   "deleteAccount":{
-    "header": "Delete Account",
+    "header": "<p style='align-items: center; margin-bottom: 20px;'>Are you sure you want to delete “ {name} ” ?</p>",
     "openBtn": "Delete Account",
     "deleteBtn": "Delete Account",
     "cancelBtn": "Cancel",
+    "overviewLabel": "Account Overview",
     "nameLabel": "Account Name",
     "urlFriendlyName":"Account UrlFriendlyName",
     "picLabel": "Account Avatar",
+    "passwordConfirmationHeader":"Please type your password to proceed with deleting the account:",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "********",
     "deleteAlert": "Deleted Successfully",
-    "deleteAccountMessage": "<h2 style='align-items: center; margin-bottom: 20px;'>Are you sure you want to delete “ {name} ” ?</h2><h3>Please be aware that once you proceed with this action:</h3><ol><li style='margin-top: 10px;' >&#x2022; All data and content associated with your account will be permanently deleted.</li><li style='margin-top: 10px;' >&#x2022; You won't be able to recover any information or access your account again.</li></ol><p style='margin-top: 10px;' >Ensure your decision aligns with your app’s goals. Account deletion is irreversible, and as a result, all related history, settings, and content will be lost forever.</p>"
+    "deleteAccountMessage": "<h3>Please be aware that once you proceed with this action:</h3><ol><li style='margin-top: 10px;' >&#x2022; All data and content associated with your account will be permanently deleted.</li><li style='margin-top: 10px;' >&#x2022; You won't be able to recover any information or access your account again.</li></ol><p style='margin-top: 10px;' >Ensure your decision aligns with your app’s goals. Account deletion is irreversible, and as a result, all related history, settings, and content will be lost forever.</p>"
   },
   "adminSettings": {
     "header" : "Account Settings",
