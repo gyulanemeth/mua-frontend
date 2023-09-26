@@ -36,8 +36,8 @@ async function deleteAccount () {
                 {{t('deleteAccount.openBtn')}}
             </v-btn>
         </template>
-        <v-card>
-        <v-container min-width="800" class="d-flex flex-column justify-center">
+        <v-card width="50%" max-width="800" class="ma-auto">
+        <v-container class="d-flex flex-column justify-center">
         <v-card-text>
             <v-toolbar color="white" align="center">
                 <v-toolbar-title class="font-weight-bold text-error" ><div v-html="t('deleteAccount.header', {name:props.data.name})"></div></v-toolbar-title>
@@ -58,13 +58,13 @@ async function deleteAccount () {
                         <p class="font-weight-bold">{{ t('deleteAccount.nameLabel') }} </p>
                     </v-col>
                     <v-col cols="8" align='center'>
-                        <v-text-field disabled hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain"  v-model="data.name"/>
+                        <v-text-field disabled hide-details density="compact" class="my-5 rounded" color="info" variant="solo"  v-model="data.name"/>
                     </v-col>
                     <v-col cols="4">
                         <p class="font-weight-bold">{{ t('deleteAccount.urlFriendlyName') }} </p>
                     </v-col>
                     <v-col cols="8" align='center'>
-                        <v-text-field  disabled hide-details density="compact" class=" elevation-2 my-5 pl-3 rounded" color="info" variant="plain" v-model="data.urlFriendlyName"  />
+                        <v-text-field  disabled hide-details density="compact" class="my-5 rounded" color="info" variant="solo" v-model="data.urlFriendlyName"  />
                     </v-col>
                     <v-col cols="4">
                         <p class="font-weight-bold">{{ t('deleteAccount.picLabel') }}</p>
@@ -87,7 +87,7 @@ async function deleteAccount () {
                     <v-col>
                         <p class="font-weight-bold">{{$t('deleteAccount.passwordLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details density="compact" color="info" class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
+                    <v-text-field hide-details density="compact" color="info" class="my-5 rounded" variant="solo"
                     name="password" type="password"
                     :placeholder="password || $t('deleteAccount.passwordPlaceholder')"
                     :value="password"
@@ -101,7 +101,7 @@ async function deleteAccount () {
                 <v-btn color="error" :disabled="!password"
                     @click="processing = true; deleteAccount()">
                     {{ !processing ? t('deleteAccount.deleteBtn') : '' }}
-                    <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                    <v-progress-circular v-if="processing" :size="20"
                         indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                 </v-btn>
                 <v-spacer />

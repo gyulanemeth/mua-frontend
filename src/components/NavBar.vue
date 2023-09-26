@@ -28,7 +28,7 @@ const appIcon = window.config.appIcon
 </script>
 
 <template>
-  <v-app-bar v-if="store.user" height="100" class="elevation-0 pl-0 ml-0">
+  <v-app-bar v-if="store.user" height="100" class="elevation-0 pl-1 pr-5 ml-0">
     <v-avatar size="60">
       <v-img :src="appIcon" cover></v-img>
     </v-avatar>

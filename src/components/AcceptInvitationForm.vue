@@ -37,27 +37,27 @@ const title = window.config.title
             <v-card-text align="center" v-if="!cb">
                 <h6 class="text-h6">{{ props.formData.header }}</h6>
 
-                <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info"
-                    variant="plain" name="email" type="text" :value="tokenData.user.email"
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
+                    variant="solo" name="email" type="text" :value="tokenData.user.email"
                     :placeholder="tokenData.user.email" disabled required />
 
-                <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info"
-                    variant="plain" name="name" type="text" :value="tokenData.account.urlFriendlyName"
+                <v-text-field hide-details density="compact" class=" my-5 rounded" color="info"
+                    variant="solo" name="name" type="text" :value="tokenData.account.urlFriendlyName"
                     :placeholder="tokenData.account.urlFriendlyName" disabled required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-nameField"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name"
+                    class=" my-5 rounded" color="info" variant="solo" placeholder="Your Name"
                     name="name" label="Name" type="text" v-model="data.name" required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordField"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="newPassword"
+                    class=" my-5 rounded" color="info" variant="solo" name="newPassword"
                     :label="$t('acceptInvitationForm.newPasswordLabel')" type="password"
                     :placeholder="data.newPassword || $t('acceptInvitationForm.newPasswordPlaceholder')"
                     :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordAgainField"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="newPasswordAgain"
+                    class=" my-5 rounded" color="info" variant="solo" name="newPasswordAgain"
                     :label="$t('acceptInvitationForm.confirmNewPasswordLabel')" type="password"
                     :placeholder="data.newPasswordAgain || $t('acceptInvitationForm.confirmNewPasswordPlaceholder')"
                     :value="data.newPasswordAgain"
@@ -70,7 +70,7 @@ const title = window.config.title
                         @click="processing = true; $emit('handleAcceptInvitationHandler', data, () => { processing = false })">
                         {{ !processing ? props.formData.btnText : '' }}
 
-                        <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                        <v-progress-circular v-if="processing" :size="20"
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
 
                     </v-btn>

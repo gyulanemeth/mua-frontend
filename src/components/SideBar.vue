@@ -46,16 +46,16 @@ const sideBarIcons = window.config.sideBarIcons
         <v-list-item v-if="store.checkAdmin" class="justify-center align-center" width="36" height="36" :style="{ opacity: 0.5 }"
           active-class=" elevation-4 text-white bg-white" :href="adminUrl">
             <v-tooltip activator="parent" location="end top" origin="start center">Admin Account</v-tooltip>
-            <v-list-item-icon class="text-black">
+            <v-icon class="text-black" size="20">
               mdi-shield-account-variant-outline
-            </v-list-item-icon>
+            </v-icon>
         </v-list-item>
         <v-list-item v-for="(item, i) in sideBarIcons" :key="i" :href="redirect(item.url, route.params.urlFriendlyName)" class="justify-center align-center" :style="{ opacity: 0.5 }"
           active-class=" elevation-4 text-white bg-white"  width="36" height="36" >
             <v-tooltip activator="parent" location="end top" origin="start center">{{ item.name }}</v-tooltip>
-            <v-list-item-icon style="font-size: 20px" class="text-black">
+            <v-icon class="text-black" size="20">
               {{ item.icon }}
-            </v-list-item-icon>
+            </v-icon>
         </v-list-item>
         <v-spacer />
         <v-menu v-model="menu" location="top end" origin="bottom start">
@@ -66,9 +66,9 @@ const sideBarIcons = window.config.sideBarIcons
           </v-avatar>
           <v-list-item v-else class="justify-center align-center" width="36" height="36" active active-class=" elevation-4 active-item text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-            <v-list-item-icon v-bind="props"  class="text-black">
+          <v-icon class="text-black" v-bind="props" size="20">
             mdi-account-group-outline
-          </v-list-item-icon>
+          </v-icon>
         </v-list-item>
       </template>
       <v-list>

@@ -28,9 +28,11 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
         <v-btn v-else color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
 
     </template>
-    <v-card class="d-flex flex-column justify-center">
+    <v-card width="50%" max-width="800" class="ma-auto">
+        <v-container class="d-flex flex-column justify-center">
 
-        <v-card-text align="start">
+            <v-card-text align="start">
+
             <v-col align="center" class="pb-10">
                 <v-toolbar-title class="font-weight-bold text-error">{{$t('deleteMyAccount.header')}} “{{props.data.name}}”?</v-toolbar-title>
                 <v-toolbar-title class="text-error">{{$t('deleteMyAccount.subheader')}}</v-toolbar-title>
@@ -46,7 +48,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('deleteMyAccount.nameLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
+                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
                 </v-col>
 
             </v-row>
@@ -56,7 +58,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('deleteMyAccount.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
+                    <v-text-field hide-details density="compact" color="info" disabled class=" my-5 rounded" variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
                 </v-col>
 
             </v-row>
@@ -66,7 +68,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('deleteMyAccount.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-select hide-details density="compact" color="info" disabled class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" name="role" :label="props.data.role" />
+                    <v-select hide-details density="compact" color="info" disabled class=" my-5 rounded" variant="solo" name="role" :label="props.data.role" />
                 </v-col>
             </v-row>
 
@@ -90,7 +92,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <v-col>
                         <p class="font-weight-bold">{{$t('deleteMyAccount.passwordLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="info" class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
+                    <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="info" class=" my-5 rounded" variant="solo"
                     name="password" type="password"
                     :placeholder="password ||$t('deleteMyAccount.passwordPlaceholder')"
                     :value="password"
@@ -105,6 +107,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
             <v-spacer />
             <v-btn color="info" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('deleteMyAccount.closeBtn')}}</v-btn>
         </v-card-actions>
+        </v-container>
     </v-card>
 </v-dialog>
 

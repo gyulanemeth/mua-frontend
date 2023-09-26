@@ -39,14 +39,14 @@ const title = window.config.title
                 <h6 class="text-h6">{{ $t('loginAndResetForm.loginHeader') }} </h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    class=" my-5 rounded" color="info" variant="solo"
                     :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
                     :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account"
                     data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
-                    density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain"
+                    density="compact" color="info" class="my-5 rounded" variant="solo"
                     :disabled="!!cb" :items="props.tokenData.accounts" item-title="name" item-value="_id"
                     :label="$t('loginAndResetForm.selectLabel')" name="account" />
 
@@ -55,8 +55,8 @@ const title = window.config.title
                         $t('loginAndResetForm.nextBtn') }}
                     </v-btn>
                     <div v-if="cb">
-                        <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded"
-                            color="info" variant="plain" name="password" data-test-id="loginAndResetForm-passwordField"
+                        <v-text-field hide-details density="compact" class=" my-5 rounded"
+                            color="info" variant="solo" name="password" data-test-id="loginAndResetForm-passwordField"
                             :label="$t('loginAndResetForm.passwordLabel')" type="password"
                             :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
                             :value="data.password"
@@ -74,7 +74,7 @@ const title = window.config.title
 
                             {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
 
-                            <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                            <v-progress-circular v-if="processing" :size="20"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
 
                         </v-btn>
@@ -88,7 +88,7 @@ const title = window.config.title
                         <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                             @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
-                            <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                            <v-progress-circular v-if="processing" :size="20"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
                         <v-container class="mt-4 mb-0 pb-0 pa-4 pl-sm-0 w-100">

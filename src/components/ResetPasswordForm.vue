@@ -40,13 +40,13 @@ const title = window.config.title
                 <h6 class="text-h6">{{ $t('loginAndResetForm.resetHeader') }} </h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    class="my-5 rounded" color="info" variant="solo"
                     :disabled="!!cb || !!props.formData.email" type="email" name="email"
                     :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-select data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
-                    density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" disabled
+                    density="compact" color="info" class="my-5 rounded" variant="solo" disabled
                     item-title="name" item-value="_id" :label="$t('loginAndResetForm.selectLabel')" name="account" />
 
                 <div v-if="route.name === 'forgot-password-reset'">
@@ -54,14 +54,14 @@ const title = window.config.title
                         @click="cb = true">{{ $t('loginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
-                            class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="password"
+                            class=" my-5 rounded" color="info" variant="solo" name="password"
                             :label="$t('loginAndResetForm.newPasswordLabel')" type="password"
                             :placeholder="data.password || $t('loginAndResetForm.newPasswordPlaceholder')"
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded"
-                            color="info" variant="plain" name="confirmPassword"
+                        <v-text-field hide-details density="compact" class=" my-5 rounded"
+                            color="info" variant="solo" name="confirmPassword"
                             data-test-id="loginAndResetForm-newPasswordAgainField"
                             :label="$t('loginAndResetForm.confirmNewPasswordLabel')" type="password"
                             :placeholder="data.confirmPassword || $t('loginAndResetForm.confirmNewPasswordPlaceholder')"
@@ -84,7 +84,7 @@ const title = window.config.title
                         <v-btn color="info" :disabled="!checkbox || !data.account || !data.email " data-test-id="loginAndResetForm-forgotPasswordBtn"
                             @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('loginAndResetForm.resetBtnText') : '' }}
-                            <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                            <v-progress-circular v-if="processing" :size="20"
                                 indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                         </v-btn>
                         <button hidden :disabled="!checkbox"

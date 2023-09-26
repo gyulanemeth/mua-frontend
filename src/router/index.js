@@ -170,7 +170,7 @@ router.beforeEach(async (to, from, next) => {
     const now = Date.now().valueOf() / 1000
     if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
       localStorage.clear()
-      return next({ path: `${to.params.urlFriendlyName? '/' + to.params.urlFriendlyName: '' }/redirect-to-login-message` })
+      return next({ path: `${to.params.urlFriendlyName ? '/' + to.params.urlFriendlyName : ''}/redirect-to-login-message` })
     }
     if (!store.account) {
       await store.readOne()

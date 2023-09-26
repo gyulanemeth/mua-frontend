@@ -36,12 +36,12 @@ const url = ref(window.location.href)
                 <h6 class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" type="email" name="email"
+                    class="my-5 rounded" color="info" variant="solo" type="email" name="email"
                     :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
-                <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info"
-                    variant="plain" name="password" data-test-id="loginAndResetForm-passwordField"
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
+                    variant="solo" name="password" data-test-id="loginAndResetForm-passwordField"
                     :label="$t('loginAndResetForm.passwordLabel')" type="password"
                     :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')" :value="data.password"
                     @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
@@ -50,7 +50,7 @@ const url = ref(window.location.href)
                     <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                         @click="processing = true; $emit('handleLoginWithUrlFriendlyName',{ email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName },  (res) => { if(res){processing = false} })">
                         {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
-                        <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                        <v-progress-circular v-if="processing" :size="20"
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                     </v-btn>
 

@@ -36,9 +36,9 @@ const checkbox = ref()
       hide-details
       density="compact"
       data-test-id="createAccount-accNameField"
-      class=" elevation-2 my-5 pt-2 pl-3 rounded"
+      class=" my-5 rounded"
       color="info"
-      variant="plain"
+      variant="solo"
       name="AccName"
       type="text"
       :label="$t('createAccount.accountSection.nameLabel')"
@@ -49,10 +49,10 @@ const checkbox = ref()
       <v-text-field
       hide-details
       density="compact"
-      class=" elevation-2 my-5 pt-2 pl-3 rounded"
+      class="my-5 rounded"
       data-test-id="createAccount-urlFriendlyNameField"
       color="info"
-      variant="plain"
+      variant="solo"
       name="urlFriendlyName"
       type="text"
       :label="$t('createAccount.accountSection.urlFriendlyNameLabel')"
@@ -62,22 +62,22 @@ const checkbox = ref()
       required />
       <h4><v-divider />{{$t('createAccount.userSection.header')}}<v-divider  class=" mb-6"/></h4>
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="email" type="email" :label="$t('createAccount.userSection.emailLabel')"
+            <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo" name="email" type="email" :label="$t('createAccount.userSection.emailLabel')"
              :placeholder="data.user.email ||$t('createAccount.userSection.emailPlaceHolder')"
              data-test-id="createAccount-emailField"
              :value="data.user.email"
              @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
              required />
 
-            <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"  class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.user.name" required />
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"  class="my-5 rounded" color="info" variant="solo" placeholder="Your Name" name="name" label="Name" type="text" v-model="data.user.name" required />
+            <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
             name="newPassword" data-test-id="createAccount-newPasswordField" :label="$t('createAccount.userSection.newPasswordLabel')" type="password"
             :placeholder="data.user.password ||$t('createAccount.userSection.newPasswordPlaceholder')"
             :value="data.user.password"
             @update:modelValue="res => data.user.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
             required />
 
-            <v-text-field hide-details density="compact" class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+            <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
             name="newPasswordAgain" data-test-id="createAccount-newPasswordAgainField" :label="$t('createAccount.userSection.confirmNewPasswordLabel')" type="password"
             :placeholder="data.user.newPasswordAgain ||$t('createAccount.userSection.confirmNewPasswordPlaceholder')"
             :value="data.user.newPasswordAgain"
@@ -89,7 +89,7 @@ const checkbox = ref()
 
                         {{ !processing ? $t('createAccount.submitBtn') : '' }}
 
-                        <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"
+                        <v-progress-circular v-if="processing" :size="20"
                             indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
 
                 </v-btn>

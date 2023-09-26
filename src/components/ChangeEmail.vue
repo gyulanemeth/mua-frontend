@@ -33,7 +33,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changeEmail.currentEmailLabel') }}</p>
                 </v-col>
 
-                <v-text-field hide-details density="compact" class=" my-5 pt-2 pl-3 rounded" variant="plain"
+                <v-text-field hide-details density="compact" class=" my-5 rounded" variant="solo"
                     name="currentEmail" v-model="data.email" disabled>
                 </v-text-field>
             </v-row>
@@ -43,7 +43,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changeEmail.newEmailLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changeEmailTab-newEmail" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="newEmail"
+                    class=" my-5  rounded" color="info" variant="solo" name="newEmail"
                     :placeholder="data.newEmail || $t('changeEmail.newEmailPlaceHolder')" :value="data.newEmail"
                     @update:modelValue="res => data.newEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')">
                 </v-text-field>
@@ -53,7 +53,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changeEmail.confirmEmailLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changeEmailTab-newEmailAgain" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain" name="confirmNewEmail"
+                    class=" my-5 rounded" color="info" variant="solo" name="confirmNewEmail"
                     :placeholder="data.confirmNewEmail || $t('changeEmail.confirmEmailPlaceHolder')"
                     :value="data.confirmNewEmail"
                     @update:modelValue="res => data.confirmNewEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')">
@@ -64,7 +64,7 @@ const resetForm = () => {
                 @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && alert.message($t('changeEmail.cb.header'), $t('changeEmail.cb.message')); resetForm(); processing = false })">
                 {{ !processing ? $t('changeEmail.submitBtn') : '' }}
 
-                <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3" indeterminate></v-progress-circular>{{
+                <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                     processing ? $t('processing') : '' }}
             </v-btn>
         </v-col>
