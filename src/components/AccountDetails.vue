@@ -14,6 +14,7 @@ const componentProps = defineProps({
 
 const emit = defineEmits(['uploadLogoHandler', 'deleteLogoHandler'])
 
+const deleteAccountDialog = ref()
 const name = ref(componentProps.name)
 const urlFriendlyName = ref(componentProps.urlFriendlyName)
 const logo = ref(componentProps.logo || import.meta.env.BASE_URL + 'placeholder.jpg')
@@ -152,7 +153,8 @@ const openFileInput = () => {
             <div v-html="t('accountDetails.deleteAccountMessage')"></div>
           </v-banner-text>
             </v-banner>
-              <DeleteAccount :data="{ name: componentProps.name,  urlFriendlyName: componentProps.urlFriendlyName,  logo: componentProps.logo}"  />
+            <v-btn variant="outlined" color="error" @click="deleteAccountDialog.show()">{{t('deleteAccount.openBtn')}}</v-btn>
+              <DeleteAccount ref="deleteAccountDialog" :data="{ name: componentProps.name,  urlFriendlyName: componentProps.urlFriendlyName,  logo: componentProps.logo}"  />
             </v-col>
         </v-layout>
 

@@ -7,12 +7,11 @@ import { useI18n } from 'vue-i18n'
 import AcceptInvitationForm from '../components/AcceptInvitationForm.vue'
 
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import alerts from '../alerts/alert.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const { tm } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
-const alert = alerts()
 
 const data = ref()
 const formData = ref()
@@ -28,7 +27,7 @@ async function loadData () {
   if (route.name === 'finalize-registration' && route.query.token) {
     const res = await store.finalizeRegistration(route.query.token)
     if (res.success) {
-      await alert.message('Your registration has been finalized')
+      useSystemMessagesStore().addSuccess({ message: tm('FinalizeRegistrationView.FinalizeRegistrationAlert') })
     }
   }
 }

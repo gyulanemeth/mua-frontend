@@ -5,9 +5,9 @@ import { useRouter } from 'vue-router'
 import AccountDetails from '../components/AccountDetails.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import alerts from '../alerts/alert.js'
+import { useI18n } from 'vue-i18n'
 
-const alert = alerts()
+const { t } = useI18n()
 const store = useCurrentUserAndAccountStore()
 const router = useRouter()
 const data = ref()
@@ -31,14 +31,14 @@ data.value = store.account
 async function handleUpdateAccountName (params) {
   const res = await store.patchAccountName(params)
   if (!res.message) {
-    await alert.message('Name updated successfully')
+    useSystemMessagesStore().addSuccess({ message: t('accountView.updateAccountNameAlert') })
   }
 }
 
 async function handleUpdateUrlFriendlyName (params) {
   const res = await store.patchUrlFriendlyName(params)
   if (!res.message) {
-    await alert.message('urlFriendlyName updated successfully')
+    useSystemMessagesStore().addSuccess({ message: t('accountView.updateUrlFriendlyNameAlert') })
   }
 }
 
@@ -47,7 +47,7 @@ async function handleUploadLogo (params, statusCallBack) {
   statusCallBack(res.logo)
   data.value = store.account
   if (res) {
-    await alert.message('Updated Successfully')
+    useSystemMessagesStore().addSuccess({ message: t('accountView.uploadLogoAlert') })
   }
 }
 
@@ -56,7 +56,7 @@ async function handleDeleteLogo (statusCallBack) {
   statusCallBack(!res.message)
   data.value = store.account
   if (!res.message) {
-    await alert.message('Updated Successfully')
+    useSystemMessagesStore().addSuccess({ message: t('accountView.deleteLogoAlert') })
   }
 }
 

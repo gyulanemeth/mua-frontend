@@ -1,6 +1,7 @@
 <script setup >
 import { ref } from 'vue'
-import alerts from '../alerts/alert.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
+
 const props = defineProps({
   email: String
 })
@@ -9,8 +10,6 @@ const processing = ref(false)
 const data = ref({
   email: props.email
 })
-
-const alert = alerts()
 
 const resetForm = () => {
   data.value = {
@@ -61,7 +60,7 @@ const resetForm = () => {
 
             </v-row>
             <v-btn color="info mt-3" data-test-id="meDetails-changeEmailTab-submitBtn"
-                @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && alert.message($t('changeEmail.cb.header'), $t('changeEmail.cb.message')); resetForm(); processing = false })">
+                @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({name: $t('changeEmail.cb.message'), message: $t('changeEmail.cb.header') });resetForm(); processing = false })">
                 {{ !processing ? $t('changeEmail.submitBtn') : '' }}
 
                 <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{

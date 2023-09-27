@@ -80,7 +80,8 @@
     "newPasswordPlaceholder": "********",
     "confirmNewPasswordLabel": "Confirm New Password",
     "confirmNewPasswordPlaceholder": "********",
-    "submitBtn": "Change my Password"
+    "submitBtn": "Change my Password",
+    "updateAlert":"Password updated successfully"
   },
   "createAccount": {
     "header": "Create New Account",
@@ -244,5 +245,26 @@
     "addFirstElement": "Add Your first User.",
     "searchNoResult": "There are no results for the search term:",
     "NoElementsYet": "There Are No Users yet"    
-  }  
+  },
+  "accountView": {
+    "updateAccountNameAlert": "Name updated successfully",
+    "updateUrlFriendlyNameAlert": "urlFriendlyName updated successfully",
+    "uploadLogoAlert": "Updated Successfully",
+    "deleteLogoAlert": "Deleted Successfully"
+  },
+  "createAccountView": {
+    "emailSentAlert": "Email sent successfully"
+  },
+  "FinalizeRegistrationView": {
+    "FinalizeRegistrationAlert": "Your registration has been finalized"
+  },
+  "meView": {
+    "updateNameAlert": "Name updated successfully",
+    "accountDeleteAlert": "Account Deleted successfully"
+  },
+  "userView":{
+    "roleUpdateAlert": "User role updated successfully",
+    "accountDeleteAlert": "Account Deleted successfully",
+    "invitationSentAlert":"Invitation sent successfully"
+  }
 }

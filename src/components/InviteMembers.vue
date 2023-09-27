@@ -18,17 +18,26 @@ const resetForm = () => {
   })
 }
 
+const show = () => {
+  dialog.value = true
+}
+
+const hide = () => {
+  dialog.value = false
+  cb.value = undefined
+  resetForm()
+}
+
+defineExpose({
+  dialog,
+  show,
+  hide
+})
+
 </script>
 
 <template>
-    <v-dialog v-model="dialog" persistent>
-        <template v-slot:activator="{ props }">
-            <v-btn append-icon="mdi-account-plus" data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
-            v-bind="props">
-            {{ $t('inviteMembers.openBtn') }}
-        </v-btn>
-        </template>
-
+    <v-dialog v-model="dialog" tabindex="-1" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })" @keydown.esc="hide">
             <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 

@@ -1,8 +1,7 @@
 <script setup >
 import { ref } from 'vue'
-import alerts from '../alerts/alert.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
-const alert = alerts()
 const show = ref({ oldPassword: false, newPassword: false, confirmNewPassword: false })
 const processing = ref(false)
 const data = ref({})
@@ -65,7 +64,7 @@ const resetForm = () => {
 
             </v-row>
             <v-btn color="info mt-3" data-test-id="meDetails-changePasswordTab-submitBtn"
-                @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && alert.message('Password updated successfully'); resetForm(); processing = false })">
+                @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({message: $t('changePassword.updateAlert') }); resetForm(); processing = false })">
 
                 {{ !processing ? $t('changePassword.submitBtn') : '' }}
 

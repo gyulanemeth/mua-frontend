@@ -5,11 +5,11 @@ import { useRouter } from 'vue-router'
 import UsersList from '../components/UsersList.vue'
 import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
-import alerts from '../alerts/alert.js'
+import { useI18n } from 'vue-i18n'
 
+const { tm } = useI18n()
 const currentUserAndAccountStore = await useCurrentUserAndAccountStore()
 const router = useRouter()
-const alert = alerts()
 
 const data = ref()
 const roles = ref()
@@ -57,7 +57,7 @@ async function handleUpdateRole (params) {
     role: params.role
   })
   if (!res.message) {
-    alert.message('User role updated successfully')
+    useSystemMessagesStore().addSuccess({ message: tm('userView.roleUpdateAlert') })
     await store.load()
     data.value = store.items
   }
@@ -66,7 +66,7 @@ async function handleUpdateRole (params) {
 async function handleDeleteUser (params) {
   const res = await store.deleteOne(params)
   if (!res.message) {
-    alert.message('Account Deleted successfully')
+    useSystemMessagesStore().addSuccess({ message: tm('userView.accountDeleteAlert') })
     await store.load()
     data.value = store.items
     if (currentUserAndAccountStore.user._id === params.id) {
@@ -87,7 +87,7 @@ async function handleInviteMember (params, statusCallBack) {
 async function handleReInviteMember (params) {
   const res = await currentUserAndAccountStore.reSendInvitation(params.email)
   if (!res.message) {
-    alert.message('Invitation sent successfully')
+    useSystemMessagesStore().addSuccess({ message: tm('userView.invitationSentAlert') })
   }
 }
 
