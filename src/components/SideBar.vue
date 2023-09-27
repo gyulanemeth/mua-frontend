@@ -60,13 +60,14 @@ const sideBarIcons = window.config.sideBarIcons
         <v-spacer />
         <v-menu v-model="menu" location="top end" origin="bottom start">
       <template v-slot:activator="{ props }">
-        <v-avatar size="large" :style="{ border: '1px solid rgba(0, 0, 0, 0.22)'}" v-if="store.account && store.account.logo">
+        
+        <v-avatar v-bind="props" size="40" :style="{ border: '1px solid rgba(0, 0, 0, 0.22)'}" v-if="store.account && store.account.logo">
           <v-tooltip activator="parent" v-if="!menu" location="end top" origin="start center">Account</v-tooltip>
-            <v-img style="cursor: pointer;" v-bind="props" :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
+            <v-img style="cursor: pointer;"  :src="store.account.logo+ '?' +Date.now()" class="align-self-stretch" cover />
           </v-avatar>
-          <v-list-item v-else class="justify-center align-center" width="36" height="36" active active-class=" elevation-4 active-item text-white bg-white">
+          <v-list-item v-else v-bind="props" class="justify-center align-center" width="36" height="36" active active-class=" elevation-4 active-item text-white bg-white">
             <v-tooltip activator="parent" location="end top" origin="start center">Account</v-tooltip>
-          <v-icon class="text-black" v-bind="props" size="20">
+          <v-icon class="text-black" size="20">
             mdi-account-group-outline
           </v-icon>
         </v-list-item>
