@@ -19,7 +19,9 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
         <v-btn color="info" data-test-id="open-userProfile" class="text-white" v-bind="props">{{$t('userProfile.openBtn')}}</v-btn>
 
     </template>
-    <v-card min-width="600" class="d-flex flex-column justify-center">
+
+        <v-card width="50%" max-width="800" class="ma-auto">
+        <v-container class="d-flex flex-column justify-center">
 
         <v-card-text align="start">
             <v-col align="center" class="pb-10">
@@ -36,7 +38,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('userProfile.nameLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
+                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
                 </v-col>
 
             </v-row>
@@ -46,7 +48,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('userProfile.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class=" elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
+                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
                 </v-col>
 
             </v-row>
@@ -56,7 +58,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <p class="font-weight-bold">{{$t('userProfile.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-select hide-details data-test-id="userProfile-selectRole" v-model="role" :disabled="!props.roles" density="compact" color="info" class="elevation-2 my-5 pt-2 pl-3 rounded" variant="plain" :items="props.roles" name="role" />
+                    <v-select hide-details data-test-id="userProfile-selectRole" v-model="role" :disabled="!props.roles" density="compact" color="info" class="my-5 rounded" variant="solo" :items="props.roles" name="role" />
                 </v-col>
             </v-row>
 
@@ -77,6 +79,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
             <v-spacer />
             <v-btn color="info" data-test-id="userProfile-cancelBtn" @click="dialog=false">{{$t('userProfile.closeBtn')}}</v-btn>
         </v-card-actions>
+        </v-container>
     </v-card>
 </v-dialog>
 

@@ -55,24 +55,24 @@ const appIcon = window.config.appIcon
 
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
-            <v-col class="pt-3">
+            <v-col class="pt-3 d-flex align-end">
                 <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
-                <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
-                <v-col cols="5">
-                <v-icon  class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
               </v-col>
-              <v-card-text class="pt-0">
-                <p class="font-weight-medium" >{{ $t('emptyList.addFirstElement') }} </p>
-              </v-card-text>
-            </div>
-              </v-col>
-            <v-spacer />
-            <v-col cols="5" class="pt-1">
+              <v-spacer />
+              <v-col cols="5" class="pt-1">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
-                    variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
-                    @input="loading = true; debouncedFn()"></v-text-field>
-            </v-col>
-        </v-layout>
+                variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
+                @input="loading = true; debouncedFn()"></v-text-field>
+              </v-col>
+            </v-layout>
+            <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
+            <v-col cols="5">
+            <v-icon  class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
+          </v-col>
+          <v-card-text class="pt-0">
+            <p class="font-weight-medium" >{{ $t('emptyList.addFirstElement') }} </p>
+          </v-card-text>
+        </div>
 
         <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
           <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">

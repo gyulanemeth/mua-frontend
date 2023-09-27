@@ -27,7 +27,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changePassword.oldPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-oldPassword" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    class=" my-5  rounded" color="info" variant="solo"
                     :type="show.oldPassword ? 'text' : 'password'" name="oldPassword"
                     :placeholder="data.oldPassword || $t('changePassword.oldPasswordPlaceholder')" :value="data.oldPassword"
                     @update:modelValue="res => data.oldPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')">
@@ -41,7 +41,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changePassword.newPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-newPassword" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    class="my-5 rounded" color="info" variant="solo"
                     :type="show.newPassword ? 'text' : 'password'" name="newPassword"
                     :placeholder="data.newPassword || $t('changePassword.newPasswordPlaceholder')" :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')">
@@ -54,7 +54,7 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('changePassword.confirmNewPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-newPasswordAgain" density="compact"
-                    class=" elevation-2 my-5 pt-2 pl-3 rounded" color="info" variant="plain"
+                    class="my-5 rounded" color="info" variant="solo"
                     :type="show.confirmNewPassword ? 'text' : 'password'" name="confirmNewPassword"
                     :placeholder="data.confirmNewPassword || $t('changePassword.confirmNewPasswordPlaceholder')"
                     :value="data.confirmNewPassword"
@@ -69,7 +69,7 @@ const resetForm = () => {
 
                 {{ !processing ? $t('changePassword.submitBtn') : '' }}
 
-                <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3" indeterminate></v-progress-circular>{{
+                <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                     processing ? $t('processing') : '' }}
 
             </v-btn>
