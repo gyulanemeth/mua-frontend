@@ -6,7 +6,7 @@ const props = defineProps({
 })
 
 const processing = ref(false)
-const dialog = ref(false)
+const dialogShown = ref(false)
 const data = ref({
   name: props.name
 })
@@ -19,17 +19,16 @@ const resetForm = () => {
 }
 
 const show = () => {
-  dialog.value = true
+    dialogShown.value = true
 }
 
 const hide = () => {
-  dialog.value = false
+    dialogShown.value = false
   cb.value = undefined
   resetForm()
 }
 
 defineExpose({
-  dialog,
   show,
   hide
 })
@@ -37,7 +36,7 @@ defineExpose({
 </script>
 
 <template>
-    <v-dialog v-model="dialog" tabindex="-1" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })" @keydown.esc="hide">
+    <v-dialog v-model="dialogShown" tabindex="-1" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })" @keydown.esc="hide">
             <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 
@@ -93,7 +92,7 @@ defineExpose({
                         indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
                 </v-btn>
                 <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('inviteMembers.cb.cbBtn') }}</v-btn>
-                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialog = false; cb = undefined; resetForm()">{{ $t('inviteMembers.closeBtn') }}</v-btn>
+                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('inviteMembers.closeBtn') }}</v-btn>
             </v-card-actions>
             </v-container>
         </v-card>

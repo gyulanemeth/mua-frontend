@@ -7,24 +7,23 @@ const props = defineProps({
 })
 
 const role = ref(props.data.role)
-const dialog = ref()
+const dialogShown = ref()
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 
 const show = () => {
-  dialog.value = true
+    dialogShown.value = true
 }
 
 defineExpose({
-  dialog,
   show,
-  hide: () => { dialog.value = false; role.value = props.data.role }
+  hide: () => { dialogShown.value = false; role.value = props.data.role }
 })
 
 </script>
 
 <template>
 
-<v-dialog v-model="dialog" tabindex="-1"   @keydown.enter="props.roles && $emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false"  @keydown.esc="dialog=false; role= props.data.role">
+<v-dialog v-model="dialogShown" tabindex="-1"   @keydown.enter="props.roles && $emit('updateRoleEventHandler',{id:props.data._id, role});dialogShown=false"  @keydown.esc="dialogShown=false; role= props.data.role">
     <template v-slot:activator="{ props }">
         <v-btn color="info" data-test-id="open-userProfile" class="text-white" v-bind="props">{{$t('userProfile.openBtn')}}</v-btn>
     </template>
@@ -84,9 +83,9 @@ defineExpose({
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" v-if="props.roles" data-test-id="userProfile-submitBtn" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialog=false">{{$t('userProfile.submitBtn')}}</v-btn>
+            <v-btn color="info" v-if="props.roles" data-test-id="userProfile-submitBtn" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialogShown=false">{{$t('userProfile.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" data-test-id="userProfile-cancelBtn" @click="dialog=false;role= props.data.role">{{$t('userProfile.closeBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="userProfile-cancelBtn" @click="dialogShown=false;role= props.data.role">{{$t('userProfile.closeBtn')}}</v-btn>
         </v-card-actions>
         </v-container>
     </v-card>

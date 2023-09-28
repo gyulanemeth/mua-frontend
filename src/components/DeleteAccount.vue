@@ -11,7 +11,7 @@ const props = defineProps({
   data: Object
 })
 
-const dialog = ref(false)
+const dialogShown = ref(false)
 const processing = ref(false)
 const data = ref(props.data || {})
 const logo = ref(import.meta.env.BASE_URL + 'placeholder.jpg')
@@ -27,16 +27,15 @@ async function deleteAccount () {
 }
 
 const show = () => {
-  dialog.value = true
+    dialogShown.value = true
 }
 
 const hide = () => {
-  dialog.value = false
+    dialogShown.value = false
   password.value = ''
 }
 
 defineExpose({
-  dialog,
   show,
   hide
 })
@@ -44,7 +43,7 @@ defineExpose({
 </script>
 
 <template>
-    <v-dialog tabindex="-1" @keydown.enter="processing = true; deleteAccount()" @keydown.esc="hide" v-model="dialog">
+    <v-dialog tabindex="-1" @keydown.enter="processing = true; deleteAccount()" @keydown.esc="hide" v-model="dialogShown">
         <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
         <v-card-text>
