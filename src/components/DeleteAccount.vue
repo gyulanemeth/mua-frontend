@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import alerts from '../alerts/alert.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const { t } = useI18n()
 const store = useCurrentUserAndAccountStore()
@@ -11,11 +11,10 @@ const props = defineProps({
   data: Object
 })
 
-const dialog = ref(false)
+const dialogShown = ref(false)
 const processing = ref(false)
 const data = ref(props.data || {})
 const logo = ref(import.meta.env.BASE_URL + 'placeholder.jpg')
-const alert = alerts()
 const password = ref()
 
 async function deleteAccount () {
@@ -23,19 +22,28 @@ async function deleteAccount () {
   if (res.message) {
     processing.value = false
   } else {
-    await alert.message(t('deleteAccount.deleteAlert'))
+    useSystemMessagesStore().addSuccess({ message: t('deleteAccount.deleteAlert') })
   }
 }
+
+const show = () => {
+    dialogShown.value = true
+}
+
+const hide = () => {
+    dialogShown.value = false
+  password.value = ''
+}
+
+defineExpose({
+  show,
+  hide
+})
 
 </script>
 
 <template>
-    <v-dialog v-model="dialog" persistent>
-        <template v-slot:activator="{ props }">
-            <v-btn variant="outlined" color="error" v-bind="props">
-                {{t('deleteAccount.openBtn')}}
-            </v-btn>
-        </template>
+    <v-dialog tabindex="-1" @keydown.enter="processing = true; deleteAccount()" @keydown.esc="hide" v-model="dialogShown">
         <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
         <v-card-text>
@@ -106,7 +114,7 @@ async function deleteAccount () {
                 </v-btn>
                 <v-spacer />
                 <v-btn color="info" data-test-id="formDialog-cancelBtn"
-                    @click="dialog = false; password = ''">{{ t('deleteAccount.cancelBtn') }}</v-btn>
+                    @click="hide">{{ t('deleteAccount.cancelBtn') }}</v-btn>
             </v-card-actions>
         </v-container>
     </v-card>

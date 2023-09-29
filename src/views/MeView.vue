@@ -6,12 +6,10 @@ import { useI18n } from 'vue-i18n'
 import MeDetails from '../components/MeDetails.vue'
 import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
-import alerts from '../alerts/alert.js'
 
 let store = useCurrentUserAndAccountStore()
 const route = useRoute()
 const router = useRouter()
-const alert = alerts()
 const { tm } = useI18n()
 
 const data = ref()
@@ -21,7 +19,7 @@ if (route.name === 'verify-email') {
   if (!res.message) {
     await store.readOne()
     router.push(`/${store.account.urlFriendlyName}/me`)
-    alert.message(tm('changeEmail.verifyMessage'))
+    useSystemMessagesStore().addSuccess({ message: tm('changeEmail.verifyMessage') })
   }
 } else if (!store.user || !store.user.name) {
   await store.readOneUser()
@@ -39,7 +37,7 @@ data.value = store.user
 async function handleUpdateUserName (params) {
   const res = await store.patchUserName(params)
   if (!res.message) {
-    await alert.message('Name updated successfully')
+    useSystemMessagesStore().addSuccess({ message: tm('meView.updateNameAlert') })
   }
 }
 
@@ -55,7 +53,7 @@ async function handleDeleteEvent (params) {
   store = useUsersStore()
   const res = await store.deleteOne(params)
   if (!res.message) {
-    alert.message('Account Deleted successfully')
+    useSystemMessagesStore().addSuccess({ message: tm('meView.accountDeleteAlert') })
     store = useCurrentUserAndAccountStore()
     await store.logout()
   }

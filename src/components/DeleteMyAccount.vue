@@ -9,24 +9,31 @@ const props = defineProps({
 const route = useRoute()
 
 const password = ref()
-const dialog = ref()
+const dialogShown = ref()
 
 const resetForm = () => {
   password.value = null
-  dialog.value = false
+  dialogShown.value = false
 }
 
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
+
+const show = () => {
+    dialogShown.value = true
+}
+
+defineExpose({
+  show,
+  hide: resetForm
+})
 
 </script>
 
 <template>
 
-<v-dialog v-model="dialog" persistent>
+<v-dialog v-model="dialogShown" tabindex="-1" @keydown.enter="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()" @keydown.esc="resetForm">
     <template v-slot:activator="{ props }">
-        <v-btn v-if="route.name === 'settings'" data-test-id="open-deleteAccount-dialog" color="error" variant="outlined" class="mt-10 text-white" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
-        <v-btn v-else color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
-
+        <v-btn v-if="route.name !== 'settings'"  color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
     </template>
     <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">

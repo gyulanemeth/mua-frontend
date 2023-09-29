@@ -1,10 +1,11 @@
 <script setup>
 import CreateAccount from '../components/CreateAccount.vue'
 import { useCurrentUserAndAccountStore } from '../stores/index.js'
-import alerts from '../alerts/alert.js'
+import useSystemMessagesStore from '../stores/systemMessages.js'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const store = useCurrentUserAndAccountStore()
-const alert = alerts()
 
 async function createEventHandler (data, statusCallBack) {
   const res = await store.createAccount(data)
@@ -16,7 +17,7 @@ async function createEventHandler (data, statusCallBack) {
 async function reSendFinalizeRegistrationEventHandler (params) {
   const res = await store.reSendFinalizeRegistration(params)
   if (res.success) {
-    alert.message('Email sent successfully')
+    useSystemMessagesStore().addSuccess({ message: t('createAccountView.emailSentAlert') })
   }
 }
 

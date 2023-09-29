@@ -20,6 +20,7 @@ const props = defineProps({
 const filter = ref('')
 const page = ref(0)
 const loading = ref()
+const inviteMembersDialog = ref()
 
 const debouncedFn = useDebounceFn(() => {
   emit('searchEvent', filter.value, () => { loading.value = false })
@@ -56,7 +57,11 @@ const appIcon = window.config.appIcon
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
             <v-col class="pt-3 d-flex align-end">
-                <Invite :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
+              <v-btn append-icon="mdi-account-plus" data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
+            @click="inviteMembersDialog.show()">
+            {{ $t('inviteMembers.openBtn') }}
+        </v-btn>
+                <Invite ref="inviteMembersDialog" :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
               </v-col>
               <v-spacer />
               <v-col cols="5" class="pt-1">
