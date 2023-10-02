@@ -111,6 +111,6 @@ watchEffect(async () => {
     <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'loginWithUrlFriendlyName'" :formData='formData'
     @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 
-    <LoginForm v-else :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
+    <LoginForm v-else-if="route.name === 'login'" :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
 
 </template>
