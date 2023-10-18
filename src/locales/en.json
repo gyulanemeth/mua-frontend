@@ -266,5 +266,16 @@
     "roleUpdateAlert": "User role updated successfully",
     "accountDeleteAlert": "Account Deleted successfully",
     "invitationSentAlert":"Invitation sent successfully"
-  }
+  },
+  "networkChecker": {
+    "offline": {
+      "header": "Website Offline",
+      "body": "Please check your internet connection and try again"
+    },
+    "online": {
+      "header": "Website Back Online",
+      "body": "You're now connected to the internet."
+    },
+    "closeBtn": "Close"
+  } 
 }
