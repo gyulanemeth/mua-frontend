@@ -6,7 +6,7 @@ import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar.vue'
 import ErrorMessage from './components/ErrorMessage.vue'
 import { useCurrentUserAndAccountStore } from './stores/index.js'
-
+import NetworkChecker from './dialogs/NetworkChecker.vue'
 const store = useCurrentUserAndAccountStore()
 const route = useRoute()
 
@@ -17,19 +17,20 @@ onMounted(() => {
 </script>
 
 <template>
-
-<v-app>
-    <div v-if="store.loggedIn && route.meta.requiresAuth ">
-        <NavBar  />
-        <SideBar />
-    </div>
-
-    <v-main>
-        <ErrorMessage/>
-        <Suspense>
-            <router-view/>
-        </Suspense>
-    </v-main>
+    
+    <v-app>
+        <div v-if="store.loggedIn && route.meta.requiresAuth ">
+            <NavBar  />
+            <SideBar />
+        </div>
+        
+        <v-main>
+            <ErrorMessage/>
+            <NetworkChecker />
+            <Suspense>
+                <router-view/>
+            </Suspense>
+        </v-main>
 </v-app>
 
 </template>
