@@ -91,9 +91,9 @@ async function handleReInviteMember (params) {
   }
 }
 
-async function loadMore (params) {
+async function loadMore () {
   if (store.items.length !== store.count) {
-    store.skip = params * 10
+    store.skip = store.skip + 10
     await store.loadMore()
     data.value = store.items
   }

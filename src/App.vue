@@ -17,13 +17,13 @@ onMounted(() => {
 </script>
 
 <template>
-    
+
     <v-app>
         <div v-if="store.loggedIn && route.meta.requiresAuth ">
             <NavBar  />
             <SideBar />
         </div>
-        
+
         <v-main>
             <ErrorMessage/>
             <NetworkChecker />

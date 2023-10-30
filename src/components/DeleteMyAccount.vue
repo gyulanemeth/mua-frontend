@@ -19,7 +19,7 @@ const resetForm = () => {
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 defineExpose({

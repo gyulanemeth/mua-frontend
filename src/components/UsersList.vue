@@ -38,14 +38,14 @@ function redirectUpdateRoleEventHandler (data) {
   emit('updateRoleEventHandler', data)
 }
 
-window.onscroll = () => {
-  const bottomOfWindow = Math.trunc(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight
-  if (bottomOfWindow) {
-    emit('loadMore', page.value + 1)
-  }
-}
 const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
+}
+
+async function visibilityChanged (isVisible) {
+  if (isVisible) {
+    emit('loadMore')
+  }
 }
 
 const appIcon = window.config.appIcon
@@ -139,6 +139,7 @@ const appIcon = window.config.appIcon
                 </v-card-actions>
 
             </v-card>
+            <div v-if="props.items.length" v-observe-visibility="visibilityChanged"></div>
         </v-layout>
       </div>
     </template>
