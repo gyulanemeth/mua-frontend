@@ -18,7 +18,6 @@ const props = defineProps({
 })
 
 const filter = ref('')
-const page = ref(0)
 const loading = ref()
 const inviteMembersDialog = ref()
 
