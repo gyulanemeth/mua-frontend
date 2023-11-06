@@ -19,11 +19,11 @@ const resetForm = () => {
 }
 
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 const hide = () => {
-    dialogShown.value = false
+  dialogShown.value = false
   cb.value = undefined
   resetForm()
 }

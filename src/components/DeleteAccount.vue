@@ -27,11 +27,11 @@ async function deleteAccount () {
 }
 
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 const hide = () => {
-    dialogShown.value = false
+  dialogShown.value = false
   password.value = ''
 }
 
