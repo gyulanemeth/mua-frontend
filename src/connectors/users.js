@@ -205,6 +205,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission
   }
 }

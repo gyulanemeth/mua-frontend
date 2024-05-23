@@ -4,7 +4,7 @@ import createAdminsStore from './admins.js'
 import connectors from '../connectors/index.js'
 
 const useCurrentUserAndAccountStore = () => {
-  const store = createCurrentUserAndAccountStore({ ...connectors().accountsConnectors, ...connectors().userConnectors })
+  const store = createCurrentUserAndAccountStore({ ...connectors().accountsConnectors, user: connectors().userConnectors })
   return store()
 }
 

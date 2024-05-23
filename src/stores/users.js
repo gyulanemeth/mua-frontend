@@ -11,13 +11,13 @@ export default (connectors) => {
   const userStore = defineStore('users', {
     state: infiniteListState,
     actions: {
-      load: load(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
-      loadMore: loadMore(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
-      patchRole: patchOne(connectors.user.patchRole, useSystemMessagesStore().addError, { optimistic: false }),
+      load: load(connectors.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      loadMore: loadMore(connectors.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      patchRole: patchOne(connectors.patchRole, useSystemMessagesStore().addError, { optimistic: false }),
       async deleteOne ({ id, password, accountId }) {
         try {
-          await connectors.user.deletePermission(password)
-          const res = await connectors.user.deleteOne({ id, accountId })
+          await connectors.deletePermission(password)
+          const res = await connectors.deleteOne({ id, accountId })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

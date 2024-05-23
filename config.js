@@ -1,6 +1,5 @@
 window.config = {
-  accountsApiBaseUrl: 'http://api.emailfox.link',
-  adminApiBaseUrl: 'http://api.emailfox.link',
+  apiBaseUrl: 'http://api.emailfox.link',
   adminsAppBaseUrl: 'http://admins.emailfox.link/',
   appBaseUrl: 'http://app.emailfox.link/',
   cdnBaseUrl: 'http://localhost:10008/',
