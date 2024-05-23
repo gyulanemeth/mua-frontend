@@ -1,6 +1,5 @@
 window.config = {
-  accountsApiBaseUrl: '<accounts.emailfox_api_url>',
-  adminApiBaseUrl: '<admins.emailfox_api_url>',
+  apiBaseUrl: '<emailfox_api_url>',
   adminsAppBaseUrl: '<admins.emailfox_app_url>',
   appBaseUrl: '<accounts.emailfox_app_url>',
   appName: 'MUA Account\'s UI',

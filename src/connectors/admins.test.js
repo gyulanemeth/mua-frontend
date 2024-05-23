@@ -19,7 +19,7 @@ describe('test admins connectors', () => {
   }
   global.window = {
     config: {
-      accountsApiBaseUrl: 'http://accounts-api.emailfox.link'
+      apiBaseUrl: 'http://api.emailfox.link'
     }
   }
 

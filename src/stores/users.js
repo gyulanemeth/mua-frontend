@@ -14,7 +14,6 @@ export default (connectors) => {
       load: load(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
       loadMore: loadMore(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
       patchRole: patchOne(connectors.user.patchRole, useSystemMessagesStore().addError, { optimistic: false }),
-      config: connectors.config.getConfig,
       async deleteOne ({ id, password, accountId }) {
         try {
           await connectors.user.deletePermission(password)

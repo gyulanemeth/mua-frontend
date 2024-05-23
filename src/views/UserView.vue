@@ -12,7 +12,6 @@ const currentUserAndAccountStore = await useCurrentUserAndAccountStore()
 const router = useRouter()
 
 const data = ref()
-const roles = ref()
 const accountName = ref()
 const currentUser = ref()
 
@@ -47,10 +46,6 @@ store.params = {
 }
 await store.load()
 data.value = store.items
-if (currentUserAndAccountStore.user.role === 'admin') {
-  const config = await store.config()
-  roles.value = config.role
-}
 
 async function handleUpdateRole (params) {
   const res = await store.patchRole(params.id, {
@@ -127,6 +122,6 @@ async function searchBarHandler (filter, statusCallBack) {
 
 <template>
 
-<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"  @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="['admin', 'user']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"  @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>

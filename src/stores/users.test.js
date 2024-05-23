@@ -33,14 +33,6 @@ describe('users Store', () => {
       }
     }
 
-    const mockGetConfig = () => {
-      return {
-        accountsAppUrl: 'https://accountsAPPUrl',
-        appUrl: 'https://AppUrl',
-        role: ['admin', 'user']
-      }
-    }
-
     const mockDeleteOne = (id) => {
       if (id === undefined) {
         throw new RouteError('User ID Is Required')
@@ -56,8 +48,7 @@ describe('users Store', () => {
     }
 
     return {
-      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deletePermission: mockDeletePermission },
-      config: { getConfig: mockGetConfig }
+      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deletePermission: mockDeletePermission }
     }
   }
 
@@ -72,19 +63,6 @@ describe('users Store', () => {
     const store = usersStore()
     await store.load()
     expect(store.count).toEqual(4)
-  })
-
-  test('test success getConfig', async () => {
-    const usersStore = useUsersStore(mokeConnector())
-    const store = usersStore()
-    await store.load()
-    const res = await store.config()
-    expect(res).toEqual(
-      {
-        accountsAppUrl: 'https://accountsAPPUrl',
-        appUrl: 'https://AppUrl',
-        role: ['admin', 'user']
-      })
   })
 
   test('test success DeleteOne', async () => {

@@ -20,7 +20,7 @@ describe('test accounts connectors', () => {
 
   global.window = {
     config: {
-      adminApiBaseUrl: 'http://admins-api.emailfox.link'
+      apiBaseUrl: 'http://api.emailfox.link'
     }
   }
 
@@ -61,30 +61,6 @@ describe('test accounts connectors', () => {
       })
 
     expect(res).toEqual({ items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 })
-  })
-
-  test('test get config', async () => {
-    const fetch = vi.fn()
-
-    fetch.mockResolvedValue({
-      ok: true,
-      headers: { get: () => 'application/json' },
-      json: () => Promise.resolve({ result: { accountsAppUrl: 'https://accountsAPPUrl', appUrl: 'https://AppUrl', role: ['admin', 'user'] } })
-    })
-
-    const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).config.getConfig()
-
-    expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/config',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
-        }
-      })
-    expect(res).toEqual({ accountsAppUrl: 'https://accountsAPPUrl', appUrl: 'https://AppUrl', role: ['admin', 'user'] })
   })
 
   test('test list users Error', async () => {
