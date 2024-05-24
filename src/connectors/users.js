@@ -163,7 +163,7 @@ export default function (fetch, apiUrl) {
     }
     let res
     if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
-      res = await delPermissionAdmin({ type: 'admins' }, { password })
+      res = await delPermissionAdmin({ type: 'system-admins' }, { password })
     } else {
       res = await delPermissionUser({ type: 'accounts' }, { password })
     }
