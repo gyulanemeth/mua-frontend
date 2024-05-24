@@ -465,7 +465,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).deletePermission('142536')
 
     expect(spy).toHaveBeenLastCalledWith(
-      'http://api.emailfox.link/v1/admins/permission/delete',
+      'http://api.emailfox.link/v1/system-admins/permission/delete',
       {
         method: 'POST',
         body: JSON.stringify({ password: '142536' }),

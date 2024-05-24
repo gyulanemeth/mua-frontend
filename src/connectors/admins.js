@@ -9,7 +9,7 @@ export default function (fetch, apiUrl) {
     return { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
   }
 
-  const generateAdminRoute = (params) => `/v1/admins/${params.id}`
+  const generateAdminRoute = (params) => `/v1/system-admins/${params.id}`
   const getAdmin = createGetConnector(fetch, apiUrl, generateAdminRoute, generateAdditionalHeaders)
 
   const readOne = async function (data) {

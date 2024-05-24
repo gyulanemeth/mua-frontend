@@ -40,7 +40,7 @@ describe('test admins connectors', () => {
     const res = await admins(fetch, apiUrl).admin.readOne({ id: '123' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/admins/123',
+      'https:/mua/accounts/v1/system-admins/123',
       {
         method: 'GET',
         headers: {
