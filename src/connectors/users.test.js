@@ -48,7 +48,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.list({ accountId: '123' })
+    const res = await users(fetch, apiUrl).list({ accountId: '123' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/users',
@@ -72,7 +72,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 } })
     })
 
-    await expect(users(fetch, apiUrl).user.list()).rejects.toThrowError('Account ID Is Required')
+    await expect(users(fetch, apiUrl).list()).rejects.toThrowError('Account ID Is Required')
   })
 
   test('test readOne user', async () => {
@@ -85,7 +85,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.readOne({ id: '123', accountId: '112233' })
+    const res = await users(fetch, apiUrl).readOne({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123',
@@ -108,7 +108,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', email: 'example@gmail.com' } })
     })
 
-    await expect(users(fetch, apiUrl).user.readOne()).rejects.toThrowError('ID And Account ID Is Required')
+    await expect(users(fetch, apiUrl).readOne()).rejects.toThrowError('ID And Account ID Is Required')
   })
 
   test('test getAccessToken ', async () => {
@@ -121,7 +121,7 @@ describe('test accounts connectors', () => {
     localStorage.setItem('loginToken', 'Token')
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.getAccessToken({ id: '123', accountId: '112233' })
+    const res = await users(fetch, apiUrl).getAccessToken({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/access-token',
@@ -142,7 +142,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { accessToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).user.getAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
+    await expect(users(fetch, apiUrl).getAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
   })
 
   test('test get accounts login ', async () => {
@@ -154,7 +154,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.loginGetAccounts({ email: 'user1@gmail.com' })
+    const res = await users(fetch, apiUrl).loginGetAccounts({ email: 'user1@gmail.com' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/login',
       {
@@ -173,7 +173,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(users(fetch, apiUrl).user.loginGetAccounts()).rejects.toThrowError('User Email Is Required')
+    await expect(users(fetch, apiUrl).loginGetAccounts()).rejects.toThrowError('User Email Is Required')
   })
 
   test('test login ', async () => {
@@ -186,7 +186,7 @@ describe('test accounts connectors', () => {
 
     localStorage.setItem('loginToken', 'Token')
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.login({ accountId: '123', password: 'userPassword' })
+    const res = await users(fetch, apiUrl).login({ accountId: '123', password: 'userPassword' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/login',
       {
@@ -208,7 +208,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(users(fetch, apiUrl).user.login()).rejects.toThrowError('User Password Is Required')
+    await expect(users(fetch, apiUrl).login()).rejects.toThrowError('User Password Is Required')
   })
 
   test('test patchName account', async () => {
@@ -220,7 +220,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchName({ id: '123', accountId: '112233', name: 'updateUserName' })
+    const res = await users(fetch, apiUrl).patchName({ id: '123', accountId: '112233', name: 'updateUserName' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/name',
@@ -242,7 +242,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.patchName()).rejects.toThrowError('User ID, Account ID And New Name Is Required')
+    await expect(users(fetch, apiUrl).patchName()).rejects.toThrowError('User ID, Account ID And New Name Is Required')
   })
 
   test('test patchPassword account', async () => {
@@ -254,7 +254,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchPassword({ id: '123', accountId: '112233', oldPassword: 'oldPassword', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
+    const res = await users(fetch, apiUrl).patchPassword({ id: '123', accountId: '112233', oldPassword: 'oldPassword', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/password',
@@ -278,7 +278,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.reSendfinalizeRegistrationEmail({ userId: '123', accountId: '112233' })
+    const res = await users(fetch, apiUrl).reSendfinalizeRegistrationEmail({ userId: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/resend-finalize-registration',
@@ -298,7 +298,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.reSendfinalizeRegistrationEmail()).rejects.toThrowError('User Id And Account Id Is Required')
+    await expect(users(fetch, apiUrl).reSendfinalizeRegistrationEmail()).rejects.toThrowError('User Id And Account Id Is Required')
   })
 
   test('test patchPassword with undefined input ', async () => {
@@ -308,7 +308,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.patchPassword()).rejects.toThrowError('User ID, Account ID And New Password Is Required')
+    await expect(users(fetch, apiUrl).patchPassword()).rejects.toThrowError('User ID, Account ID And New Password Is Required')
   })
 
   test('test patchRole account', async () => {
@@ -320,7 +320,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchRole({ id: '123', accountId: '112233' }, { role: 'admin' })
+    const res = await users(fetch, apiUrl).patchRole({ id: '123', accountId: '112233' }, { role: 'admin' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/role',
@@ -342,7 +342,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.patchRole({}, {})).rejects.toThrowError('User ID, Account ID And New Role Is Required')
+    await expect(users(fetch, apiUrl).patchRole({}, {})).rejects.toThrowError('User ID, Account ID And New Role Is Required')
   })
 
   test('test deleteOne ', async () => {
@@ -355,7 +355,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.deleteOne({ id: '123', accountId: '112233' })
+    const res = await users(fetch, apiUrl).deleteOne({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123',
@@ -379,7 +379,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    await expect(users(fetch, apiUrl).user.deleteOne()).rejects.toThrowError('User ID and Account ID Is Required')
+    await expect(users(fetch, apiUrl).deleteOne()).rejects.toThrowError('User ID and Account ID Is Required')
   })
 
   test('test success patchEmail ', async () => {
@@ -391,7 +391,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' })
+    const res = await users(fetch, apiUrl).patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/email',
@@ -414,7 +414,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(users(fetch, apiUrl).user.patchEmail({})).rejects.toThrowError('User ID, Account ID, New Email and New Email Confirm Is Required')
+    await expect(users(fetch, apiUrl).patchEmail({})).rejects.toThrowError('User ID, Account ID, New Email and New Email Confirm Is Required')
   })
 
   test('test success patchEmailConfirm ', async () => {
@@ -426,7 +426,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.patchEmailConfirm({ id: '123', accountId: '112233', token: 'token' })
+    const res = await users(fetch, apiUrl).patchEmailConfirm({ id: '123', accountId: '112233', token: 'token' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/112233/users/123/email-confirm',
@@ -448,7 +448,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(users(fetch, apiUrl).user.patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
+    await expect(users(fetch, apiUrl).patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
   })
 
   test('test delete permission admin', async () => {
@@ -462,10 +462,10 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.deletePermission('142536')
+    const res = await users(fetch, apiUrl).deletePermission('142536')
 
     expect(spy).toHaveBeenLastCalledWith(
-      'http://admins-api.emailfox.link/v1/admins/permission/delete',
+      'http://api.emailfox.link/v1/admins/permission/delete',
       {
         method: 'POST',
         body: JSON.stringify({ password: '142536' }),
@@ -488,7 +488,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.deletePermission('142536')
+    const res = await users(fetch, apiUrl).deletePermission('142536')
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/permission/delete',
@@ -510,7 +510,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
     })
-    await expect(users(fetch, apiUrl).user.deletePermission()).rejects.toThrowError('Password Is Required')
+    await expect(users(fetch, apiUrl).deletePermission()).rejects.toThrowError('Password Is Required')
   })
 
   test('test upload user profilePicture ', async () => {
@@ -522,7 +522,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.uploadProfilePicture({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
+    const res = await users(fetch, apiUrl).uploadProfilePicture({ id: '123test123', accountId: '112233Test' }, { test: 'test' })
 
     const formData = new FormData()
     formData.append('profilePicture', { test: 'test' })
@@ -546,7 +546,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.uploadProfilePicture()).rejects.toThrowError('param and form Data Is Required')
+    await expect(users(fetch, apiUrl).uploadProfilePicture()).rejects.toThrowError('param and form Data Is Required')
   })
 
   test('test delete user profilePicture ', async () => {
@@ -558,7 +558,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.deleteProfilePicture({ id: '123test123', accountId: '1122test' })
+    const res = await users(fetch, apiUrl).deleteProfilePicture({ id: '123test123', accountId: '1122test' })
 
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/1122test/users/123test123/profile-picture',
@@ -579,7 +579,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).user.deleteProfilePicture()).rejects.toThrowError('Account and User Id Is Required')
+    await expect(users(fetch, apiUrl).deleteProfilePicture()).rejects.toThrowError('Account and User Id Is Required')
   })
 
   test('test login with urlFriendlyName ', async () => {
@@ -591,7 +591,7 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).user.loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
+    const res = await users(fetch, apiUrl).loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/login/url-friendly-name',
       {
@@ -611,6 +611,6 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).user.loginWithUrlFriendlyName()).rejects.toThrowError('User Password Is Required')
+    await expect(users(fetch, apiUrl).loginWithUrlFriendlyName()).rejects.toThrowError('User Password Is Required')
   })
 })

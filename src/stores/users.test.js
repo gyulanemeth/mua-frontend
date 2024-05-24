@@ -48,7 +48,7 @@ describe('users Store', () => {
     }
 
     return {
-      user: { list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deletePermission: mockDeletePermission }
+      list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, deletePermission: mockDeletePermission
     }
   }
 
