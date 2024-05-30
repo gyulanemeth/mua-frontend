@@ -8,7 +8,7 @@ import patchOne from 'pinia-list-store/src/actions/patchOne.js'
 import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
-  const userStore = defineStore('users', {
+  const userStore = defineStore('system-accounts-users', {
     state: infiniteListState,
     actions: {
       load: load(connectors.list, useSystemMessagesStore().addError, { metaFirst: false }),

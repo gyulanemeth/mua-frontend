@@ -9,7 +9,6 @@ export default (connectors) => {
   const router = useRouter() || [] // [] for test
   const storage = {}
 
-  const dashboardPath = window.config.sideBarIcons.find(ele => ele.icon === 'mdi-view-dashboard')
   const query = new URLSearchParams(window.location.search)
 
   if (query.get('token') && query.get('accountId')) {
@@ -28,7 +27,7 @@ export default (connectors) => {
     storage.accessToken = storedAccessToken
   }
 
-  const currentUserAndAccountStore = defineStore('currentUserAndAccount', {
+  const currentUserAndAccountStore = defineStore('system-accounts-currentUserAndAccount', {
     state: () => ({
       accessToken: storage.accessToken,
       user: storage.user,
@@ -61,8 +60,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          window.location.href = dashboardPath.url({ accountId: this.account._id, token: localStorage.getItem('accessToken'), urlFriendlyName: this.account.urlFriendlyName })
-          return true
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -75,7 +73,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          window.location.href = dashboardPath.url({ accountId: this.account._id, token: localStorage.getItem('accessToken'), urlFriendlyName: this.account.urlFriendlyName })
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -103,9 +101,9 @@ export default (connectors) => {
         if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
           localStorage.removeItem('accessToken')
           localStorage.removeItem('accountId')
-          window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
+          window.location.href = `${window.config.appBaseUrl}me?logout=true`
         } else {
-          router.push('/' + window.location.pathname.split('/')[1])
+          router.push('/system-accounts/' + window.location.pathname.split('/')[1])
         }
         localStorage.removeItem('accessToken')
         localStorage.removeItem('loginToken')
@@ -138,7 +136,8 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          localStorage.setItem('accountId', this.account._id)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -179,7 +178,8 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          localStorage.setItem('accountId', this.account._id)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -207,7 +207,7 @@ export default (connectors) => {
             if (window.location.pathname.split('/').includes('me')) {
               localStorage.removeItem('accessToken')
               localStorage.removeItem('accountId')
-              window.location.href = `${window.config.adminsAppBaseUrl}me`
+              window.location.href = `${window.config.appBaseUrl}me`
             } else {
               const tokenData = jwtDecode(localStorage.getItem('accessToken'))
               this.user = tokenData.user
@@ -233,7 +233,7 @@ export default (connectors) => {
           }
           await connectors.user.patchName({ id: this.user._id, name, accountId: this.account._id })
           this.user.name = name
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -247,7 +247,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
-          router.push(`/${this.account.urlFriendlyName}/account`)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -261,7 +261,7 @@ export default (connectors) => {
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
-          router.push(`/${this.account.urlFriendlyName}/account`)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -303,7 +303,8 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.account = await connectors.account.readOne({ id: loginTokenData.account._id })
-          router.push('/')
+          localStorage.setItem('accountId', this.account._id)
+          router.push('/system-accounts')
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -317,7 +318,7 @@ export default (connectors) => {
             throw new RouteError('User ID And Account ID Is Required')
           }
           const res = await connectors.user.patchEmail({ id: this.user._id, accountId: this.account._id, newEmail, newEmailAgain })
-          router.push(`/${this.account.urlFriendlyName}/me`)
+          router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -331,7 +332,7 @@ export default (connectors) => {
             throw new RouteError('Valid Token Is Required')
           }
           const res = await connectors.user.patchEmailConfirm({ id: tokenData.user._id, accountId: tokenData.account._id, token })
-          router.push(`/${tokenData.account.urlFriendlyName}/`)
+          router.push(`/system-accounts/${tokenData.account.urlFriendlyName}/`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -385,9 +386,10 @@ export default (connectors) => {
           if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             localStorage.removeItem('accessToken')
             localStorage.removeItem('accountId')
-            window.location.href = `${window.config.adminsAppBaseUrl}me`
+            router.push('/system-admins/')
           } else {
-            router.push('/')
+            router.push('/system-accounts/')
+            localStorage.removeItem('accountId')
             localStorage.removeItem('accessToken')
             localStorage.removeItem('loginToken')
           }

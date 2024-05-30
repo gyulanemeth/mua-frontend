@@ -435,7 +435,7 @@ describe('Current User And Account Store', () => {
   })
 
   test('test success accept invitation', async () => {
-    window.location.pathname = '/'
+    window.location.pathname = '/system-accounts/'
     window.location.search = { token: 'token' }
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
@@ -596,7 +596,7 @@ describe('Current User And Account Store', () => {
   test('test readOneUser /me success ', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    window.location.pathname = '/me'
+    window.location.pathname = '/system-accounts/me'
     store.account = {}
     store.user = {}
     const res = await store.readOneUser()

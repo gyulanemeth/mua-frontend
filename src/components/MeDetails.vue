@@ -46,10 +46,10 @@ const tab = ref('me')
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
-              <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('meDetails.tabs.meLabel')}}</v-tab>
-              <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('meDetails.tabs.changePasswordLabel')}}</v-tab>
-              <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  :to="`/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('meDetails.tabs.changeEmailLabel')}}</v-tab>
-              <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('meDetails.tabs.settingsLabel')}}</v-tab>
+              <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/system-accounts/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('meDetails.tabs.meLabel')}}</v-tab>
+              <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/system-accounts/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('meDetails.tabs.changePasswordLabel')}}</v-tab>
+              <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  :to="`/system-accounts/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('meDetails.tabs.changeEmailLabel')}}</v-tab>
+              <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/system-accounts/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('meDetails.tabs.settingsLabel')}}</v-tab>
             </v-tabs>
 
             <v-card-text>

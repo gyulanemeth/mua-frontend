@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode'
 import useSystemMessagesStore from './systemMessages.js'
 
 export default (connectors) => {
-  const adminStore = defineStore('admins', {
+  const adminStore = defineStore('system-accounts-admins', {
     state: infiniteListState,
     actions: {
       async readOne () {

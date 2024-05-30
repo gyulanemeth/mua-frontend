@@ -66,7 +66,7 @@ const title = window.config.title
                         <p class="mt-4 pa-4">{{ $t('loginAndResetForm.forgotHeader') }}
                             <router-link style="text-decoration: none; color: inherit;"
                                 data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
-                                :to="`/forgot-password?token=${route.query.token}&account=${data.account}`">{{ $t('loginAndResetForm.forgotBtn')
+                                :to="`/system-accounts-forgot-password?token=${route.query.token}&account=${data.account}`">{{ $t('loginAndResetForm.forgotBtn')
                                 }}</router-link>
                         </p>
                         <v-btn color="info" data-test-id="loginAndResetForm-loginBtn"
@@ -98,7 +98,7 @@ const title = window.config.title
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                            style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
+                            style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-create-account">{{
                                 $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
                     </v-col>
                     </v-row>

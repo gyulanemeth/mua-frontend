@@ -16,15 +16,15 @@ const menuPaths = computed(() => {
     const urlFriendlyName = account.urlFriendlyName
 
     return {
-      mePath: `/${urlFriendlyName}/me`,
-      accountPath: `/${urlFriendlyName}/account`,
-      usersPath: `/${urlFriendlyName}/users`
+      mePath: `/system-accounts/${urlFriendlyName}/me`,
+      accountPath: `/system-accounts/${urlFriendlyName}/account`,
+      usersPath: `/system-accounts/${urlFriendlyName}/users`
     }
   }
   return {
-    mePath: '/default/me',
-    accountPath: '/default/account',
-    usersPath: '/default/users'
+    mePath: '/system-accounts/default/me',
+    accountPath: '/system-accounts/default/account',
+    usersPath: '/system-accounts/default/users'
   }
 })
 
@@ -34,7 +34,7 @@ onMounted(async () => {
   }
 })
 
-const adminUrl = window.config.adminsAppBaseUrl
+const adminUrl = window.config.appBaseUrl
 const sideBarIcons = window.config.sideBarIcons
 </script>
 

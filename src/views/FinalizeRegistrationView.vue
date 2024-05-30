@@ -17,14 +17,14 @@ const data = ref()
 const formData = ref()
 
 async function loadData () {
-  if (route.name === 'accept-invitation' && route.query.token) {
+  if (route.name === 'system-accounts-accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
     formData.value = {
       btnText: tm('acceptInvitationForm.btnText'),
       header: tm('acceptInvitationForm.header')
     }
   }
-  if (route.name === 'finalize-registration' && route.query.token) {
+  if (route.name === 'system-accounts-finalize-registration' && route.query.token) {
     const res = await store.finalizeRegistration(route.query.token)
     if (res.success) {
       useSystemMessagesStore().addSuccess({ message: tm('FinalizeRegistrationView.FinalizeRegistrationAlert') })

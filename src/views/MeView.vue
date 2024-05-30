@@ -14,11 +14,11 @@ const { tm } = useI18n()
 
 const data = ref()
 
-if (route.name === 'verify-email') {
+if (route.name === 'system-accounts-verify-email') {
   const res = await store.patchEmailConfirm(route.query.token)
   if (!res.message) {
     await store.readOne()
-    router.push(`/${store.account.urlFriendlyName}/me`)
+    router.push(`/system-accounts/${store.account.urlFriendlyName}/me`)
     useSystemMessagesStore().addSuccess({ message: tm('changeEmail.verifyMessage') })
   }
 } else if (!store.user || !store.user.name) {
@@ -29,7 +29,7 @@ if (route.name === 'verify-email') {
       name: 'NOT_FOUND',
       message: 'User data not found please login'
     })
-    router.push('/')
+    router.push('/system-accounts/')
   }
 }
 data.value = store.user

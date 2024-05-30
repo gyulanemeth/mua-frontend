@@ -49,7 +49,7 @@ const title = window.config.title
                     density="compact" color="info" class="my-5 rounded" variant="solo" disabled
                     item-title="name" item-value="_id" :label="$t('loginAndResetForm.selectLabel')" name="account" />
 
-                <div v-if="route.name === 'forgot-password-reset'">
+                <div v-if="route.name === 'system-accounts-forgot-password-reset'">
                     <v-btn v-if="!cb" color="info" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('loginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb">
@@ -77,7 +77,7 @@ const title = window.config.title
                     </div>
                 </div>
 
-                <div v-if="route.name !== 'forgot-password-reset'">
+                <div v-if="route.name !== 'system-accounts-forgot-password-reset'">
                     <div v-if="cb !== 'reset'">
                         <v-checkbox :label="$t('loginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
@@ -90,7 +90,7 @@ const title = window.config.title
                         <button hidden :disabled="!checkbox"
                         @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
                         <p class="mt-4 pa-4">{{ $t('loginAndResetForm.redirectToLoginMessage') }}
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/">{{
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/system-accounts-login">{{
                             $t('loginAndResetForm.redirectToLoginBtn') }}</router-link>
                     </p>
                     </div>

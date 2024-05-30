@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 
 const countDown = ref(5)
 const route = useRoute()
-const url = ref('/' + (route.params.urlFriendlyName || ''))
+const url = ref('/system-accounts/' + (route.params.urlFriendlyName || ''))
 function redirect () {
   if (countDown.value === 0) {
     window.location.href = url.value

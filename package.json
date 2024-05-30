@@ -1,6 +1,11 @@
 {
   "name": "mua-accounts-app",
   "version": "0.0.0",
+  "main": "dist/mua-accounts-app.umd.js",
+  "module": "dist/mua-accounts-app.es.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",

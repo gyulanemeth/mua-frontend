@@ -19,7 +19,7 @@ const menuItems = computed(() => {
   const urlFriendlyName = route.params.urlFriendlyName
   return [{
     title: 'My profile',
-    path: `/${urlFriendlyName}/me`
+    path: `/system-accounts/${urlFriendlyName}/me`
   }]
 })
 

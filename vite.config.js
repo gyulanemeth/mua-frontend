@@ -1,4 +1,5 @@
 import { fileURLToPath, URL } from 'url'
+import path from 'path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -21,6 +22,21 @@ export default defineConfig({
       ]
     })
   ],
+  build: {
+    lib: {
+      entry: path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'src/index.js'),
+      name: 'mua-accounts-app',
+      fileName: (format) => `mua-accounts-app.${format}.js`
+    },
+    rollupOptions: {
+      external: ['vue', 'vue-router', 'pinia', 'pinia-list-store', 'vue-image-crop-upload'],
+      output: {
+        globals: {
+          vue: 'Vue'
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

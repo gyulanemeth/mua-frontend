@@ -33,7 +33,7 @@ defineExpose({
 
 <v-dialog v-model="dialogShown" tabindex="-1" @keydown.enter="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()" @keydown.esc="resetForm">
     <template v-slot:activator="{ props }">
-        <v-btn v-if="route.name !== 'settings'"  color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
+        <v-btn v-if="route.name !== 'system-accounts-settings'"  color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('deleteMyAccount.openBtn')}}</v-btn>
     </template>
     <v-card width="50%" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">

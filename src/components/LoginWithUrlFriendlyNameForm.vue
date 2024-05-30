@@ -62,7 +62,7 @@ const url = ref(window.location.href)
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link style="text-decoration: none; color: inherit;"
                                 data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
-                                :to="`/forgot-password?urlFriendlyName=${route.params.urlFriendlyName}`">{{ $t('loginAndResetForm.forgotBtn')
+                                :to="`/system-accounts-forgot-password?urlFriendlyName=${route.params.urlFriendlyName}`">{{ $t('loginAndResetForm.forgotBtn')
                                 }}</router-link>
                     </v-col>
                     </v-row>
@@ -75,7 +75,7 @@ const url = ref(window.location.href)
                     <v-col cols="12" sm="5" class="text-sm-left">
 
                             <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                                style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/">{{
+                                style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-login">{{
                                     $t('loginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
                     </v-col>
                     </v-row>
@@ -87,7 +87,7 @@ const url = ref(window.location.href)
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                        style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/create-account">{{
+                        style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-create-account">{{
                             $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
                     </v-col>
                     </v-row>

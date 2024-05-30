@@ -134,7 +134,7 @@ const appIcon = window.config.appIcon
 
                 </v-card-actions>
                 <v-card-actions v-if="props.currentUser._id === item._id">
-                    <v-btn color="info" class="text-white" :to="`/${route.params.urlFriendlyName}/me`">{{ $t('userList.openBtn') }}</v-btn>
+                    <v-btn color="info" class="text-white" :to="`/system-accounts/${route.params.urlFriendlyName}/me`">{{ $t('userList.openBtn') }}</v-btn>
                 </v-card-actions>
 
             </v-card>

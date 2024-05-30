@@ -82,7 +82,7 @@ const title = window.config.title
 
                 <h2 class="mt-4" data-test-id="acceptInvitation-headerCb">{{ $t('acceptInvitationForm.cb.header') }}</h2>
                 <p class="mt-4">{{ $t('acceptInvitationForm.cb.message') }}
-                    <router-link tag="span" style="text-decoration: none; color: inherit;" to="/me"
+                    <router-link tag="span" style="text-decoration: none; color: inherit;" to="/system-accounts/"
                         class="font-weight-bold">{{$t('acceptInvitationForm.cb.cbBtn')}}</router-link>
                     {{$t('acceptInvitationForm.cb.subMessage')}}
             </p>

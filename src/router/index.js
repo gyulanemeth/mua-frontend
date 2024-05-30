@@ -15,8 +15,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/:urlFriendlyName/users',
-      name: 'users',
+      path: '/system-accounts/:urlFriendlyName/users',
+      name: 'system-accounts-users',
       component: UserView,
       meta: {
         requiresAuth: true,
@@ -24,56 +24,56 @@ const router = createRouter({
       }
     },
     {
-      path: '/',
-      name: 'login',
+      path: '/system-accounts/',
+      name: 'system-accounts-login',
       component: LoginAndResetView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/:urlFriendlyName',
-      name: 'loginWithUrlFriendlyName',
+      path: '/system-accounts/:urlFriendlyName',
+      name: 'system-accounts-loginWithUrlFriendlyName',
       component: LoginAndResetView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/login-select',
-      name: 'login-select',
+      path: '/system-accounts/login-select',
+      name: 'system-accounts-login-select',
       component: LoginAndResetView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/finalize-registration',
-      name: 'finalize-registration',
+      path: '/system-accounts/finalize-registration',
+      name: 'system-accounts-finalize-registration',
       component: FinalizeRegistrationView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/create-account',
-      name: 'create-account',
+      path: '/system-accounts/create-account',
+      name: 'system-accounts-create-account',
       component: CreateAccountView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/forgot-password',
-      name: 'forgot-password',
+      path: '/system-accounts/forgot-password',
+      name: 'system-accounts-forgot-password',
       component: LoginAndResetView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/:urlFriendlyName/me',
-      name: 'me',
+      path: '/system-accounts/:urlFriendlyName/me',
+      name: 'system-accounts-me',
       component: MeView,
       meta: {
         requiresAuth: true,
@@ -81,8 +81,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/:urlFriendlyName/change-password',
-      name: 'changePassword',
+      path: '/system-accounts/:urlFriendlyName/change-password',
+      name: 'system-accounts-changePassword',
       component: MeView,
       meta: {
         requiresAuth: true,
@@ -90,8 +90,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/:urlFriendlyName/change-email',
-      name: 'changeEmail',
+      path: '/system-accounts/:urlFriendlyName/change-email',
+      name: 'system-accounts-changeEmail',
       component: MeView,
       meta: {
         requiresAuth: true,
@@ -99,8 +99,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/:urlFriendlyName/settings',
-      name: 'settings',
+      path: '/system-accounts/:urlFriendlyName/settings',
+      name: 'system-accounts-settings',
       component: MeView,
       meta: {
         requiresAuth: true,
@@ -108,16 +108,16 @@ const router = createRouter({
       }
     },
     {
-      path: '/verify-email',
-      name: 'verify-email',
+      path: '/system-accounts/verify-email',
+      name: 'system-accounts-verify-email',
       component: MeView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/:urlFriendlyName/account',
-      name: 'account',
+      path: '/system-accounts/:urlFriendlyName/account',
+      name: 'system-accounts-account',
       component: AccountView,
       meta: {
         requiresAuth: true,
@@ -125,24 +125,24 @@ const router = createRouter({
       }
     },
     {
-      path: '/forgot-password/reset',
-      name: 'forgot-password-reset',
+      path: '/system-accounts/forgot-password/reset',
+      name: 'system-accounts-forgot-password-reset',
       component: LoginAndResetView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/invitation/accept',
-      name: 'accept-invitation',
+      path: '/system-accounts/invitation/accept',
+      name: 'system-accounts-accept-invitation',
       component: FinalizeRegistrationView,
       meta: {
         requiresAuth: false
       }
     },
     {
-      path: '/:urlFriendlyName/redirect-to-login-message',
-      name: 'redirectToLoginMessage',
+      path: '/system-accounts/:urlFriendlyName/redirect-to-login-message',
+      name: 'system-accounts-redirectToLoginMessage',
       component: RedirectToLoginMessage,
       meta: {
         requiresAuth: false
@@ -180,7 +180,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.query.logout) {
       if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
         localStorage.clear()
-        window.location.href = `${window.config.adminsAppBaseUrl}me?logout=true`
+        window.location.href = `${window.config.appBaseUrl}me?logout=true`
         return
       } else {
         localStorage.clear()
@@ -194,10 +194,10 @@ router.beforeEach(async (to, from, next) => {
     const tokenData = jwtDecode(localStorage.getItem('accessToken'))
     if (tokenData.type === 'admin') {
       localStorage.clear()
-      window.location.href = `${window.config.adminsAppBaseUrl}accounts`
+      window.location.href = `${window.config.appBaseUrl}accounts`
       return
     }
-    return next({ path: '/' + tokenData.account.urlFriendlyName + '/users' })
+    return next({ path: '/system-accounts/' + tokenData.account.urlFriendlyName + '/users' })
   }
 
   if (!localStorage.getItem('accessToken') &&
@@ -212,9 +212,9 @@ router.beforeEach(async (to, from, next) => {
     to.name !== 'verify-email' &&
     to.name !== 'redirectToLoginMessage') {
     if (to.params.urlFriendlyName) {
-      window.location.href = '/' + to.params.urlFriendlyName + '/redirect-to-login-message'
+      window.location.href = '/system-accounts/' + to.params.urlFriendlyName + '/redirect-to-login-message'
     } else {
-      window.location.href = '/'
+      window.location.href = '/system-accounts'
     }
   } else next()
 })

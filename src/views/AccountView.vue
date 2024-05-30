@@ -23,7 +23,7 @@ if (!store.account || !store.account.name) {
       name: 'NOT_FOUND',
       message: 'Account data not found please login'
     })
-    router.push('/')
+    router.push('/system-accounts/')
   }
 }
 data.value = store.account

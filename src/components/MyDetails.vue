@@ -105,13 +105,13 @@ const openFileInput = () => {
                         <v-img :src="profilePicture"
                             class="align-self-stretch" cover />
                         <v-expand-transition>
-                            <v-container v-if="isHovering"
+                            <div v-if="isHovering" style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;"
                                 class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
                                 <v-btn v-if="componentProps.profilePicture" @click="handledeleteProfilePicture" color="white"
                                     class="align-center" variant="text" icon="mdi-delete-forever-outline" size="small" />
                                 <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
                                     icon="mdi-camera-plus-outline" size="small" />
-                            </v-container>
+                        </div>
 
                         </v-expand-transition>
 
@@ -122,11 +122,3 @@ const openFileInput = () => {
         <ImgCropper v-if="showCropperDialog" @uploadProfilePictureHandler="uploadProfilePicture" @closeCropperHandler="processing = false; showCropperDialog = false" />
     </v-layout>
 </template>
-
-<style scoped>
-.v-card--reveal {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.6);
-    transition: ease;
-    opacity: .9;
-}</style>

@@ -1,6 +1,5 @@
 window.config = {
   apiBaseUrl: 'http://api.emailfox.link',
-  adminsAppBaseUrl: 'http://admins.emailfox.link/',
   appBaseUrl: 'http://app.emailfox.link/',
   cdnBaseUrl: 'http://localhost:10008/',
   appName: 'MUA Account\'s UI',

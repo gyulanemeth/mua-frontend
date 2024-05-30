@@ -19,11 +19,11 @@ const formData = ref()
 const accountData = ref()
 
 async function loadData () {
-  if (route.name === 'loginWithUrlFriendlyName') {
+  if (route.name === 'system-accounts-loginWithUrlFriendlyName') {
     accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
 
     if (accountData.value.message) {
-      return router.push('/')
+      return router.push('/system-accounts/')
     }
     formData.value = {
       accountName: accountData.value.name,
@@ -40,20 +40,20 @@ async function loadData () {
           name: 'VALIDATION_ERROR',
           message: 'Invalid token'
         })
-        router.push('/')
+        router.push('/system-accounts/')
       }
       if (tokenData.value.account) {
         tokenData.value.accounts = [tokenData.value.account]
       }
     }
-    if (route.name === 'forgot-password' || route.name === 'forgot-password-reset') {
+    if (route.name === 'system-accounts-forgot-password' || route.name === 'system-accounts-forgot-password-reset') {
       formData.value = false
       if (route.query.token) {
         formData.value = { email: tokenData.value.user.email, account: route.query.account ? tokenData.value.accounts.find(ele => ele._id === route.query.account) : tokenData.value.account }
       } else if (route.query.urlFriendlyName) {
         accountData.value = await store.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
         if (accountData.value.message) {
-          return router.push('/')
+          return router.push('/system-accounts/')
         }
         formData.value = { account: accountData.value }
       } else {
@@ -62,7 +62,7 @@ async function loadData () {
           name: 'VALIDATION_ERROR',
           message: 'urlFriendlyName not found'
         })
-        return router.push('/')
+        return router.push('/system-accounts/')
       }
     }
   }
@@ -88,12 +88,20 @@ async function handleGetLoginAccountEvent (params, statusCallBack) {
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   const res = await store.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
-  statusCallBack(res)
+  statusCallBack(res.success)
+  if (res.success) {
+    localStorage.setItem('accountId', store.account._id)
+    router.push('system-accounts/')
+  }
 }
 
 async function handleLoginEvent (params, statusCallBack) {
-  await store.login(route.query.token, params.password, params.account)
-  statusCallBack(true)
+  const res = await store.login(route.query.token, params.password, params.account)
+  statusCallBack(res.success)
+  if (res.success) {
+    localStorage.setItem('accountId', store.account._id)
+    router.push('system-accounts/')
+  }
 }
 
 watchEffect(async () => {
@@ -104,13 +112,13 @@ watchEffect(async () => {
 
 <template>
 
-  <ResetPasswordForm v-if="formData && (route.name === 'forgot-password' || route.name === 'forgot-password-reset')"
+  <ResetPasswordForm v-if="formData && (route.name === 'system-accounts-forgot-password' || route.name === 'system-accounts-forgot-password-reset')"
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
-    <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'loginWithUrlFriendlyName'" :formData='formData'
+    <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'system-accounts-loginWithUrlFriendlyName'" :formData='formData'
     @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 
-    <LoginForm v-else-if="route.name === 'login' || route.name === 'login-select'" :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
+    <LoginForm v-else-if="route.name === 'system-accounts-login' || route.name === 'system-accounts-login-select'" :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
 
 </template>

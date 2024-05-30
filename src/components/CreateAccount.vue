@@ -98,7 +98,7 @@ const checkbox = ref()
             <p class="text-center">{{$t('createAccount.redirectTologinMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
                         class="font-weight-bold"
-                        :to="`/`">{{$t('createAccount.loginBtn')}}</router-link>
+                        :to="`/system-accounts-login`">{{$t('createAccount.loginBtn')}}</router-link>
                 </p>
         </v-card-text>
     </v-card>
@@ -122,7 +122,7 @@ const checkbox = ref()
                 <p class="text-center">{{$t('createAccount.loginMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
                         class="font-weight-bold"
-                        :to="`/`">{{$t('createAccount.loginBtn')}}</router-link>
+                        :to="`/system-accounts-login`">{{$t('createAccount.loginBtn')}}</router-link>
                 </p>
                 <p class="text-center">{{$t('createAccount.resendMessage')}}
                     <span style="text-decoration: none; cursor: pointer; color: inherit;"
