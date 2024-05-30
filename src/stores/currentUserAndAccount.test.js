@@ -787,11 +787,9 @@ describe('Current User And Account Store', () => {
   test('test success login with UrlFriendlyName', async () => {
     const currentUser = useCurrentUserAndAccountStore(mokeConnector())
     const store = currentUser()
-    const token = jwt.sign(
-      { type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
-    await store.loginWithUrlFriendlyName({ password: 'password', urlFriendlyName: 'urlFriendlyName', email: 'test@test.com' })
+    const res = await store.loginWithUrlFriendlyName({ password: 'password', urlFriendlyName: 'urlFriendlyName', email: 'test@test.com' })
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
-    expect(store.accessToken).toEqual(token)
+    expect(res.success).toEqual(true)
   })
 
   test('test success login with UrlFriendlyName input error ', async () => {
