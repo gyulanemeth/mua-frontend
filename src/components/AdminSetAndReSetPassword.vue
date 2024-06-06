@@ -1,0 +1,110 @@
+<script setup >
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import jwtDecode from 'jwt-decode'
+
+const props = defineProps({
+  formData: Object
+})
+
+const route = useRoute()
+const operation = computed(() => route.name === 'system-admins-accept-invitation' ? 'setPassword' : 'resetPassword')
+
+const email = ref()
+const data = ref({})
+const cb = ref()
+const checkbox = ref()
+const processing = ref(false)
+
+const title = window.config.title
+const appIcon = window.config.appIcon
+
+email.value = jwtDecode(route.query.token).user.email
+
+</script>
+
+<template>
+    <v-form class="d-flex flex-column justify-center align-center h-screen">
+        <v-card elevation="0">
+            <v-card-text align="center">
+                <v-avatar size="80">
+                    <v-img :src="appIcon" cover></v-img>
+                </v-avatar>
+            </v-card-text>
+            <v-card-title class="justify-center py-0">
+                <h4 class="text-h4 text-center"> {{ title }} </h4>
+            </v-card-title>
+        </v-card>
+        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
+            <v-card-text align="center" v-if="!cb">
+                <h6 class="text-h6">{{ props.formData.text }}</h6>
+
+                <v-text-field v-if="operation === 'setPassword'" hide-details density="compact"
+                    class=" my-5 rounded" color="info" variant="solo" name="email" type="text"
+                    :value="email" :placeholder="email" disabled required />
+
+                <v-text-field v-if="operation === 'setPassword'" data-test-id="setAndRestPassword-nameField" hide-details
+                    density="compact" class=" my-5 rounded" color="info" variant="solo" name="name"
+                    :label="$t('muaAuth.adminSetAndReSetPassword.nameLabel')" type="text"
+                    :placeholder="data.name || $t('muaAuth.adminSetAndReSetPassword.namePlaceHolder')" :value="data.name"
+                    @update:modelValue="res => data.name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" required />
+
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
+                    variant="solo" name="newPassword" data-test-id="setAndRestPassword-newPasswordField"
+                    :label="$t('muaAuth.adminSetAndReSetPassword.newPasswordLabel')" type="password"
+                    :placeholder="data.newPassword || $t('muaAuth.adminSetAndReSetPassword.newPasswordPlaceholder')"
+                    :value="data.newPassword"
+                    @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
+
+                <v-text-field hide-details density="compact" class=" my-5 rounded" color="info"
+                    variant="solo" name="newPasswordAgain" data-test-id="setAndRestPassword-newPasswordAgainField"
+                    :label="$t('muaAuth.adminSetAndReSetPassword.confirmNewPasswordLabel')" type="password"
+                    :placeholder="data.newPasswordAgain || $t('muaAuth.adminSetAndReSetPassword.confirmNewPasswordPlaceholder')"
+                    :value="data.newPasswordAgain"
+                    @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                    required />
+
+                <v-checkbox :label="$t('muaAuth.adminSetAndReSetPassword.checkboxLabel')" color="info" v-model="checkbox"
+                    hide-details></v-checkbox>
+
+                <v-col v-if="operation === 'resetPassword'">
+                    <v-btn color="info" data-test-id="setAndRestPassword-submitBtn" :disabled="!checkbox"
+                        @click="processing = true; $emit('resetPasswordEventHandler', { token: route.query.token, ...data }, (res) => { if(res){ cb = res} processing = false })">
+
+                        {{ !processing ? props.formData.text : '' }}
+
+                        <v-progress-circular v-if="processing" :size="20"
+                            indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+
+                    </v-btn>
+                    <button hidden :disabled="!checkbox"
+                        @click.enter.prevent="processing = true; $emit('resetPasswordEventHandler', { token: route.query.token, ...data }, (res) => { if(res){ cb = res} processing = false })" />
+                </v-col>
+                <v-col v-if="operation === 'setPassword'">
+                    <v-btn :disabled="!checkbox" color="info" data-test-id="setAndRestPassword-submitBtn"
+                        @click="processing = true; $emit('setPasswordEventHandler', { token: route.query.token, ...data }); processing = true">
+                        {{ !processing ? props.formData.text : '' }}
+
+                        <v-progress-circular v-if="processing" :size="20"
+                            indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+
+                    </v-btn>
+                    <button hidden :disabled="!checkbox"
+                        @click.enter.prevent="processing = true; $emit('setPasswordEventHandler', { token: route.query.token, ...data }); processing = false" />
+                </v-col>
+            </v-card-text>
+            <v-card-text align="center" v-if="cb">
+
+                <h2 class="mt-4">{{ $t('muaAuth.adminSetAndReSetPassword.cb.header') }}</h2>
+                <p class="mt-4">{{ $t('muaAuth.adminSetAndReSetPassword.cb.message') }}
+                    <router-link tag="span" data-test-id="setAndRestPassword-continueBtn"
+                        style="text-decoration: none; color: inherit;" to="/system-admins/me" class="font-weight-bold">{{
+                            $t('muaAuth.adminSetAndReSetPassword.cb.cbBtn') }}</router-link>
+                    {{ $t('muaAuth.adminSetAndReSetPassword.cb.subMessage') }}
+                </p>
+
+            </v-card-text>
+
+        </v-card>
+    </v-form>
+</template>

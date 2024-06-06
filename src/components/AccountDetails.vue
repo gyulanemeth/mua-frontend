@@ -2,7 +2,7 @@
 import { ref, nextTick } from 'vue'
 import ImgCropper from './ImageCropper.vue'
 import { useI18n } from 'vue-i18n'
-import DeleteAccount from './DeleteAccount.vue'
+import DeleteAccount from './DeleteUserAccount.vue'
 
 const { t } = useI18n()
 const componentProps = defineProps({
@@ -67,16 +67,16 @@ const openFileInput = () => {
     <div class="mx-3">
     <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0 w-75">
       <v-col class="pt-3">
-        <h3 class="font-weight-bold">{{ $t('accountDetails.detailsLabel') }}</h3>
+        <h3 class="font-weight-bold">{{ $t('muaAuth.accountDetails.detailsLabel') }}</h3>
         <v-divider />
 
         <v-row align="center" class="mt-3">
           <v-col>
-            <p class="font-weight-bold">{{ $t('accountDetails.nameLabel') }}</p>
+            <p class="font-weight-bold">{{ $t('muaAuth.accountDetails.nameLabel') }}</p>
           </v-col>
           <v-text-field hide-details density="compact" data-test-id="accountDetails-nameField"
             :disabled='editMode !== "name"' color="info" variant="underlined" name="name" type="text" ref="nameInput"
-            :placeholder="name || $t('accountDetails.namePlaceholder')" :value="name"
+            :placeholder="name || $t('muaAuth.accountDetails.namePlaceholder')" :value="name"
             @keydown.enter="$emit('updateNameHandler', name); editMode = false"
             @keydown.esc="editMode = false; name = componentProps.name"
             @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" required />
@@ -94,11 +94,11 @@ const openFileInput = () => {
         </v-row>
         <v-row align="center" class="mt-3">
           <v-col>
-            <p class="font-weight-bold">{{ $t('accountDetails.urlFriendlyNameLabel') }}</p>
+            <p class="font-weight-bold">{{ $t('muaAuth.accountDetails.urlFriendlyNameLabel') }}</p>
           </v-col>
           <v-text-field hide-details data-test-id="accountDetails-urlFriendlyNameField" density="compact"
             :disabled='editMode !== "urlFriendlyName"' color="info" variant="underlined" name="urlFriendlyName"
-            :placeholder="urlFriendlyName || $t('accountDetails.urlFriendlyNamePlaceholder')" :value="urlFriendlyName"
+            :placeholder="urlFriendlyName || $t('muaAuth.accountDetails.urlFriendlyNamePlaceholder')" :value="urlFriendlyName"
             ref="urlFriendlyNameInput"
             @keydown.enter="$emit('updateUrlFriendlyNameHandler', urlFriendlyName); editMode = false"
             @keydown.esc="editMode = false; urlFriendlyName = componentProps.urlFriendlyName"
@@ -119,22 +119,23 @@ const openFileInput = () => {
         </v-row>
       </v-col>
       <v-col cols="4" class="pt-3">
-        <h3 class="font-weight-bold">{{ $t('accountDetails.picLabel') }}</h3>
+        <h3 class="font-weight-bold">{{ $t('muaAuth.accountDetails.picLabel') }}</h3>
         <v-divider />
+
         <v-col align="center" class="mt-3">
           <v-hover v-slot="{ isHovering, props }">
-            <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('processing')
+            <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('muaAuth.processing')
             }}</v-progress-circular>
             <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
               <v-img :src="logo" class="align-self-stretch" cover />
               <v-expand-transition>
 
-                <v-container v-if="isHovering && componentProps.role" class="d-flex justify-center align-end w-100 h-100 v-card--reveal">
+                <div v-if="isHovering && componentProps.role"  style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;" class="d-flex justify-center align-end w-100 h-100">
                   <v-btn v-if="componentProps.logo" @click="handleDeleteAccountLogo" color="white" class="align-center"
                     variant="text" icon="mdi-delete-forever-outline" size="small" />
                   <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
                     icon="mdi-camera-plus-outline" size="small" />
-                </v-container>
+                </div>
 
               </v-expand-transition>
 
@@ -145,15 +146,15 @@ const openFileInput = () => {
 
       <v-layout class="d-flex flex-wrap w-75" v-if="componentProps.role">
         <v-col class="pt-3">
-            <h3 class="font-weight-bold text-error">{{ $t('accountDetails.deleteLabel') }}</h3>
+            <h3 class="font-weight-bold text-error">{{ $t('muaAuth.accountDetails.deleteLabel') }}</h3>
             <v-divider color="error" />
 
                 <v-banner color="error" class="text-error my-4">
                        <v-banner-text class="mt-2 text-error">
-            <div v-html="t('accountDetails.deleteAccountMessage')"></div>
+            <div v-html="t('muaAuth.accountDetails.deleteAccountMessage')"></div>
           </v-banner-text>
             </v-banner>
-            <v-btn variant="outlined" color="error" @click="deleteAccountDialog.show()">{{t('deleteAccount.openBtn')}}</v-btn>
+            <v-btn variant="outlined" color="error" @click="deleteAccountDialog.show()">{{t('muaAuth.deleteAccount.openBtn')}}</v-btn>
               <DeleteAccount ref="deleteAccountDialog" :data="{ name: componentProps.name,  urlFriendlyName: componentProps.urlFriendlyName,  logo: componentProps.logo}"  />
             </v-col>
         </v-layout>
@@ -162,11 +163,3 @@ const openFileInput = () => {
     </v-layout>
   </div>
 </template>
-
-<style scoped>
-.v-card--reveal {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.6);
-  transition: ease;
-  opacity: .9;
-}</style>

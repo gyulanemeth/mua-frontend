@@ -36,46 +36,46 @@ const title = window.config.title
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
-                <h6 class="text-h6">{{ $t('loginAndResetForm.loginHeader') }} </h6>
+                <h6 class="text-h6">{{ $t('muaAuth.userLoginAndResetForm.loginHeader') }} </h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class=" my-5 rounded" color="info" variant="solo"
                     :disabled="!!cb || !!props.tokenData.user" type="email" name="email"
-                    :placeholder="data.email || $t('loginAndResetForm.emailPlaceHolder')" :value="data.email"
+                    :placeholder="data.email || $t('muaAuth.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account"
                     data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
                     density="compact" color="info" class="my-5 rounded" variant="solo"
                     :disabled="!!cb" :items="props.tokenData.accounts" item-title="name" item-value="_id"
-                    :label="$t('loginAndResetForm.selectLabel')" name="account" />
+                    :label="$t('muaAuth.userLoginAndResetForm.selectLabel')" name="account" />
 
                 <div v-if="props.tokenData.accounts">
                     <v-btn v-if="!cb" :disabled="!!!data.account" data-test-id="loginAndResetForm-signInBtn" color="info" @click="cb = 'signIn'">{{
-                        $t('loginAndResetForm.nextBtn') }}
+                        $t('muaAuth.userLoginAndResetForm.nextBtn') }}
                     </v-btn>
                     <div v-if="cb">
                         <v-text-field hide-details density="compact" class=" my-5 rounded"
                             color="info" variant="solo" name="password" data-test-id="loginAndResetForm-passwordField"
-                            :label="$t('loginAndResetForm.passwordLabel')" type="password"
-                            :placeholder="data.password || $t('loginAndResetForm.passwordPlaceholder')"
+                            :label="$t('muaAuth.userLoginAndResetForm.passwordLabel')" type="password"
+                            :placeholder="data.password || $t('muaAuth.userLoginAndResetForm.passwordPlaceholder')"
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
 
-                        <p class="mt-4 pa-4">{{ $t('loginAndResetForm.forgotHeader') }}
+                        <p class="mt-4 pa-4">{{ $t('muaAuth.userLoginAndResetForm.forgotHeader') }}
                             <router-link style="text-decoration: none; color: inherit;"
                                 data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
-                                :to="`/system-accounts-forgot-password?token=${route.query.token}&account=${data.account}`">{{ $t('loginAndResetForm.forgotBtn')
+                                :to="`/system-accounts-forgot-password?token=${route.query.token}&account=${data.account}`">{{ $t('muaAuth.userLoginAndResetForm.forgotBtn')
                                 }}</router-link>
                         </p>
                         <v-btn color="info" data-test-id="loginAndResetForm-loginBtn"
                             @click="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
 
-                            {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
+                            {{ !processing ? $t('muaAuth.userLoginAndResetForm.loginBtnText') : '' }}
 
                             <v-progress-circular v-if="processing" :size="20"
-                                indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+                                indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
 
                         </v-btn>
                         <button hidden
@@ -87,26 +87,26 @@ const title = window.config.title
                     <div v-if="!cb">
                         <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                             @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
-                            {{ !processing ? $t('loginAndResetForm.loginBtnText') : '' }}
+                            {{ !processing ? $t('muaAuth.userLoginAndResetForm.loginBtnText') : '' }}
                             <v-progress-circular v-if="processing" :size="20"
-                                indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+                                indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
                         </v-btn>
                         <v-container class="mt-4 mb-0 pb-0 pa-4 pl-sm-0 w-100">
                     <v-row no-gutters class="justify-center align-center">
                     <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
-                        <p> {{ $t('loginAndResetForm.cb.forgotMessage') }}</p>
+                        <p> {{ $t('muaAuth.userLoginAndResetForm.cb.forgotMessage') }}</p>
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
                             style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-create-account">{{
-                                $t('loginAndResetForm.cb.forgotCbBtn') }}</router-link>
+                                $t('muaAuth.userLoginAndResetForm.cb.forgotCbBtn') }}</router-link>
                     </v-col>
                     </v-row>
                 </v-container>
                 <button hidden  @click.enter.prevent="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })" />
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
-                        {{ $t('loginAndResetForm.cb.loginMessage') }}</p>
+                        {{ $t('muaAuth.userLoginAndResetForm.cb.loginMessage') }}</p>
                 </div>
 
             </v-card-text>

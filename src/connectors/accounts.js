@@ -25,6 +25,8 @@ export default function (fetch, apiUrl) {
 
   const generateCreateAccountRoute = () => '/v1/accounts/create'
 
+  const generateCreateAccountByAdminRoute = () => '/v1/accounts'
+
   const generateFinalizeRegistrationRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/finalize-registration`
 
   const generateSendInvitationRoute = (params) => `/v1/accounts/${params.id}/invitation/send`
@@ -46,6 +48,7 @@ export default function (fetch, apiUrl) {
   const del = createDeleteConnector(fetch, apiUrl, generateAccountRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getCheckAvailability = createGetConnector(fetch, apiUrl, generateCheckAvailabilityRoute)
   const postCreateAccount = createPostConnector(fetch, apiUrl, generateCreateAccountRoute, generateAdditionalHeaders)
+  const postCreateAccountByAdmin = createPostConnector(fetch, apiUrl, generateCreateAccountByAdminRoute, generateAdditionalHeaders)
   const postFinalizeRegistration = createPostConnector(fetch, apiUrl, generateFinalizeRegistrationRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('registrationToken')}` }))
   const postSendInvitation = createPostConnector(fetch, apiUrl, generateSendInvitationRoute, generateAdditionalHeaders)
   const postReSendInvitation = createPostConnector(fetch, apiUrl, generateReSendInvitationRoute, generateAdditionalHeaders)
@@ -116,6 +119,14 @@ export default function (fetch, apiUrl) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
     const res = await postCreateAccount({}, { account: formData.account, user: formData.user })
+    return res
+  }
+
+  const createOneByAdmin = async function (formData) {
+    if (!formData || !formData.name || !formData.urlFriendlyName) {
+      throw new RouteError('Name And UrlFriendlyName Is Required')
+    }
+    const res = await postCreateAccountByAdmin({}, { name: formData.name, urlFriendlyName: formData.urlFriendlyName })
     return res
   }
 
@@ -199,7 +210,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    account: { list, uploadLogo, deleteLogo, getAccountByUrlFriendlyName, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, finalizeRegistration, checkAvailability },
+    account: { list, uploadLogo, deleteLogo, getAccountByUrlFriendlyName, readOne, deleteOne, patchName, patchUrlFriendlyName, createOne, createOneByAdmin, finalizeRegistration, checkAvailability },
     invitation: { send: sendInvitation, accept, reSend: reSendInvitation },
     forgotPassword: { send: sendForgotPassword, reset }
   }

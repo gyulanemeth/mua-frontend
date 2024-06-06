@@ -3,14 +3,15 @@ import { watchEffect, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
-import LoginForm from '../components/LoginForm.vue'
-import LoginWithUrlFriendlyNameForm from '../components/LoginWithUrlFriendlyNameForm.vue'
-import ResetPasswordForm from '../components/ResetPasswordForm.vue'
+import LoginForm from '../components/UserLoginForm.vue'
+import LoginWithUrlFriendlyNameForm from '../components/UserLoginWithUrlFriendlyNameForm.vue'
+import ResetPasswordForm from '../components/UserResetPasswordForm.vue'
 
-import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
-const store = useCurrentUserAndAccountStore()
+const accountsStore = useAccountsStore()
+const usersStore = useUsersStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -20,7 +21,7 @@ const accountData = ref()
 
 async function loadData () {
   if (route.name === 'system-accounts-loginWithUrlFriendlyName') {
-    accountData.value = await store.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
+    accountData.value = await accountsStore.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
 
     if (accountData.value.message) {
       return router.push('/system-accounts/')
@@ -51,7 +52,7 @@ async function loadData () {
       if (route.query.token) {
         formData.value = { email: tokenData.value.user.email, account: route.query.account ? tokenData.value.accounts.find(ele => ele._id === route.query.account) : tokenData.value.account }
       } else if (route.query.urlFriendlyName) {
-        accountData.value = await store.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
+        accountData.value = await usersStore.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
         if (accountData.value.message) {
           return router.push('/system-accounts/')
         }
@@ -69,12 +70,12 @@ async function loadData () {
 }
 
 async function handleForgotPasswordResetEvent (params, statusCallBack) {
-  await store.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
+  await usersStore.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
   statusCallBack()
 }
 
 async function handleForgotPasswordEvent (params, statusCallBack) {
-  const res = await store.sendForgotPassword({
+  const res = await usersStore.sendForgotPassword({
     email: params.email,
     accountId: params.account._id
   })
@@ -82,24 +83,24 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
 }
 
 async function handleGetLoginAccountEvent (params, statusCallBack) {
-  const res = await store.loginGetAccounts(params)
+  const res = await usersStore.loginGetAccounts(params)
   statusCallBack(!res.message)
 }
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
-  const res = await store.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
+  const res = await usersStore.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
   statusCallBack(res.success)
   if (res.success) {
-    localStorage.setItem('accountId', store.account._id)
+    await accountsStore.readOne(route.params.urlFriendlyName)
     router.push('system-accounts/')
   }
 }
 
 async function handleLoginEvent (params, statusCallBack) {
-  const res = await store.login(route.query.token, params.password, params.account)
+  const res = await usersStore.login(route.query.token, params.password, params.account)
   statusCallBack(res.success)
   if (res.success) {
-    localStorage.setItem('accountId', store.account._id)
+    await accountsStore.readOne(route.params.urlFriendlyName)
     router.push('system-accounts/')
   }
 }

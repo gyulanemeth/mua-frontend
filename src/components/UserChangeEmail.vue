@@ -24,12 +24,12 @@ const resetForm = () => {
 <template>
     <v-layout class="d-flex flex-wrap w-75">
         <v-col class="pt-3">
-            <h3 class="font-weight-bold">{{ $t('changeEmail.header') }}</h3>
+            <h3 class="font-weight-bold">{{ $t('muaAuth.userChangeEmail.header') }}</h3>
             <v-divider />
 
             <v-row align="center" class="mt-3">
                 <v-col>
-                    <p class="font-weight-bold">{{ $t('changeEmail.currentEmailLabel') }}</p>
+                    <p class="font-weight-bold">{{ $t('muaAuth.userChangeEmail.currentEmailLabel') }}</p>
                 </v-col>
 
                 <v-text-field hide-details density="compact" class=" my-5 rounded" variant="solo"
@@ -39,32 +39,32 @@ const resetForm = () => {
 
             <v-row align="center" class="mt-3">
                 <v-col>
-                    <p class="font-weight-bold">{{ $t('changeEmail.newEmailLabel') }}</p>
+                    <p class="font-weight-bold">{{ $t('muaAuth.userChangeEmail.newEmailLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changeEmailTab-newEmail" density="compact"
                     class=" my-5  rounded" color="info" variant="solo" name="newEmail"
-                    :placeholder="data.newEmail || $t('changeEmail.newEmailPlaceHolder')" :value="data.newEmail"
+                    :placeholder="data.newEmail || $t('muaAuth.userChangeEmail.newEmailPlaceHolder')" :value="data.newEmail"
                     @update:modelValue="res => data.newEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')">
                 </v-text-field>
             </v-row>
             <v-row align="center" class="mt-3">
                 <v-col>
-                    <p class="font-weight-bold">{{ $t('changeEmail.confirmEmailLabel') }}</p>
+                    <p class="font-weight-bold">{{ $t('muaAuth.userChangeEmail.confirmEmailLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changeEmailTab-newEmailAgain" density="compact"
                     class=" my-5 rounded" color="info" variant="solo" name="confirmNewEmail"
-                    :placeholder="data.confirmNewEmail || $t('changeEmail.confirmEmailPlaceHolder')"
+                    :placeholder="data.confirmNewEmail || $t('muaAuth.userChangeEmail.confirmEmailPlaceHolder')"
                     :value="data.confirmNewEmail"
                     @update:modelValue="res => data.confirmNewEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')">
                 </v-text-field>
 
             </v-row>
             <v-btn color="info mt-3" data-test-id="meDetails-changeEmailTab-submitBtn"
-                @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({name: $t('changeEmail.cb.message'), message: $t('changeEmail.cb.header') });resetForm(); processing = false })">
-                {{ !processing ? $t('changeEmail.submitBtn') : '' }}
+                @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({name: $t('muaAuth.userChangeEmail.cb.message'), message: $t('muaAuth.userChangeEmail.cb.header') });resetForm(); processing = false })">
+                {{ !processing ? $t('muaAuth.userChangeEmail.submitBtn') : '' }}
 
                 <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
-                    processing ? $t('processing') : '' }}
+                    processing ? $t('muaAuth.processing') : '' }}
             </v-btn>
         </v-col>
     </v-layout>

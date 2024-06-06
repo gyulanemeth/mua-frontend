@@ -41,13 +41,13 @@ defineExpose({
         <v-container class="d-flex flex-column justify-center">
 
             <v-toolbar color="white" align="center">
-                <v-toolbar-title class="font-weight-bold">{{ $t('inviteMembers.header') }}</v-toolbar-title>
+                <v-toolbar-title class="font-weight-bold">{{ $t('muaAuth.inviteMembers.header') }}</v-toolbar-title>
             </v-toolbar>
             <v-card-text align="start">
 
                 <v-row align="center">
                     <v-col cols="4">
-                        <p class="font-weight-bold">{{ $t('inviteMembers.accountLabel') }}</p>
+                        <p class="font-weight-bold">{{ $t('muaAuth.inviteMembers.accountLabel') }}</p>
                     </v-col>
                     <v-col cols="8" align='center'>
                         <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
@@ -57,23 +57,23 @@ defineExpose({
                 </v-row>
                 <v-row align="center">
                     <v-col cols="4">
-                        <p class="font-weight-bold">{{ $t('inviteMembers.emailLabel') }}</p>
+                        <p class="font-weight-bold">{{ $t('muaAuth.inviteMembers.emailLabel') }}</p>
                     </v-col>
                     <v-col cols="8" align='center'>
                         <v-text-field hide-details data-test-id="inviteMember-emailField" density="compact"
                             class="my-5 rounded" color="info" variant="solo" name="email" type="email"
-                            :placeholder="data.email || $t('inviteMembers.emailPlaceHolder')" :value="data.email"
+                            :placeholder="data.email || $t('muaAuth.inviteMembers.emailPlaceHolder')" :value="data.email"
                             @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
                     </v-col>
                 </v-row>
                 <v-row align="center">
                     <v-col cols="4">
-                        <p class="font-weight-bold">{{ $t('inviteMembers.confirmEmailLabel') }}</p>
+                        <p class="font-weight-bold">{{ $t('muaAuth.inviteMembers.confirmEmailLabel') }}</p>
                     </v-col>
                     <v-col cols="8" align='center'>
                         <v-text-field hide-details density="compact" data-test-id="inviteMember-emailAgainField"
                             class="my-5 rounded" color="info" variant="solo" name="confirmEmail"
-                            type="email" :placeholder="data.confirmEmail || $t('inviteMembers.confirmEmailPlaceHolder')"
+                            type="email" :placeholder="data.confirmEmail || $t('muaAuth.inviteMembers.confirmEmailPlaceHolder')"
                             :value="data.confirmEmail"
                             @update:modelValue="res => data.confirmEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
                             required />
@@ -81,18 +81,18 @@ defineExpose({
                 </v-row>
 
                 <v-row v-if="cb" class="justify-center">
-                    <p class="font-weight-bold" data-test-id="inviteMember-headerCb">{{ $t('inviteMembers.cb.header') }}</p>
+                    <p class="font-weight-bold" data-test-id="inviteMember-headerCb">{{ $t('muaAuth.inviteMembers.cb.header') }}</p>
                 </v-row>
             </v-card-text>
             <v-card-actions>
                 <v-btn color="info" v-if="!cb" data-test-id="inviteMember-submitBtn"
                     @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })">
-                    {{ !processing ? $t('inviteMembers.submitBtn') : '' }}
+                    {{ !processing ? $t('muaAuth.inviteMembers.submitBtn') : '' }}
                     <v-progress-circular v-if="processing" :size="20"
-                        indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+                        indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
                 </v-btn>
-                <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('inviteMembers.cb.cbBtn') }}</v-btn>
-                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('inviteMembers.closeBtn') }}</v-btn>
+                <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('muaAuth.inviteMembers.cb.cbBtn') }}</v-btn>
+                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('muaAuth.inviteMembers.closeBtn') }}</v-btn>
             </v-card-actions>
             </v-container>
         </v-card>

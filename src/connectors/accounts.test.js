@@ -594,4 +594,38 @@ describe('test accounts connectors', () => {
     })
     await expect(accounts(fetch, apiUrl).account.deleteLogo()).rejects.toThrowError('Account Id Is Required')
   })
+
+  test('test createOneByAdmin account', async () => { // admin
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.createOneByAdmin({ name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts',
+      {
+        method: 'POST',
+        body: JSON.stringify({ name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test createOneByAdmin with undefined input ', async () => { // admin
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(accounts(fetch, apiUrl).account.createOneByAdmin()).rejects.toThrowError('Name And UrlFriendlyName Is Required')
+  })
 })

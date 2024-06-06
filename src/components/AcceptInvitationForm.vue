@@ -51,19 +51,19 @@ const title = window.config.title
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordField"
                     class=" my-5 rounded" color="info" variant="solo" name="newPassword"
-                    :label="$t('acceptInvitationForm.newPasswordLabel')" type="password"
-                    :placeholder="data.newPassword || $t('acceptInvitationForm.newPasswordPlaceholder')"
+                    :label="$t('muaAuth.acceptInvitationForm.newPasswordLabel')" type="password"
+                    :placeholder="data.newPassword || $t('muaAuth.acceptInvitationForm.newPasswordPlaceholder')"
                     :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordAgainField"
                     class=" my-5 rounded" color="info" variant="solo" name="newPasswordAgain"
-                    :label="$t('acceptInvitationForm.confirmNewPasswordLabel')" type="password"
-                    :placeholder="data.newPasswordAgain || $t('acceptInvitationForm.confirmNewPasswordPlaceholder')"
+                    :label="$t('muaAuth.acceptInvitationForm.confirmNewPasswordLabel')" type="password"
+                    :placeholder="data.newPasswordAgain || $t('muaAuth.acceptInvitationForm.confirmNewPasswordPlaceholder')"
                     :value="data.newPasswordAgain"
                     @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
-                <v-checkbox :label="$t('acceptInvitationForm.checkboxLabel')" color="info" v-model="checkbox"
+                <v-checkbox :label="$t('muaAuth.acceptInvitationForm.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
                 <v-col>
                     <v-btn color="info" data-test-id="acceptInvitation-submitBtn" :disabled="!checkbox"
@@ -71,7 +71,7 @@ const title = window.config.title
                         {{ !processing ? props.formData.btnText : '' }}
 
                         <v-progress-circular v-if="processing" :size="20"
-                            indeterminate></v-progress-circular>{{ processing ? $t('processing') : '' }}
+                            indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
 
                     </v-btn>
                     <button hidden :disabled="!checkbox"
@@ -80,11 +80,11 @@ const title = window.config.title
             </v-card-text>
             <v-card-text align="center" v-if="cb">
 
-                <h2 class="mt-4" data-test-id="acceptInvitation-headerCb">{{ $t('acceptInvitationForm.cb.header') }}</h2>
-                <p class="mt-4">{{ $t('acceptInvitationForm.cb.message') }}
+                <h2 class="mt-4" data-test-id="acceptInvitation-headerCb">{{ $t('muaAuth.acceptInvitationForm.cb.header') }}</h2>
+                <p class="mt-4">{{ $t('muaAuth.acceptInvitationForm.cb.message') }}
                     <router-link tag="span" style="text-decoration: none; color: inherit;" to="/system-accounts/"
-                        class="font-weight-bold">{{$t('acceptInvitationForm.cb.cbBtn')}}</router-link>
-                    {{$t('acceptInvitationForm.cb.subMessage')}}
+                        class="font-weight-bold">{{$t('muaAuth.acceptInvitationForm.cb.cbBtn')}}</router-link>
+                    {{$t('muaAuth.acceptInvitationForm.cb.subMessage')}}
             </p>
 
         </v-card-text>

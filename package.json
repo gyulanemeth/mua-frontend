@@ -1,8 +1,8 @@
 {
-  "name": "mua-accounts-app",
+  "name": "mua-frontend",
   "version": "0.0.0",
-  "main": "dist/mua-accounts-app.umd.js",
-  "module": "dist/mua-accounts-app.es.js",
+  "main": "dist/mua-frontend.umd.js",
+  "module": "dist/mua-frontend.es.js",
   "files": [
     "dist"
   ],
