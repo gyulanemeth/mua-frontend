@@ -2,7 +2,7 @@
 import { ref, nextTick } from 'vue'
 import ImgCropper from './ImageCropper.vue'
 import { useI18n } from 'vue-i18n'
-import DeleteAccount from './DeleteUserAccount.vue'
+import DeleteAccount from './DeleteAccount.vue'
 
 const { t } = useI18n()
 const componentProps = defineProps({

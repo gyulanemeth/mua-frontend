@@ -20,14 +20,14 @@ const loading = ref()
 const appIcon = window.config.appIcon
 
 async function loadData () {
-  if (route.name === 'system-accounts-accept-invitation' && route.query.token) {
+  if (route.name === 'accounts-accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
     formData.value = {
       btnText: tm('muaAuth.acceptInvitationForm.btnText'),
       header: tm('muaAuth.acceptInvitationForm.header')
     }
   }
-  if (route.name === 'system-accounts-finalize-registration' && route.query.token) {
+  if (route.name === 'accounts-finalize-registration' && route.query.token) {
     loading.value = true
     finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
     if (finalizeRegistrationRes.value.success) {
@@ -76,7 +76,7 @@ watchEffect(async () => {
         </p>
         <p class="pa-2">{{ $t('muaAuth.finalizeRegistrationView.redirectToMainPageLabel') }}
           <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
-            :to="`/system-accounts/`">{{ $t('muaAuth.finalizeRegistrationView.redirectToMainPageBtn') }}</router-link>
+            :to="`/accounts/`">{{ $t('muaAuth.finalizeRegistrationView.redirectToMainPageBtn') }}</router-link>
         </p>
       </v-card-text>
       <v-card-text v-else align="left">

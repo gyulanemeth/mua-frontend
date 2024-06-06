@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-import AdminAccountDetails from '../components/AdminAccountDetails.vue'
+import UserAccountDetails from '../components/UserAccountDetails.vue'
 import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
@@ -15,12 +15,12 @@ const { tm } = useI18n()
 
 const data = ref()
 
-if (route.name === 'system-accounts-verify-email') {
+if (route.name === 'accounts-verify-email') {
   const res = await usersStore.patchEmailConfirm(route.query.token)
   if (!res.message) {
     await accountsStore.readOne()
-    router.push(`/system-accounts/${accountsStore.account.urlFriendlyName}/me`)
     useSystemMessagesStore().addSuccess({ message: tm('muaAuth.userChangeEmail.verifyMessage') })
+    router.push(`/accounts/${accountsStore.account.urlFriendlyName}/me`)
   }
 } else if (!usersStore.user || !usersStore.user.name) {
   await usersStore.readOne()
@@ -30,7 +30,7 @@ if (route.name === 'system-accounts-verify-email') {
       name: 'NOT_FOUND',
       message: 'User data not found please login'
     })
-    router.push('/system-accounts/')
+    router.push('/accounts/')
   }
 }
 data.value = usersStore.user
@@ -74,6 +74,6 @@ async function deleteProfilePicture (statusCallBack) {
 
 <template>
 
-<AdminAccountDetails v-if="data" :data="data" @deleteProfilePictureHandler="deleteProfilePicture" @uploadProfilePictureHandler="uploadProfilePicture" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
+<UserAccountDetails v-if="data" :data="data" @deleteProfilePictureHandler="deleteProfilePicture" @uploadProfilePictureHandler="uploadProfilePicture" @updateNameHandler='handleUpdateUserName' @updatePasswordHandler='handleUpdatePassword' @updateEmailHandler='handleUpdateEmail' @deleteMyAccountHandler='handleDeleteEvent' />
 
 </template>

@@ -42,7 +42,7 @@ const title = window.config.title
                     :placeholder="tokenData.user.email" disabled required />
 
                 <v-text-field hide-details density="compact" class=" my-5 rounded" color="info"
-                    variant="solo" name="name" type="text" :value="tokenData.account.urlFriendlyName"
+                    variant="solo" name="urlFriendlyName" type="text" :value="tokenData.account.urlFriendlyName"
                     :placeholder="tokenData.account.urlFriendlyName" disabled required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-nameField"
@@ -82,7 +82,7 @@ const title = window.config.title
 
                 <h2 class="mt-4" data-test-id="acceptInvitation-headerCb">{{ $t('muaAuth.acceptInvitationForm.cb.header') }}</h2>
                 <p class="mt-4">{{ $t('muaAuth.acceptInvitationForm.cb.message') }}
-                    <router-link tag="span" style="text-decoration: none; color: inherit;" to="/system-accounts/"
+                    <router-link tag="span" style="text-decoration: none; color: inherit;" to="/accounts/"
                         class="font-weight-bold">{{$t('muaAuth.acceptInvitationForm.cb.cbBtn')}}</router-link>
                     {{$t('muaAuth.acceptInvitationForm.cb.subMessage')}}
             </p>

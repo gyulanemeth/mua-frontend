@@ -30,18 +30,6 @@ export default (connectors) => {
       ...pagedListState()
     }),
     actions: {
-      /* async readOne () {
-        try {
-          const token = localStorage.getItem('accessToken')
-          const tokenData = jwtDecode(token)
-          const res = await connectors.admins.readOne({ id: tokenData.user._id })
-          this.admin = res
-          return res
-        } catch (e) {
-          useSystemMessagesStore().addError(e)
-          return e
-        }
-      }, */
       loadPage: loadPage(connectors.admins.list, useSystemMessagesStore().addError, { metaFirst: false }),
       delete: deleteAdmin(connectors.admins.deleteOne, useSystemMessagesStore().addError, { optimistic: false }),
       async deleteOne ({ id, password }) {
@@ -121,7 +109,7 @@ export default (connectors) => {
           const invitationTokenData = jwtDecode(invitationToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: invitationTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: invitationTokenData.user._id })
-          router.push('/admins/system-admins')
+          router.push('/system-admins')
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e

@@ -24,7 +24,7 @@ if (!usersStore.user.role) {
       name: 'NOT_FOUND',
       message: 'User Id not found please login'
     })
-    router.push('/system-accounts/')
+    router.push('/accounts/')
   }
 }
 if (!accountsStore.account || !accountsStore.account.name) {
@@ -35,7 +35,7 @@ if (!accountsStore.account || !accountsStore.account.name) {
       name: 'NOT_FOUND',
       message: 'Account Id not found please login'
     })
-    router.push('/system-accounts/')
+    router.push('/accounts/')
   }
 }
 accountName.value = accountsStore.account.name

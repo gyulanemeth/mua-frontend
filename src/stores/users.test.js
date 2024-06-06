@@ -414,7 +414,7 @@ describe('users Store', () => {
   })
 
   test('test success accept invitation', async () => {
-    window.location.pathname = '/system-accounts/'
+    window.location.pathname = '/accounts/'
     window.location.search = { token: 'token' }
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
@@ -508,7 +508,7 @@ describe('users Store', () => {
   test('test readOne /me success ', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
-    window.location.pathname = '/system-accounts/me'
+    window.location.pathname = '/accounts/me'
     store.account = {}
     store.user = {}
     const res = await store.readOne()

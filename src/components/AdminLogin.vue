@@ -58,7 +58,7 @@ async function submit () {
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="login-resetPasswordBtn" style="text-decoration: none; color: inherit;"
-                                        class="font-weight-bold" to="/system-admins-forgot-password">{{ $t('muaAuth.adminLogin.resetPasswordBtn') }}</router-link>
+                                        class="font-weight-bold" to="/system-admins/forgot-password">{{ $t('muaAuth.adminLogin.resetPasswordBtn') }}</router-link>
                     </v-col>
                     </v-row>
                 </v-container>

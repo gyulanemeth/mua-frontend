@@ -79,7 +79,7 @@ export default (connectors) => {
       },
 
       logout () {
-        router.push('/system-accounts/' + window.location.pathname.split('/')[1])
+        router.push('/accounts/' + window.location.pathname.split('/')[1])
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         localStorage.removeItem('loginToken')
@@ -109,7 +109,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          // router.push(`/system-accounts/${loginTokenData.account.urlFriendlyName}/me`)
+          router.push(`/accounts/`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -148,7 +148,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          // router.push(`/system-accounts/${loginTokenData.account.urlFriendlyName}/me`)
+          router.push(`/accounts`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -186,7 +186,6 @@ export default (connectors) => {
           }
           await connectors.user.patchName({ id: this.user._id, name, accountId: localStorage.getItem('accountId') })
           this.user.name = name
-          // router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -239,7 +238,6 @@ export default (connectors) => {
             throw new RouteError('User ID And Account ID Is Required')
           }
           const res = await connectors.user.patchEmail({ id: this.user._id, accountId: localStorage.getItem('accountId'), newEmail, newEmailAgain })
-          // router.push(`/system-accounts/${this.account.urlFriendlyName}/me`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -253,7 +251,6 @@ export default (connectors) => {
             throw new RouteError('Valid Token Is Required')
           }
           const res = await connectors.user.patchEmailConfirm({ id: tokenData.user._id, accountId: tokenData.account._id, token })
-          // router.push(`/system-accounts/${tokenData.account.urlFriendlyName}/`)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

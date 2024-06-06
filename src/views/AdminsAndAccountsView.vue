@@ -76,7 +76,7 @@ async function loadData () {
 
 async function handleDetailsEvent (params) {
   localStorage.setItem('accountId', params.id)
-  router.push(`/system-accounts/${params.urlFriendlyName}/users`)
+  router.push(`/accounts/${params.urlFriendlyName}/users`)
 }
 
 async function handleDeleteEvent (params, statusCallBack) {

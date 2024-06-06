@@ -62,7 +62,7 @@ const url = ref(window.location.href)
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link style="text-decoration: none; color: inherit;"
                                 data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
-                                :to="`/system-accounts-forgot-password?urlFriendlyName=${route.params.urlFriendlyName}`">{{ $t('muaAuth.userLoginAndResetForm.forgotBtn')
+                                :to="`/accounts/forgot-password?urlFriendlyName=${route.params.urlFriendlyName}`">{{ $t('muaAuth.userLoginAndResetForm.forgotBtn')
                                 }}</router-link>
                     </v-col>
                     </v-row>
@@ -75,7 +75,7 @@ const url = ref(window.location.href)
                     <v-col cols="12" sm="5" class="text-sm-left">
 
                             <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                                style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-login">{{
+                                style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/accounts/login">{{
                                     $t('muaAuth.userLoginAndResetForm.cb.loginToDifferentAccountCbBtn') }}</router-link>
                     </v-col>
                     </v-row>
@@ -87,7 +87,7 @@ const url = ref(window.location.href)
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
                         <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                        style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/system-accounts-create-account">{{
+                        style="text-decoration: none;  color: inherit;" class="font-weight-bold" to="/accounts/create-account">{{
                             $t('muaAuth.userLoginAndResetForm.cb.forgotCbBtn') }}</router-link>
                     </v-col>
                     </v-row>

@@ -65,7 +65,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
-          router.push(`/system-accounts/${this.account.urlFriendlyName}/account`)
+          router.push(`/accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -79,7 +79,7 @@ export default (connectors) => {
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
           this.account.urlFriendlyName = newUrlFriendlyName
-          router.push(`/system-accounts/${this.account.urlFriendlyName}/account`)
+          router.push(`/accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -111,16 +111,16 @@ export default (connectors) => {
           await connectors.user.deletePermission(password)
           const res = await connectors.account.deleteOne({ id: this.account._id })
           if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
-            localStorage.removeItem('accessToken')
             localStorage.removeItem('accountId')
+          this.account = null
             router.push('/system-admins/')
           } else {
-            router.push('/system-accounts/')
-            localStorage.removeItem('accountId')
-            localStorage.removeItem('accessToken')
-            localStorage.removeItem('loginToken')
-          }
           this.account = null
+          localStorage.removeItem('accountId')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('loginToken')
+          router.push('/accounts/')
+          }
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

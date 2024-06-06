@@ -98,7 +98,7 @@ const checkbox = ref()
             <p class="text-center">{{$t('muaAuth.createAccount.redirectTologinMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
                         class="font-weight-bold"
-                        :to="`/system-accounts-login`">{{$t('muaAuth.createAccount.loginBtn')}}</router-link>
+                        :to="`/accounts/login`">{{$t('muaAuth.createAccount.loginBtn')}}</router-link>
                 </p>
         </v-card-text>
     </v-card>
@@ -122,7 +122,7 @@ const checkbox = ref()
                 <p class="text-center">{{$t('muaAuth.createAccount.loginMessage')}}
                     <router-link style="text-decoration: none; color: inherit;"
                         class="font-weight-bold"
-                        :to="`/system-accounts-login`">{{$t('muaAuth.createAccount.loginBtn')}}</router-link>
+                        :to="`/accounts/login`">{{$t('muaAuth.createAccount.loginBtn')}}</router-link>
                 </p>
                 <p class="text-center">{{$t('muaAuth.createAccount.resendMessage')}}
                     <span style="text-decoration: none; cursor: pointer; color: inherit;"

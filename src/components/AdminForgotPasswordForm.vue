@@ -52,7 +52,7 @@ const appIcon = window.config.appIcon
                         <p>{{ $t('muaAuth.adminForgotPasswordForm.redirectToLoginMessage') }}</p>
                     </v-col>
                     <v-col cols="12" sm="5" class="text-sm-left">
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/system-admins-login">{{
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/system-admins/login">{{
                             $t('muaAuth.adminForgotPasswordForm.redirectToLoginBtn') }}</router-link>
                     </v-col>
                     </v-row>
@@ -61,7 +61,7 @@ const appIcon = window.config.appIcon
                 <div v-if="cb">
 
                     <p class="mt-4">{{ $t('muaAuth.adminForgotPasswordForm.cb.message') }}</p>
-                    <v-btn color="white" data-test-id="forgotPassword-continueBtn" class="mt-4" to="/system-admins-login">{{
+                    <v-btn color="white" data-test-id="forgotPassword-continueBtn" class="mt-4" to="/system-admins/login">{{
                         $t('muaAuth.adminForgotPasswordForm.cb.cbBtn') }}</v-btn>
                 </div>
             </v-card-text>

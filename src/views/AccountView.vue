@@ -24,7 +24,7 @@ if (!accountsStore.account || !accountsStore.account.name) {
       name: 'NOT_FOUND',
       message: 'Account data not found please login'
     })
-    router.push('/system-accounts/')
+    router.push('/accounts/')
   }
 }
 data.value = accountsStore.account

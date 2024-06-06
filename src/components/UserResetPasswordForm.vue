@@ -49,7 +49,7 @@ const title = window.config.title
                     density="compact" color="info" class="my-5 rounded" variant="solo" disabled
                     item-title="name" item-value="_id" :label="$t('muaAuth.userLoginAndResetForm.selectLabel')" name="account" />
 
-                <div v-if="route.name === 'system-accounts-forgot-password-reset'">
+                <div v-if="route.name === 'accounts-forgot-password-reset'">
                     <v-btn v-if="!cb" color="info" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('muaAuth.userLoginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb">
@@ -71,13 +71,13 @@ const title = window.config.title
                         <v-checkbox :label="$t('muaAuth.userLoginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
                         <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
-                            @click="$emit('handleForgotPasswordResetHandler', data)">{{ $t('muaAuth.userLoginAndResetForm.resetBtnText') }}</v-btn>
+                            @click="$emit('handleForgotPasswordResetHandler', data,  data, ()=>{})">{{ $t('muaAuth.userLoginAndResetForm.resetBtnText') }}</v-btn>
                         <button hidden :disabled="!checkbox"
-                            @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data)" />
+                            @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data, ()=>{})" />
                     </div>
                 </div>
 
-                <div v-if="route.name !== 'system-accounts-forgot-password-reset'">
+                <div v-if="route.name !== 'accounts-forgot-password-reset'">
                     <div v-if="cb !== 'reset'">
                         <v-checkbox :label="$t('muaAuth.userLoginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
@@ -90,7 +90,7 @@ const title = window.config.title
                         <button hidden :disabled="!checkbox"
                         @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
                         <p class="mt-4 pa-4">{{ $t('muaAuth.userLoginAndResetForm.redirectToLoginMessage') }}
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/system-accounts-login">{{
+                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/accounts/login">{{
                             $t('muaAuth.userLoginAndResetForm.redirectToLoginBtn') }}</router-link>
                     </p>
                     </div>
