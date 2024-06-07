@@ -28,6 +28,11 @@ export default defineConfig({
       }
     }
   },
+  esbuild: {
+    loader: {
+      '.vue': 'vue'
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
