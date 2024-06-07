@@ -28,7 +28,7 @@ data.value = store.user
 async function handleUpdateNameEvent (params) {
   const res = await store.patchName(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.AdminProfileView.nameUpdateAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminProfileView.nameUpdateAlert') })
   }
 }
 
@@ -43,7 +43,7 @@ async function handleUpdateEmailEvent (params, statusCallBack) {
 async function handleDeleteEvent (params) {
   const res = await store.deleteOne(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.AdminProfileView.deleteAccountAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminProfileView.deleteAccountAlert') })
     await store.logout()
   }
 }

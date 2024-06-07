@@ -1,5 +1,5 @@
 {
-  "muaAuth": {
+  "mua": {
     "acceptInvitationForm": {
       "newPasswordLabel": "New Password",
       "newPasswordPlaceholder": "********",
@@ -148,7 +148,7 @@
       "checkboxLabel": "I am human.",
       "submitBtn": "Create"
     },
-    "deleteUserAccount": {
+    "userDeleteAccount": {
       "openBtn": "Delete",
       "header": "Are you sure you want to delete",
       "subheader": "Doing so will fully delete this record forever, which cannot be reversed.",
@@ -163,7 +163,7 @@
       "submitBtn": "Delete",
       "closeBtn": "Close"
     },
-    "deleteAdminAccount": {
+    "adminDeleteAccount": {
       "openBtn": "Delete",
       "header": "Are you sure you want to delete",
       "subheader": "Doing so will fully delete this record forever, which cannot be reversed.",
@@ -177,7 +177,7 @@
       "submitBtn": "Delete",
       "closeBtn": "Close"
     },
-    "inviteMembers": {
+    "accountInviteMembers": {
       "openBtn": "Invite New Members",
       "header": "Invite New Members",
       "accountLabel": "Account",
@@ -349,7 +349,7 @@
       },
       "resendMessage": "Resend invitation"
     },
-    "createAdminDialog": {
+    "adminCreateDialog": {
       "successfullyDeletedAlert": "Deleted successfully",
       "invitationAlert": "Invitation sent successfully",
       "createAlert": "Account Created successfully",
@@ -406,7 +406,7 @@
         "subMessage": "if you are not redirected."
       }
     },
-    "AdminProfileView": {
+    "adminProfileView": {
       "nameUpdateAlert": "Name updated successfully",
       "deleteAccountAlert": "Account Deleted successfully"
     },

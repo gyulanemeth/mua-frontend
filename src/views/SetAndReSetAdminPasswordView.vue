@@ -18,12 +18,12 @@ const formData = ref()
 async function loadData () {
   if (route.name === 'system-admins-accept-invitation') {
     formData.value = {
-      text: tm('muaAuth.adminSetAndReSetPassword.acceptHeader')
+      text: tm('mua.adminSetAndReSetPassword.acceptHeader')
     }
   }
   if (route.name === 'system-admins-forgot-password-reset') {
     formData.value = {
-      text: tm('muaAuth.adminSetAndReSetPassword.forgotHeader')
+      text: tm('mua.adminSetAndReSetPassword.forgotHeader')
     }
   }
 }
@@ -31,7 +31,7 @@ async function loadData () {
 async function handleSetPasswordEvent (params) {
   const res = await store.acceptInvitation(params.token, params.newPassword, params.newPasswordAgain, params.name)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.adminSetAndReSetPassword.registeredAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminSetAndReSetPassword.registeredAlert') })
   }
 }
 

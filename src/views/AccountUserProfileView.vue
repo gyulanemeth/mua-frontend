@@ -19,7 +19,7 @@ if (route.name === 'accounts-verify-email') {
   const res = await usersStore.patchEmailConfirm(route.query.token)
   if (!res.message) {
     await accountsStore.readOne()
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.userChangeEmail.verifyMessage') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userChangeEmail.verifyMessage') })
     router.push(`/accounts/${accountsStore.account.urlFriendlyName}/me`)
   }
 } else if (!usersStore.user || !usersStore.user.name) {
@@ -38,7 +38,7 @@ data.value = usersStore.user
 async function handleUpdateUserName (params) {
   const res = await usersStore.patchUserName(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.AccountUserProfileView.updateNameAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.AccountUserProfileView.updateNameAlert') })
   }
 }
 
@@ -53,7 +53,7 @@ async function handleUpdateEmail (params, statusCallBack) {
 async function handleDeleteEvent (params) {
   const res = await usersStore.deleteOne(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.AccountUserProfileView.accountDeleteAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.AccountUserProfileView.accountDeleteAlert') })
     await usersStore.logout()
   }
 }

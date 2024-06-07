@@ -44,7 +44,7 @@ const tab = ref('me')
     <v-layout class="d-flex flex-wrap align-end justify-end">
 
         <p class="text-h4" data-test-id="meDetails-userName">{{props.data.name}}
-          <span class="text-subtitle-1 font-weight-bold ">{{$t('muaAuth.adminAccountDetails.header')}}</span>
+          <span class="text-subtitle-1 font-weight-bold ">{{$t('mua.adminAccountDetails.header')}}</span>
         </p>
 
         <v-spacer />
@@ -53,10 +53,10 @@ const tab = ref('me')
     <v-layout class="d-flex flex-wrap">
         <v-card class="w-100">
             <v-tabs v-model="tab">
-                <v-tab value="me" to="/system-admins/me" :class="tab==='me'? 'font-weight-bold':''" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('muaAuth.adminAccountDetails.tabs.meLabel')}}</v-tab>
-                <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  to="/system-admins/change-password" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('muaAuth.adminAccountDetails.tabs.changePasswordLabel')}}</v-tab>
-                <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  to="/system-admins/change-email" data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('muaAuth.adminAccountDetails.tabs.changeEmailLabel')}}</v-tab>
-                <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''" to="/system-admins/settings" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('muaAuth.adminAccountDetails.tabs.settingsLabel')}}</v-tab>
+                <v-tab value="me" to="/system-admins/me" :class="tab==='me'? 'font-weight-bold':''" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('mua.adminAccountDetails.tabs.meLabel')}}</v-tab>
+                <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  to="/system-admins/change-password" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('mua.adminAccountDetails.tabs.changePasswordLabel')}}</v-tab>
+                <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  to="/system-admins/change-email" data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('mua.adminAccountDetails.tabs.changeEmailLabel')}}</v-tab>
+                <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''" to="/system-admins/settings" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('mua.adminAccountDetails.tabs.settingsLabel')}}</v-tab>
             </v-tabs>
 
             <v-card-text>

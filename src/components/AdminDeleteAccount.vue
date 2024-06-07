@@ -38,31 +38,31 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
 
         <v-card-text align="start">
             <v-col align="center" class="pb-10">
-                <v-toolbar-title class="font-weight-bold text-error">{{$t('muaAuth.deleteAdminAccount.header')}} “{{props.data.name}}”?</v-toolbar-title>
-                <v-toolbar-title class="text-error">{{$t('muaAuth.deleteAdminAccount.subheader')}}</v-toolbar-title>
+                <v-toolbar-title class="font-weight-bold text-error">{{$t('mua.adminDeleteAccount.header')}} “{{props.data.name}}”?</v-toolbar-title>
+                <v-toolbar-title class="text-error">{{$t('mua.adminDeleteAccount.subheader')}}</v-toolbar-title>
             </v-col>
 
             <v-row align="center" class="pb-10">
-                <h3 class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.overviewTitle')}}</h3>
+                <h3 class="font-weight-bold">{{$t('mua.adminDeleteAccount.overviewTitle')}}</h3>
                 <v-divider />
             </v-row>
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.nameLabel')}}</p>
+                    <p class="font-weight-bold">{{$t('mua.adminDeleteAccount.nameLabel')}}</p>
                 </v-col>
                 <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
             </v-row>
 
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.emailLabel')}}</p>
+                    <p class="font-weight-bold">{{$t('mua.adminDeleteAccount.emailLabel')}}</p>
                 </v-col>
                 <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
             </v-row>
             <v-row align="center">
                 <v-col>
-                    <p class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.picLabel')}}</p>
+                    <p class="font-weight-bold">{{$t('mua.adminDeleteAccount.picLabel')}}</p>
                 </v-col>
                 <v-col align="center">
                     <v-avatar class="elevation-3 " size="180">
@@ -72,17 +72,17 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
             </v-row>
             <v-col>
                 <v-row align="center" class="py-10">
-                    <h3 class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.passwordConfirmationHeader')}}</h3>
+                    <h3 class="font-weight-bold">{{$t('mua.adminDeleteAccount.passwordConfirmationHeader')}}</h3>
                     <v-divider />
                 </v-row>
 
                 <v-row align="center">
                     <v-col>
-                        <p class="font-weight-bold">{{$t('muaAuth.deleteAdminAccount.passwordLabel')}}</p>
+                        <p class="font-weight-bold">{{$t('mua.adminDeleteAccount.passwordLabel')}}</p>
                     </v-col>
                     <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="info" class="my-5 rounded" variant="solo"
                     name="password" type="password"
-                    :placeholder="password || $t('muaAuth.deleteAdminAccount.passwordPlaceholder')"
+                    :placeholder="password || $t('mua.adminDeleteAccount.passwordPlaceholder')"
                     :value="password"
                     @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
@@ -91,9 +91,9 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('muaAuth.deleteAdminAccount.submitBtn')}}</v-btn>
+            <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('mua.adminDeleteAccount.submitBtn')}}</v-btn>
             <v-spacer />
-            <v-btn color="info" data-test-id="deleteAccount-cancelBtn" @click="resetForm">{{$t('muaAuth.deleteAdminAccount.closeBtn')}}</v-btn>
+            <v-btn color="info" data-test-id="deleteAccount-cancelBtn" @click="resetForm">{{$t('mua.adminDeleteAccount.closeBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>

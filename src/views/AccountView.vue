@@ -13,7 +13,7 @@ const usersStore = useUsersStore()
 const router = useRouter()
 const data = ref()
 if (!usersStore.user || !usersStore.user.role) {
-  usersStore.readOne()
+  await usersStore.readOne()
 }
 
 if (!accountsStore.account || !accountsStore.account.name) {
@@ -31,14 +31,14 @@ data.value = accountsStore.account
 async function handleUpdateAccountName (params) {
   const res = await accountsStore.patchAccountName({ name: params, user: usersStore.user })
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('muaAuth.accountView.updateAccountNameAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.updateAccountNameAlert') })
   }
 }
 
 async function handleUpdateUrlFriendlyName (params) {
   const res = await accountsStore.patchUrlFriendlyName(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('muaAuth.accountView.updateUrlFriendlyNameAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.updateUrlFriendlyNameAlert') })
   }
 }
 
@@ -47,7 +47,7 @@ async function handleUploadLogo (params, statusCallBack) {
   statusCallBack(res.logo)
   data.value = accountsStore.account
   if (res) {
-    useSystemMessagesStore().addSuccess({ message: t('muaAuth.accountView.uploadLogoAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.uploadLogoAlert') })
   }
 }
 
@@ -56,7 +56,7 @@ async function handleDeleteLogo (statusCallBack) {
   statusCallBack(!res.message)
   data.value = accountsStore.account
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('muaAuth.accountView.deleteLogoAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.deleteLogoAlert') })
   }
 }
 

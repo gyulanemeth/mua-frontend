@@ -33,16 +33,16 @@ async function loadData () {
     numOfPages.value = store.numOfPages
     data.value = store.items
     btn.value = {
-      header: tm('muaAuth.createAdminDialog.inviteHeader'),
+      header: tm('mua.adminCreateDialog.inviteHeader'),
       input: [{
-        label: tm('muaAuth.createAdminDialog.emailLabel'),
+        label: tm('mua.adminCreateDialog.emailLabel'),
         name: 'email',
-        placeholder: tm('muaAuth.createAdminDialog.emailPlaceHolder'),
+        placeholder: tm('mua.adminCreateDialog.emailPlaceHolder'),
         type: 'email'
       }, {
-        label: tm('muaAuth.createAdminDialog.confirmEmailLabel'),
+        label: tm('mua.adminCreateDialog.confirmEmailLabel'),
         name: 'confirmEmail',
-        placeholder: tm('muaAuth.createAdminDialog.confirmEmailPlaceHolder'),
+        placeholder: tm('mua.adminCreateDialog.confirmEmailPlaceHolder'),
         type: 'email'
       }]
     }
@@ -53,21 +53,21 @@ async function loadData () {
     numOfPages.value = store.numOfPages
     data.value = store.items
     btn.value = {
-      header: tm('muaAuth.createAdminDialog.detailsHeader'),
+      header: tm('mua.adminCreateDialog.detailsHeader'),
       input: [{
-        label: tm('muaAuth.createAdminDialog.nameLabel'),
+        label: tm('mua.adminCreateDialog.nameLabel'),
         name: 'name',
-        placeholder: tm('muaAuth.createAdminDialog.namePlaceHolder'),
+        placeholder: tm('mua.adminCreateDialog.namePlaceHolder'),
         type: 'text'
       }, {
-        label: tm('muaAuth.createAdminDialog.urlFriendlyNameLabel'),
+        label: tm('mua.adminCreateDialog.urlFriendlyNameLabel'),
         name: 'urlFriendlyName',
-        placeholder: tm('muaAuth.createAdminDialog.urlFriendlyNamePlaceHolder'),
+        placeholder: tm('mua.adminCreateDialog.urlFriendlyNamePlaceHolder'),
         type: 'text'
       }, {
-        label: tm('muaAuth.createAdminDialog.logoLabel'),
+        label: tm('mua.adminCreateDialog.logoLabel'),
         name: 'pic',
-        placeholder: tm('muaAuth.createAdminDialog.logoPlaceHolder'),
+        placeholder: tm('mua.adminCreateDialog.logoPlaceHolder'),
         type: 'file'
       }]
     }
@@ -84,7 +84,7 @@ async function handleDeleteEvent (params, statusCallBack) {
   statusCallBack(!res.message)
   if (!res.message) {
     loadData()
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.createAdminDialog.successfullyDeletedAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminCreateDialog.successfullyDeletedAlert') })
   }
 }
 
@@ -99,7 +99,7 @@ async function handleReInviteEvent (params) {
   store = useAdminsStore()
   const res = await store.reSendInvitation(params.email)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.createAdminDialog.invitationAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminCreateDialog.invitationAlert') })
   }
 }
 
@@ -107,7 +107,7 @@ async function handleCreateEvent (params, statusCallBack) {
   const res = await store.createOneByAdmin(params)
   statusCallBack(!res.message)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.createAdminDialog.createAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.adminCreateDialog.createAlert') })
     loadData()
   }
 }

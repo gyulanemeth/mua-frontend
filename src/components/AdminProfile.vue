@@ -54,17 +54,17 @@ const openFileInput = () => {
 <template>
   <v-layout class="d-flex flex-wrap w-75">
     <v-col cols="8" class="pt-3">
-      <h3 class="font-weight-bold">{{ $t('muaAuth.adminProfile.header') }}</h3>
+      <h3 class="font-weight-bold">{{ $t('mua.adminProfile.header') }}</h3>
       <v-divider />
 
       <v-row align="center" class="mt-3">
         <v-col>
-          <p class="font-weight-bold">{{ $t('muaAuth.adminProfile.nameLabel') }}</p>
+          <p class="font-weight-bold">{{ $t('mua.adminProfile.nameLabel') }}</p>
         </v-col>
 
         <v-text-field ref="nameInput" hide-details density="compact" :disabled='!editMode'
           data-test-id="meDetails-meTab-nameField" color="info" variant="underlined" name="name"
-          :placeholder="name || $t('muaAuth.adminProfile.namePlaceHolder')" :value="name"
+          :placeholder="name || $t('mua.adminProfile.namePlaceHolder')" :value="name"
           @keydown.enter="$emit('updateNameHandler', name); editMode = false"
           @keydown.esc="editMode = false; name = componentProps.name"
           @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" type="text" required />
@@ -83,10 +83,10 @@ const openFileInput = () => {
       </v-row>
       <v-row align="center" class="mt-3">
         <v-col>
-          <p class="font-weight-bold">{{ $t('muaAuth.adminProfile.emailLabel') }}</p>
+          <p class="font-weight-bold">{{ $t('mua.adminProfile.emailLabel') }}</p>
         </v-col>
         <v-text-field hide-details density="compact" disabled color="info" variant="underlined"
-          :placeholder="$t('muaAuth.adminProfile.emailPlaceHolder')" name="E-mail" v-model="email" type="text" required />
+          :placeholder="$t('mua.adminProfile.emailPlaceHolder')" name="E-mail" v-model="email" type="text" required />
         <v-btn color="info" variant="text" icon="mdi-arrow-right" class="ma-2" size="small"
           @click.stop="$emit('changeTab', 'changeEmail')" />
 
@@ -94,11 +94,11 @@ const openFileInput = () => {
 
     </v-col>
     <v-col cols="4" class="pt-3">
-      <h3 class="font-weight-bold">{{ $t('muaAuth.adminProfile.picLabel') }}</h3>
+      <h3 class="font-weight-bold">{{ $t('mua.adminProfile.picLabel') }}</h3>
       <v-divider />
       <v-col align="center" class="mt-3">
         <v-hover v-slot="{ isHovering, props }">
-          <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('muaAuth.processing')
+          <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('mua.processing')
           }}</v-progress-circular>
           <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
             <v-img :src="profilePicture" class="align-self-stretch" cover />

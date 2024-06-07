@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Invite from '../components/InviteMembers.vue'
-import DeleteUser from '../components/DeleteUserAccount.vue'
+import Invite from './AccountInviteMembers.vue'
+import DeleteUser from '../components/UserDeleteAccount.vue'
 import UserCard from '../components/UserCard.vue'
 import { useDebounceFn } from '@vueuse/core'
 
@@ -58,7 +58,7 @@ const appIcon = window.config.appIcon
             <v-col class="pt-3 d-flex align-end">
               <v-btn append-icon="mdi-account-plus" data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
             @click="inviteMembersDialog.show()">
-            {{ $t('muaAuth.inviteMembers.openBtn') }}
+            {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
                 <Invite ref="inviteMembersDialog" :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
               </v-col>
@@ -74,14 +74,14 @@ const appIcon = window.config.appIcon
             <v-icon  class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
           </v-col>
           <v-card-text class="pt-0">
-            <p class="font-weight-medium" >{{ $t('muaAuth.emptyList.addFirstElement') }} </p>
+            <p class="font-weight-medium" >{{ $t('mua.emptyList.addFirstElement') }} </p>
           </v-card-text>
         </div>
 
         <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
           <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
             <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
-            <h4 class="mt-3" >{{ $t('muaAuth.loading') }}</h4>
+            <h4 class="mt-3" >{{ $t('mua.loading') }}</h4>
           </v-card>
         </v-layout>
 
@@ -95,8 +95,8 @@ const appIcon = window.config.appIcon
                    <v-icon color="error" icon="mdi-cancel" size="x-large"></v-icon>
                </v-col>
                <v-col cols="10" class="pt-4 ml-0 pl-0">
-                 <h3  v-if="filter.length === 0">{{$t('muaAuth.emptyList.addFirstElement')}}</h3>
-                 <h3  v-else >{{$t('muaAuth.emptyList.searchNoResult')}}</h3>
+                 <h3  v-if="filter.length === 0">{{$t('mua.emptyList.addFirstElement')}}</h3>
+                 <h3  v-else >{{$t('mua.emptyList.searchNoResult')}}</h3>
                 </v-col>
               </v-row>
               <h3 class="w-100" v-if="filter.length > 0" >{{ filter }}</h3>
@@ -118,7 +118,7 @@ const appIcon = window.config.appIcon
                       </v-card-subtitle>
                     </v-card-subtitle>
                   </v-card-text>
-                  <v-tooltip v-if="props.currentUser.role === 'admin'" :text="$t('muaAuth.userList.resendMessage')">
+                  <v-tooltip v-if="props.currentUser.role === 'admin'" :text="$t('mua.userList.resendMessage')">
                             <template v-slot:activator="{ props }">
                                 <v-btn v-bind="props" color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
                             </template>
@@ -134,7 +134,7 @@ const appIcon = window.config.appIcon
 
                 </v-card-actions>
                 <v-card-actions v-if="props.currentUser._id === item._id">
-                    <v-btn color="info" class="text-white" :to="`/accounts/${route.params.urlFriendlyName}/me`">{{ $t('muaAuth.userList.openBtn') }}</v-btn>
+                    <v-btn color="info" class="text-white" :to="`/accounts/${route.params.urlFriendlyName}/me`">{{ $t('mua.userList.openBtn') }}</v-btn>
                 </v-card-actions>
 
             </v-card>

@@ -24,15 +24,15 @@ setInterval(redirect, 1000)
       </v-card-text>
       <v-card-text class="text-center">
         <v-alert class="w-100" color="info" prominent>
-          {{ $t('muaAuth.redirectToLoginMessage.title') }}
+          {{ $t('mua.redirectToLoginMessage.title') }}
         </v-alert>
 
       </v-card-text>
       <v-card-text class="text-center">
-        {{ $t('muaAuth.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('muaAuth.redirectToLoginMessage.bodyPart1')
-        }}<br /> {{ $t('muaAuth.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
-          :href="url"><b> {{ $t('muaAuth.redirectToLoginMessage.redirectBtn') }} </b></a> {{
-            $t('muaAuth.redirectToLoginMessage.bodyPart3') }}
+        {{ $t('mua.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('mua.redirectToLoginMessage.bodyPart1')
+        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
+          :href="url"><b> {{ $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
+            $t('mua.redirectToLoginMessage.bodyPart3') }}
 
       </v-card-text>
     </v-card>

@@ -23,8 +23,8 @@ async function loadData () {
   if (route.name === 'accounts-accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
     formData.value = {
-      btnText: tm('muaAuth.acceptInvitationForm.btnText'),
-      header: tm('muaAuth.acceptInvitationForm.header')
+      btnText: tm('mua.acceptInvitationForm.btnText'),
+      header: tm('mua.acceptInvitationForm.header')
     }
   }
   if (route.name === 'accounts-finalize-registration' && route.query.token) {
@@ -67,18 +67,7 @@ watchEffect(async () => {
         <h4 class="mt-3">{{ $t('loading') }}</h4>
       </v-card>
     </v-layout>
-      <v-card-text v-else-if="accountsStore.account" align="left">
-        <h4 class="text-h6 text-center text-green">{{ $t('muaAuth.finalizeRegistrationView.header') }}</h4>
-        <p class="mt-3 pa-2">{{ $t('muaAuth.finalizeRegistrationView.message') }}</p>
-        <p class="pa-2">{{ $t('muaAuth.finalizeRegistrationView.createFirstProjectLabel') }}
-          <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
-            :to="`/accounts/${accountsStore.account.urlFriendlyName}/projects/create`">{{ $t('muaAuth.finalizeRegistrationView.createFirstProjectBtn') }}</router-link>
-        </p>
-        <p class="pa-2">{{ $t('muaAuth.finalizeRegistrationView.redirectToMainPageLabel') }}
-          <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
-            :to="`/accounts/`">{{ $t('muaAuth.finalizeRegistrationView.redirectToMainPageBtn') }}</router-link>
-        </p>
-      </v-card-text>
+    <slot v-else-if="accountsStore.account"></slot>
       <v-card-text v-else align="left">
         <h4 class="text-h6 text-center text-red">{{ finalizeRegistrationRes.name }}</h4>
         <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes.message }}</p>

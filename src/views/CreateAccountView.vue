@@ -18,7 +18,7 @@ async function createEventHandler (data, statusCallBack) {
 async function reSendFinalizeRegistrationEventHandler (params) {
   const res = await usersStore.reSendFinalizeRegistration(params)
   if (res.success) {
-    useSystemMessagesStore().addSuccess({ message: t('muaAuth.createAccountView.emailSentAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.createAccountView.emailSentAlert') })
   }
 }
 

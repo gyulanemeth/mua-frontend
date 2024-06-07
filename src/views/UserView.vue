@@ -52,7 +52,7 @@ async function handleUpdateRole (params) {
     role: params.role
   })
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.userView.roleUpdateAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.roleUpdateAlert') })
     await usersStore.load()
     data.value = usersStore.items
   }
@@ -61,7 +61,7 @@ async function handleUpdateRole (params) {
 async function handleDeleteUser (params) {
   const res = await usersStore.deleteOne(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.userView.accountDeleteAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.accountDeleteAlert') })
     await usersStore.load()
     data.value = usersStore.items
     if (usersStore.user._id === params.id) {
@@ -82,7 +82,7 @@ async function handleInviteMember (params, statusCallBack) {
 async function handleReInviteMember (params) {
   const res = await usersStore.reSendInvitation(params.email)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('muaAuth.userView.invitationSentAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.invitationSentAlert') })
   }
 }
 

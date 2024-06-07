@@ -45,26 +45,26 @@ email.value = jwtDecode(route.query.token).user.email
 
                 <v-text-field v-if="operation === 'setPassword'" data-test-id="setAndRestPassword-nameField" hide-details
                     density="compact" class=" my-5 rounded" color="info" variant="solo" name="name"
-                    :label="$t('muaAuth.adminSetAndReSetPassword.nameLabel')" type="text"
-                    :placeholder="data.name || $t('muaAuth.adminSetAndReSetPassword.namePlaceHolder')" :value="data.name"
+                    :label="$t('mua.adminSetAndReSetPassword.nameLabel')" type="text"
+                    :placeholder="data.name || $t('mua.adminSetAndReSetPassword.namePlaceHolder')" :value="data.name"
                     @update:modelValue="res => data.name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" required />
 
                 <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
                     variant="solo" name="newPassword" data-test-id="setAndRestPassword-newPasswordField"
-                    :label="$t('muaAuth.adminSetAndReSetPassword.newPasswordLabel')" type="password"
-                    :placeholder="data.newPassword || $t('muaAuth.adminSetAndReSetPassword.newPasswordPlaceholder')"
+                    :label="$t('mua.adminSetAndReSetPassword.newPasswordLabel')" type="password"
+                    :placeholder="data.newPassword || $t('mua.adminSetAndReSetPassword.newPasswordPlaceholder')"
                     :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
 
                 <v-text-field hide-details density="compact" class=" my-5 rounded" color="info"
                     variant="solo" name="newPasswordAgain" data-test-id="setAndRestPassword-newPasswordAgainField"
-                    :label="$t('muaAuth.adminSetAndReSetPassword.confirmNewPasswordLabel')" type="password"
-                    :placeholder="data.newPasswordAgain || $t('muaAuth.adminSetAndReSetPassword.confirmNewPasswordPlaceholder')"
+                    :label="$t('mua.adminSetAndReSetPassword.confirmNewPasswordLabel')" type="password"
+                    :placeholder="data.newPasswordAgain || $t('mua.adminSetAndReSetPassword.confirmNewPasswordPlaceholder')"
                     :value="data.newPasswordAgain"
                     @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
-                <v-checkbox :label="$t('muaAuth.adminSetAndReSetPassword.checkboxLabel')" color="info" v-model="checkbox"
+                <v-checkbox :label="$t('mua.adminSetAndReSetPassword.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
 
                 <v-col v-if="operation === 'resetPassword'">
@@ -74,7 +74,7 @@ email.value = jwtDecode(route.query.token).user.email
                         {{ !processing ? props.formData.text : '' }}
 
                         <v-progress-circular v-if="processing" :size="20"
-                            indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+                            indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
                     <button hidden :disabled="!checkbox"
@@ -86,7 +86,7 @@ email.value = jwtDecode(route.query.token).user.email
                         {{ !processing ? props.formData.text : '' }}
 
                         <v-progress-circular v-if="processing" :size="20"
-                            indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+                            indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
                     <button hidden :disabled="!checkbox"
@@ -95,12 +95,12 @@ email.value = jwtDecode(route.query.token).user.email
             </v-card-text>
             <v-card-text align="center" v-if="cb">
 
-                <h2 class="mt-4">{{ $t('muaAuth.adminSetAndReSetPassword.cb.header') }}</h2>
-                <p class="mt-4">{{ $t('muaAuth.adminSetAndReSetPassword.cb.message') }}
+                <h2 class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.header') }}</h2>
+                <p class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.message') }}
                     <router-link tag="span" data-test-id="setAndRestPassword-continueBtn"
                         style="text-decoration: none; color: inherit;" to="/system-admins/me" class="font-weight-bold">{{
-                            $t('muaAuth.adminSetAndReSetPassword.cb.cbBtn') }}</router-link>
-                    {{ $t('muaAuth.adminSetAndReSetPassword.cb.subMessage') }}
+                            $t('mua.adminSetAndReSetPassword.cb.cbBtn') }}</router-link>
+                    {{ $t('mua.adminSetAndReSetPassword.cb.subMessage') }}
                 </p>
 
             </v-card-text>

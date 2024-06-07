@@ -46,10 +46,10 @@ const tab = ref('me')
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
-              <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/accounts/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('muaAuth.userAccountDetails.tabs.meLabel')}}</v-tab>
-              <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('muaAuth.userAccountDetails.tabs.changePasswordLabel')}}</v-tab>
-              <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('muaAuth.userAccountDetails.tabs.changeEmailLabel')}}</v-tab>
-              <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('muaAuth.userAccountDetails.tabs.settingsLabel')}}</v-tab>
+              <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/accounts/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('mua.userAccountDetails.tabs.meLabel')}}</v-tab>
+              <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('mua.userAccountDetails.tabs.changePasswordLabel')}}</v-tab>
+              <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('mua.userAccountDetails.tabs.changeEmailLabel')}}</v-tab>
+              <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('mua.userAccountDetails.tabs.settingsLabel')}}</v-tab>
             </v-tabs>
 
             <v-card-text>

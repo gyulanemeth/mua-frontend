@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
-const operation = computed(() => route.name === 'system-admins' ? tm('muaAuth.createAdminDialog.operation.admins') : tm('muaAuth.createAdminDialog.operation.accounts'))
+const operation = computed(() => route.name === 'system-admins' ? tm('mua.adminCreateDialog.operation.admins') : tm('mua.adminCreateDialog.operation.accounts'))
 
 const dialogShown = ref(false)
 const processing = ref(false)
@@ -83,31 +83,31 @@ defineExpose({
                     </v-col>
                 </v-row>
                 <v-row v-if="cb" data-test-id="formDialog-cb" class="justify-center">
-                    <p class="font-weight-bold">{{ $t('muaAuth.createAdminDialog.cb.message') }}</p>
+                    <p class="font-weight-bold">{{ $t('mua.adminCreateDialog.cb.message') }}</p>
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="info" v-if="operation === $t('muaAuth.createAdminDialog.operation.accounts')"
+                <v-btn color="info" v-if="operation === $t('mua.adminCreateDialog.operation.accounts')"
                     data-test-id="formDialog-submitBtn"
                     @click="processing = true; $emit('createEventHandler', data, () => { processing = false; dialogShown = false }); resetForm()">
 
                     {{ !processing ? operation : '' }}
 
                     <v-progress-circular v-if="processing" :size="20"
-                        indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+                        indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                 </v-btn>
                 <v-btn color="info" v-else-if="cb" data-test-id="formDialog-resetBtn" @click="cb = null">{{
-                    $t('muaAuth.createAdminDialog.cb.resetbtn') }}</v-btn>
+                    $t('mua.adminCreateDialog.cb.resetbtn') }}</v-btn>
                 <v-btn color="info" v-else data-test-id="formDialog-inviteAnotherBtn"
                     @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })">
                     {{ !processing ? operation : '' }}
                     <v-progress-circular v-if="processing" :size="20"
-                        indeterminate></v-progress-circular>{{ processing ? $t('muaAuth.processing') : '' }}
+                        indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                 </v-btn>
                 <v-btn color="info" data-test-id="formDialog-cancelBtn"
-                    @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('muaAuth.createAdminDialog.cb.closeBtn') }}</v-btn>
+                    @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.adminCreateDialog.cb.closeBtn') }}</v-btn>
             </v-card-actions>
         </v-card>
         <ImgCropper v-if="showCropperDialog" @uploadProfilePictureHandler="previewImage" @closeCropperHandler="processing = false; showCropperDialog = false" />

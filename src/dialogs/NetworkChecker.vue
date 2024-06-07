@@ -40,7 +40,7 @@ window.addEventListener('online', async (e) => {
     </v-card-text>
       <v-card-actions class="d-flex justify-end">
         <v-btn @click="snackbar = false" :color="status === 'offline'?'error':'success'" width="100" variant="elevated" >
-          {{$t('muaAuth.networkChecker.closeBtn')}}
+          {{$t('mua.networkChecker.closeBtn')}}
         </v-btn>
       </v-card-actions>
   </v-snackbar>
