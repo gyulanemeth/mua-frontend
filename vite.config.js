@@ -29,7 +29,7 @@ export default defineConfig({
     }
   },
   esbuild: {
-    loader: {
+    'loader': {
       '.vue': 'vue'
     }
   },
