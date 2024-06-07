@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/mua-frontend.umd.js",
   "module": "dist/mua-frontend.es.js",
   "files": [
@@ -14,6 +14,14 @@
     "dev": "vite --port 3000",
     "preview": "vite preview --port 4173"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gyulanemeth/mua-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gyulanemeth/mua-frontend/issues"
+  },
+  "homepage": "https://github.com/gyulanemeth/mua-frontend#readme",
   "dependencies": {
     "@mdi/font": "5.9.55",
     "@sweetalert2/theme-material-ui": "^5.0.11",
