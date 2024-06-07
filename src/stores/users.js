@@ -160,7 +160,7 @@ export default (connectors) => {
           if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             if (window.location.pathname.split('/').includes('me')) {
               localStorage.removeItem('accountId')
-              window.location.href = `${window.config.appBaseUrl}me`
+              window.location.href = `${import.meta.env.VITE_APP_BASE_URL}me`
             } else {
               const tokenData = jwtDecode(localStorage.getItem('accessToken'))
               this.user = tokenData.user

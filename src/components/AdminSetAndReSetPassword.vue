@@ -16,8 +16,8 @@ const cb = ref()
 const checkbox = ref()
 const processing = ref(false)
 
-const title = window.config.title
-const appIcon = window.config.appIcon
+const title = import.meta.env.VITE_APP_TITLE
+const appIcon = import.meta.env.VITE_APP_ICON
 
 email.value = jwtDecode(route.query.token).user.email
 

@@ -9,8 +9,8 @@ const email = ref('')
 const password = ref('')
 const processing = ref(false)
 
-const title = window.config.title
-const appIcon = window.config.appIcon
+const title = import.meta.env.VITE_APP_TITLE
+const appIcon = import.meta.env.VITE_APP_ICON
 
 async function submit () {
   const res = await adminStore.login(email.value, password.value)

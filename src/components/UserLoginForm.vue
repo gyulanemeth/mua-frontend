@@ -18,8 +18,8 @@ if (props.tokenData.account) {
   data.value.account = ref(props.tokenData.account._id)
 }
 
-const appIcon = window.config.appIcon
-const title = window.config.title
+const appIcon = import.meta.env.VITE_APP_ICON
+const title = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>

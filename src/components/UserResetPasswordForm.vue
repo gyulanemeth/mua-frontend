@@ -19,8 +19,8 @@ if (props.formData.email) {
 if (props.formData.account) {
   data.value.account = ref(props.formData.account)
 }
-const appIcon = window.config.appIcon
-const title = window.config.title
+const appIcon = import.meta.env.VITE_APP_ICON
+const title = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>

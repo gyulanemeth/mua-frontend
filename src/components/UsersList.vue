@@ -47,7 +47,7 @@ async function visibilityChanged (isVisible) {
   }
 }
 
-const appIcon = window.config.appIcon
+const appIcon = import.meta.env.VITE_APP_ICON
 </script>
 
 <template>

@@ -7,8 +7,8 @@ const data = ref({
 })
 
 const cb = ref()
-const appIcon = window.config.appIcon
-const title = window.config.title
+const appIcon = import.meta.env.VITE_APP_ICON
+const title = import.meta.env.VITE_APP_TITLE
 const processing = ref(false)
 
 const checkbox = ref()

@@ -52,7 +52,7 @@ export default function (fetch, apiUrl) {
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
-  const delPermissionAdmin = createPostConnector(fetch, window.config.apiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
+  const delPermissionAdmin = createPostConnector(fetch, import.meta.env.VITE_API_BASE_URL, generateDeletePermissionRoute, generateAdditionalHeaders)
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
   const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
   const postReFinalizeRegistration = createPostConnector(fetch, apiUrl, generateReFinalizeRegistrationRoute)

@@ -10,8 +10,8 @@ const route = useRoute()
 const data = ref({})
 const processing = ref(false)
 
-const appIcon = window.config.appIcon
-const title = window.config.title
+const appIcon = import.meta.env.VITE_APP_ICON
+const title = import.meta.env.VITE_APP_TITLE
 const url = ref(window.location.href)
 </script>
 

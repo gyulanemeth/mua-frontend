@@ -17,7 +17,7 @@ const data = ref()
 const formData = ref()
 const loading = ref()
 
-const appIcon = window.config.appIcon
+const appIcon = import.meta.env.VITE_APP_ICON
 
 async function loadData () {
   if (route.name === 'accounts-accept-invitation' && route.query.token) {
