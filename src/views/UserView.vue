@@ -3,107 +3,102 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import UsersList from '../components/UsersList.vue'
-import { useCurrentUserAndAccountStore, useUsersStore } from '../stores/index.js'
+import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import { useI18n } from 'vue-i18n'
 
 const { tm } = useI18n()
-const currentUserAndAccountStore = await useCurrentUserAndAccountStore()
+const accountsStore = useAccountsStore()
+const usersStore = useUsersStore()
 const router = useRouter()
 
 const data = ref()
-const roles = ref()
 const accountName = ref()
 const currentUser = ref()
 
-const store = useUsersStore()
-
-if (!currentUserAndAccountStore.user.role) {
-  await currentUserAndAccountStore.readOneUser()
-  if (!currentUserAndAccountStore.user.role) {
+await usersStore.readOne()
+if (!usersStore.user.role) {
+  if (!usersStore.user.role) {
     useSystemMessagesStore().addError({
       status: 404,
       name: 'NOT_FOUND',
       message: 'User Id not found please login'
     })
-    router.push('/')
+    router.push('/accounts/')
   }
 }
-if (!currentUserAndAccountStore.account || !currentUserAndAccountStore.account.name) {
-  await currentUserAndAccountStore.readOne()
-  if (!currentUserAndAccountStore.account.name) {
+if (!accountsStore.account || !accountsStore.account.name) {
+  await accountsStore.readOne()
+  if (!accountsStore.account.name) {
     useSystemMessagesStore().addError({
       status: 404,
       name: 'NOT_FOUND',
       message: 'Account Id not found please login'
     })
-    router.push('/')
+    router.push('/accounts/')
   }
 }
-accountName.value = currentUserAndAccountStore.account.name
-currentUser.value = currentUserAndAccountStore.user
-store.params = {
-  accountId: currentUserAndAccountStore.account._id
-}
-await store.load()
-data.value = store.items
-if (currentUserAndAccountStore.user.role === 'admin') {
-  const config = await store.config()
-  roles.value = config.role
+accountName.value = accountsStore.account.name
+currentUser.value = usersStore.user
+usersStore.params = {
+  accountId: accountsStore.account._id
 }
 
+await usersStore.load()
+data.value = usersStore.items
+
 async function handleUpdateRole (params) {
-  const res = await store.patchRole(params.id, {
+  const res = await usersStore.patchRole(params.id, {
     role: params.role
   })
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('userView.roleUpdateAlert') })
-    await store.load()
-    data.value = store.items
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.roleUpdateAlert') })
+    await usersStore.load()
+    data.value = usersStore.items
   }
 }
 
 async function handleDeleteUser (params) {
-  const res = await store.deleteOne(params)
+  const res = await usersStore.deleteOne(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('userView.accountDeleteAlert') })
-    await store.load()
-    data.value = store.items
-    if (currentUserAndAccountStore.user._id === params.id) {
-      await currentUserAndAccountStore.logout()
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.accountDeleteAlert') })
+    await usersStore.load()
+    data.value = usersStore.items
+    if (usersStore.user._id === params.id) {
+      await usersStore.logout()
     }
   }
 }
 
 async function handleInviteMember (params, statusCallBack) {
-  const res = await currentUserAndAccountStore.sendInvitation(params.email)
+  const res = await usersStore.sendInvitation(params.email)
   statusCallBack(!res.message)
   if (!res.message) {
-    await store.load()
-    data.value = store.items
+    await usersStore.load()
+    data.value = usersStore.items
   }
 }
 
 async function handleReInviteMember (params) {
-  const res = await currentUserAndAccountStore.reSendInvitation(params.email)
+  const res = await usersStore.reSendInvitation(params.email)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: tm('userView.invitationSentAlert') })
+    useSystemMessagesStore().addSuccess({ message: tm('mua.userView.invitationSentAlert') })
   }
 }
 
 async function loadMore () {
-  if (store.items.length !== store.count) {
-    store.skip = store.skip + 10
-    await store.loadMore()
-    data.value = store.items
+  if (usersStore.items.length !== usersStore.count) {
+    usersStore.skip = usersStore.skip + 10
+    await usersStore.loadMore()
+    data.value = usersStore.items
   }
 }
 
 async function searchBarHandler (filter, statusCallBack) {
   if (filter === '') {
-    store.filter = {}
+    usersStore.filter = {}
   } else {
-    store.filter = {
+    usersStore.filter = {
       $or: [{
         name: {
           $regex: filter,
@@ -118,8 +113,8 @@ async function searchBarHandler (filter, statusCallBack) {
       }]
     }
   }
-  await store.load()
-  data.value = store.items
+  await usersStore.load()
+  data.value = usersStore.items
   statusCallBack()
 }
 
@@ -127,6 +122,6 @@ async function searchBarHandler (filter, statusCallBack) {
 
 <template>
 
-<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="roles" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"  @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+<UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="['admin', 'user']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"  @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>

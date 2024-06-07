@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 
 const countDown = ref(5)
 const route = useRoute()
-const url = ref('/' + (route.params.urlFriendlyName || ''))
+const url = ref('/accounts/' + (route.params.urlFriendlyName || ''))
 function redirect () {
   if (countDown.value === 0) {
     window.location.href = url.value
@@ -24,15 +24,15 @@ setInterval(redirect, 1000)
       </v-card-text>
       <v-card-text class="text-center">
         <v-alert class="w-100" color="info" prominent>
-          {{ $t('redirectToLoginMessage.title') }}
+          {{ $t('mua.redirectToLoginMessage.title') }}
         </v-alert>
 
       </v-card-text>
       <v-card-text class="text-center">
-        {{ $t('redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('redirectToLoginMessage.bodyPart1')
-        }}<br /> {{ $t('redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
-          :href="url"><b> {{ $t('redirectToLoginMessage.redirectBtn') }} </b></a> {{
-            $t('redirectToLoginMessage.bodyPart3') }}
+        {{ $t('mua.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('mua.redirectToLoginMessage.bodyPart1')
+        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
+          :href="url"><b> {{ $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
+            $t('mua.redirectToLoginMessage.bodyPart3') }}
 
       </v-card-text>
     </v-card>

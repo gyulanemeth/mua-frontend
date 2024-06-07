@@ -32,8 +32,6 @@ export default function (fetch, apiUrl) {
 
   const generateLoginRoute = (params) => `/v1/accounts/${params.id}/login`
 
-  const generateGetConfigRoute = () => '/v1/config'
-
   const generateDeletePermissionRoute = (params) => `/v1/${params.type}/permission/delete`
 
   const generateLoginWithUrlFriendlyNameRoute = (params) => `/v1/accounts/${params.id}/login/url-friendly-name`
@@ -42,7 +40,6 @@ export default function (fetch, apiUrl) {
 
   const generateUploadImage = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`
 
-  const getAccountConfig = createGetConnector(fetch, apiUrl, generateGetConfigRoute, generateAdditionalHeaders)
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
@@ -55,16 +52,11 @@ export default function (fetch, apiUrl) {
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
-  const delPermissionAdmin = createPostConnector(fetch, window.config.adminApiBaseUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
+  const delPermissionAdmin = createPostConnector(fetch, import.meta.env.VITE_API_BASE_URL, generateDeletePermissionRoute, generateAdditionalHeaders)
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`, generateAdditionalHeaders)
   const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
   const postReFinalizeRegistration = createPostConnector(fetch, apiUrl, generateReFinalizeRegistrationRoute)
   const postUploadImage = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImage, generateAdditionalHeaders)
-
-  const getConfig = async function () {
-    const res = await getAccountConfig()
-    return res
-  }
 
   const list = async function (param, query) {
     if (!param) {
@@ -171,7 +163,7 @@ export default function (fetch, apiUrl) {
     }
     let res
     if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
-      res = await delPermissionAdmin({ type: 'admins' }, { password })
+      res = await delPermissionAdmin({ type: 'system-admins' }, { password })
     } else {
       res = await delPermissionUser({ type: 'accounts' }, { password })
     }
@@ -213,7 +205,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    user: { list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission },
-    config: { getConfig }
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission
   }
 }

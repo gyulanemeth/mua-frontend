@@ -4,59 +4,59 @@ import { useRouter } from 'vue-router'
 
 import AccountDetails from '../components/AccountDetails.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
-import { useCurrentUserAndAccountStore } from '../stores/index.js'
+import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const store = useCurrentUserAndAccountStore()
+const accountsStore = useAccountsStore()
+const usersStore = useUsersStore()
 const router = useRouter()
 const data = ref()
-if (!store.user || !store.user.role) {
-  store.readOneUser()
+if (!usersStore.user || !usersStore.user.role) {
+  await usersStore.readOne()
 }
 
-if (!store.account || !store.account.name) {
-  await store.readOne()
-  if (!store.account) {
+if (!accountsStore.account || !accountsStore.account.name) {
+  await accountsStore.readOne()
+  if (!accountsStore.account) {
     useSystemMessagesStore().addError({
       status: 404,
       name: 'NOT_FOUND',
       message: 'Account data not found please login'
     })
-    router.push('/')
+    router.push('/accounts/')
   }
 }
-data.value = store.account
-
+data.value = accountsStore.account
 async function handleUpdateAccountName (params) {
-  const res = await store.patchAccountName(params)
+  const res = await accountsStore.patchAccountName({ name: params, user: usersStore.user })
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('accountView.updateAccountNameAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.updateAccountNameAlert') })
   }
 }
 
 async function handleUpdateUrlFriendlyName (params) {
-  const res = await store.patchUrlFriendlyName(params)
+  const res = await accountsStore.patchUrlFriendlyName(params)
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('accountView.updateUrlFriendlyNameAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.updateUrlFriendlyNameAlert') })
   }
 }
 
 async function handleUploadLogo (params, statusCallBack) {
-  const res = await store.uploadLogo(params)
+  const res = await accountsStore.uploadLogo(params)
   statusCallBack(res.logo)
-  data.value = store.account
+  data.value = accountsStore.account
   if (res) {
-    useSystemMessagesStore().addSuccess({ message: t('accountView.uploadLogoAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.uploadLogoAlert') })
   }
 }
 
 async function handleDeleteLogo (statusCallBack) {
-  const res = await store.deleteLogo()
+  const res = await accountsStore.deleteLogo()
   statusCallBack(!res.message)
-  data.value = store.account
+  data.value = accountsStore.account
   if (!res.message) {
-    useSystemMessagesStore().addSuccess({ message: t('accountView.deleteLogoAlert') })
+    useSystemMessagesStore().addSuccess({ message: t('mua.accountView.deleteLogoAlert') })
   }
 }
 
@@ -64,6 +64,6 @@ async function handleDeleteLogo (statusCallBack) {
 
 <template>
 
-<AccountDetails v-if="data" @uploadLogoHandler="handleUploadLogo" @deleteLogoHandler="handleDeleteLogo" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :role="store.user && store.user.role === 'admin'" :logo="data.logo" :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
+<AccountDetails v-if="data" @uploadLogoHandler="handleUploadLogo" @deleteLogoHandler="handleDeleteLogo" @updateNameHandler='handleUpdateAccountName' @updateUrlFriendlyNameHandler='handleUpdateUrlFriendlyName' :role="usersStore.user && usersStore.user.role === 'admin'" :logo="data.logo" :name="data.name" :urlFriendlyName="data.urlFriendlyName" />
 
 </template>

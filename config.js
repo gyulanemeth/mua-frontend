@@ -1,9 +1,7 @@
 window.config = {
-  accountsApiBaseUrl: 'http://accounts-api.emailfox.link',
-  adminApiBaseUrl: 'http://admins-api.emailfox.link',
-  adminsAppBaseUrl: 'http://admins.emailfox.link/',
+  apiBaseUrl: 'http://api.emailfox.link',
   appBaseUrl: 'http://app.emailfox.link/',
-  cdnBaseUrl: 'http://localhost:10007/',
+  cdnBaseUrl: 'http://localhost:10008/',
   appName: 'MUA Account\'s UI',
   appTitle: 'MUA Account\'s UI',
   appIcon: 'https://bluefox.email/assets/bluefoxemail-logo.png',

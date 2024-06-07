@@ -1,6 +1,11 @@
 {
-  "name": "mua-accounts-app",
-  "version": "0.0.0",
+  "name": "mua-frontend",
+  "version": "0.0.1",
+  "main": "dist/mua-frontend.umd.js",
+  "module": "dist/mua-frontend.es.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
