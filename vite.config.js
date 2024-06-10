@@ -20,7 +20,7 @@ export default defineConfig({
       fileName: (format) => `mua-frontend.${format}.js`
     },
     rollupOptions: {
-      external: ['vue', 'vue-router', 'pinia', 'pinia-list-store'],
+      external: ['vue', 'vue-router', 'pinia', 'pinia-list-store', 'vue-image-crop-upload'],
       output: {
         globals: {
           vue: 'Vue'
@@ -33,5 +33,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  optimizeDeps: {
+    exclude: ['vue-image-crop-upload']
   }
 })
