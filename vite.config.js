@@ -35,6 +35,6 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'pinia', 'pinia-list-store', 'vue-image-crop-upload']
+    exclude: ['vue-image-crop-upload']
   }
 })
