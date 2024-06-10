@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/mua-frontend.umd.js",
   "module": "dist/mua-frontend.es.js",
   "files": [
@@ -64,9 +64,8 @@
     "vue-cli-plugin-vuetify": "~2.5.1"
   },
   "peerDependencies": {
-    "vue": "^3.2.36",
-    "vue-router": "^4.0.15",
     "pinia": "^2.0.14",
-    "vue-image-crop-upload": "^3.0.3"
+    "vue": "^3.2.36",
+    "vue-router": "^4.0.15"
   }
 }
