@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "dist/mua-frontend.umd.js",
   "module": "dist/mua-frontend.es.js",
   "files": [
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@vitejs/plugin-vue": "^2.3.4",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/test-utils": "^2.0.0",
     "c8": "^7.11.3",
@@ -62,5 +62,11 @@
     "vite-plugin-vuetify": "^1.0.0-alpha.0",
     "vitest": "^0.13.0",
     "vue-cli-plugin-vuetify": "~2.5.1"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.36",
+    "vue-router": "^4.0.15",
+    "pinia": "^2.0.14",
+    "vue-image-crop-upload": "^3.0.3"
   }
 }
