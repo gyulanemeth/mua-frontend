@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "dist/mua-frontend.umd.js",
   "module": "dist/mua-frontend.es.js",
   "files": [

@@ -2,7 +2,7 @@ import { test, beforeEach, expect, describe, vi } from 'vitest'
 
 import users from './users.js'
 
-const apiUrl = 'https:/mua/accounts'
+const apiUrl = 'https:/mua/'
 
 describe('test accounts connectors', () => {
   global.localStorage = {
@@ -15,12 +15,6 @@ describe('test accounts connectors', () => {
     },
     removeItem (key) {
       delete this.data[key]
-    }
-  }
-
-  global.window = {
-    config: {
-      apiBaseUrl: 'http://api.emailfox.link'
     }
   }
 
@@ -51,7 +45,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).list({ accountId: '123' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/123/users',
+      'https:/mua//v1/accounts/123/users',
       {
         method: 'GET',
         headers: {
@@ -88,7 +82,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).readOne({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123',
+      'https:/mua//v1/accounts/112233/users/123',
       {
         method: 'GET',
         headers: {
@@ -124,7 +118,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).getAccessToken({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/access-token',
+      'https:/mua//v1/accounts/112233/users/123/access-token',
       {
         method: 'GET',
         headers: {
@@ -156,7 +150,7 @@ describe('test accounts connectors', () => {
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).loginGetAccounts({ email: 'user1@gmail.com' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/login',
+      'https:/mua//v1/accounts/login',
       {
         method: 'POST',
         body: JSON.stringify({ email: 'user1@gmail.com' }),
@@ -188,7 +182,7 @@ describe('test accounts connectors', () => {
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).login({ accountId: '123', password: 'userPassword' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/123/login',
+      'https:/mua//v1/accounts/123/login',
       {
         method: 'POST',
         body: JSON.stringify({ password: 'userPassword' }),
@@ -223,7 +217,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).patchName({ id: '123', accountId: '112233', name: 'updateUserName' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/name',
+      'https:/mua//v1/accounts/112233/users/123/name',
       {
         method: 'PATCH',
         body: JSON.stringify({ name: 'updateUserName' }),
@@ -257,7 +251,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).patchPassword({ id: '123', accountId: '112233', oldPassword: 'oldPassword', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/password',
+      'https:/mua//v1/accounts/112233/users/123/password',
       {
         method: 'PATCH',
         body: JSON.stringify({ oldPassword: 'oldPassword', newPassword: 'newPassword', newPasswordAgain: 'newPassword' }),
@@ -281,7 +275,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).reSendfinalizeRegistrationEmail({ userId: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/resend-finalize-registration',
+      'https:/mua//v1/accounts/112233/users/123/resend-finalize-registration',
       {
         method: 'POST',
         headers: {
@@ -323,7 +317,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).patchRole({ id: '123', accountId: '112233' }, { role: 'admin' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/role',
+      'https:/mua//v1/accounts/112233/users/123/role',
       {
         method: 'PATCH',
         body: JSON.stringify({ role: 'admin' }),
@@ -358,7 +352,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).deleteOne({ id: '123', accountId: '112233' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123',
+      'https:/mua//v1/accounts/112233/users/123',
       {
         method: 'DELETE',
         headers: {
@@ -394,7 +388,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).patchEmail({ id: '123', accountId: '112233', newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/email',
+      'https:/mua//v1/accounts/112233/users/123/email',
       {
         method: 'PATCH',
         body: JSON.stringify({ newEmail: 'newEmail@gmail.com', newEmailAgain: 'newEmail@gmail.com' }),
@@ -429,7 +423,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).patchEmailConfirm({ id: '123', accountId: '112233', token: 'token' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233/users/123/email-confirm',
+      'https:/mua//v1/accounts/112233/users/123/email-confirm',
       {
         method: 'PATCH',
         headers: {
@@ -465,7 +459,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).deletePermission('142536')
 
     expect(spy).toHaveBeenLastCalledWith(
-      'http://api.emailfox.link/v1/system-admins/permission/delete',
+      'https:/mua//v1/system-admins/permission/delete',
       {
         method: 'POST',
         body: JSON.stringify({ password: '142536' }),
@@ -491,7 +485,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).deletePermission('142536')
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/permission/delete',
+      'https:/mua//v1/accounts/permission/delete',
       {
         method: 'POST',
         body: JSON.stringify({ password: '142536' }),
@@ -528,7 +522,7 @@ describe('test accounts connectors', () => {
     formData.append('profilePicture', { test: 'test' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/112233Test/users/123test123/profile-picture',
+      'https:/mua//v1/accounts/112233Test/users/123test123/profile-picture',
       {
         method: 'POST',
         body: formData,
@@ -561,7 +555,7 @@ describe('test accounts connectors', () => {
     const res = await users(fetch, apiUrl).deleteProfilePicture({ id: '123test123', accountId: '1122test' })
 
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/1122test/users/123test123/profile-picture',
+      'https:/mua//v1/accounts/1122test/users/123test123/profile-picture',
       {
         method: 'DELETE',
         headers: {
@@ -593,7 +587,7 @@ describe('test accounts connectors', () => {
     const spy = vi.spyOn(fetch, 'impl')
     const res = await users(fetch, apiUrl).loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/accounts/v1/accounts/123/login/url-friendly-name',
+      'https:/mua//v1/accounts/123/login/url-friendly-name',
       {
         method: 'POST',
         body: JSON.stringify({ password: 'userPassword', email: 'test@tes123.com' }),
