@@ -112,14 +112,14 @@ export default (connectors) => {
           const res = await connectors.account.deleteOne({ id: this.account._id })
           if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             localStorage.removeItem('accountId')
-          this.account = null
+            this.account = null
             router.push('/system-admins/')
           } else {
-          this.account = null
-          localStorage.removeItem('accountId')
-          localStorage.removeItem('accessToken')
-          localStorage.removeItem('loginToken')
-          router.push('/accounts/')
+            this.account = null
+            localStorage.removeItem('accountId')
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('loginToken')
+            router.push('/accounts/')
           }
           return res
         } catch (e) {
