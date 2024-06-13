@@ -1,11 +1,7 @@
 {
   "name": "mua-frontend",
-  "version": "0.0.7",
-  "main": "dist/mua-frontend.umd.js",
-  "module": "dist/mua-frontend.es.js",
-  "files": [
-    "dist"
-  ],
+  "version": "0.0.8",
+  "main": "src/index.js",
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
@@ -37,7 +33,7 @@
     "vue-image-crop-upload": "^3.0.3",
     "vue-observe-visibility": "^1.0.0",
     "vue-router": "^4.0.15",
-    "vuetify": "^3.3.17",
+    "vuetify": "^3.4.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
