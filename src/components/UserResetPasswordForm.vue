@@ -24,7 +24,7 @@ const title = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>
-    <v-form class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-screen">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
@@ -100,5 +100,5 @@ const title = import.meta.env.VITE_APP_TITLE
             </v-card-text>
 
         </v-card>
-    </v-form>
+    </v-layout>
 </template>

@@ -128,17 +128,12 @@ const openFileInput = () => {
             }}</v-progress-circular>
             <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
               <v-img :src="logo" class="align-self-stretch" cover />
-              <v-expand-transition>
-
                 <div v-if="isHovering && componentProps.role"  style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;" class="d-flex justify-center align-end w-100 h-100">
                   <v-btn v-if="componentProps.logo" @click="handleDeleteAccountLogo" color="white" class="align-center"
                     variant="text" icon="mdi-delete-forever-outline" size="small" />
                   <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
                     icon="mdi-camera-plus-outline" size="small" />
                 </div>
-
-              </v-expand-transition>
-
             </v-avatar>
           </v-hover>
         </v-col>

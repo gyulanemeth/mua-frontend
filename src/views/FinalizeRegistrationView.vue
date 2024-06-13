@@ -1,6 +1,6 @@
 <script setup>
 import { watchEffect, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 import { useI18n } from 'vue-i18n'
 
@@ -12,13 +12,16 @@ const { tm } = useI18n()
 const store = useUsersStore()
 const accountsStore = useAccountsStore()
 const route = useRoute()
+const router = useRouter()
 const finalizeRegistrationRes = ref()
 const data = ref()
 const formData = ref()
 const loading = ref()
 
 const appIcon = import.meta.env.VITE_APP_ICON
-
+if (!route.query.token) {
+  router.push('./redirect-to-login-message')
+}
 async function loadData () {
   if (route.name === 'accounts-accept-invitation' && route.query.token) {
     data.value = jwtDecode(route.query.token)
@@ -67,10 +70,10 @@ watchEffect(async () => {
         <h4 class="mt-3">{{ $t('loading') }}</h4>
       </v-card>
     </v-layout>
-    <slot v-else-if="accountsStore.account"></slot>
+    <slot v-else-if="accountsStore.account && finalizeRegistrationRes"></slot>
       <v-card-text v-else align="left">
-        <h4 class="text-h6 text-center text-red">{{ finalizeRegistrationRes.name }}</h4>
-        <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes.message }}</p>
+        <h4 class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</h4>
+        <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes?.message }}</p>
       </v-card-text>
     </v-card>
   </div>

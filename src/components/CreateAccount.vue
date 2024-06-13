@@ -17,7 +17,7 @@ const checkbox = ref()
 
 <template>
 
-<v-form v-if="!cb"  class="d-flex flex-column justify-center align-center h-screen">
+<v-layout v-if="!cb"  class="d-flex flex-column justify-center align-center h-screen">
     <v-card elevation="0">
         <v-card-text align="center">
             <v-avatar size="80" >
@@ -102,9 +102,9 @@ const checkbox = ref()
                 </p>
         </v-card-text>
     </v-card>
-</v-form>
+</v-layout>
 
-<v-form v-else class="d-flex flex-column justify-center align-center h-screen">
+<v-layout v-else class="d-flex flex-column justify-center align-center h-screen">
 
 <v-card  class="  rounded-xl  elevation-2  d-flex flex-column justify-center align-right  " width="40%">
     <v-card-text align="center">
@@ -131,6 +131,6 @@ const checkbox = ref()
                 </p>
         </v-card-text>
     </v-card>
-    </v-form>
+    </v-layout>
 
 </template>
