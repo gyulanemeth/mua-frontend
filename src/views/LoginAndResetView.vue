@@ -52,7 +52,7 @@ async function loadData () {
       if (route.query.token) {
         formData.value = { email: tokenData.value.user.email, account: route.query.account ? tokenData.value.accounts.find(ele => ele._id === route.query.account) : tokenData.value.account }
       } else if (route.query.urlFriendlyName) {
-        accountData.value = await usersStore.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
+        accountData.value = await accountsStore.getAccountByUrlFriendlyName(route.query.urlFriendlyName)
         if (accountData.value.message) {
           return router.push('/accounts/')
         }

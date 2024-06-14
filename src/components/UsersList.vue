@@ -120,7 +120,9 @@ const appIcon = import.meta.env.VITE_APP_ICON
                   </v-card-text>
                   <v-tooltip v-if="props.currentUser.role === 'admin'" :text="$t('mua.userList.resendMessage')">
                             <template v-slot:activator="{ props }">
-                                <v-btn v-bind="props" color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
+                              <div v-bind="props">
+                                <v-btn color="grey" class="mt-2" v-if="!item.data.name"  variant="text" icon="mdi-email-sync" size="small" @click="$emit('reInviteEventHandler',{ email: item.data.email })" />
+                              </div>
                             </template>
                         </v-tooltip>
                 </v-row>
