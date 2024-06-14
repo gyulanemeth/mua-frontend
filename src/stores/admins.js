@@ -59,7 +59,7 @@ export default (connectors) => {
         localStorage.removeItem('loginToken')
         this.accessToken = null
         this.user = null
-        router.push('/system-admins')
+        router.push('/system-admins/login')
       },
 
       async  sendForgotPassword (email) {
@@ -170,7 +170,6 @@ export default (connectors) => {
             throw new RouteError('Valid Token Is Required')
           }
           const res = await connectors.admins.patchEmailConfirm({ id: tokenData.user._id, token })
-          router.push('/system-admins')
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

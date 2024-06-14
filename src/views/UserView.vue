@@ -41,9 +41,8 @@ if (!accountsStore.account || !accountsStore.account.name) {
 accountName.value = accountsStore.account.name
 currentUser.value = usersStore.user
 usersStore.params = {
-  accountId: accountsStore.account._id
+  accountId: localStorage.getItem('accountId')
 }
-
 await usersStore.load()
 data.value = usersStore.items
 

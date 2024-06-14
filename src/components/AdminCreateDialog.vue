@@ -56,7 +56,7 @@ defineExpose({
 </script>
 
 <template>
-    <v-dialog v-model="dialogShown" tabindex="1" @keydown.esc="resetForm" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })" >
+    <v-dialog v-model="dialogShown" style="z-index: 1500;" @keydown.esc="resetForm" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })" >
 
         <v-card width="50%" max-width="800" class=" ma-auto d-flex flex-column justify-center">
             <v-toolbar color="white" align="center">

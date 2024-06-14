@@ -120,7 +120,7 @@ async function loadPage (page, rows) {
 }
 
 async function searchBarHandler (filter, statusCallBack) {
-  const filterParam = route.name === 'system-admins' ? 'system-adminsemail' : 'system-admins-urlFriendlyName'
+  const filterParam = route.name === 'system-admins' ? 'email' : 'urlFriendlyName'
   if (filter === '') {
     store.filter = {}
   } else {
