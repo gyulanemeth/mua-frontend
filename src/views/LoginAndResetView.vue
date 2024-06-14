@@ -91,7 +91,7 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   statusCallBack(res.success)
   if (res.success) {
     await accountsStore.readOne(route.params.urlFriendlyName)
-    router.push(`/accounts/${route.params.urlFriendlyName}/design-systems`)
+    router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
   }
 }
 
