@@ -22,7 +22,6 @@ const accountData = ref()
 async function loadData () {
   if (route.name === 'accounts-loginWithUrlFriendlyName') {
     accountData.value = await accountsStore.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
-
     if (accountData.value.message) {
       return router.push('/accounts/')
     }
@@ -92,7 +91,7 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   statusCallBack(res.success)
   if (res.success) {
     await accountsStore.readOne(route.params.urlFriendlyName)
-    router.push('accounts/')
+    router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
   }
 }
 

@@ -19,6 +19,7 @@ if (route.name === 'accounts-verify-email') {
   const res = await usersStore.patchEmailConfirm(route.query.token)
   if (!res.message) {
     await accountsStore.readOne()
+    await usersStore.readOne()
     useSystemMessagesStore().addSuccess({ message: tm('mua.userChangeEmail.verifyMessage') })
     router.push(`/accounts/${accountsStore.account.urlFriendlyName}/me`)
   }
