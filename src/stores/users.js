@@ -79,12 +79,12 @@ export default (connectors) => {
       },
 
       logout () {
-        router.push('/accounts/' + window.location.pathname.split('/')[1])
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         localStorage.removeItem('loginToken')
         this.accessToken = null
         this.user = null
+        router.push('/accounts/' + window.location.pathname.split('/')[1])
       },
       async sendForgotPassword (data) {
         try {
