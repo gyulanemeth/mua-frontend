@@ -185,6 +185,7 @@ export default function (fetch, apiUrl) {
     localStorage.setItem('verifyEmailToken', formData.token)
     const res = await confirmEmailUpdate({ id: formData.id, accountId: formData.accountId })
     localStorage.removeItem('verifyEmailToken')
+    localStorage.setItem('accessToken', res.accessToken)
     return res
   }
 
