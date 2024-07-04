@@ -5,22 +5,18 @@ const cb = ref()
 const data = ref('')
 const processing = ref(false)
 const checkbox = ref()
-const title = import.meta.env.VITE_APP_TITLE
 const appIcon = import.meta.env.VITE_APP_ICON
 
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
@@ -34,7 +30,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
                 <v-checkbox v-if="!cb" :label="$t('mua.adminForgotPasswordForm.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
 
-                <div v-if="!cb">
+                <div v-if="!cb" @keydown.enter="checkbox? processing = true && $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } processing = false; }): null" >
                     <v-btn data-test-id="forgotPassword-submitBtn" :disabled="!checkbox || !data" color="info"
                         @click="processing = true; $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } processing = false; })">
 
@@ -44,8 +40,6 @@ const appIcon = import.meta.env.VITE_APP_ICON
                             indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="processing = true; $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } processing = false; })" />
                     <v-container class="mt-4 pa-4 pl-sm-0 w-100">
                     <v-row no-gutters class="justify-center align-center">
                     <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">

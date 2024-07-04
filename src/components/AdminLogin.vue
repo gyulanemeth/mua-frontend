@@ -9,7 +9,6 @@ const email = ref('')
 const password = ref('')
 const processing = ref(false)
 
-const title = import.meta.env.VITE_APP_TITLE
 const appIcon = import.meta.env.VITE_APP_ICON
 
 async function submit () {
@@ -22,18 +21,15 @@ async function submit () {
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
-        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
+        <v-card @keydown.enter="processing = true; submit()" class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
                 <h6 class="text-h6">{{ $t('mua.adminLogin.header') }}</h6>
                 <v-text-field hide-details density="compact" data-test-id="login-emailField"
@@ -62,7 +58,6 @@ async function submit () {
                     </v-col>
                     </v-row>
                 </v-container>
-                <button hidden @click.enter.prevent="processing = true; submit()" />
             </v-card-text>
         </v-card>
     </v-layout>

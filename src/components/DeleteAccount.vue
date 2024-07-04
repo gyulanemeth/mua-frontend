@@ -106,15 +106,15 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
+                <v-btn color="info" data-test-id="formDialog-cancelBtn"
+                    @click="hide">{{ t('mua.deleteAccount.cancelBtn') }}</v-btn>
+                    <v-spacer />
                 <v-btn color="error" :disabled="!password"
                     @click="processing = true; deleteAccount()">
                     {{ !processing ? t('mua.deleteAccount.deleteBtn') : '' }}
                     <v-progress-circular v-if="processing" :size="20"
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
                 </v-btn>
-                <v-spacer />
-                <v-btn color="info" data-test-id="formDialog-cancelBtn"
-                    @click="hide">{{ t('mua.deleteAccount.cancelBtn') }}</v-btn>
             </v-card-actions>
         </v-container>
     </v-card>

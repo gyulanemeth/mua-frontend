@@ -85,6 +85,7 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
+                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.accountInviteMembers.closeBtn') }}</v-btn>
                 <v-btn color="info" v-if="!cb" data-test-id="inviteMember-submitBtn"
                     @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })">
                     {{ !processing ? $t('mua.accountInviteMembers.submitBtn') : '' }}
@@ -92,7 +93,6 @@ defineExpose({
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
                 </v-btn>
                 <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('mua.accountInviteMembers.cb.cbBtn') }}</v-btn>
-                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.accountInviteMembers.closeBtn') }}</v-btn>
             </v-card-actions>
             </v-container>
         </v-card>

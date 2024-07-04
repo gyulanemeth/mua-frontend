@@ -91,9 +91,9 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('mua.adminDeleteAccount.submitBtn')}}</v-btn>
-            <v-spacer />
             <v-btn color="info" data-test-id="deleteAccount-cancelBtn" @click="resetForm">{{$t('mua.adminDeleteAccount.closeBtn')}}</v-btn>
+            <v-spacer />
+            <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('mua.adminDeleteAccount.submitBtn')}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-dialog>
