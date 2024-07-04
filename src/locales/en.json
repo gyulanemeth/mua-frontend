@@ -113,31 +113,31 @@
       "header": "Email Verified Successfully",
       "message": "Congratulations! You have successfully verified your email address.",
       "createFirstProjectLabel": "To get started, you can now create your first project. Click the button below to begin:",
-      "redirectToMainPageLabel": "Or you can return to the main page and explore other features:",
-      "createFirstProjectBtn": "Create Your First Project",
-      "redirectToMainPageBtn": "Go to Main Page"
+      "redirectToMainPageMsgPart1": "Or you can go to the",
+      "redirectToMainPageMsgPart2": "and explore our features",
+      "redirectToMainPageLink": "main page",
+      "createFirstProjectBtn": "Create Your First Project"
     },
     "createAccount": {
       "header": "Create New Account",
-      "cbHeader": "Account Created Successfully",
-      "cbMessagePart1": "To complete your account creation, please verify your email address. Check your inbox for an email from us containing a verification link. Click on the link to confirm your email and gain full access to our application.",
+      "cbHeader": "Verify your email address",
+      "cbMessagePart1": "Check your inbox for an email from us containing a verification link. Click on the link to confirm your email and gain full access to our application.",
       "cbMessagePart2": "If you don’t see the email, remember to check your spam folder. For assistance, click “Resend Verification Email” below.",
-      "cbMessagePart3": "Thank you for choosing {name}. Feel free to reach out to our support team for any questions.",
-      "cbMessagePart4": "Happy exploring!",
       "loginMessage": "Ready to get going?",
       "resendMessage": "Didn't get the email?",
       "resendBtn": "Resend it here",
       "redirectTologinMessage": "Already have an account?",
       "loginBtn": "Sign in",
       "accountSection": {
-        "header": "Account Data:",
+        "header": "Account Data",
         "nameLabel": "Account Name",
         "namePlaceholder": "Account Name",
         "urlFriendlyNameLabel": "Url Friendly Name",
-        "urlFriendlyNamePlaceholder": "./urlFriendlyName"
+        "urlFriendlyNamePlaceholder": "./urlFriendlyName",
+        "banner": "You have the ability to invite others to join this account. Simply send them an invitation to collaborate with you."
       },
       "userSection": {
-        "header": "User Data:",
+        "header": "User Data",
         "emailLabel": "Email",
         "emailPlaceHolder": "your{'@'}email.com",
         "newPasswordLabel": "New Password",
@@ -299,10 +299,7 @@
     "createAccountView": {
       "emailSentAlert": "Email sent successfully"
     },
-    "FinalizeRegistrationView": {
-      "FinalizeRegistrationAlert": "Your registration has been finalized"
-    },
-    "AccountUserProfileView": {
+    "accountUserProfileView": {
       "updateNameAlert": "Name updated successfully",
       "accountDeleteAlert": "Account Deleted successfully"
     },

@@ -1,19 +1,29 @@
 <script setup>
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import jwtDecode from 'jwt-decode'
 
 const countDown = ref(5)
-const route = useRoute()
-const url = ref('/accounts/' + (route.params.urlFriendlyName || ''))
+const router = useRouter()
+const decoded = jwtDecode(localStorage.getItem('accessToken'))
+const loginPageUrl = decoded.type === 'admin' ? '/system-admins/login' : '/accounts/login'
+
 function redirect () {
   if (countDown.value === 0) {
-    window.location.href = url.value
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('accountId')
+    router.push(loginPageUrl)
   } else {
     countDown.value = countDown.value - 1
   }
 };
 
-setInterval(redirect, 1000)
+const intervalId = setInterval(redirect, 1000)
+
+onBeforeUnmount(() => {
+  clearInterval(intervalId)
+})
+
 </script>
 
 <template>
@@ -30,8 +40,8 @@ setInterval(redirect, 1000)
       </v-card-text>
       <v-card-text class="text-center">
         {{ $t('mua.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('mua.redirectToLoginMessage.bodyPart1')
-        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; color: black;"
-          :href="url"><b> {{ $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
+        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; cursor: pointer; color: black;"
+          @click="()=> router.push(loginPageUrl)"><b> {{ $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
             $t('mua.redirectToLoginMessage.bodyPart3') }}
 
       </v-card-text>

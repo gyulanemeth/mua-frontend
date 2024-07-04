@@ -56,21 +56,22 @@ watchEffect(async () => {
 
   <AcceptInvitationForm v-if="formData" :formData="formData"
     @handleAcceptInvitationHandler="handleAcceptInvitationEvent" />
-  <div v-else class="d-flex flex-column justify-center align-center h-screen">
-
-    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="40%">
+  <div v-else class="d-flex flex-column justify-center align-center h-100">
+    <v-card elevation="0">
       <v-card-text align="center">
         <v-avatar size="80">
           <v-img :src="appIcon" cover></v-img>
         </v-avatar>
       </v-card-text>
+    </v-card>
+    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="40%">
       <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
-      <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
-        <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
-        <h4 class="mt-3">{{ $t('loading') }}</h4>
-      </v-card>
-    </v-layout>
-    <slot v-else-if="accountsStore.account && finalizeRegistrationRes"></slot>
+        <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
+          <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
+          <h4 class="mt-3">{{ $t('loading') }}</h4>
+        </v-card>
+      </v-layout>
+      <slot v-else-if="accountsStore.account && finalizeRegistrationRes"></slot>
       <v-card-text v-else align="left">
         <h4 class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</h4>
         <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes?.message }}</p>

@@ -87,6 +87,8 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
+              <v-btn color="info" data-test-id="formDialog-cancelBtn"
+                  @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.adminCreateDialog.cb.closeBtn') }}</v-btn>
                 <v-btn color="info" v-if="operation === $t('mua.adminCreateDialog.operation.accounts')"
                     data-test-id="formDialog-submitBtn"
                     @click="processing = true; $emit('createEventHandler', data, () => { processing = false; dialogShown = false }); resetForm()">
@@ -106,8 +108,6 @@ defineExpose({
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                 </v-btn>
-                <v-btn color="info" data-test-id="formDialog-cancelBtn"
-                    @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.adminCreateDialog.cb.closeBtn') }}</v-btn>
             </v-card-actions>
         </v-card>
         <ImgCropper v-if="showCropperDialog" @uploadProfilePictureHandler="previewImage" @closeCropperHandler="processing = false; showCropperDialog = false" />

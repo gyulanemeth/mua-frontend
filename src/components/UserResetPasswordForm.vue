@@ -20,20 +20,16 @@ if (props.formData.account) {
   data.value.account = ref(props.formData.account)
 }
 const appIcon = import.meta.env.VITE_APP_ICON
-const title = import.meta.env.VITE_APP_TITLE
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
@@ -52,7 +48,7 @@ const title = import.meta.env.VITE_APP_TITLE
                 <div v-if="route.name === 'accounts-forgot-password-reset'">
                     <v-btn v-if="!cb" color="info" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
-                    <div v-if="cb">
+                    <div v-if="cb" @keydown.enter="checkbox && $emit('handleForgotPasswordResetHandler', data, ()=>{})">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
                             class=" my-5 rounded" color="info" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
@@ -72,13 +68,11 @@ const title = import.meta.env.VITE_APP_TITLE
                             hide-details></v-checkbox>
                         <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
                             @click="$emit('handleForgotPasswordResetHandler', data,  data, ()=>{})">{{ $t('mua.userLoginAndResetForm.resetBtnText') }}</v-btn>
-                        <button hidden :disabled="!checkbox"
-                            @click.enter.prevent="$emit('handleForgotPasswordResetHandler', data, ()=>{})" />
                     </div>
                 </div>
 
                 <div v-if="route.name !== 'accounts-forgot-password-reset'">
-                    <div v-if="cb !== 'reset'">
+                    <div v-if="cb !== 'reset'" @keydown.enter="checkbox? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false }): null">
                         <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="info" v-model="checkbox"
                             hide-details></v-checkbox>
                         <v-btn color="info" :disabled="!checkbox || !data.account || !data.email " data-test-id="loginAndResetForm-forgotPasswordBtn"
@@ -87,8 +81,6 @@ const title = import.meta.env.VITE_APP_TITLE
                             <v-progress-circular v-if="processing" :size="20"
                                 indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
                         </v-btn>
-                        <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })" />
                         <p class="mt-4 pa-4">{{ $t('mua.userLoginAndResetForm.redirectToLoginMessage') }}
                         <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/accounts/login">{{
                             $t('mua.userLoginAndResetForm.redirectToLoginBtn') }}</router-link>

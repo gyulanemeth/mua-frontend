@@ -17,24 +17,20 @@ const checkbox = ref()
 tokenData.value = jwtDecode(route.query.token)
 
 const appIcon = import.meta.env.VITE_APP_ICON
-const title = import.meta.env.VITE_APP_TITLE
 
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
-            <v-card-text align="center" v-if="!cb">
+            <v-card-text  @keydown.enter="$emit('handleAcceptInvitationHandler', data, () => { processing = false })" align="center" v-if="!cb">
                 <h6 class="text-h6">{{ props.formData.header }}</h6>
 
                 <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
@@ -74,8 +70,6 @@ const title = import.meta.env.VITE_APP_TITLE
                             indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="$emit('handleAcceptInvitationHandler', data, () => { processing = false })" />
                 </v-col>
             </v-card-text>
             <v-card-text align="center" v-if="cb">

@@ -110,9 +110,9 @@ defineExpose({
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()">{{$t('mua.userDeleteAccount.submitBtn')}}</v-btn>
-            <v-spacer />
             <v-btn color="info" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('mua.userDeleteAccount.closeBtn')}}</v-btn>
+            <v-spacer />
+            <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()">{{$t('mua.userDeleteAccount.submitBtn')}}</v-btn>
         </v-card-actions>
         </v-container>
     </v-card>

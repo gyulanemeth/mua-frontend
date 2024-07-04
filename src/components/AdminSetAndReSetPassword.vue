@@ -9,6 +9,7 @@ const props = defineProps({
 
 const route = useRoute()
 const operation = computed(() => route.name === 'system-admins-accept-invitation' ? 'setPassword' : 'resetPassword')
+const emit = defineEmits(['setPasswordEventHandler', 'resetPasswordEventHandler'])
 
 const email = ref()
 const data = ref({})
@@ -16,27 +17,38 @@ const cb = ref()
 const checkbox = ref()
 const processing = ref(false)
 
-const title = import.meta.env.VITE_APP_TITLE
 const appIcon = import.meta.env.VITE_APP_ICON
 
 email.value = jwtDecode(route.query.token).user.email
 
+function submitForm () {
+  console.log('hereee')
+  if (!checkbox.value) {
+    return
+  }
+  processing.value = true
+  console.log(operation.value, { token: route.query.token, ...data.value })
+  if (operation.value === 'resetPassword') {
+    emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res } processing.value = false })
+  } else {
+    emit('setPasswordEventHandler', { token: route.query.token, ...data.value })
+    processing.value = false
+  }
+}
+
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
-            <v-card-text align="center" v-if="!cb">
+            <v-card-text align="center" @keydown.enter="submitForm()" v-if="!cb">
                 <h6 class="text-h6">{{ props.formData.text }}</h6>
 
                 <v-text-field v-if="operation === 'setPassword'" hide-details density="compact"
@@ -67,9 +79,9 @@ email.value = jwtDecode(route.query.token).user.email
                 <v-checkbox :label="$t('mua.adminSetAndReSetPassword.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
 
-                <v-col v-if="operation === 'resetPassword'">
+                <v-col>
                     <v-btn color="info" data-test-id="setAndRestPassword-submitBtn" :disabled="!checkbox"
-                        @click="processing = true; $emit('resetPasswordEventHandler', { token: route.query.token, ...data }, (res) => { if(res){ cb = res} processing = false })">
+                        @click="submitForm()">
 
                         {{ !processing ? props.formData.text : '' }}
 
@@ -77,20 +89,6 @@ email.value = jwtDecode(route.query.token).user.email
                             indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="processing = true; $emit('resetPasswordEventHandler', { token: route.query.token, ...data }, (res) => { if(res){ cb = res} processing = false })" />
-                </v-col>
-                <v-col v-if="operation === 'setPassword'">
-                    <v-btn :disabled="!checkbox" color="info" data-test-id="setAndRestPassword-submitBtn"
-                        @click="processing = true; $emit('setPasswordEventHandler', { token: route.query.token, ...data }); processing = true">
-                        {{ !processing ? props.formData.text : '' }}
-
-                        <v-progress-circular v-if="processing" :size="20"
-                            indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
-
-                    </v-btn>
-                    <button hidden :disabled="!checkbox"
-                        @click.enter.prevent="processing = true; $emit('setPasswordEventHandler', { token: route.query.token, ...data }); processing = false" />
                 </v-col>
             </v-card-text>
             <v-card-text align="center" v-if="cb">

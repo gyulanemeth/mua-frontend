@@ -11,21 +11,17 @@ const data = ref({})
 const processing = ref(false)
 
 const appIcon = import.meta.env.VITE_APP_ICON
-const title = import.meta.env.VITE_APP_TITLE
 const url = ref(window.location.href)
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-screen">
+    <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
             </v-card-text>
-            <v-card-title class="justify-center py-0">
-                <h4 class="text-h4 text-center"> {{ title }} </h4>
-            </v-card-title>
         </v-card>
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
@@ -80,7 +76,7 @@ const url = ref(window.location.href)
                     </v-col>
                     </v-row>
                 </v-container>
-                <v-container class="pa-4 mt-0 pt-0 pl-sm-0 w-100">
+                <v-container @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" class="pa-4 mt-0 pt-0 pl-sm-0 w-100">
                     <v-row no-gutters class="justify-center align-center">
                     <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
                         <p> {{ $t('mua.userLoginAndResetForm.cb.forgotMessage') }}</p>
@@ -92,8 +88,6 @@ const url = ref(window.location.href)
                     </v-col>
                     </v-row>
                 </v-container>
-                    <button hidden
-                        @click.enter.prevent="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" />
                 </div>
             </v-card-text>
 

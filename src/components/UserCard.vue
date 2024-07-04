@@ -83,9 +83,9 @@ defineExpose({
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" v-if="props.roles" data-test-id="userProfile-submitBtn" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialogShown=false">{{$t('mua.userCard.submitBtn')}}</v-btn>
-            <v-spacer />
             <v-btn color="info" data-test-id="userProfile-cancelBtn" @click="dialogShown=false;role= props.data.role">{{$t('mua.userCard.closeBtn')}}</v-btn>
+            <v-spacer />
+            <v-btn color="info" v-if="props.roles" data-test-id="userProfile-submitBtn" @click="$emit('updateRoleEventHandler',{id:props.data._id, role});dialogShown=false">{{$t('mua.userCard.submitBtn')}}</v-btn>
         </v-card-actions>
         </v-container>
     </v-card>

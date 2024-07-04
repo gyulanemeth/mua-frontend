@@ -151,7 +151,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <CardList v-if="data" :items="data" :btn="btn" :numOfPages="numOfPages" @loadPage="loadPage"
+  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" :numOfPages="numOfPages" @loadPage="loadPage"
     @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent" @deleteEventHandler="handleDeleteEvent"
     @inviteEventHandler="handleInviteEvent" @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />
 </template>
