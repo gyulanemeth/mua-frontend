@@ -40,25 +40,26 @@ const step = ref(1)
                         :placeholder="data.user.email || $t('mua.createAccount.userSection.emailPlaceHolder')"
                         data-test-id="createAccount-emailField" :value="data.user.email"
                         @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
+                         v-model="data.user.email"
+                        @input="(event)=> data.user.email = event.target.value.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
                         required />
 
                     <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"
                         class="my-5 rounded" color="info" variant="solo" placeholder="Your Name" name="name"
                         label="Name" type="text" v-model="data.user.name" required />
+
                     <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
                         name="newPassword" data-test-id="createAccount-newPasswordField"
                         :label="$t('mua.createAccount.userSection.newPasswordLabel')" type="password"
                         :placeholder="data.user.password || $t('mua.createAccount.userSection.newPasswordPlaceholder')"
-                        :value="data.user.password"
-                        @update:modelValue="res => data.user.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                        v-model="data.user.password"
                         required />
 
                     <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
                         name="newPasswordAgain" data-test-id="createAccount-newPasswordAgainField"
                         :label="$t('mua.createAccount.userSection.confirmNewPasswordLabel')" type="password"
                         :placeholder="data.user.newPasswordAgain || $t('mua.createAccount.userSection.confirmNewPasswordPlaceholder')"
-                        :value="data.user.newPasswordAgain"
-                        @update:modelValue="res => data.user.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                        v-model="data.user.newPasswordAgain"
                         required />
 
                     <v-col>
@@ -94,6 +95,13 @@ const step = ref(1)
                     <v-checkbox :label="$t('mua.createAccount.checkboxLabel')" color="info" v-model="checkbox"
                         hide-details></v-checkbox>
 
+                        <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4"
+                  class="elevation-5 bg-blue-lighten-5 mb-5">
+                  <v-banner-text style="max-height: 100px; overflow-y: auto;" class="text-info">
+                    <div>{{ $t('mua.createAccount.accountSection.banner') }}</div>
+                  </v-banner-text>
+                </v-banner>
+
                     <v-col>
                         <v-btn color="info" data-test-id="createAccount-submitBtn"
                             :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
@@ -111,13 +119,6 @@ const step = ref(1)
                     <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
                         :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
                 </p>
-
-                <v-banner v-if="step === 2" icon="mdi-lightbulb-outline" color="blue-lighten-4"
-                  class="elevation-5 bg-blue-lighten-5">
-                  <v-banner-text style="max-height: 100px; overflow-y: auto;" class="text-info">
-                    <div>{{ $t('mua.createAccount.accountSection.banner') }}</div>
-                  </v-banner-text>
-                </v-banner>
             </v-card-text>
         </v-card>
     </v-layout>
@@ -130,7 +131,7 @@ const step = ref(1)
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card class="  rounded-xl  elevation-2  d-flex flex-column justify-center align-right  " width="40%">
+        <v-card class="  rounded-xl  elevation-2  d-flex flex-column justify-center align-right  " width="80%" max-width="600px">
             <v-card-text align="left">
                 <h4 class="text-h5 text-center text-green">{{ $t('mua.createAccount.cbHeader') }}</h4>
 
