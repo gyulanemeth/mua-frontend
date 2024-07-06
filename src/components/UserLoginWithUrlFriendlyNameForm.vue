@@ -24,7 +24,7 @@ const url = ref(window.location.href)
             </v-card-text>
         </v-card>
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
-            <v-card-text align="center">
+            <v-card-text align="center" @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })">
                 <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
                         props.formData.accountName
@@ -76,7 +76,7 @@ const url = ref(window.location.href)
                     </v-col>
                     </v-row>
                 </v-container>
-                <v-container @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if(res){processing = false} })" class="pa-4 mt-0 pt-0 pl-sm-0 w-100">
+                <v-container class="pa-4 mt-0 pt-0 pl-sm-0 w-100">
                     <v-row no-gutters class="justify-center align-center">
                     <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
                         <p> {{ $t('mua.userLoginAndResetForm.cb.forgotMessage') }}</p>

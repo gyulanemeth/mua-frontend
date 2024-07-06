@@ -129,12 +129,12 @@
       "redirectTologinMessage": "Already have an account?",
       "loginBtn": "Sign in",
       "accountSection": {
-        "header": "Account Data",
-        "nameLabel": "Account Name",
-        "namePlaceholder": "Account Name",
+        "header": "Workspace Data ",
+        "nameLabel": "Workspace Name",
+        "namePlaceholder": "Workspace Name",
         "urlFriendlyNameLabel": "Url Friendly Name",
         "urlFriendlyNamePlaceholder": "./urlFriendlyName",
-        "banner": "You have the ability to invite others to join this account. Simply send them an invitation to collaborate with you."
+        "banner": "After your registration is complete, you will be able to invite others to your workspace to collaborate with you."
       },
       "userSection": {
         "header": "User Data",

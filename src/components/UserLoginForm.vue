@@ -2,6 +2,8 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
+const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginHandler'])
+
 const props = defineProps({
   tokenData: Object
 })
@@ -19,6 +21,17 @@ if (props.tokenData.account) {
 }
 
 const appIcon = import.meta.env.VITE_APP_ICON
+
+function submitForm () {
+  if (!props.tokenData.accounts && !cb.value) {
+    processing.value = true
+    return emit('handleGetLoginAccountsHandler', data.value.email, (res) => { res ? cb.value = res : processing.value = false })
+  }
+  if (props.tokenData.accounts && cb.value) {
+    processing.value = true
+    emit('handleLoginHandler', data.value, () => { processing.value = false })
+  }
+}
 </script>
 
 <template>
@@ -31,7 +44,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
             </v-card-text>
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
-            <v-card-text align="center">
+            <v-card-text align="center" @keydown.enter="submitForm">
                 <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.loginHeader') }} </h6>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
@@ -51,7 +64,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
                         color="info" @click="cb = 'signIn'">{{
                             $t('mua.userLoginAndResetForm.nextBtn') }}
                     </v-btn>
-                    <div v-if="cb" @keydown.enter.prevent="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
+                    <div v-if="cb">
                         <v-text-field hide-details density="compact" class=" my-5 rounded" color="info" variant="solo"
                             name="password" data-test-id="loginAndResetForm-passwordField"
                             :label="$t('mua.userLoginAndResetForm.passwordLabel')" type="password"
@@ -80,7 +93,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
                 </div>
 
                 <div v-if="!props.tokenData.accounts">
-                    <div v-if="!cb" @keydown.enter="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })">
+                    <div v-if="!cb">
                         <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                             @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
