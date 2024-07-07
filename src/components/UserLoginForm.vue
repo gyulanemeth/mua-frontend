@@ -37,7 +37,7 @@ function submitForm () {
 <template>
     <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -72,14 +72,6 @@ function submitForm () {
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-
-                        <p class="mt-4 pa-4">{{ $t('mua.userLoginAndResetForm.forgotHeader') }}
-                            <router-link style="text-decoration: none; color: inherit;"
-                                data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
-                                :to="`/accounts/forgot-password?token=${route.query.token}&account=${data.account}`">{{
-                                    $t('mua.userLoginAndResetForm.forgotBtn')
-                                }}</router-link>
-                        </p>
                         <v-btn color="info" data-test-id="loginAndResetForm-loginBtn"
                             @click="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
 
@@ -100,19 +92,6 @@ function submitForm () {
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                                 processing ? $t('mua.processing') : '' }}
                         </v-btn>
-                        <v-container class="mt-4 mb-0 pb-0 pa-4 pl-sm-0 w-100">
-                            <v-row no-gutters class="justify-center align-center">
-                                <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
-                                    <p> {{ $t('mua.userLoginAndResetForm.cb.forgotMessage') }}</p>
-                                </v-col>
-                                <v-col cols="12" sm="5" class="text-sm-left">
-                                    <router-link data-test-id="loginAndResetForm-createAccountBtn"
-                                        style="text-decoration: none;  color: inherit;" class="font-weight-bold"
-                                        to="/accounts/create-account">{{
-                                            $t('mua.userLoginAndResetForm.cb.forgotCbBtn') }}</router-link>
-                                </v-col>
-                            </v-row>
-                        </v-container>
                     </div>
                     <p v-else data-test-id="loginAndResetForm-getLoginAccountsCb" class="mt-4">
                         {{ $t('mua.userLoginAndResetForm.cb.loginMessage') }}</p>
@@ -121,5 +100,28 @@ function submitForm () {
             </v-card-text>
 
         </v-card>
+
+        <v-container v-if="!props.tokenData.accounts && !cb" class="w-100">
+            <v-col class="text-center justify-center align-center ">
+                <p style="color: #888888;"> {{ $t('mua.userLoginAndResetForm.cb.forgotMessage') }}</p>
+                <router-link data-test-id="loginAndResetForm-createAccountBtn"
+                    style="text-decoration: none;  color: #888888;" class="font-weight-bold"
+                    to="/accounts/create-account">{{
+                        $t('mua.userLoginAndResetForm.cb.forgotCbBtn') }}</router-link>
+            </v-col>
+        </v-container>
+
+        <v-container v-if="props.tokenData.accounts && cb" class="w-100">
+            <v-col class="text-center justify-center align-center ">
+
+                <p style="color: #888888;">{{ $t('mua.userLoginAndResetForm.forgotHeader') }}</p>
+                <router-link style="text-decoration: none; color: #888888;"
+                    data-test-id="loginAndResetForm-resetPasswordBtn" class="font-weight-bold"
+                    :to="`/accounts/forgot-password?token=${route.query.token}&account=${data.account}`">{{
+                        $t('mua.userLoginAndResetForm.forgotBtn')
+                    }}</router-link>
+            </v-col>
+        </v-container>
+
     </v-layout>
 </template>

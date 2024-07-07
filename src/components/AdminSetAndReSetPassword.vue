@@ -41,7 +41,7 @@ function submitForm () {
 <template>
     <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -91,12 +91,12 @@ function submitForm () {
                     </v-btn>
                 </v-col>
             </v-card-text>
-            <v-card-text align="center" v-if="cb">
+            <v-card-text v-if="cb">
 
-                <h2 class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.header') }}</h2>
-                <p class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.message') }}
+                <h2 style="color: #888888;" class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.header') }}</h2>
+                <p style="color: #888888;" class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.message') }}
                     <router-link tag="span" data-test-id="setAndRestPassword-continueBtn"
-                        style="text-decoration: none; color: inherit;" to="/system-admins/me" class="font-weight-bold">{{
+                        style="text-decoration: none; color: #888888;" to="/system-admins/me" class="font-weight-bold">{{
                             $t('mua.adminSetAndReSetPassword.cb.cbBtn') }}</router-link>
                     {{ $t('mua.adminSetAndReSetPassword.cb.subMessage') }}
                 </p>

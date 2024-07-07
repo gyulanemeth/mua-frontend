@@ -12,7 +12,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
 <template>
     <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -40,17 +40,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
                             indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                     </v-btn>
-                    <v-container class="mt-4 pa-4 pl-sm-0 w-100">
-                    <v-row no-gutters class="justify-center align-center">
-                    <v-col cols="12" sm="6" class="text-sm-right pr-sm-1 ">
-                        <p>{{ $t('mua.adminForgotPasswordForm.redirectToLoginMessage') }}</p>
-                    </v-col>
-                    <v-col cols="12" sm="5" class="text-sm-left">
-                        <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold" to="/system-admins/login">{{
-                            $t('mua.adminForgotPasswordForm.redirectToLoginBtn') }}</router-link>
-                    </v-col>
-                    </v-row>
-                </v-container>
+
                 </div>
                 <div v-if="cb">
 
@@ -61,5 +51,13 @@ const appIcon = import.meta.env.VITE_APP_ICON
             </v-card-text>
 
         </v-card>
+
+        <v-container v-if="!cb" class="w-100">
+                    <v-col class="text-center justify-center align-center ">
+                        <p style="color: #888888;">{{ $t('mua.adminForgotPasswordForm.redirectToLoginMessage') }}</p>
+                        <router-link style="text-decoration: none; color: #888888;" class="font-weight-bold" to="/system-admins/login">{{
+                            $t('mua.adminForgotPasswordForm.redirectToLoginBtn') }}</router-link>
+                            </v-col>
+                </v-container>
     </v-layout>
 </template>
