@@ -115,12 +115,15 @@ const step = ref(1)
                         </v-btn>
                     </v-col>
                 </div>
-                <p class="text-center mb-5">{{ $t('mua.createAccount.redirectTologinMessage') }}
-                    <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
-                        :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
-                </p>
             </v-card-text>
         </v-card>
+        <v-container class="w-100">
+            <v-col class="text-center justify-center align-center">
+                <p style="color: #888888" class="text-center">{{ $t('mua.createAccount.redirectTologinMessage') }}</p>
+                    <router-link style="text-decoration: none; color: #888888;" class="font-weight-bold"
+                        :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
+            </v-col>
+        </v-container>
     </v-layout>
 
     <v-layout v-else class="d-flex flex-column justify-center align-center h-100">
