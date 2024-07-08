@@ -6,12 +6,12 @@ const data = ref({
   account: { urlFriendlyName: '', name: '' }
 })
 
-const cb = ref(true)
+const cb = ref()
 const appIcon = import.meta.env.VITE_APP_ICON
 const processing = ref(false)
 
 const checkbox = ref()
-const step = ref(2)
+const step = ref(1)
 
 </script>
 
