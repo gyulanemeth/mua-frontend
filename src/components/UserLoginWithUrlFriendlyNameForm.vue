@@ -25,7 +25,7 @@ const url = ref(window.location.href)
         </v-card>
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
             <v-card-text align="center"
-                @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if (res) { processing = false } })">
+                @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
                 <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
                         props.formData.accountName
@@ -47,7 +47,7 @@ const url = ref(window.location.href)
 
                 <div>
                     <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                        @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, (res) => { if (res) { processing = false } })">
+                        @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false  })">
                         {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                         <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                             processing ? $t('mua.processing') : '' }}
