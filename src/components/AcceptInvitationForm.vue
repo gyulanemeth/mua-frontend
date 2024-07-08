@@ -23,7 +23,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
 <template>
     <v-layout class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -74,9 +74,9 @@ const appIcon = import.meta.env.VITE_APP_ICON
             </v-card-text>
             <v-card-text align="center" v-if="cb">
 
-                <h2 class="mt-4" data-test-id="acceptInvitation-headerCb">{{ $t('mua.acceptInvitationForm.cb.header') }}</h2>
+                <h2 class="mt-4" style="color: #888888;" data-test-id="acceptInvitation-headerCb">{{ $t('mua.acceptInvitationForm.cb.header') }}</h2>
                 <p class="mt-4">{{ $t('mua.acceptInvitationForm.cb.message') }}
-                    <router-link tag="span" style="text-decoration: none; color: inherit;" to="/accounts/"
+                    <router-link tag="span" style="text-decoration: none; color: #888888" to="/accounts/"
                         class="font-weight-bold">{{$t('mua.acceptInvitationForm.cb.cbBtn')}}</router-link>
                     {{$t('mua.acceptInvitationForm.cb.subMessage')}}
             </p>

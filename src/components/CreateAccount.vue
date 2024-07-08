@@ -19,7 +19,7 @@ const step = ref(1)
 
     <v-layout v-if="!cb" class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -115,17 +115,20 @@ const step = ref(1)
                         </v-btn>
                     </v-col>
                 </div>
-                <p class="text-center mb-5">{{ $t('mua.createAccount.redirectTologinMessage') }}
-                    <router-link style="text-decoration: none; color: inherit;" class="font-weight-bold"
-                        :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
-                </p>
             </v-card-text>
         </v-card>
+        <v-container class="w-100">
+            <v-col class="text-center justify-center align-center">
+                <p style="color: #888888" class="text-center">{{ $t('mua.createAccount.redirectTologinMessage') }}</p>
+                    <router-link style="text-decoration: none; color: #888888;" class="font-weight-bold"
+                        :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
+            </v-col>
+        </v-container>
     </v-layout>
 
     <v-layout v-else class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
-            <v-card-text align="center">
+            <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
                     <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
