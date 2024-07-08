@@ -58,13 +58,13 @@ watchEffect(async () => {
     @handleAcceptInvitationHandler="handleAcceptInvitationEvent" />
   <div v-else class="d-flex flex-column justify-center align-center h-100">
     <v-card elevation="0">
-      <v-card-text align="center">
+      <v-card-text align="center" class="loggedOutState">
         <v-avatar size="80">
           <v-img :src="appIcon" cover></v-img>
         </v-avatar>
       </v-card-text>
     </v-card>
-    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="40%">
+    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="40%" max-width="600">
       <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
         <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
           <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
@@ -77,5 +77,6 @@ watchEffect(async () => {
         <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes?.message }}</p>
       </v-card-text>
     </v-card>
+    <slot name="links"></slot>
   </div>
 </template>

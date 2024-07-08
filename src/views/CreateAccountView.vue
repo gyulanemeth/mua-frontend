@@ -10,9 +10,7 @@ const usersStore = useUsersStore()
 
 async function createEventHandler (data, statusCallBack) {
   const res = await accountsStore.createAccount(data)
-  if (res.success) {
-    statusCallBack(res)
-  }
+  statusCallBack(res)
 }
 
 async function reSendFinalizeRegistrationEventHandler (params) {

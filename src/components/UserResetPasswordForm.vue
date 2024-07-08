@@ -7,6 +7,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
+
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
@@ -48,7 +49,8 @@ const appIcon = import.meta.env.VITE_APP_ICON
                 <div v-if="route.name === 'accounts-forgot-password-reset'">
                     <v-btn v-if="!cb" color="info" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
-                    <div v-if="cb" @keydown.enter="checkbox && $emit('handleForgotPasswordResetHandler', data, () => { })">
+                    <div v-if="cb"
+                        @keydown.enter="checkbox && $emit('handleForgotPasswordResetHandler', data, () => { })">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
                             class=" my-5 rounded" color="info" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
@@ -94,7 +96,7 @@ const appIcon = import.meta.env.VITE_APP_ICON
             <v-col class="text-center justify-center align-center">
                 <p style="color: #888888;">{{ $t('mua.userLoginAndResetForm.redirectToLoginMessage') }}</p>
                 <router-link style="text-decoration: none; color: #888888;" class="font-weight-bold"
-                    to="/accounts/login">{{
+                    :to="`/accounts/login/${route.query.urlFriendlyName ? route.query.urlFriendlyName : ''}`">{{
                         $t('mua.userLoginAndResetForm.redirectToLoginBtn') }}</router-link>
             </v-col>
         </v-container>
