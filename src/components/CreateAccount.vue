@@ -1,23 +1,44 @@
 <script setup>
+import { watch, onBeforeUnmount } from 'vue';
 import { ref } from 'vue'
 
 const data = ref({
-  user: { email: '', name: '', password: '', newPasswordAgain: '' },
-  account: { urlFriendlyName: '', name: '' }
+    user: { email: '', name: '', password: '', newPasswordAgain: '' },
+    account: { urlFriendlyName: '', name: '' }
 })
 
 const cb = ref()
 const appIcon = import.meta.env.VITE_APP_ICON
+const url = import.meta.env.VITE_APP_BASE_URL
 const processing = ref(false)
-
 const checkbox = ref()
 const step = ref(1)
+const countDown = ref(15)
+const show = ref(false)
+const checkInterval = setInterval(() => {
+    if (cb.value && cb.value.success) {
+        clearInterval(checkInterval);
+        const intervalId = setInterval(() => {
+            if (countDown.value !== 0) {
+                countDown.value = countDown.value - 1
+            }
+        }, 1000)
+        setTimeout(() => {
+            clearInterval(intervalId)
+            show.value = false
+        }, 15000);
+    }
+}, 100);
 
+
+onBeforeUnmount(() => {
+    clearInterval(checkInterval)
+})
 </script>
 
 <template>
 
-    <v-layout v-if="!cb" class="d-flex flex-column justify-center align-center h-100">
+    <v-layout v-if="!cb || !cb.success" class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
@@ -72,16 +93,21 @@ const step = ref(1)
                 </div>
                 <div v-if="step === 2"
                     @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false }) : null">
-
                     <v-divider class="my-3" />
-                    <h4 class="ma-10 d-inline">{{ $t('mua.createAccount.accountSection.header') }}</h4><v-divider
-                        class=" mt-3 mb-6" />
+                    <h4 class="ma-10 d-inline">{{ $t('mua.createAccount.accountSection.header') }}</h4>
+
+                    <v-divider class=" mt-3 mb-6" />
+                    <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4" class="elevation-5 bg-blue-lighten-5">
+                        <v-banner-text style="overflow-y: auto;" class="text-info px-0">
+                            <p class="text-left">{{ $t('mua.createAccount.accountSection.banner') }}</p>
+                        </v-banner-text>
+                    </v-banner>
                     <v-text-field hide-details density="compact" data-test-id="createAccount-accNameField"
                         class=" my-5 rounded" color="info" variant="solo" name="AccName" type="text"
                         :label="$t('mua.createAccount.accountSection.nameLabel')" v-model="data.account.name"
                         :placeholder="$t('mua.createAccount.accountSection.namePlaceholder')" required />
 
-                    <v-text-field hide-details density="compact" class="my-5 rounded"
+                    <v-text-field hide-details density="compact" class="my-5 rounded mb-0 pb-0"
                         data-test-id="createAccount-urlFriendlyNameField" color="info" variant="solo"
                         name="urlFriendlyName" type="text"
                         :label="$t('mua.createAccount.accountSection.urlFriendlyNameLabel')"
@@ -89,15 +115,13 @@ const step = ref(1)
                         :value="data.account.urlFriendlyName"
                         @update:modelValue="res => data.account.urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
                         required />
+                    <div class="justify-left align-left text-left w-100">
+                        <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url +
+                            data.account.urlFriendlyName }}</span>
+                    </div>
 
                     <v-checkbox :label="$t('mua.createAccount.checkboxLabel')" color="info" v-model="checkbox"
                         hide-details></v-checkbox>
-
-                    <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4" class="elevation-5 bg-blue-lighten-5">
-                        <v-banner-text style="max-height: 100px; overflow-y: auto;" class="text-info">
-                            <p class="text-left">{{ $t('mua.createAccount.accountSection.banner') }}</p>
-                        </v-banner-text>
-                    </v-banner>
 
                     <v-col>
                         <v-btn color="info" data-test-id="createAccount-submitBtn"
@@ -122,7 +146,6 @@ const step = ref(1)
             </v-col>
         </v-container>
     </v-layout>
-
     <v-layout v-else class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
@@ -138,15 +161,21 @@ const step = ref(1)
 
                 <p class="mt-3 pa-2">{{ $t('mua.createAccount.cbMessagePart1') }}</p>
                 <p class="pa-2">{{ $t('mua.createAccount.cbMessagePart2') }}</p>
-
             </v-card-text>
             <v-card-actions class="align-center justify-center mb-5 mt-0 pt-0">
-            <v-btn color="info" variant="elevated"
-                @click="$emit('reSendFinalizeRegistrationEvent', { accountId: cb.newAccount._id, userId: cb.newUser._id })">
+                <v-tooltip location="top" v-model="show">
+                    <template v-slot:activator="{ props }">
+                        <div v-bind="countDown !== 0 && props">
+                            <v-btn color="info" variant="elevated" :disabled="countDown !== 0"
+                                @click="$emit('reSendFinalizeRegistrationEvent', { accountId: cb.newAccount._id, userId: cb.newUser._id })">
 
-                {{ $t('mua.createAccount.resendBtn') }}
+                                {{ $t('mua.createAccount.resendBtn') }}
 
-            </v-btn>
+                            </v-btn>
+                        </div>
+                    </template>
+                    <span v-if="countDown !== 0"> {{ $t('mua.createAccount.cbResendMsg') }} {{ countDown }}</span>
+                </v-tooltip>
             </v-card-actions>
         </v-card>
         <v-container class="w-100">
@@ -154,7 +183,8 @@ const step = ref(1)
                 <p style="color: #888888" class="text-center text-subtitle-2">{{ $t('mua.createAccount.loginMessage') }}
                 </p>
                 <router-link style="text-decoration: none; color: #888888;" class="font-weight-bold"
-                    :to="`/accounts/login`">{{ $t('mua.createAccount.loginBtn') }}</router-link>
+                    :to="`/accounts/login`">{{
+                        $t('mua.createAccount.loginBtn') }}</router-link>
             </v-col>
         </v-container>
     </v-layout>
