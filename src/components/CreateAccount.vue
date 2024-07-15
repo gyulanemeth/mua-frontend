@@ -1,10 +1,9 @@
 <script setup>
-import { watch, onBeforeUnmount } from 'vue';
 import { ref } from 'vue'
 
 const data = ref({
-    user: { email: '', name: '', password: '', newPasswordAgain: '' },
-    account: { urlFriendlyName: '', name: '' }
+  user: { email: '', name: '', password: '', newPasswordAgain: '' },
+  account: { urlFriendlyName: '', name: '' }
 })
 
 const cb = ref()
@@ -15,25 +14,21 @@ const checkbox = ref()
 const step = ref(1)
 const countDown = ref(15)
 const show = ref(false)
-const checkInterval = setInterval(() => {
-    if (cb.value && cb.value.success) {
-        clearInterval(checkInterval);
-        const intervalId = setInterval(() => {
-            if (countDown.value !== 0) {
-                countDown.value = countDown.value - 1
-            }
-        }, 1000)
-        setTimeout(() => {
-            clearInterval(intervalId)
-            show.value = false
-        }, 15000);
-    }
-}, 100);
 
+function startCountDownt () {
+  if (cb.value && cb.value.success) {
+    const intervalId = setInterval(() => {
+      if (countDown.value !== 0) {
+        countDown.value = countDown.value - 1
+      }
+    }, 1000)
+    setTimeout(() => {
+      clearInterval(intervalId)
+      show.value = false
+    }, 15000)
+  }
+}
 
-onBeforeUnmount(() => {
-    clearInterval(checkInterval)
-})
 </script>
 
 <template>
@@ -92,7 +87,7 @@ onBeforeUnmount(() => {
                     </v-col>
                 </div>
                 <div v-if="step === 2"
-                    @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false }) : null">
+                    @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() }) : null">
                     <v-divider class="my-3" />
                     <h4 class="ma-10 d-inline">{{ $t('mua.createAccount.accountSection.header') }}</h4>
 
@@ -116,7 +111,7 @@ onBeforeUnmount(() => {
                         @update:modelValue="res => data.account.urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
                         required />
                     <div class="justify-left align-left text-left w-100">
-                        <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url +
+                        <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url + 'accounts/' +
                             data.account.urlFriendlyName }}</span>
                     </div>
 
@@ -126,7 +121,7 @@ onBeforeUnmount(() => {
                     <v-col>
                         <v-btn color="info" data-test-id="createAccount-submitBtn"
                             :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
-                            @click="processing = true; $emit('buttonEvent', data, (res) => { cb = res; processing = false })">
+                            @click="processing = true; $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() })">
 
                             {{ !processing ? $t('mua.createAccount.submitBtn') : '' }}
 
