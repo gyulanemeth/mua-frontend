@@ -19,7 +19,7 @@
       "nameLabel": "Name",
       "namePlaceholder": "User Name",
       "urlFriendlyNameLabel": "urlFriendlyName",
-      "urlFriendlyNamePlaceholder": "./urlFriendlyName",
+      "urlFriendlyNamePlaceholder": "url-friendly-name",
       "picLabel": "Account Avatar",
       "detailsLabel": "Account Details",
       "deleteLabel": "Delete Account",
@@ -122,6 +122,7 @@
       "cbHeader": "Verify your email address",
       "cbMessagePart1": "Check your inbox for an email from us containing a verification link. Click on the link to confirm your email and gain full access to our application.",
       "cbMessagePart2": "If you don’t see the email, remember to check your spam folder. Didn't get the email?",
+      "cbResendMsg": "Plesae check your email. Resend available in",
       "loginMessage": "Ready to get going?",
       "resendBtn": " Resend Verification Email",
       "redirectTologinMessage": "Already have an account?",
@@ -131,7 +132,7 @@
         "nameLabel": "Workspace Name",
         "namePlaceholder": "Workspace Name",
         "urlFriendlyNameLabel": "Url Friendly Name",
-        "urlFriendlyNamePlaceholder": "./urlFriendlyName",
+        "urlFriendlyNamePlaceholder": "url-friendly-name",
         "banner": "After your registration is complete, you will be able to invite others to your workspace to collaborate with you."
       },
       "userSection": {

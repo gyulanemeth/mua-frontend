@@ -148,7 +148,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          router.push('/accounts')
+          router.push(`/accounts/${loginTokenData.account.urlFriendlyName}/dashboard`)
           return true
         } catch (e) {
           useSystemMessagesStore().addError(e)
