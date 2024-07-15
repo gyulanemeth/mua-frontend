@@ -19,7 +19,7 @@
       "nameLabel": "Name",
       "namePlaceholder": "User Name",
       "urlFriendlyNameLabel": "urlFriendlyName",
-      "urlFriendlyNamePlaceholder": "urlFriendlyName",
+      "urlFriendlyNamePlaceholder": "url-friendly-name",
       "picLabel": "Account Avatar",
       "detailsLabel": "Account Details",
       "deleteLabel": "Delete Account",
