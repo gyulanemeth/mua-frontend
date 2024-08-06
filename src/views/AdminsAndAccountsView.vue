@@ -120,23 +120,37 @@ async function loadPage (page, rows) {
 }
 
 async function searchBarHandler (filter, statusCallBack) {
-  const filterParam = route.name === 'system-admins' ? 'email' : 'urlFriendlyName'
+  const filterParam = [
+    {
+      name: {
+        $regex: filter,
+        $options: 'i'
+      }
+    }
+  ]
+
+  if (route.name === 'system-admins') {
+    filterParam.push({
+      email: {
+        $regex: filter,
+        $options: 'i'
+      }
+    })
+  } else {
+    const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(filter)
+    filterParam.push(isValidObjectId
+      ? { _id: filter }
+      : { urlFriendlyName: { $regex: filter, $options: 'i' } }
+    )
+  }
+
   if (filter === '') {
     store.filter = {}
   } else {
+    console.log(filterParam)
+
     store.filter = {
-      $or: [{
-        name: {
-          $regex: filter,
-          $options: 'i'
-        }
-      },
-      {
-        [filterParam]: {
-          $regex: filter,
-          $options: 'i'
-        }
-      }]
+      $or: filterParam
     }
   }
   await store.loadPage(1)
@@ -151,7 +165,8 @@ watch(route, () => {
 </script>
 
 <template>
-  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" :numOfPages="numOfPages" @loadPage="loadPage"
-    @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent" @deleteEventHandler="handleDeleteEvent"
-    @inviteEventHandler="handleInviteEvent" @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />
+  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" :numOfPages="numOfPages"
+    @loadPage="loadPage" @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent"
+    @deleteEventHandler="handleDeleteEvent" @inviteEventHandler="handleInviteEvent"
+    @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />
 </template>
