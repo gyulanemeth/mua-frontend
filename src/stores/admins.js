@@ -191,7 +191,7 @@ export default (connectors) => {
       async uploadProfilePicture (formData) {
         try {
           const res = await connectors.admins.uploadProfilePicture({ id: this.user._id }, formData)
-          this.user.profilePicture = res.profilePicture
+          this.user.profilePicture = res.profilePicture + '?' + Math.random().toString(36).substring(2, 7)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

@@ -16,7 +16,7 @@ const cb = ref()
 const checkbox = ref()
 tokenData.value = jwtDecode(route.query.token)
 
-const appIcon = import.meta.env.VITE_APP_ICON
+const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
 </script>
 
