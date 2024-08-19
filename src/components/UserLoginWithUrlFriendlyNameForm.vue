@@ -10,7 +10,7 @@ const route = useRoute()
 const data = ref({})
 const processing = ref(false)
 
-const appIcon = import.meta.env.VITE_APP_ICON
+const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 const url = ref(window.location.href)
 </script>
 

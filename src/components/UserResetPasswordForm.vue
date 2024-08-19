@@ -20,7 +20,7 @@ if (props.formData.email) {
 if (props.formData.account) {
   data.value.account = ref(props.formData.account)
 }
-const appIcon = import.meta.env.VITE_APP_ICON
+const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 </script>
 
 <template>

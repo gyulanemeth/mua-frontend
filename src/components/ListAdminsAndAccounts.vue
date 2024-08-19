@@ -58,7 +58,7 @@ watchEffect(async () => {
   numOfPages.value = props.numOfPages
 })
 
-const appIcon = import.meta.env.VITE_APP_ICON
+const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
 </script>
 

@@ -7,7 +7,7 @@ const data = ref({
 })
 
 const cb = ref()
-const appIcon = import.meta.env.VITE_APP_ICON
+const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 const url = import.meta.env.VITE_APP_BASE_URL
 const processing = ref(false)
 const checkbox = ref()
