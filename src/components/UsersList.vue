@@ -55,15 +55,15 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
         <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0">
 
-            <v-col class="pt-3 d-flex align-end">
-              <v-btn append-icon="mdi-account-plus" data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
+            <v-col cols="12" md="auto" class="pt-3 d-flex align-end">
+              <v-btn append-icon="mdi-account-plus" block data-test-id="open-inviteDialog" size="small" variant="outlined" color="info"
             @click="inviteMembersDialog.show()">
             {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
                 <Invite ref="inviteMembersDialog" :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
               </v-col>
               <v-spacer />
-              <v-col cols="5" class="pt-1">
+              <v-col cols="12" md="5" class="pt-1">
                 <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
                 variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
                 @input="loading = true; debouncedFn()"></v-text-field>
@@ -103,17 +103,17 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
           </v-card>
         </v-layout>
         <v-layout class="d-flex flex-wrap" v-else>
-            <v-card class="mx-2 my-5 align-self-start " min-width="350" v-for="item in props.items" :key="item._id">
+            <v-card :class="`${$vuetify.display.mobile ? 'mx-auto' :'mx-2'} my-5 align-self-start `" min-width="350" v-for="item in props.items" :key="item._id">
                 <v-card-title>
                     <p data-test-id="userList-card-0-name">{{ item.data.name }}<span
                             class="font-weight-light pl-2">{{ item.data.role }}</span></p>
                 </v-card-title>
                 <v-img :src="profilePicture(item)" height="150px" cover></v-img>
                 <v-row class="pa-3">
-                    <v-card-text >
-                    <v-card-subtitle>
+                    <v-card-text>
+                    <v-card-subtitle class="px-0">
                       {{ item.data.email }}
-                      <v-card-subtitle>
+                      <v-card-subtitle class="px-0">
                         <span v-if="props.currentUser._id === item._id"> - Me -</span>
                       </v-card-subtitle>
                     </v-card-subtitle>

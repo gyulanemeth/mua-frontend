@@ -28,7 +28,7 @@ defineExpose({
         <v-btn color="info" data-test-id="open-userProfile" class="text-white" v-bind="props">{{$t('mua.userCard.openBtn')}}</v-btn>
     </template>
 
-        <v-card width="50%" max-width="800" class="ma-auto">
+        <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 
         <v-card-text align="start">

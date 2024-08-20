@@ -37,7 +37,7 @@ defineExpose({
 
 <template>
     <v-dialog v-model="dialogShown" tabindex="-1" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })" @keydown.esc="hide">
-            <v-card width="50%" max-width="800" class="ma-auto">
+            <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 
             <v-toolbar color="white" align="center">
@@ -46,20 +46,20 @@ defineExpose({
             <v-card-text align="start">
 
                 <v-row align="center">
-                    <v-col cols="4">
+                    <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.accountLabel') }}</p>
                     </v-col>
-                    <v-col cols="8" align='center'>
+                    <v-col cols="12" md="8" align='center'>
                         <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
                             variant="solo" placeholder="currentAccount" name="name" disabled v-model="data.name"
                             required />
                     </v-col>
                 </v-row>
                 <v-row align="center">
-                    <v-col cols="4">
+                    <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.emailLabel') }}</p>
                     </v-col>
-                    <v-col cols="8" align='center'>
+                    <v-col cols="12" md="8" align='center'>
                         <v-text-field hide-details data-test-id="inviteMember-emailField" density="compact"
                             class="my-5 rounded" color="info" variant="solo" name="email" type="email"
                             :placeholder="data.email || $t('mua.accountInviteMembers.emailPlaceHolder')" :value="data.email"
@@ -67,10 +67,10 @@ defineExpose({
                     </v-col>
                 </v-row>
                 <v-row align="center">
-                    <v-col cols="4">
+                    <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.confirmEmailLabel') }}</p>
                     </v-col>
-                    <v-col cols="8" align='center'>
+                    <v-col cols="12" md="8" align='center'>
                         <v-text-field hide-details density="compact" data-test-id="inviteMember-emailAgainField"
                             class="my-5 rounded" color="info" variant="solo" name="confirmEmail"
                             type="email" :placeholder="data.confirmEmail || $t('mua.accountInviteMembers.confirmEmailPlaceHolder')"
