@@ -52,8 +52,8 @@ const openFileInput = () => {
 </script>
 
 <template>
-  <v-layout class="d-flex flex-wrap w-75">
-    <v-col cols="8" class="pt-3">
+  <v-layout :class="`d-flex flex-wrap ${$vuetify.display.mobile? 'w-100':'w-75'}`">
+    <v-col cols="12" md="8" class="pt-3">
       <h3 class="font-weight-bold">{{ $t('mua.adminProfile.header') }}</h3>
       <v-divider />
 
@@ -79,7 +79,6 @@ const openFileInput = () => {
           <v-btn color="info" variant="text" class="ma-2" icon="mdi-pencil-outline" size="small"
             data-test-id="meDetails-meTab-editNameBtn" @click='editMode = true; setFocus()' />
         </template>
-
       </v-row>
       <v-row align="center" class="mt-3">
         <v-col>
@@ -93,7 +92,7 @@ const openFileInput = () => {
       </v-row>
 
     </v-col>
-    <v-col cols="4" class="pt-3">
+    <v-col cols="12" md="4" class="pt-3">
       <h3 class="font-weight-bold">{{ $t('mua.adminProfile.picLabel') }}</h3>
       <v-divider />
       <v-col align="center" class="mt-3">

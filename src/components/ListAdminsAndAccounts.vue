@@ -64,7 +64,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
 <template>
 
-  <div class="elevation-2 mx-10 pa-3 pt-0 rounded">
+  <div class="elevation-2 pa-3 pt-0 rounded">
     <v-layout class="d-flex flex-wrap">
       <v-col cols="2" class="pt-3 d-flex align-center">
         <p class="text-h6">{{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.header.admin') :

@@ -30,11 +30,11 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
 
 <template>
 
-<v-dialog v-model="dialogShown" tabindex="1" @keydown.esc="resetForm" @keydown.enter="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()" >
+<v-dialog v-model="dialogShown" :fullscreen="$vuetify.display.mobile" scrollable tabindex="1" @keydown.esc="resetForm" @keydown.enter="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()" >
     <template  v-slot:activator="{ props }">
         <v-btn v-if="route.name === 'system-admins'" color="grey" variant="text" data-test-id="open-deleteAccount-dialog" class="ma-2" icon="mdi-delete" size="small" v-bind="props" />
     </template>
-    <v-card width="50%" max-width="800" class=" ma-auto d-flex flex-column justify-center">
+    <v-card width="50%" max-width="800" class="ma-auto d-flex flex-column justify-center">
 
         <v-card-text align="start">
             <v-col align="center" class="pb-10">
@@ -88,13 +88,12 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     required />
                 </v-row>
             </v-col>
-
+            <v-card-actions>
+                <v-btn color="info" data-test-id="deleteAccount-cancelBtn" @click="resetForm">{{$t('mua.adminDeleteAccount.closeBtn')}}</v-btn>
+                <v-spacer />
+                <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('mua.adminDeleteAccount.submitBtn')}}</v-btn>
+            </v-card-actions>
         </v-card-text>
-        <v-card-actions>
-            <v-btn color="info" data-test-id="deleteAccount-cancelBtn" @click="resetForm">{{$t('mua.adminDeleteAccount.closeBtn')}}</v-btn>
-            <v-spacer />
-            <v-btn color="error" data-test-id="deleteAccount-submitBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password});resetForm()">{{$t('mua.adminDeleteAccount.submitBtn')}}</v-btn>
-        </v-card-actions>
     </v-card>
 </v-dialog>
 
