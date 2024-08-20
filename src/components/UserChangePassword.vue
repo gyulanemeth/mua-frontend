@@ -16,7 +16,7 @@ const resetForm = () => {
 </script>
 
 <template>
-    <v-layout class="d-flex flex-wrap w-75">
+    <v-layout :class="`d-flex flex-wrap ${$vuetify.display.mobile? 'w-100':'w-75'}`">
         <v-col class="pt-3">
             <h3 class="font-weight-bold">{{ $t('mua.userChangePassword.header') }}</h3>
             <v-divider />
@@ -63,7 +63,7 @@ const resetForm = () => {
                     @click="show.confirmNewPassword = !show.confirmNewPassword" />
 
             </v-row>
-            <v-btn color="info mt-3" data-test-id="meDetails-changePasswordTab-submitBtn"
+            <v-btn color="info" class="mt-5" data-test-id="meDetails-changePasswordTab-submitBtn"
                 @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({message: $t('mua.userChangePassword.updateAlert') }); resetForm(); processing = false })">
 
                 {{ !processing ? $t('mua.userChangePassword.submitBtn') : '' }}

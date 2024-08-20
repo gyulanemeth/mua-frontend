@@ -18,13 +18,13 @@ await store.readOne()
 </script>
 
 <template >
-  <v-layout class="d-flex flex-wrap w-75">
+  <v-layout :class="`d-flex flex-wrap ${$vuetify.display.mobile? 'w-100':'w-75'}`">
           <v-col class="pt-3">
             <h3 class="font-weight-bold text-error">{{ $t(`mua.accountAdminSettings.delete${props.data.role}Label`) }}</h3>
             <v-divider color="error" />
 
                 <v-banner color="error" class="text-error my-4">
-                    <v-banner-text>
+                    <v-banner-text class="pa-0">
                        <h3 class="font-weight-bold">{{ $t('mua.accountAdminSettings.noteHeader') }}</h3>
                         <v-list-item color="error">
                             <template v-slot:prepend>

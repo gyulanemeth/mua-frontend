@@ -65,8 +65,8 @@ const openFileInput = () => {
 
 <template>
     <div class="mx-3">
-    <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-0 w-75">
-      <v-col class="pt-3">
+    <v-layout :class="`d-flex flex-wrap  ${$vuetify.display.mobile? 'w-100':'w-75'}`">
+      <v-col cols="12" md="8"  class="pt-3">
         <h3 class="font-weight-bold">{{ $t('mua.accountDetails.detailsLabel') }}</h3>
         <v-divider />
 
@@ -118,7 +118,7 @@ const openFileInput = () => {
 
         </v-row>
       </v-col>
-      <v-col cols="4" class="pt-3">
+      <v-col cols="12" md="4" class="pt-3">
         <h3 class="font-weight-bold">{{ $t('mua.accountDetails.picLabel') }}</h3>
         <v-divider />
 

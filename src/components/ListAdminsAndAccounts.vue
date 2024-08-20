@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, watchEffect } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
 import Dialog from '../components/AdminCreateDialog.vue'
@@ -27,16 +27,16 @@ const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 
-function redirectDeleteEventHandler(data) {
+function redirectDeleteEventHandler (data) {
   loading.value = true
   emit('deleteEventHandler', data, () => { loading.value = false })
 }
 
-function redirectInviteEventHandler(data, cb) {
+function redirectInviteEventHandler (data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectCreateEventHandler(data, cb) {
+function redirectCreateEventHandler (data, cb) {
   emit('createEventHandler', data, cb)
 }
 

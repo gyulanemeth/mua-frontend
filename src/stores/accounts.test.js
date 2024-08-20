@@ -143,7 +143,7 @@ describe('accounts Store', () => {
   test('test success List', async () => {
     const accountStore = useAccountsStore(mokeConnector())
     const store = accountStore()
-    await store.loadPage(1)
+    await store.load()
     expect(store.count).toEqual(3)
   })
 

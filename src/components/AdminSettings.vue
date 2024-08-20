@@ -22,7 +22,7 @@ function redirectDeleteHandler (data) {
             <v-divider color="error" />
 
                 <v-banner color="error" class="text-error my-4">
-                    <v-banner-text>
+                    <v-banner-text class="pa-0">
                        <h3 class="font-weight-bold">{{ $t('mua.adminSettings.noteHeader') }}</h3>
                         <v-list-item color="error">
                             <template v-slot:prepend>
