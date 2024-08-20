@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
-import pagedListState from 'pinia-list-store/src/state/paged.js'
-import loadPage from 'pinia-list-store/src/actions/loadPage.js'
+import infiniteListState from 'pinia-list-store/src/state/infinite.js'
+import load from 'pinia-list-store/src/actions/load.js'
+import loadMore from 'pinia-list-store/src/actions/loadMore.js'
 import deleteAdmin from 'pinia-list-store/src/actions/deleteOne.js'
 import jwtDecode from 'jwt-decode'
 
@@ -27,10 +28,11 @@ export default (connectors) => {
     state: () => ({
       accessToken: storage.accessToken,
       user: storage.user,
-      ...pagedListState()
+      ...infiniteListState()
     }),
     actions: {
-      loadPage: loadPage(connectors.admins.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      load: load(connectors.admins.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      loadMore: loadMore(connectors.admins.list, useSystemMessagesStore().addError, { metaFirst: false }),
       delete: deleteAdmin(connectors.admins.deleteOne, useSystemMessagesStore().addError, { optimistic: false }),
       async deleteOne ({ id, password }) {
         try {

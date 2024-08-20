@@ -164,6 +164,7 @@
     },
     "adminDeleteAccount": {
       "openBtn": "Delete",
+      "adminsOpenBtn": "Delete admin",
       "header": "Are you sure you want to delete",
       "subheader": "Doing so will fully delete this record forever, which cannot be reversed.",
       "overviewTitle": "Account Overview",
@@ -331,6 +332,7 @@
         "admin": "Administrators",
         "account": "Accounts"
       },
+      "navigateToAccountBtn": "Navigate To Account",
       "createAccountBtn": "Create Account",
       "createAdminBtn": "Invite Admin",
       "tableHeader": {

@@ -40,7 +40,7 @@ const tab = ref('me')
 
 <template>
 
-<v-container :class="`elevation-0 ${$vuetify.display.mobile? 'pa-0 ma-0':'pa-5'} rounded`">
+<v-container :class="`elevation-0 ${$vuetify.display.mobile? 'pa-0 ma-0':'pa-2'} rounded`">
     <v-layout class="d-flex flex-wrap align-end justify-end">
 
         <p class="text-h4 ml-4" data-test-id="meDetails-userName">{{props.data.name}}
