@@ -36,7 +36,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
             <v-btn v-if="route.name === 'system-admins'" color="error" variant="text"
                  class="ma-2" size="small" v-bind="props" >{{ $t('mua.adminDeleteAccount.adminsOpenBtn')&& 'delete admin' }}</v-btn>
         </template>
-        <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto d-flex flex-column justify-center">
+        <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto d-flex flex-column justify-center">
 
             <v-card-text align="start">
                 <v-col align="center" class="pb-10">

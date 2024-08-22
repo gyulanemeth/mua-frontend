@@ -44,7 +44,7 @@ defineExpose({
 
 <template>
     <v-dialog tabindex="-1" @keydown.enter="processing = true; deleteAccount()" @keydown.esc="hide" v-model="dialogShown">
-        <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto">
+        <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
         <v-card-text>
             <v-toolbar color="white" align="center">

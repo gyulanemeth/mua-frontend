@@ -37,7 +37,7 @@ defineExpose({
 
 <template>
     <v-dialog v-model="dialogShown" tabindex="-1" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })" @keydown.esc="hide">
-            <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto">
+            <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 
             <v-toolbar color="white" align="center">

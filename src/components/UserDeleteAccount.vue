@@ -35,7 +35,7 @@ defineExpose({
     <template v-slot:activator="{ props }">
         <v-btn v-if="route.name !== 'accounts-settings'"  color="error" data-test-id="open-deleteAccount-dialog" variant="text" v-bind="props">{{$t('mua.userDeleteAccount.openBtn')}}</v-btn>
     </template>
-    <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class="ma-auto">
+    <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
 
             <v-card-text align="start">

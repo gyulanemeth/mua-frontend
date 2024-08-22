@@ -22,7 +22,7 @@ const resetForm = () => {
 </script>
 
 <template>
-    <v-layout :class="`d-flex flex-wrap ${$vuetify.display.mobile? 'w-100':'w-75'}`">
+    <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col class="pt-3">
             <h3 class="font-weight-bold">{{ $t('mua.userChangeEmail.header') }}</h3>
             <v-divider />

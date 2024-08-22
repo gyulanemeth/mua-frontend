@@ -58,7 +58,7 @@ defineExpose({
 <template>
     <v-dialog v-model="dialogShown" scrollable style="z-index: 1500;" @keydown.esc="resetForm" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })" >
 
-        <v-card :width="$vuetify.display.mobile? '100%': '50%'" max-width="800" class=" ma-auto d-flex flex-column justify-center">
+        <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class=" ma-auto d-flex flex-column justify-center">
             <v-toolbar color="white" align="center">
                 <v-toolbar-title class="font-weight-bold">{{ props.header }}</v-toolbar-title>
             </v-toolbar>

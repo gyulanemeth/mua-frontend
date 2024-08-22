@@ -121,7 +121,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
     <div v-else>
       <v-layout class="d-flex flex-wrap">
-        <v-card :class="`${$vuetify.display.mobile ? 'mx-auto' :'mx-2'} my-5 align-self-start`" min-width="350"  height="320px" v-for="item in props.items"
+        <v-card :class="`${!$vuetify.display.mdAndUp ? 'mx-auto' :'mx-2'} my-5 align-self-start`" min-width="350"  height="320px" v-for="item in props.items"
           :key="item._id">
           <v-card-title>
             <p data-test-id="userList-card-0-name">{{ item.data.name ? item.data.name : 'Invited' }}</p>

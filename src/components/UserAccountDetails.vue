@@ -42,7 +42,7 @@ const tab = ref('me')
 </script>
 
 <template>
-  <div :class="`elevation-0 ${$vuetify.display.mobile? 'pa-0 ma-0':'mx-3'} elevation-0 rounded`">
+  <div :class="`elevation-0 ${!$vuetify.display.mdAndUp? 'pa-0 ma-0':'mx-3'} elevation-0 rounded`">
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
