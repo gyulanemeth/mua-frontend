@@ -5,7 +5,7 @@ import { useDebounceFn } from '@vueuse/core'
 import Dialog from '../components/AdminCreateDialog.vue'
 import DeleteMyAccount from './AdminDeleteAccount.vue'
 
-const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore', 'searchEvent', 'reSendInvitationEventHandler', 'detailsEventHandler'])
+const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEventHandler', 'loadMore', 'searchEvent', 'reSendInvitationEventHandler', 'detailsEventHandler', 'sortEventHandler'])
 const props = defineProps({
   items: Array,
   btn: Object,
@@ -17,6 +17,7 @@ const route = useRoute()
 const filter = ref('')
 const loading = ref()
 const createAccountDialog = ref()
+const sortBy = ref({ updatedAt: -1 })
 
 const debouncedFn = useDebounceFn(() => {
   loading.value = true
@@ -27,20 +28,25 @@ const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 
-function redirectDeleteEventHandler (data) {
+function redirectSortEventHandler(params) {
+  loading.value = true
+  emit('sortEventHandler', params, () => { loading.value = false })
+}
+
+function redirectDeleteEventHandler(data) {
   loading.value = true
   emit('deleteEventHandler', data, () => { loading.value = false })
 }
 
-function redirectInviteEventHandler (data, cb) {
+function redirectInviteEventHandler(data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectCreateEventHandler (data, cb) {
+function redirectCreateEventHandler(data, cb) {
   emit('createEventHandler', data, cb)
 }
 
-async function visibilityChanged (isVisible) {
+async function visibilityChanged(isVisible) {
   if (isVisible) {
     emit('loadMore')
   }
@@ -59,12 +65,39 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
           $t('mua.listAdminsAndAccounts.header.account') }} </p>
       </v-col>
       <v-spacer />
-      <v-col cols="12" md="5" class="d-flex align-end mb-n5 pt-1">
+      <v-col cols="12" md="4" class="d-flex align-end mb-n5 pt-1">
         <v-text-field density="compact" label="Search" data-test-id="tableList-searchBar" variant="underlined"
           append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
-      <v-col cols="12" md="2" class="d-flex align-end  pt-1">
+      <v-col cols="12" md="auto"  class="d-flex align-end">
+        <v-select @update:modelValue="(params)=>redirectSortEventHandler(params)" v-model="sortBy" hide-details density="compact" item-name="name" item-value="value"
+          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="info" color="info"
+          :items="[{ name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: -1 } }]"
+          variant="outlined">
+          <template v-slot:selection="{ item }">
+            <div>
+              <span>{{ item.raw.name }}</span>
+              <v-icon class="ml-md-3" size="small">
+                {{ Object.values(item.raw.value)[0] === 1 ? "mdi-arrow-up" : "mdi-arrow-down" }}
+              </v-icon>
+            </div>
+          </template>
+          <template v-slot:item="{ props, item }">
+            <v-list-item v-bind="props" title="item.raw.name">
+              <template v-slot:title>
+                <div>
+                  <span>{{ item.raw.name }}</span>
+                  <v-icon class="ml-3" size="small">
+                    {{ Object.values(item.raw.value)[0] === 1 ? "mdi-arrow-up" : "mdi-arrow-down" }}
+                  </v-icon>
+                </div>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col cols="12" md="auto" class="d-flex align-end  pt-1">
         <v-btn variant="outlined" block color="info" @click="createAccountDialog.show()">
           {{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.createAdminBtn') :
             $t('mua.listAdminsAndAccounts.createAccountBtn') }}
@@ -121,22 +154,35 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
     <div v-else>
       <v-layout class="d-flex flex-wrap">
-        <v-card :class="`${!$vuetify.display.mdAndUp ? 'mx-auto' :'mx-2'} my-5 align-self-start`" min-width="350"  height="320px" v-for="item in props.items"
-          :key="item._id">
+        <v-card :class="`${!$vuetify.display.mdAndUp ? 'mx-auto' : 'mx-2'} my-5 align-self-start`" min-width="350"
+          height="340px" v-for="item in props.items" :key="item._id">
           <v-card-title>
             <p data-test-id="userList-card-0-name">{{ item.data.name ? item.data.name : 'Invited' }}</p>
 
           </v-card-title>
           <v-img :src="profilePicture(item)" height="150px" cover></v-img>
-          <v-card-text>
+          <v-card-text class="pb-0">
             <v-card-subtitle class="px-0">
-              {{ route.name === 'system-admins' ? item.data.email : item.data.urlFriendlyName }}
-              <v-card-subtitle class="px-0">
-                <span v-if="item._id === props.adminId"> - Me -</span>
-              </v-card-subtitle>
+              {{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.cardLabels.emailLabel') :
+                $t('mua.listAdminsAndAccounts.cardLabels.urlFriendlyName') }}: {{ route.name === 'system-admins' ?
+                item.data.email : item.data.urlFriendlyName }}
+
+              <span class="ml-2" v-if="item._id === props.adminId"> - Me -</span>
+
+            </v-card-subtitle>
+            <v-card-subtitle v-if="item.data.createdAt" class="px-0 mt-2">
+              {{ $t('mua.listAdminsAndAccounts.cardLabels.creationDateLabel') }}: {{ new
+                Date(item.data.createdAt).toJSON().slice(0, 10) }}@{{ new
+                Date(item.data.createdAt).toLocaleTimeString('en-US') }}
+            </v-card-subtitle>
+            <v-card-subtitle v-if="item.data.updatedAt" class="px-0 mt-2">
+              {{ $t('mua.listAdminsAndAccounts.cardLabels.lastEditedLabel') }}: {{ new
+                Date(item.data.updatedAt).toJSON().slice(0, 10) }}@{{ new
+                Date(item.data.updatedAt).toLocaleTimeString('en-US') }}
+
             </v-card-subtitle>
           </v-card-text>
-          <v-card-actions v-if="item._id !== props.adminId">
+          <v-card-actions v-if="item._id !== props.adminId" class="px-0">
             <v-btn color="info" v-if="route.name === 'system-admins' && !item.data.name" variant="text" class="ma-2"
               size="small" @click="$emit('reSendInvitationEventHandler', { email: item.data.email })">{{
                 $t('mua.listAdminsAndAccounts.resendMessage') }}
@@ -147,7 +193,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
             <v-btn v-if="route.name !== 'system-admins'" color="info" variant="text" class="ma-2"
               append-icon="mdi-arrow-right" size="small"
               @click="$emit('detailsEventHandler', { id: item._id, urlFriendlyName: item.data.urlFriendlyName })">{{
-                $t('mua.listAdminsAndAccounts.navigateToAccountBtn' && 'Navigate To Account') }}</v-btn>
+                $t('mua.listAdminsAndAccounts.navigateToAccountBtn') }}</v-btn>
           </v-card-actions>
         </v-card>
         <div v-if="props.items.length" v-observe-visibility="visibilityChanged"></div>

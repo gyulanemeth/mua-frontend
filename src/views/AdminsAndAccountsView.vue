@@ -29,6 +29,7 @@ async function loadData () {
   if (route.name === 'system-admins') {
     store = useAdminsStore()
     store.filter = {}
+    store.sort = { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
@@ -49,6 +50,7 @@ async function loadData () {
   } else if (route.name === 'system-admins-accounts') {
     store = useAccountsStore()
     store.filter = {}
+    store.sort = { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
@@ -120,6 +122,14 @@ async function loadMore () {
   }
 }
 
+async function handleSortEvent (sort, statusCallBack) {
+    store.skip = 0
+    store.sort = sort
+    await store.load()
+    data.value = store.items
+    statusCallBack()
+}
+
 async function searchBarHandler (filter, statusCallBack) {
   const filterParam = [
     {
@@ -166,7 +176,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id"
+  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" @sortEventHandler="handleSortEvent"
     @loadMore='loadMore' @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent"
     @deleteEventHandler="handleDeleteEvent" @inviteEventHandler="handleInviteEvent"
     @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />

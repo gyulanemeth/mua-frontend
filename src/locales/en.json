@@ -268,7 +268,15 @@
     },
     "userList": {
       "openBtn": "View profile",
-      "resendMessage": "Resend invitation"
+      "resendMessage": "Resend invitation",
+      "lastEditedLabel": "Last Edited",
+      "creationDateLabel": "Creation Date",
+      "sortLabel": "Sort By",
+      "sort": {
+        "name": "Name",
+        "updated": "Updated At",
+        "created": "Created At"
+      }
     },
     "redirectToLoginMessage": {
       "title": "Login required",
@@ -335,15 +343,18 @@
       "navigateToAccountBtn": "Navigate To Account",
       "createAccountBtn": "Create Account",
       "createAdminBtn": "Invite Admin",
-      "tableHeader": {
+      "cardLabels": {
         "nameLabel": "Name",
         "emailLabel": "E-mail Address",
         "urlFriendlyName": "URL Friendly Name",
         "lastEditedLabel": "Last Edited",
         "creationDateLabel": "Creation Date"
       },
-      "tableFooter": {
-        "label": "Rows per page"
+      "sortLabel": "Sort By",
+      "sort": {
+        "name": "Name",
+        "updated": "Updated At",
+        "created": "Created At"
       },
       "resendMessage": "Resend invitation"
     },

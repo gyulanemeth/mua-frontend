@@ -34,7 +34,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
         @keydown.esc="resetForm" @keydown.enter="$emit('deleteEventHandler', { id: props.data._id, password }); resetForm()">
         <template v-slot:activator="{ props }">
             <v-btn v-if="route.name === 'system-admins'" color="error" variant="text"
-                 class="ma-2" size="small" v-bind="props" >{{ $t('mua.adminDeleteAccount.adminsOpenBtn')&& 'delete admin' }}</v-btn>
+                 class="ma-2" size="small" v-bind="props" >{{ $t('mua.adminDeleteAccount.adminsOpenBtn') }}</v-btn>
         </template>
         <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto d-flex flex-column justify-center">
 
