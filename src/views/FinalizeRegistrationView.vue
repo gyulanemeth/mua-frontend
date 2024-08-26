@@ -64,7 +64,7 @@ watchEffect(async () => {
         </v-avatar>
       </v-card-text>
     </v-card>
-    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="40%" max-width="600">
+    <v-card class="rounded-xl elevation-2 d-flex flex-column justify-center align-right" width="80%" max-width="600">
       <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
         <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
           <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
