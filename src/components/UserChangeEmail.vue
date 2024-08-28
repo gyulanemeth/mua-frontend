@@ -22,7 +22,7 @@ const resetForm = () => {
 </script>
 
 <template>
-    <v-layout class="d-flex flex-wrap w-75">
+    <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col class="pt-3">
             <h3 class="font-weight-bold">{{ $t('mua.userChangeEmail.header') }}</h3>
             <v-divider />
@@ -59,7 +59,7 @@ const resetForm = () => {
                 </v-text-field>
 
             </v-row>
-            <v-btn color="info mt-3" data-test-id="meDetails-changeEmailTab-submitBtn"
+            <v-btn color="info" class="mt-5" data-test-id="meDetails-changeEmailTab-submitBtn"
                 @click="processing = true; $emit('updateEmailHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({name: $t('mua.userChangeEmail.cb.message'), message: $t('mua.userChangeEmail.cb.header') });resetForm(); processing = false })">
                 {{ !processing ? $t('mua.userChangeEmail.submitBtn') : '' }}
 

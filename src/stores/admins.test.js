@@ -204,14 +204,14 @@ describe('admins Store', () => {
   test('test success List', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const store = adminStore()
-    await store.loadPage(1)
+    await store.load()
     expect(store.count).toEqual(4)
   })
 
   test('test success deleteOne', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const store = adminStore()
-    await store.loadPage(1)
+    await store.load()
     await store.delete(store.items[0]._id)
     expect(store.items.length).toEqual(3)
     expect(store.items[0].data.name).toEqual('user2')
@@ -220,7 +220,7 @@ describe('admins Store', () => {
   test('test success delete ', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const store = adminStore()
-    await store.loadPage(1)
+    await store.load()
     const res = await store.deleteOne({ id: store.items[0]._id, password: 123123 })
     expect(res).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
   })
@@ -228,7 +228,7 @@ describe('admins Store', () => {
   test('test error delete ', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const store = adminStore()
-    await store.loadPage(1)
+    await store.load()
     const res = await store.deleteOne({})
     expect(res.message).toEqual('Password Is Required')
   })

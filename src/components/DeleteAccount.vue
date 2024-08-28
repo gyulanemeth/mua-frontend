@@ -44,7 +44,7 @@ defineExpose({
 
 <template>
     <v-dialog tabindex="-1" @keydown.enter="processing = true; deleteAccount()" @keydown.esc="hide" v-model="dialogShown">
-        <v-card width="50%" max-width="800" class="ma-auto">
+        <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class="ma-auto">
         <v-container class="d-flex flex-column justify-center">
         <v-card-text>
             <v-toolbar color="white" align="center">
@@ -74,10 +74,10 @@ defineExpose({
                     <v-col cols="8" align='center'>
                         <v-text-field  disabled hide-details density="compact" class="my-5 rounded" color="info" variant="solo" v-model="data.urlFriendlyName"  />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ t('mua.deleteAccount.picLabel') }}</p>
                     </v-col>
-                    <v-col cols="8" align='center'>
+                    <v-col cols="12" md="8" align='center'>
                        <v-card  class="mx-2 my-5 pa-2" min-width="275">
                             <v-img :src="props.data.logo || logo" height="150px" ></v-img>
                             <v-card-title class="justify-center py-0">

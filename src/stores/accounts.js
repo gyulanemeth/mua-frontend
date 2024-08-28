@@ -2,8 +2,9 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
-import pagedListState from 'pinia-list-store/src/state/paged.js'
-import loadPage from 'pinia-list-store/src/actions/loadPage.js'
+import infiniteListState from 'pinia-list-store/src/state/infinite.js'
+import load from 'pinia-list-store/src/actions/load.js'
+import loadMore from 'pinia-list-store/src/actions/loadMore.js'
 
 import RouteError from '../errors/RouteError.js'
 import useSystemMessagesStore from './systemMessages.js'
@@ -18,9 +19,10 @@ export default (connectors) => {
   }
 
   const accountStore = defineStore('mua-frontend-accountsStore', {
-    state: pagedListState,
+    state: infiniteListState,
     actions: {
-      loadPage: loadPage(connectors.account.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      load: load(connectors.account.list, useSystemMessagesStore().addError, { metaFirst: false }),
+      loadMore: loadMore(connectors.account.list, useSystemMessagesStore().addError, { metaFirst: false }),
       async createOneByAdmin (formData) {
         try {
           const logo = formData.logo

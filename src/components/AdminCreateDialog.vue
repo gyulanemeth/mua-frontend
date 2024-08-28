@@ -56,18 +56,18 @@ defineExpose({
 </script>
 
 <template>
-    <v-dialog v-model="dialogShown" style="z-index: 1500;" @keydown.esc="resetForm" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })" >
+    <v-dialog v-model="dialogShown" scrollable style="z-index: 1500;" @keydown.esc="resetForm" @keydown.enter="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })" >
 
-        <v-card width="50%" max-width="800" class=" ma-auto d-flex flex-column justify-center">
+        <v-card :width="!$vuetify.display.mdAndUp? '100%': '50%'" max-width="800" class=" ma-auto d-flex flex-column justify-center">
             <v-toolbar color="white" align="center">
                 <v-toolbar-title class="font-weight-bold">{{ props.header }}</v-toolbar-title>
             </v-toolbar>
             <v-card-text align="start">
                 <v-row align="center" v-for="(input, i) in props.inputs" :key="i">
-                    <v-col cols="4">
+                    <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ input.label }}</p>
                     </v-col>
-                    <v-col cols="8" align='center'>
+                    <v-col cols="12" md="8" align='center'>
                         <v-card v-if="input.type === 'file'" class="mx-2 my-5 pa-2" min-width="275">
                             <v-img :src="previewUrl || logo" height="150px" ></v-img>
                             <v-card-title class="justify-center py-0">

@@ -42,7 +42,7 @@ const tab = ref('me')
 </script>
 
 <template>
-  <div class="mx-3 elevation-0 rounded">
+  <div :class="`elevation-0 ${!$vuetify.display.mdAndUp? 'pa-0 ma-0':'mx-3'} elevation-0 rounded`">
     <v-layout class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
@@ -52,7 +52,7 @@ const tab = ref('me')
               <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('mua.userAccountDetails.tabs.settingsLabel')}}</v-tab>
             </v-tabs>
 
-            <v-card-text>
+            <v-card-text class="px-1">
               <v-window v-model="tab">
 
                 <v-window-item value="me">

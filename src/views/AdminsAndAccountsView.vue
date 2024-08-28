@@ -29,7 +29,8 @@ async function loadData () {
   if (route.name === 'system-admins') {
     store = useAdminsStore()
     store.filter = {}
-    await store.loadPage(1)
+    store.sort = { updatedAt: -1 }
+    await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
     btn.value = {
@@ -49,7 +50,8 @@ async function loadData () {
   } else if (route.name === 'system-admins-accounts') {
     store = useAccountsStore()
     store.filter = {}
-    await store.loadPage(1)
+    store.sort = { updatedAt: -1 }
+    await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
     btn.value = {
@@ -112,11 +114,20 @@ async function handleCreateEvent (params, statusCallBack) {
   }
 }
 
-async function loadPage (page, rows) {
-  store.itemsPerPage = rows
-  await store.loadPage(page)
-  numOfPages.value = store.numOfPages
-  data.value = store.items
+async function loadMore () {
+  if (store.items.length !== store.count) {
+    store.skip = store.skip + 10
+    await store.loadMore()
+    data.value = store.items
+  }
+}
+
+async function handleSortEvent (sort, statusCallBack) {
+    store.skip = 0
+    store.sort = sort
+    await store.load()
+    data.value = store.items
+    statusCallBack()
 }
 
 async function searchBarHandler (filter, statusCallBack) {
@@ -153,7 +164,7 @@ async function searchBarHandler (filter, statusCallBack) {
       $or: filterParam
     }
   }
-  await store.loadPage(1)
+  await store.load()
   data.value = store.items
   statusCallBack()
 }
@@ -165,8 +176,8 @@ watch(route, () => {
 </script>
 
 <template>
-  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" :numOfPages="numOfPages"
-    @loadPage="loadPage" @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent"
+  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" @sortEventHandler="handleSortEvent"
+    @loadMore='loadMore' @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent"
     @deleteEventHandler="handleDeleteEvent" @inviteEventHandler="handleInviteEvent"
     @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />
 </template>
