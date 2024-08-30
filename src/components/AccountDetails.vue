@@ -50,7 +50,7 @@ const uploadlogo = (image) => {
   showCropperDialog.value = false
   emit('uploadLogoHandler', image, (url) => {
     if (url) {
-      logo.value = url + '?' + Date.now()
+      logo.value = url + '?' + Math.random().toString(36).substring(2, 7)
     }
     processing.value = false
   })
