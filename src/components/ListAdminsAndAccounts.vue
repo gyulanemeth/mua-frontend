@@ -28,25 +28,25 @@ const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 
-function redirectSortEventHandler(params) {
+function redirectSortEventHandler (params) {
   loading.value = true
   emit('sortEventHandler', params, () => { loading.value = false })
 }
 
-function redirectDeleteEventHandler(data) {
+function redirectDeleteEventHandler (data) {
   loading.value = true
   emit('deleteEventHandler', data, () => { loading.value = false })
 }
 
-function redirectInviteEventHandler(data, cb) {
+function redirectInviteEventHandler (data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectCreateEventHandler(data, cb) {
+function redirectCreateEventHandler (data, cb) {
   emit('createEventHandler', data, cb)
 }
 
-async function visibilityChanged(isVisible) {
+async function visibilityChanged (isVisible) {
   if (isVisible) {
     emit('loadMore')
   }

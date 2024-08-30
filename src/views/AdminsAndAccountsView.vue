@@ -123,11 +123,11 @@ async function loadMore () {
 }
 
 async function handleSortEvent (sort, statusCallBack) {
-    store.skip = 0
-    store.sort = sort
-    await store.load()
-    data.value = store.items
-    statusCallBack()
+  store.skip = 0
+  store.sort = sort
+  await store.load()
+  data.value = store.items
+  statusCallBack()
 }
 
 async function searchBarHandler (filter, statusCallBack) {
@@ -164,6 +164,7 @@ async function searchBarHandler (filter, statusCallBack) {
       $or: filterParam
     }
   }
+  store.skip = 0
   await store.load()
   data.value = store.items
   statusCallBack()
