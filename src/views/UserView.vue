@@ -47,7 +47,7 @@ usersStore.sort = { updatedAt: -1 }
 await usersStore.load()
 data.value = usersStore.items
 
-async function handleUpdateRole(params) {
+async function handleUpdateRole (params) {
   const res = await usersStore.patchRole(params.id, {
     role: params.role
   })
@@ -58,7 +58,7 @@ async function handleUpdateRole(params) {
   }
 }
 
-async function handleDeleteUser(params) {
+async function handleDeleteUser (params) {
   const res = await usersStore.deleteOne(params)
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.accountDeleteAlert') })
@@ -70,7 +70,7 @@ async function handleDeleteUser(params) {
   }
 }
 
-async function handleInviteMember(params, statusCallBack) {
+async function handleInviteMember (params, statusCallBack) {
   const res = await usersStore.sendInvitation(params.email)
   statusCallBack(!res.message)
   if (!res.message) {
@@ -79,14 +79,14 @@ async function handleInviteMember(params, statusCallBack) {
   }
 }
 
-async function handleReInviteMember(params) {
+async function handleReInviteMember (params) {
   const res = await usersStore.reSendInvitation(params.email)
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.invitationSentAlert') })
   }
 }
 
-async function loadMore() {
+async function loadMore () {
   if (usersStore.items.length !== usersStore.count) {
     usersStore.skip = usersStore.skip + 10
     await usersStore.loadMore()
@@ -94,7 +94,7 @@ async function loadMore() {
   }
 }
 
-async function handleSortEvent(sort, statusCallBack) {
+async function handleSortEvent (sort, statusCallBack) {
   usersStore.skip = 0
   usersStore.sort = sort
   await usersStore.load()
@@ -102,7 +102,7 @@ async function handleSortEvent(sort, statusCallBack) {
   statusCallBack()
 }
 
-async function searchBarHandler(filter, statusCallBack) {
+async function searchBarHandler (filter, statusCallBack) {
   if (filter === '') {
     usersStore.filter = {}
   } else {
@@ -121,6 +121,7 @@ async function searchBarHandler(filter, statusCallBack) {
       }]
     }
   }
+  usersStore.skip = 0
   await usersStore.load()
   data.value = usersStore.items
   statusCallBack()
