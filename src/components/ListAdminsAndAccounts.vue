@@ -125,7 +125,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
     <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
       <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
         <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
-        <h4 class="mt-3">{{ $t('mua.loading') }}</h4>
+        <p class="mt-3 text-body-2 font-weight-bold">{{ $t('mua.loading') }}</p>
       </v-card>
     </v-layout>
 
@@ -141,14 +141,14 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
             <v-icon color="error" icon="mdi-cancel" size="x-large"></v-icon>
           </v-col>
           <v-col cols="10" class="pt-4 ml-0 pl-0">
-            <h3 v-if="filter.length === 0">{{ $t('mua.emptyList.NoElementsYet', {
+            <p class="text-body-1 font-weight-bold" v-if="filter.length === 0">{{ $t('mua.emptyList.NoElementsYet', {
               name: route.name === 'system-admins' ?
                 $t('mua.listAdminsAndAccounts.header.admin') : $t('mua.listAdminsAndAccounts.header.account')
-            }) }}</h3>
-            <h3 v-else>{{ $t('mua.emptyList.searchNoResult') }}</h3>
+            }) }}</p>
+            <p class="text-body-1 font-weight-bold" v-else>{{ $t('mua.emptyList.searchNoResult') }}</p>
           </v-col>
         </v-row>
-        <h3 class="w-100" v-if="filter.length > 0">{{ filter }}</h3>
+        <p class="w-100 text-body-1 font-weight-bold" v-if="filter.length > 0">{{ filter }}</p>
       </v-card>
     </v-layout>
 

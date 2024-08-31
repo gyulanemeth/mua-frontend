@@ -56,7 +56,7 @@ const openFileInput = () => {
 <template>
     <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col cols="12" md="8" class="pt-3">
-            <h3 class="font-weight-bold">{{ $t('mua.userProfile.header') }}</h3>
+            <p class="text-body-1 font-weight-bold">{{ $t('mua.userProfile.header') }}</p>
             <v-divider />
 
             <v-row align="center" class="mt-3">
@@ -95,7 +95,7 @@ const openFileInput = () => {
         </v-col>
 
         <v-col cols="12" md="4" class="pt-3">
-            <h3 class="font-weight-bold">{{ $t('mua.userProfile.picLabel') }}</h3>
+            <p class="text-body-1 font-weight-bold">{{ $t('mua.userProfile.picLabel') }}</p>
             <v-divider />
             <v-col align="center" class="mt-3">
                 <v-hover v-slot="{ isHovering, props }">

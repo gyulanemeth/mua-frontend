@@ -45,7 +45,7 @@ function submitForm () {
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm">
-                <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.loginHeader') }} </h6>
+                <p class="text-h6">{{ $t('mua.userLoginAndResetForm.loginHeader') }} </p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class=" my-5 rounded" color="info" variant="solo" :disabled="!!cb || !!props.tokenData.user"
