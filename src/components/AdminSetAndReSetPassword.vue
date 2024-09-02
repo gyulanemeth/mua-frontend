@@ -49,7 +49,7 @@ function submitForm () {
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm()" v-if="!cb">
-                <h6 class="text-h6">{{ props.formData.text }}</h6>
+                <p class="text-h6">{{ props.formData.text }}</p>
 
                 <v-text-field v-if="operation === 'setPassword'" hide-details density="compact"
                     class=" my-5 rounded" color="info" variant="solo" name="email" type="text"
@@ -93,7 +93,7 @@ function submitForm () {
             </v-card-text>
             <v-card-text v-if="cb">
 
-                <h2 style="color: #888888;" class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.header') }}</h2>
+                <p style="color: #888888;" class="mt-4 text-h6 font-weight-bold">{{ $t('mua.adminSetAndReSetPassword.cb.header') }}</p>
                 <p style="color: #888888;" class="mt-4">{{ $t('mua.adminSetAndReSetPassword.cb.message') }}
                     <router-link tag="span" data-test-id="setAndRestPassword-continueBtn"
                         style="text-decoration: none; color: #888888;" to="/system-admins/me" class="font-weight-bold">{{

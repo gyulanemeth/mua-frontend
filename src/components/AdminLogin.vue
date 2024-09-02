@@ -31,7 +31,7 @@ async function submit () {
         </v-card>
         <v-card @keydown.enter="processing = true; submit()" class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
-                <h6 class="text-h6">{{ $t('mua.adminLogin.header') }}</h6>
+                <p class="text-h6">{{ $t('mua.adminLogin.header') }}</p>
                 <v-text-field hide-details density="compact" data-test-id="login-emailField"
                     class="my-5 rounded" color="info" variant="solo" name="email"
                     :label="$t('mua.adminLogin.emailLabel')" id="email" type="email" :placeholder="email || 'your@email.com'"

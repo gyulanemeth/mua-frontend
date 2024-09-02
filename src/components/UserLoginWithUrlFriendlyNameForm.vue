@@ -26,11 +26,11 @@ const url = ref(window.location.href)
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
             <v-card-text align="center"
                 @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
-                <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', {
+                <p class="text-h6">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', {
                     name:
                         props.formData.accountName
-                }) }} </h6>
-                <h6 class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</h6>
+                }) }} </p>
+                <p class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class="my-5 rounded" color="info" variant="solo" type="email" name="email"

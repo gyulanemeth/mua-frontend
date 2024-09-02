@@ -68,12 +68,12 @@ watchEffect(async () => {
       <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
         <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
           <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
-          <h4 class="mt-3">{{ $t('loading') }}</h4>
+          <p class="mt-3 text-body-2 font-weight-bold">{{ $t('loading') }}</p>
         </v-card>
       </v-layout>
       <slot v-else-if="accountsStore.account && finalizeRegistrationRes"></slot>
       <v-card-text v-else align="left">
-        <h4 class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</h4>
+        <p class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</p>
         <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes?.message }}</p>
       </v-card-text>
     </v-card>

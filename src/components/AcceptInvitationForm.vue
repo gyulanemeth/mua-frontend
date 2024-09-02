@@ -31,7 +31,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text  @keydown.enter="$emit('handleAcceptInvitationHandler', data, () => { processing = false })" align="center" v-if="!cb">
-                <h6 class="text-h6">{{ props.formData.header }}</h6>
+                <p class="text-h6">{{ props.formData.header }}</p>
 
                 <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
                     variant="solo" name="email" type="text" :value="tokenData.user.email"
@@ -74,7 +74,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
             </v-card-text>
             <v-card-text align="center" v-if="cb">
 
-                <h2 class="mt-4" style="color: #888888;" data-test-id="acceptInvitation-headerCb">{{ $t('mua.acceptInvitationForm.cb.header') }}</h2>
+                <p class="mt-4 text-h6 font-weight-bold" style="color: #888888;" data-test-id="acceptInvitation-headerCb">{{ $t('mua.acceptInvitationForm.cb.header') }}</p>
                 <p class="mt-4">{{ $t('mua.acceptInvitationForm.cb.message') }}
                     <router-link tag="span" style="text-decoration: none; color: #888888" to="/accounts/"
                         class="font-weight-bold">{{$t('mua.acceptInvitationForm.cb.cbBtn')}}</router-link>

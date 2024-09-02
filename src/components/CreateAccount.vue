@@ -45,10 +45,10 @@ function startCountDownt () {
             <v-card-text align="center">
                 <v-btn v-if="step === 2" @click="step = 1" style="position: absolute; left: 25px;" density="compact"
                     class="ma-0 pa-0" variant="outlined" color="info" icon="mdi-arrow-left"></v-btn>
-                <h6 class="text-h6">{{ $t('mua.createAccount.header') }}</h6>
+                <p class="text-h6">{{ $t('mua.createAccount.header') }}</p>
                 <div v-if="step === 1">
                     <v-divider class="my-3" />
-                    <h4 class="ma-10 d-inline">{{ $t('mua.createAccount.userSection.header') }}</h4><v-divider
+                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.userSection.header') }}</p><v-divider
                         class=" mt-3 mb-6" />
 
                     <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
@@ -89,7 +89,7 @@ function startCountDownt () {
                 <div v-if="step === 2"
                     @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() }) : null">
                     <v-divider class="my-3" />
-                    <h4 class="ma-10 d-inline">{{ $t('mua.createAccount.accountSection.header') }}</h4>
+                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.accountSection.header') }}</p>
 
                     <v-divider class=" mt-3 mb-6" />
                     <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4" class="elevation-5 bg-blue-lighten-5">
@@ -152,7 +152,7 @@ function startCountDownt () {
         <v-card class="  rounded-xl  elevation-2  d-flex flex-column justify-center align-right  " width="80%"
             max-width="600px">
             <v-card-text align="left">
-                <h4 class="text-h5 text-center text-green">{{ $t('mua.createAccount.cbHeader') }}</h4>
+                <p class="text-h5 text-center text-green">{{ $t('mua.createAccount.cbHeader') }}</p>
 
                 <p class="mt-3 pa-2">{{ $t('mua.createAccount.cbMessagePart1') }}</p>
                 <p class="pa-2">{{ $t('mua.createAccount.cbMessagePart2') }}</p>

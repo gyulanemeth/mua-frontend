@@ -34,7 +34,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
         </v-card>
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
-                <h6 class="text-h6">{{ $t('mua.userLoginAndResetForm.resetHeader') }} </h6>
+                <p class="text-h6">{{ $t('mua.userLoginAndResetForm.resetHeader') }} </p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class="my-5 rounded" color="info" variant="solo" :disabled="!!cb || !!props.formData.email"

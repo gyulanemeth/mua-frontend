@@ -20,12 +20,12 @@ await store.readOne()
 <template >
   <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
           <v-col class="pt-3">
-            <h3 class="font-weight-bold text-error">{{ $t(`mua.accountAdminSettings.delete${props.data.role}Label`) }}</h3>
+            <p class="text-body-1 font-weight-bold text-error">{{ $t(`mua.accountAdminSettings.delete${props.data.role}Label`) }}</p>
             <v-divider color="error" />
 
                 <v-banner color="error" class="text-error my-4">
                     <v-banner-text class="pa-0">
-                       <h3 class="font-weight-bold">{{ $t('mua.accountAdminSettings.noteHeader') }}</h3>
+                       <p class="text-body-1 font-weight-bold">{{ $t('mua.accountAdminSettings.noteHeader') }}</p>
                         <v-list-item color="error">
                             <template v-slot:prepend>
                                 <v-icon icon="mdi-circle-small"></v-icon>
@@ -50,7 +50,7 @@ await store.readOne()
                             </template>
                             <v-card-text class="pa-0 ma-0 text-body-1">{{ $t(`mua.accountAdminSettings.note${props.data.role}Point4`) }}</v-card-text>
                         </v-list-item>
-                        <h3 class="font-weight-bold">{{ $t(`mua.accountAdminSettings.noteFooter`) }}</h3>
+                        <p class="text-body-1 font-weight-bold">{{ $t(`mua.accountAdminSettings.noteFooter`) }}</p>
                 </v-banner-text>
             </v-banner>
             <v-btn data-test-id="open-deleteAccount-dialog" color="error" variant="outlined" class="text-white" @click="deleteMyAccountDialog.show()">{{$t('mua.adminDeleteAccount.openBtn')}}</v-btn>

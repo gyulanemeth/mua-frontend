@@ -58,7 +58,7 @@ defineExpose({
             </v-card-text>
             <v-card-text align="start">
                     <v-row align="center" class="py-10">
-                            <h3 class="font-weight-bold">{{$t('mua.deleteAccount.overviewLabel')}}</h3>
+                            <p class="text-body-1 font-weight-bold">{{$t('mua.deleteAccount.overviewLabel')}}</p>
                             <v-divider />
                         </v-row>
                 <v-row align="center">
@@ -87,7 +87,7 @@ defineExpose({
                     </v-col>
                     <v-col>
                 <v-row align="center" class="py-10">
-                    <h3 class="font-weight-bold">{{$t('mua.deleteAccount.passwordConfirmationHeader')}}</h3>
+                    <p class="text-body-1 font-weight-bold">{{$t('mua.deleteAccount.passwordConfirmationHeader')}}</p>
                     <v-divider />
                 </v-row>
 

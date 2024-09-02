@@ -67,7 +67,7 @@ const openFileInput = () => {
     <div class="mx-3">
     <v-layout :class="`d-flex flex-wrap  ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
       <v-col cols="12" md="8"  class="pt-3">
-        <h3 class="font-weight-bold">{{ $t('mua.accountDetails.detailsLabel') }}</h3>
+        <p class="text-body-1 font-weight-bold">{{ $t('mua.accountDetails.detailsLabel') }}</p>
         <v-divider />
 
         <v-row align="center" class="mt-3">
@@ -119,7 +119,7 @@ const openFileInput = () => {
         </v-row>
       </v-col>
       <v-col cols="12" md="4" class="pt-3">
-        <h3 class="font-weight-bold">{{ $t('mua.accountDetails.picLabel') }}</h3>
+        <p class="text-body-1 font-weight-bold">{{ $t('mua.accountDetails.picLabel') }}</p>
         <v-divider />
 
         <v-col align="center" class="mt-3">
@@ -141,7 +141,7 @@ const openFileInput = () => {
 
       <v-layout class="d-flex flex-wrap w-75" v-if="componentProps.role">
         <v-col class="pt-3">
-            <h3 class="font-weight-bold text-error">{{ $t('mua.accountDetails.deleteLabel') }}</h3>
+            <p class="text-body-1 font-weight-bold text-error">{{ $t('mua.accountDetails.deleteLabel') }}</p>
             <v-divider color="error" />
 
                 <v-banner color="error" class="text-error my-4">

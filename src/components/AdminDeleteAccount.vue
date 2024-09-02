@@ -46,7 +46,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                 </v-col>
 
                 <v-row align="center" class="pb-10">
-                    <h3 class="font-weight-bold">{{ $t('mua.adminDeleteAccount.overviewTitle')}}</h3>
+                    <p class="text-body-1 font-weight-bold">{{ $t('mua.adminDeleteAccount.overviewTitle')}}</p>
                     <v-divider />
                 </v-row>
 
@@ -79,7 +79,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                 </v-row>
                 <v-col>
                     <v-row align="center" class="py-10">
-                        <h3 class="font-weight-bold">{{ $t('mua.adminDeleteAccount.passwordConfirmationHeader')}}</h3>
+                        <p class="text-body-1 font-weight-bold">{{ $t('mua.adminDeleteAccount.passwordConfirmationHeader')}}</p>
                         <v-divider />
                     </v-row>
 
