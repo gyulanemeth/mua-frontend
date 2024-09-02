@@ -96,20 +96,26 @@ const openFileInput = () => {
       <p class="text-body-1 font-weight-bold">{{ $t('mua.adminProfile.picLabel') }}</p>
       <v-divider />
       <v-col align="center" class="mt-3">
-        <v-hover v-slot="{ isHovering, props }">
-          <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('mua.processing')
-          }}</v-progress-circular>
-          <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
+        <v-card width="180" class="rounded-circle">
+          <v-avatar  class="elevation-3 " size="180">
             <v-img :src="profilePicture + '?' + Math.random().toString(36).substring(2, 7)" class="align-self-stretch" cover />
-              <div v-if="isHovering" style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;"
-              class="d-flex justify-center align-end w-100 h-100">
-                <v-btn v-if="componentProps.profilePicture" @click="handleDeleteProfilePicture" color="white"
-                  class="align-center" variant="text" icon="mdi-delete-forever-outline" size="small" />
-                <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
-                  icon="mdi-camera-plus-outline" size="small" />
-              </div>
           </v-avatar>
-        </v-hover>
+          <v-hover>
+            <template v-slot:default="{ isHovering, props }">
+              <v-row v-bind="props"
+                style="position: absolute; z-index: 4; width:100%; height:100%; top: 0px; left: 0px;"
+                 class="justify-center ma-0 pa-0">
+                <div v-if="isHovering" style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;"
+                class="d-flex justify-center align-end w-100 h-100">
+                <v-btn v-if="componentProps.profilePicture" @click="handleDeleteProfilePicture" color="white"
+                class="align-center" variant="text" icon="mdi-delete-forever-outline" size="small" />
+                <v-btn v-else color="white" @click="openFileInput" variant="text" class="align-center"
+                icon="mdi-camera-plus-outline" size="small" />
+              </div>
+            </v-row>
+            </template>
+          </v-hover>
+        </v-card>
       </v-col>
     </v-col>
     <ImgCropper v-if="showCropperDialog"

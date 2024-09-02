@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { useUsersStore } from '../stores/index.js'
 
 const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginHandler'])
 
@@ -9,9 +10,13 @@ const props = defineProps({
 })
 
 const route = useRoute()
+const router = useRouter()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
+const recentLogs = ref(await useUsersStore().getRecentLoginsAccounts())
+
+const defaultLogo = import.meta.env.BASE_URL + 'placeholder.jpg'
 
 if (props.tokenData.user) {
   data.value.email = ref(props.tokenData.user.email)
@@ -32,6 +37,10 @@ function submitForm () {
     emit('handleLoginHandler', data.value, () => { processing.value = false })
   }
 }
+
+function redirect (to) {
+  router.push(to)
+}
 </script>
 
 <template>
@@ -43,7 +52,30 @@ function submitForm () {
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
+        <v-card v-if="!props.tokenData.accounts && recentLogs" class="ma-2 pa-2  rounded-xl  elevation-0 loggedOutState" width="80%" max-width="600px">
+            <v-card-text align="center" @keydown.enter="submitForm">
+                <p class="text-h6">{{ $t('mua.userLoginAndResetForm.recentloginsHeader') }}</p>
+                <p class="text-body-2 pb-5">{{ $t('mua.userLoginAndResetForm.recentloginsSubheader') }}</p>
+                <v-row class="align-center justify-center">
+                    <v-col v-for="(element, i) in recentLogs" :key="i" cols="12" md="4">
+                        <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill" @click="redirect(`./${element.urlFriendlyName}`)" :title="element.name">
+                            <template v-slot:prepend>
+                                <v-avatar size="50">
+                                    <v-img :src="element.logo || defaultLogo"></v-img>
+                                </v-avatar>
+                            </template>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-row class="pa-2 mt-2 align-center text-cente justify-center">
+                <v-btn color="info" append-icon="mdi-arrow-right"
+                @click="recentLogs = false">
+                {{ $t('mua.userLoginAndResetForm.loginToAnotherAccount') }}
+            </v-btn>
+        </v-row>
+        </v-card>
+        <v-card v-else class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm">
                 <p class="text-h6">{{ $t('mua.userLoginAndResetForm.loginHeader') }} </p>
 
