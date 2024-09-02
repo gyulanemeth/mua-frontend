@@ -20,6 +20,27 @@ export default (connectors) => {
     storage.accessToken = storedAccessToken
   }
 
+  async function saveRecentLogins (accountId) {
+    const getAccount = await connectors.account.readOne({ id: accountId })
+    let recentLogins = localStorage.getItem('recentLogins')
+    const accountData = {
+      name: getAccount.name,
+      urlFriendlyName: getAccount.urlFriendlyName,
+      logo: getAccount.logo
+    }
+    if (!recentLogins) {
+      localStorage.setItem('recentLogins', JSON.stringify([accountData]))
+    } else {
+      recentLogins = JSON.parse(recentLogins)
+      const checkIndex = recentLogins.findIndex(element => element.urlFriendlyName === getAccount.urlFriendlyName)
+      if (checkIndex >= 0) {
+        recentLogins.splice(checkIndex, 1)
+      }
+      recentLogins.push(accountData)
+      localStorage.setItem('recentLogins', JSON.stringify(recentLogins))
+    }
+  }
+
   const userStore = defineStore('mua-frontend-users', {
     state: () => ({
       accessToken: storage.accessToken,
@@ -48,6 +69,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
+          saveRecentLogins(loginTokenData.account._id)
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -61,6 +83,7 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
+          saveRecentLogins(loginTokenData.account._id)
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -75,6 +98,17 @@ export default (connectors) => {
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
+        }
+      },
+
+      async getRecentLoginsAccounts () {
+        try {
+          const getRecentLogins = await JSON.parse(localStorage.getItem('recentLogins'))
+          if (getRecentLogins) {
+            return getRecentLogins.length ? getRecentLogins : false
+          }
+        } catch (error) {
+          return false
         }
       },
 

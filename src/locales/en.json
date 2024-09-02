@@ -193,6 +193,9 @@
       "closeBtn": "close"
     },
     "userLoginAndResetForm": {
+      "recentloginsHeader": "Recent logins",
+      "recentloginsSubheader": "Click on your workspace or add new one.",
+      "loginToAnotherAccount": "Login to Another Account",
       "loginHeader": "Sign in to your account",
       "loginUrlFriendlyNameHeader": "Sign in to \"{name}\" account",
       "loginBtnText": "Sign in",

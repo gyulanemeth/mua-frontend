@@ -145,6 +145,10 @@ describe('users Store', () => {
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
 
+    const mockReadOneAccount = (data) => {
+      return { name: 'user1', urlFriendlyName: 'urlFriendlyNameTest', _id: '12test12', logo: 'http//test.png' }
+    }
+
     const mockPatchUserName = async function (data) {
       if (!data || !data.id || !data.accountId || !data.name) {
         throw new RouteError('User ID, Account ID And New Name Is Required')
@@ -223,7 +227,7 @@ describe('users Store', () => {
 
     return {
       user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole },
-      account: { finalizeRegistration: mockFinalizeRegistration },
+      account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
     }
@@ -281,6 +285,15 @@ describe('users Store', () => {
     const token = jwt.sign({ type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
     await store.login(token, '12123password', '112233')
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
+    expect(store.accessToken).toEqual(token)
+  })
+
+  test('test success login check recent logins', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const token = jwt.sign({ type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    await store.login(token, '12123password', '112233')
+    expect(JSON.parse(localStorage.getItem('recentLogins'))[0].urlFriendlyName).toEqual('urlFriendlyNameTest')
     expect(store.accessToken).toEqual(token)
   })
 
@@ -433,6 +446,32 @@ describe('users Store', () => {
     const token = jwt.sign({ type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
     const res = await store.acceptInvitation(token, 'newPassword')
     expect(res.message).toEqual('Accouunt Password Is Required')
+  })
+
+  test('test get recent logins', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    localStorage.setItem('recentLogins', JSON.stringify([{ name: 'test', urlFriendlyName: 'urlFriendlyNameTest', logo: 'http://test.com' }]))
+    const res = await store.getRecentLoginsAccounts()
+    expect(res[0]).toEqual({ name: 'test', urlFriendlyName: 'urlFriendlyNameTest', logo: 'http://test.com' })
+    localStorage.removeItem('recentLogins')
+  })
+
+  test('test get recent logins', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    localStorage.setItem('recentLogins', JSON.stringify([]))
+    const res = await store.getRecentLoginsAccounts()
+    expect(res).toEqual(false)
+    localStorage.removeItem('recentLogins')
+  })
+
+  test('test get recent logins error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    localStorage.setItem('recentLogins', [{ name: 'test', urlFriendlyName: 'urlFriendlyNameTest', logo: 'http://test.com' }])
+    await expect(await store.getRecentLoginsAccounts()).toBe(false)
+    localStorage.removeItem('recentLogins')
   })
 
   test('test success patchUserName', async () => {
