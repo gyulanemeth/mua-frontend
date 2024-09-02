@@ -38,7 +38,7 @@ const uploadProfilePicture = (image) => {
   showCropperDialog.value = false
   emit('uploadProfilePictureHandler', image, (url) => {
     if (url) {
-      profilePicture.value = url + '?' + Date.now()
+      profilePicture.value = url
     }
     processing.value = false
   })
@@ -100,7 +100,7 @@ const openFileInput = () => {
           <v-progress-circular v-if="processing" :size="180" indeterminate>{{ $t('mua.processing')
           }}</v-progress-circular>
           <v-avatar v-else v-bind="props" class="elevation-3 " size="180">
-            <v-img :src="profilePicture" class="align-self-stretch" cover />
+            <v-img :src="profilePicture + '?' + Math.random().toString(36).substring(2, 7)" class="align-self-stretch" cover />
               <div v-if="isHovering" style="position: absolute;background-color: rgba(0, 0, 0, 0.6);opacity: .9; transition: ease;"
               class="d-flex justify-center align-end w-100 h-100">
                 <v-btn v-if="componentProps.profilePicture" @click="handleDeleteProfilePicture" color="white"

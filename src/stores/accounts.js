@@ -91,7 +91,7 @@ export default (connectors) => {
       async uploadLogo (formData) {
         try {
           const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
-          this.account.logo = res.logo + '?' + Math.random().toString(36).substring(2, 7)
+          this.account.logo = res.logo
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
