@@ -260,7 +260,7 @@ export default (connectors) => {
       async uploadProfilePicture (formData) {
         try {
           const res = await connectors.user.uploadProfilePicture({ accountId: localStorage.getItem('accountId'), id: this.user._id }, formData)
-          this.user.profilePicture = res.profilePicture + '?' + Math.random().toString(36).substring(2, 7)
+          this.user.profilePicture = res.profilePicture
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
