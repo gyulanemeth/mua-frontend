@@ -13,8 +13,8 @@ const route = useRoute()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
-const recentLogs = ref(await useUsersStore().getRecentLoginsAccounts())
-const openRecentLogs = ref(recentLogs.value)
+const recentLogins = ref(await useUsersStore().getRecentLoginsAccounts())
+const openRecentLogins = ref(recentLogins.value)
 
 const defaultLogo = import.meta.env.BASE_URL + 'placeholder.jpg'
 
@@ -49,12 +49,12 @@ function submitForm () {
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card v-if="!props.tokenData.accounts && openRecentLogs" class="ma-2 pa-2  rounded-xl  elevation-0 loggedOutState" width="80%" max-width="600px">
+        <v-card v-if="!props.tokenData.accounts && openRecentLogins" class="ma-2 pa-2  rounded-xl  elevation-0 loggedOutState" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm">
                 <p class="text-h6">{{ $t('mua.userLoginAndResetForm.recentloginsHeader') }}</p>
                 <p class="text-body-2 pb-5">{{ $t('mua.userLoginAndResetForm.recentloginsSubheader') }}</p>
                 <v-row class="align-center justify-center">
-                    <v-col v-for="(element, i) in recentLogs" :key="i" cols="12" md="auto">
+                    <v-col v-for="(element, i) in recentLogins" :key="i" cols="12" md="auto">
                             <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill" :href="`/accounts/login/${element.urlFriendlyName}`" :title="element.name">
                                 <template v-slot:prepend>
                                     <v-avatar size="50">
@@ -67,7 +67,7 @@ function submitForm () {
             </v-card-text>
             <v-row class="pa-2 mt-2 align-center text-cente justify-center">
                 <v-btn color="info" append-icon="mdi-arrow-right"
-                @click="openRecentLogs = false">
+                @click="openRecentLogins = false">
                 {{ $t('mua.userLoginAndResetForm.loginToAnotherAccount') }}
             </v-btn>
         </v-row>
@@ -127,11 +127,11 @@ function submitForm () {
             </v-card-text>
         </v-card>
         <v-container v-if="!props.tokenData.accounts && !cb" class="w-100">
-            <v-col v-if="recentLogs && !openRecentLogs" class="text-center justify-center align-center ">
+            <v-col v-if="recentLogins && !openRecentLogins" class="text-center justify-center align-center ">
                 <p style="color: #888888;"> {{ $t('mua.userLoginAndResetForm.cb.backToRecentLogins') }}</p>
                 <p data-test-id="loginAndResetForm-createAccountBtn"
                     style="cursor: pointer;  color: #888888;" class="font-weight-bold"
-                    @click="openRecentLogs = true">{{
+                    @click="openRecentLogins = true">{{
                         $t('mua.userLoginAndResetForm.cb.backToRecentLoginsBtn') }}</p>
             </v-col>
             <v-col class="text-center justify-center align-center ">
