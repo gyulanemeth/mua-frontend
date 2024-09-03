@@ -18,6 +18,26 @@ export default (connectors) => {
     storage.account = jwtDecode(storedAccessToken).account
   }
 
+  async function updateRecentLogins (account, newUrlFriendlyName) {
+    let recentLogins = localStorage.getItem('recentLogins')
+    const accountData = {
+      name: account.name,
+      urlFriendlyName: newUrlFriendlyName || account.urlFriendlyName,
+      logo: account.logo
+    }
+    if (!recentLogins) {
+      localStorage.setItem('recentLogins', JSON.stringify([accountData]))
+    } else {
+      recentLogins = JSON.parse(recentLogins)
+      const checkIndex = recentLogins.findIndex(element => element.urlFriendlyName === account.urlFriendlyName)
+      if (checkIndex >= 0) {
+        recentLogins.splice(checkIndex, 1)
+      }
+      recentLogins.push(accountData)
+      localStorage.setItem('recentLogins', JSON.stringify(recentLogins))
+    }
+  }
+
   const accountStore = defineStore('mua-frontend-accountsStore', {
     state: infiniteListState,
     actions: {
@@ -67,6 +87,7 @@ export default (connectors) => {
           }
           await connectors.account.patchName({ id: this.account._id, name })
           this.account.name = name
+          updateRecentLogins(this.account)
           router.push(`/accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
@@ -80,7 +101,9 @@ export default (connectors) => {
             throw new RouteError('account ID Is Required')
           }
           await connectors.account.patchUrlFriendlyName({ id: this.account._id, urlFriendlyName: newUrlFriendlyName })
+          const oldAccountData = { ...this.account }
           this.account.urlFriendlyName = newUrlFriendlyName
+          updateRecentLogins(oldAccountData, newUrlFriendlyName)
           router.push(`/accounts/${this.account.urlFriendlyName}/account`)
           return true
         } catch (e) {
@@ -92,6 +115,7 @@ export default (connectors) => {
         try {
           const res = await connectors.account.uploadLogo({ id: this.account._id }, formData)
           this.account.logo = res.logo
+          updateRecentLogins(this.account)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -102,6 +126,7 @@ export default (connectors) => {
         try {
           const res = await connectors.account.deleteLogo({ id: this.account._id })
           delete this.account.logo
+          updateRecentLogins(this.account)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
