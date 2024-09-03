@@ -220,6 +220,8 @@
         "resetMessage": "To continue resetting your password, please check your inbox and click the link we sent you.",
         "forgotMessage": "Don't have account?",
         "forgotCbBtn": "Create new account",
+        "backToRecentLogins": "Looking for a different account?",
+        "backToRecentLoginsBtn": "View Recent Logins",
         "loginToDifferentAccountMessage": "Login to different account?",
         "loginToDifferentAccountCbBtn": "Switch Account",
         "loginMessage": "To continue logging in, please check your inbox and click the link we sent you."
