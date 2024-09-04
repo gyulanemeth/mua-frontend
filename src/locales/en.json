@@ -437,10 +437,16 @@
     },
     "adminDashboard": {
       "chart": {
-        "headerChart1": "Account and User Creation Trends",
+        "headerChart1": "Account Creation Trends",
         "accountsLabel": "Accounts",
         "usersLabel": "Users",
-        "headerChart2": "Accumulated Account and User Growth Trends"
+        "accumulatedAccountsLabel": "Accumulated Accounts",
+        "accumulatedUsersLabel": "Accumulated Users",
+        "deletedAccountsLabel": "Deleted Accounts",
+        "deletedUsersLabel": "Deleted Users",
+        "deletedAccumulatedAccountsLabel": "Accumulated Deleted Accounts",
+        "deletedAccumulatedUsersLabel": "Accumulated Deleted User",
+        "headerChart2": "User Creation Trends"
       },
       "accountsOverAllLabel":"Accounts",
       "usersOverAllLabel":"Users",
