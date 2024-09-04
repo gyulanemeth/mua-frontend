@@ -1,6 +1,7 @@
 import createUsersStore from './users.js'
 import createAdminsStore from './admins.js'
 import createAccountsStore from './accounts.js'
+import createStatsStore from './stats.js'
 
 import connectors from '../connectors/index.js'
 
@@ -19,4 +20,9 @@ const useAccountsStore = () => {
   return store()
 }
 
-export { useUsersStore, useAdminsStore, useAccountsStore }
+const useStatsStore = () => {
+  const store = createStatsStore(connectors().statsConnectors)
+  return store()
+}
+
+export { useUsersStore, useAdminsStore, useAccountsStore, useStatsStore }

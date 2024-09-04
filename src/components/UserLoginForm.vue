@@ -128,7 +128,6 @@ function submitForm () {
         </v-card>
         <v-container v-if="!props.tokenData.accounts && !cb" class="w-100">
             <v-col v-if="recentLogins && !openRecentLogins" class="text-center justify-center align-center ">
-                <p style="color: #888888;"> {{ $t('mua.userLoginAndResetForm.cb.backToRecentLogins') }}</p>
                 <p data-test-id="loginAndResetForm-createAccountBtn"
                     style="cursor: pointer;  color: #888888;" class="font-weight-bold"
                     @click="openRecentLogins = true">{{

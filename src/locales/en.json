@@ -434,6 +434,16 @@
         "body": "You're now connected to the internet."
       },
       "closeBtn": "Close"
+    },
+    "adminDashboard": {
+      "chart": {
+        "header": "Account and User Creation Trends",
+        "accountsLabel": "Accounts",
+        "usersLabel": "Users"
+      },
+      "accountsOverAllLabel":"Accounts",
+      "usersOverAllLabel":"Users",
+      "mainHeader":"System Statistics"
     }
   }
 }

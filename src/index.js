@@ -11,6 +11,7 @@ import SetAndReSetAdminPasswordView from './views/SetAndReSetAdminPasswordView.v
 import AdminLogin from './components/AdminLogin.vue'
 import AdminProfileView from './views/AdminProfileView.vue'
 import English from './locales/en.json'
+import AdminDashboard from './components/AdminDashboard.vue'
 
 export {
   UserView,
@@ -25,5 +26,6 @@ export {
   AdminLogin,
   AdminProfileView,
   ErrorMessage,
+  AdminDashboard,
   English
 }
