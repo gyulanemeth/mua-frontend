@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 export default (connectors) => {
-  const store = defineStore('stats', {
+  const store = defineStore('mua-frontend-stats', {
     actions: {
       async getAccountsStats (query) {
         const res = await connectors.getAccountsStats(query)
