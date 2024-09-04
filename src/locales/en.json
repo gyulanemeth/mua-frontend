@@ -437,9 +437,10 @@
     },
     "adminDashboard": {
       "chart": {
-        "header": "Account and User Creation Trends",
+        "headerChart1": "Account and User Creation Trends",
         "accountsLabel": "Accounts",
-        "usersLabel": "Users"
+        "usersLabel": "Users",
+        "headerChart2": "Accumulated Account and User Growth Trends"
       },
       "accountsOverAllLabel":"Accounts",
       "usersOverAllLabel":"Users",

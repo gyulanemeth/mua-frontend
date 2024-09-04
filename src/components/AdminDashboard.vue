@@ -47,15 +47,43 @@ const createSeries = (data) => {
   return seriesData
 }
 
+const createAccumulatedSeries = (data) => {
+  const seriesData = []
+  let currentDate = new Date(minDate)
+  let accumulatedCount = 0
+
+  while (currentDate <= todayDate) {
+    const dateStr = currentDate.toISOString().split('T')[0]
+    accumulatedCount += data[dateStr] || 0
+    seriesData.push({
+      x: dateStr,
+      y: accumulatedCount
+    })
+    currentDate = new Date(currentDate)
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+  return seriesData
+}
+
+const accumulatedSeriesData = createAccumulatedSeries(groupedAccountByDate)
+const accumulatedSeriesUsersData = createAccumulatedSeries(groupedUsersByDate)
 const seriesData = createSeries(groupedAccountByDate)
 const seriesUsersData = createSeries(groupedUsersByDate)
 
-const series = [{
+const series1 = [{
   name: t('mua.adminDashboard.chart.accountsLabel'),
   data: seriesData
 }, {
   name: t('mua.adminDashboard.chart.usersLabel'),
   data: seriesUsersData
+}]
+
+const series2 = [{
+  name: t('mua.adminDashboard.chart.accountsLabel'),
+  data: accumulatedSeriesData
+}, {
+  name:  t('mua.adminDashboard.chart.usersLabel'),
+  data: accumulatedSeriesUsersData
 }]
 
 const interval = 10
@@ -98,13 +126,21 @@ const options = {
             </v-col>
           </v-row>
         </v-card-text>
-        <p class="text-start text-h5 my-4 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.header') }}</p>
+        <p class="text-start text-h5 my-4 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
 
-        <v-card class="text-center w-100 align-center justify-center">
-          <VueApexCharts height="400" type="line" :options="options" :series="series"></VueApexCharts>
+        <v-card class="text-center w-100 align-center elevation-0 justify-center">
+          <VueApexCharts height="400" type="line" :options="options" :series="series1"></VueApexCharts>
+        </v-card>
+
+        <p class="text-start text-h5 my-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
+
+        <v-card class="text-center w-100 align-center elevation-0 justify-center">
+          <VueApexCharts height="400" type="line" :options="options" :series="series2"></VueApexCharts>
         </v-card>
       </v-card>
+      <v-card flat :width="$vuetify.display.mdAndUp? '70%':'100%'">
       <slot />
+      </v-card>
     </v-layout>
   </div>
 </template>
