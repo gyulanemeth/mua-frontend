@@ -434,6 +434,35 @@
         "body": "You're now connected to the internet."
       },
       "closeBtn": "Close"
+    },
+    "adminDashboard": {
+      "monthlyBasisBtn": "monthly",
+      "weeklyBasisBtn": "weekly",
+      "dailyBasisBtn": "daily",
+      "chart": {
+        "headerChart1": "Account Creation Trends",
+        "accountsLabel": "Accounts",
+        "usersLabel": "Users",
+        "accumulatedAccountsLabel": "Accumulated Accounts",
+        "accumulatedUsersLabel": "Accumulated Users",
+        "deletedAccountsLabel": "Deleted Accounts",
+        "deletedUsersLabel": "Deleted Users",
+        "deletedAccumulatedAccountsLabel": "Accumulated Deleted Accounts",
+        "deletedAccumulatedUsersLabel": "Accumulated Deleted User",
+        "headerChart2": "User Creation Trends"
+      },
+      "filter": {
+        "statsFilterLabel": "Filter Statistics",
+        "overall": "Overall",
+        "currentWeek": "Current week",
+        "past2weeks": "Past 2 weeks",
+        "currentMonth": "Current month",
+        "past2Months": "Past 2 months",
+        "past3Months": "Past 3 months"  
+      },
+      "accountsOverAllLabel":"Accounts",
+      "usersOverAllLabel":"Users",
+      "mainHeader":"System Statistics"
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "src/index.js",
   "scripts": {
     "serve": "vite preview",
@@ -22,6 +22,7 @@
     "@mdi/font": "5.9.55",
     "@sweetalert2/theme-material-ui": "^5.0.11",
     "@vueuse/core": "^10.2.1",
+    "apexcharts": "^3.53.0",
     "jwt-decode": "^3.1.2",
     "pinia": "^2.0.14",
     "pinia-list-store": "^0.0.3",
@@ -33,6 +34,7 @@
     "vue-image-crop-upload": "^3.0.3",
     "vue-observe-visibility": "^1.0.0",
     "vue-router": "^4.0.15",
+    "vue3-apexcharts": "^1.6.0",
     "vuetify": "^3.4.0",
     "webfontloader": "^1.0.0"
   },
