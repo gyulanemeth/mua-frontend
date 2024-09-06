@@ -451,6 +451,15 @@
         "deletedAccumulatedUsersLabel": "Accumulated Deleted User",
         "headerChart2": "User Creation Trends"
       },
+      "filter": {
+        "statsFilterLabel": "Filter Statistics",
+        "overall": "Overall",
+        "currentWeek": "Current week",
+        "past2weeks": "Past 2 weeks",
+        "currentMonth": "Current month",
+        "past2Months": "Past 2 months",
+        "past3Months": "Past 3 months"  
+      },
       "accountsOverAllLabel":"Accounts",
       "usersOverAllLabel":"Users",
       "mainHeader":"System Statistics"

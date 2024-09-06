@@ -15,6 +15,8 @@ const usersLoading = ref(false)
 const accountsLoading = ref(false)
 const accountsSeries = ref()
 const usersSeries = ref()
+const accountsStatsFilter = ref('past3Months')
+const usersStatsFilter = ref('past3Months')
 
 const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
@@ -39,6 +41,41 @@ const groupedDeletedUsersByMonth = {
   monthly: {}
 }
 
+const statsFilterList = {
+  overall: null,
+  currentWeek: {
+    $gte: new Date(new Date().setDate(new Date().getDate() - new Date().getDay() + 1)),
+    $lt: new Date()
+  },
+  past2weeks: {
+    $gte: new Date(new Date().setDate(new Date().getDate() - new Date().getDay() - 6)),
+    $lt: new Date()
+  },
+  currentMonth: {
+    $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    $lt: new Date()
+  },
+  past2Months: {
+    $gte: new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+    $lt: new Date()
+  },
+  past3Months: {
+    $gte: new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
+    $lt: new Date()
+  }
+}
+
+function filterStats (data, rangeKey) {
+  const dateRange = statsFilterList[rangeKey]
+  if (!dateRange) {
+    return data
+  }
+  return data.filter(item => {
+    const createdAt = new Date(item.createdAt)
+    return createdAt >= dateRange.$gte && createdAt < dateRange.$lt
+  })
+}
+
 const getDateGroup = (dateStr, basis) => {
   const date = new Date(dateStr)
   switch (basis) {
@@ -58,7 +95,8 @@ const getDateGroup = (dateStr, basis) => {
 }
 
 const groupUsersBy = (basis) => {
-  users.value.items.forEach(item => {
+  const data = filterStats(users.value.items, usersStatsFilter.value)
+  data.forEach(item => {
     const groupKey = getDateGroup(item.createdAt, basis)
     if (item.createdAt && !item.deleted) {
       groupedUsersByMonth[basis][groupKey] = (groupedUsersByMonth[basis][groupKey] || 0) + 1
@@ -69,7 +107,8 @@ const groupUsersBy = (basis) => {
 }
 
 const groupAccountsBy = (basis) => {
-  accounts.value.items.forEach(item => {
+  const data = filterStats(accounts.value.items, accountsStatsFilter.value)
+  data.forEach(item => {
     const groupKey = getDateGroup(item.createdAt, basis)
     if (item.createdAt && !item.deleted) {
       groupedAccountByMonth[basis][groupKey] = (groupedAccountByMonth[basis][groupKey] || 0) + 1
@@ -174,7 +213,7 @@ const options = ref({
     type: 'category',
     labels: {
       formatter: function (value) {
-        if (value) {
+        if (typeof value === 'string' && value) {
           const parts = value.split('-')
           return parts.length === 3 ? `${parts[0]}-${parts[1]}-${parts[2]}` : value
         }
@@ -194,8 +233,18 @@ const options = ref({
   }
 })
 
+function resetAccounts () {
+  Object.keys(groupedAccountByMonth).forEach(key => { groupedAccountByMonth[key] = {} })
+  Object.keys(groupedDeletedAccountByMonth).forEach(key => { groupedDeletedAccountByMonth[key] = {} })
+}
+function resetUsers () {
+  Object.keys(groupedUsersByMonth).forEach(key => { groupedUsersByMonth[key] = {} })
+  Object.keys(groupedDeletedUsersByMonth).forEach(key => { groupedDeletedUsersByMonth[key] = {} })
+}
+
 watch(accountsSelectedGrouping, async (newBasis) => {
   accountsLoading.value = true
+  resetAccounts()
   groupAccountsBy(newBasis)
   accountsSeries.value = createAccountsSeries(newBasis)
   await new Promise(resolve => setTimeout(resolve, 1000))
@@ -204,11 +253,30 @@ watch(accountsSelectedGrouping, async (newBasis) => {
 
 watch(usersSelectedGrouping, async (newBasis) => {
   usersLoading.value = true
+  resetUsers()
   groupUsersBy(newBasis)
   usersSeries.value = createUsersSeries(newBasis)
   await new Promise(resolve => setTimeout(resolve, 1000))
   usersLoading.value = false
 }, { immediate: true })
+
+watch(accountsStatsFilter, async () => {
+  accountsLoading.value = true
+  resetAccounts()
+  groupAccountsBy(accountsSelectedGrouping.value)
+  accountsSeries.value = createAccountsSeries(accountsSelectedGrouping.value)
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  accountsLoading.value = false
+})
+
+watch(usersStatsFilter, async () => {
+  usersLoading.value = true
+  resetUsers()
+  groupUsersBy(usersSelectedGrouping.value)
+  usersSeries.value = createUsersSeries(usersSelectedGrouping.value)
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  usersLoading.value = false
+})
 
 </script>
 
@@ -217,7 +285,6 @@ watch(usersSelectedGrouping, async (newBasis) => {
     <v-layout :class="`d-flex flex-wrap`">
       <v-card flat :width="$vuetify.display.mdAndUp ? '70%' : '100%'">
         <p class="text-start text-h5 mt-4 ml-4 font-weight-bold"> {{ $t('mua.adminDashboard.mainHeader') }}</p>
-
         <v-card-text class="text-center align-center">
           <v-row class=" my-5 mx-0">
             <v-col class="border border-thin rounded-s-lg">
@@ -230,8 +297,14 @@ watch(usersSelectedGrouping, async (newBasis) => {
             </v-col>
           </v-row>
         </v-card-text>
-        <p class="text-start text-h5 my-4 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
-        <v-col class="mt-4 ml-4 my-3 ">
+        <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
+        <v-col cols="12" md="auto" class="d-flex align-end">
+          <v-select v-model="accountsStatsFilter" hide-details density="compact" item-title="name" item-value="value"
+            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="info" color="info"
+            :items="[{ name: $t('mua.adminDashboard.filter.currentWeek'), value: 'currentWeek' }, { name: $t('mua.adminDashboard.filter.past2weeks'), value: 'past2weeks' }, { name: $t('mua.adminDashboard.filter.currentMonth'), value: 'currentMonth' }, { name: $t('mua.adminDashboard.filter.past2Months'), value: 'past2Months' }, { name: $t('mua.adminDashboard.filter.past3Months'), value: 'past3Months' }, { name: $t('mua.adminDashboard.filter.overall'), value: 'overall' }]"
+            variant="outlined"></v-select>
+        </v-col>
+        <v-col class="mt-0 ml-4 mb-3 ">
           <v-row>
             <v-chip variant="elevated" @click="accountsSelectedGrouping = 'monthly'"
               :color="accountsSelectedGrouping === 'monthly' ? 'info' : 'grey'" class="mr-2">{{
@@ -259,8 +332,14 @@ watch(usersSelectedGrouping, async (newBasis) => {
         <v-card v-else-if="accountsSeries" class="text-center w-100 align-center elevation-0 justify-center">
           <VueApexCharts height="400" type="bar" :options="options" :series="accountsSeries"></VueApexCharts>
         </v-card>
-        <p class="text-start text-h5 my-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
-        <v-col class="mt-4 ml-4 my-3 ">
+        <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
+        <v-col cols="12" md="auto" class="d-flex align-end">
+          <v-select v-model="usersStatsFilter" hide-details density="compact" item-title="name" item-value="value"
+            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="info" color="info"
+            :items="[{ name: $t('mua.adminDashboard.filter.currentWeek'), value: 'currentWeek' }, { name: $t('mua.adminDashboard.filter.past2weeks'), value: 'past2weeks' }, { name: $t('mua.adminDashboard.filter.currentMonth'), value: 'currentMonth' }, { name: $t('mua.adminDashboard.filter.past2Months'), value: 'past2Months' }, { name: $t('mua.adminDashboard.filter.past3Months'), value: 'past3Months' }, { name: $t('mua.adminDashboard.filter.overall'), value: 'overall' }]"
+            variant="outlined"></v-select>
+        </v-col>
+        <v-col class="mt-0 ml-4 my-3 ">
           <v-row>
             <v-chip variant="elevated" @click="usersSelectedGrouping = 'monthly'"
               :color="usersSelectedGrouping === 'monthly' ? 'info' : 'grey'" class="mr-2">{{
