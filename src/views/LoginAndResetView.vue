@@ -26,6 +26,7 @@ async function loadData () {
       return router.push('/accounts/')
     }
     formData.value = {
+      _id: accountData.value._id,
       accountName: accountData.value.name,
       urlFriendlyName: accountData.value.urlFriendlyName
     }

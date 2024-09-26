@@ -49,6 +49,9 @@ export default function (fetch, apiUrl) {
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
+  const postLoginWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/provider/${params.provider}`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`)
+  const postCreateWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/create-account/provider/${params.provider}`)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
@@ -83,6 +86,27 @@ export default function (fetch, apiUrl) {
       localStorage.setItem('accessToken', res.accessToken)
       localStorage.removeItem('loginToken')
     }
+    return res
+  }
+
+  const loginWithProvider = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('Account id is Required')
+    }
+    const res = await postLoginWithProvider(params)
+    return res
+  }
+
+  const createWithProvider = async function (params, data) {
+    const res = await postCreateWithProvider(params, data)
+    return res
+  }
+
+  const linkToProvider = async function (params) {
+    if (!params || !params.accountId || !params.id) {
+      throw new RouteError('AccountId and user id is Required')
+    }
+    const res = await postLinkToProvider(params)
     return res
   }
 
@@ -206,6 +230,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider
   }
 }

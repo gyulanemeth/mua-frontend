@@ -115,7 +115,7 @@ export default function (fetch, apiUrl) {
   const createOne = async function (formData) {
     if (!formData || !formData.account || !formData.account.name || !formData.account.urlFriendlyName) {
       throw new RouteError('Account Name And UrlFriendlyName Is Required')
-    } else if (!formData.user || !formData.user.name || !formData.user.email || !formData.user.password) {
+    } else if (!formData.user || !formData.user.name || !formData.user.email || (!formData.user.password && !formData.user.googleProfileId)) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
     const res = await postCreateAccount({}, { account: formData.account, user: formData.user })

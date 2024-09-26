@@ -1,4 +1,5 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import CreateAccount from '../components/CreateAccount.vue'
 import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
@@ -7,10 +8,19 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const accountsStore = useAccountsStore()
 const usersStore = useUsersStore()
+const router = useRouter()
 
 async function createEventHandler (data, statusCallBack) {
   const res = await accountsStore.createAccount(data)
-  statusCallBack(res)
+  if (res.loginToken) {
+    localStorage.setItem('loginToken', res.loginToken)
+    const accessToken = await useUsersStore().getAccessToken(res.loginToken)
+    if (accessToken.success) {
+      router.push('/accounts/urlFriendlyName/dashboard')
+    }
+  } else {
+    statusCallBack(res)
+  }
 }
 
 async function reSendFinalizeRegistrationEventHandler (params) {
@@ -24,6 +34,7 @@ async function reSendFinalizeRegistrationEventHandler (params) {
 
 <template>
 
-<CreateAccount @buttonEvent="createEventHandler" @reSendFinalizeRegistrationEvent=" reSendFinalizeRegistrationEventHandler" />
+  <CreateAccount @buttonEvent="createEventHandler"
+    @reSendFinalizeRegistrationEvent="reSendFinalizeRegistrationEventHandler" />
 
 </template>

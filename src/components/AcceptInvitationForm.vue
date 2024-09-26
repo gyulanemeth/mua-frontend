@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
+import CreateWithProvider from './CreateWithProvider.vue'
 
 const props = defineProps({
   formData: Object
@@ -72,6 +73,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                     </v-btn>
                 </v-col>
             </v-card-text>
+            <CreateWithProvider :accountId="tokenData.account._id" :userId="tokenData.user._id" />
             <v-card-text align="center" v-if="cb">
 
                 <p class="mt-4 text-h6 font-weight-bold" style="color: #888888;" data-test-id="acceptInvitation-headerCb">{{ $t('mua.acceptInvitationForm.cb.header') }}</p>
