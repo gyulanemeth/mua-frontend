@@ -157,7 +157,7 @@ export default function (fetch, apiUrl) {
   }
 
   const patchPassword = async function (formData) {
-    if (!formData || !formData.id || !formData.accountId || !formData.oldPassword || !formData.newPassword || !formData.newPasswordAgain) {
+    if (!formData || !formData.id || !formData.accountId || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('User ID, Account ID And New Password Is Required')
     }
     const res = await updatePassword({ id: formData.id, accountId: formData.accountId }, { oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
