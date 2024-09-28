@@ -12,47 +12,26 @@ const router = useRouter()
 
 async function submitLoginWithProvider (provider) {
   const res = await useUsersStore().loginWithProvider({ provider, id: props.accountId })
-
   if (res.redirectUrl) {
-    let token
-    let failed
     const popup = window.open(res.redirectUrl, 'provider-signin-popup', 'width=600,height=600')
-    const handleMessage = async (event) => {
-      if (event.data.type === 'provider-signin-token') {
-        token = event.data.loginToken
-        failed = event.data.failed
-      }
-    }
     if (popup) {
-      window.addEventListener('message', handleMessage)
-
       const interval = setInterval(async () => {
-        if (popup.closed) {
-          window.removeEventListener('message', handleMessage)
-          clearInterval(interval)
-          if (token) {
-            localStorage.setItem('loginToken', token)
-
-            const res = await useUsersStore().getAccessToken(token)
-
-            if (res.success) {
-              router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
-            }
-          } else if (failed) {
-            useSystemMessagesStore().addError({ name: 'Authentication failed' })
-          }
-        }
         try {
           const params = new URLSearchParams(popup.location.search)
           const loginToken = params.get('loginToken')
-          const failed = params.get('failed')
-          if (!popup.closed && (loginToken || failed)) {
-            popup.opener.postMessage({
-              type: 'provider-signin-token',
-              loginToken,
-              failed
-            }, '*')
+          const failedQuery = params.get('failed')
+          if (!popup.closed && (loginToken || failedQuery)) {
+            clearInterval(interval)
             popup.close()
+            if (loginToken) {
+              localStorage.setItem('loginToken', loginToken)
+              const res = await useUsersStore().getAccessToken(loginToken)
+              if (res.success) {
+                router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
+              }
+            } else if (failedQuery) {
+              useSystemMessagesStore().addError({ name: 'Authentication failed' })
+            }
           }
         } catch (e) {
           console.error('Error accessing popup URL parameters:', e)
