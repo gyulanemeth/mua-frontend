@@ -22,6 +22,8 @@ export default function (fetch, apiUrl) {
 
   const generatePatchPasswordRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/password`
 
+  const generatePatchCreatePasswordRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/create-password`
+
   const generatePatchRoleRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/role`
 
   const generatePatchEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email`
@@ -46,6 +48,7 @@ export default function (fetch, apiUrl) {
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
+  const patchCreatePassword = createPatchConnector(fetch, apiUrl, generatePatchCreatePasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('createPasswordToken')}` }))
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
@@ -164,6 +167,17 @@ export default function (fetch, apiUrl) {
     return res
   }
 
+  const createPassword = async function (formData) {
+    if (!formData || !formData.token || !formData.accountId || !formData.id) {
+      throw new RouteError('User ID, Account ID And Token Is Required')
+    }
+    localStorage.setItem('createPasswordToken', formData.token)
+    const res = await patchCreatePassword({ id: formData.id, accountId: formData.accountId })
+    localStorage.removeItem('createPasswordToken')
+    localStorage.setItem('accessToken', res.accessToken)
+    return res
+  }
+
   const patchRole = async function (formData, body) {
     if (!formData || !formData.id || !formData.accountId || !body.role) {
       throw new RouteError('User ID, Account ID And New Role Is Required')
@@ -230,6 +244,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword
   }
 }

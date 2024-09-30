@@ -225,8 +225,35 @@ describe('users Store', () => {
       return { success: true }
     }
 
+    const mockLoginWithProvider = async function (params) {
+      if (!params || !params.id) {
+        throw new RouteError('Account id is Required')
+      }
+      return { success: true }
+    }
+    const mockCreateWithProvider = async function (params) {
+      if (!params || !params.provider) {
+        throw new RouteError('Provider is Required')
+      }
+      return { success: true }
+    }
+
+    const mockLinkToProvider = async function (params) {
+      if (!params || !params.accountId || !params.id) {
+        throw new RouteError('AccountId and user id is Required')
+      }
+      return { success: true }
+    }
+
+    const mockCreatePassword = async function (formData) {
+      if (!formData || !formData.token || !formData.accountId || !formData.id) {
+        throw new RouteError('User ID, Account ID And Token Is Required')
+      }
+      return { success: true }
+    }
+
     return {
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole },
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword },
       account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
@@ -485,7 +512,7 @@ describe('users Store', () => {
   test('test patchUserName fail  id required ', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
-    store.user = { }
+    store.user = {}
     const res = await store.patchUserName('user2')
     expect(res.message).toEqual('User ID Is Required')
   })
@@ -661,10 +688,93 @@ describe('users Store', () => {
     expect(res.success).toEqual(true)
   })
 
-  test('test success login with UrlFriendlyName input error ', async () => {
+  test('test login with UrlFriendlyName input error ', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.loginWithUrlFriendlyName({})
     expect(res.message).toEqual('User Password Is Required')
+  })
+
+  test('test success get access token', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const token = jwt.sign(
+      {
+        type: 'login',
+        user: {
+          _id: '123',
+          email: 'user@email.com'
+        },
+        account: {
+          _id: '112233',
+          urlFriendlyName: 'urlFriendlyName1'
+        },
+        role: 'admin'
+      }, secrets)
+    const res = await store.getAccessToken(token)
+    expect(res.success).toEqual(true)
+  })
+
+  test('test get access token error missing id', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.getAccessToken()
+    expect(res.message).toEqual('Invalid token specified')
+  })
+
+  test('test success create with provider', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.createWithProvider({ provider: 'test' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test create with provider error missing id', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.createWithProvider({})
+    expect(res.message).toEqual('Provider is Required')
+  })
+
+  test('test success login with provider', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginWithProvider({ provider: 'test', id: 'account-test' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test login with provider error missing id', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginWithProvider({ provider: 'test' })
+    expect(res.message).toEqual('Account id is Required')
+  })
+
+  test('test success link with provider', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.linkToProvider({ provider: 'test', id: 'userId', accountId: 'accountId' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test link with provider error missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.linkToProvider({ provider: 'test' })
+    expect(res.message).toEqual('AccountId and user id is Required')
+  })
+
+  test('test success create password', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.createPassword({ token: 'token', id: 'userId', accountId: 'accountId' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test create password error missing id', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.createPassword({})
+    expect(res.message).toEqual('User ID, Account ID And Token Is Required')
   })
 })

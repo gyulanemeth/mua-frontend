@@ -607,4 +607,123 @@ describe('test accounts connectors', () => {
     })
     await expect(users(fetch, apiUrl).loginWithUrlFriendlyName()).rejects.toThrowError('User Password Is Required')
   })
+
+  test('test login with provider ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { redirectUrl: 'link' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).loginWithProvider({ id: 'test-account', provider: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/test-account/login/provider/test',
+      {
+        method: 'POST',
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.redirectUrl).toEqual('link')
+  })
+
+  test('test login with provider undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).loginWithProvider()).rejects.toThrowError('Account id is Required')
+  })
+
+  test('test create with provider ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { redirectUrl: 'link' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).createWithProvider({ provider: 'test' }, { name: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/create-account/provider/test',
+      {
+        method: 'POST',
+        body: JSON.stringify({ name: 'test' }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.redirectUrl).toEqual('link')
+  })
+
+  test('test link with provider ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { redirectUrl: 'link' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).linkToProvider({ accountId: 'test-account', id: 'userId', provider: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/test-account/users/userId/link/provider/test',
+      {
+        method: 'POST',
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.redirectUrl).toEqual('link')
+  })
+
+  test('test link with provider undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).linkToProvider()).rejects.toThrowError('ccountId and user id is Required')
+  })
+
+  test('test create password', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { accessToken: 'Token' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).createPassword({ token: 'token', accountId: 'test-account', id: 'userId' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/test-account/users/userId/create-password',
+      {
+        method: 'PATCH',
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer token'
+        }
+      })
+    expect(res.accessToken).toEqual('Token')
+  })
+
+  test('test create password undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).createPassword()).rejects.toThrowError('User ID, Account ID And Token Is Required')
+  })
 })

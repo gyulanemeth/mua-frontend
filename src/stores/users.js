@@ -277,6 +277,15 @@ export default (connectors) => {
           return e
         }
       },
+      async createPassword ({ token, id, accountId }) {
+        try {
+          await connectors.user.createPassword({ accountId, id, token })
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async reSendFinalizeRegistration ({ accountId, userId }) {
         try {
           if (accountId === null || userId === undefined) {

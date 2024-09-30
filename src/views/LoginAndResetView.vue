@@ -43,7 +43,16 @@ async function loadData () {
         })
         router.push('/accounts/')
       }
-      if (tokenData.value.account) {
+      if (route.name === 'accounts-create-password') {
+        const res = await usersStore.createPassword({ token: route.query.token, id: tokenData.value.user._id, accountId: tokenData.value.account._id })
+        if (res.success) {
+          await accountsStore.readOne()
+          await usersStore.readOne()
+          useSystemMessagesStore().addSuccess({ message: 'Password added successfully' })
+          return router.push(`/accounts/${accountsStore.account.urlFriendlyName}/me`)
+        }
+        return router.push('/accounts/')
+      } else if (tokenData.value.account) {
         tokenData.value.accounts = [tokenData.value.account]
       }
     }
@@ -113,13 +122,16 @@ watchEffect(async () => {
 
 <template>
 
-  <ResetPasswordForm v-if="formData && (route.name === 'accounts-forgot-password' || route.name === 'accounts-forgot-password-reset')"
+  <ResetPasswordForm
+    v-if="formData && (route.name === 'accounts-forgot-password' || route.name === 'accounts-forgot-password-reset')"
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
-    <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-loginWithUrlFriendlyName'" :formData='formData'
-    @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
+  <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-loginWithUrlFriendlyName'"
+    :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 
-    <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'" :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent" @handleLoginHandler="handleLoginEvent" />
+  <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
+    :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
+    @handleLoginHandler="handleLoginEvent" />
 
 </template>

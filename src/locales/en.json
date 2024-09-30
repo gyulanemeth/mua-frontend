@@ -89,6 +89,7 @@
     },
     "userChangePassword": {
       "header": "Change Password",
+      "setPasswordHeader": "Add Password",
       "oldPasswordLabel": "Old Password",
       "oldPasswordPlaceholder": "********",
       "newPasswordLabel": "New Password",
@@ -96,7 +97,9 @@
       "confirmNewPasswordLabel": "Confirm New Password",
       "confirmNewPasswordPlaceholder": "********",
       "submitBtn": "Change my Password",
-      "updateAlert": "Password updated successfully"
+      "submitAddPasswordBtn": "Add Password",
+      "updateAlert": "Password updated successfully",
+      "addAlert": "Confirmation email sent. Please check your email to confirm the addition of your password."
     },
     "adminChangePassword": {
       "header": "Change Password",
@@ -232,6 +235,7 @@
       "tabs": {
         "meLabel": "MY details",
         "changePasswordLabel": "Change password",
+        "addPasswordLabel": "Add password",
         "changeEmailLabel": "Change e-mail",
         "settingsLabel": "Settings"
       }
