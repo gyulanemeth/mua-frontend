@@ -47,7 +47,8 @@ const tab = ref('me')
       <v-card class="w-100">
             <v-tabs v-model="tab">
               <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/accounts/${route.params.urlFriendlyName}/me`" color="info" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('mua.userAccountDetails.tabs.meLabel')}}</v-tab>
-              <v-tab value="changePassword" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('mua.userAccountDetails.tabs.changePasswordLabel')}}</v-tab>
+              <v-tab value="changePassword" v-if="props.data.password" :class="tab==='changePassword'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-password`" data-test-id="meDetails-changePasswordTab" color="info" prepend-icon="mdi-lock">{{$t('mua.userAccountDetails.tabs.changePasswordLabel')}}</v-tab>
+              <v-tab value="addPassword" v-else :class="tab==='addPassword'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/add-password`" data-test-id="meDetails-addPasswordTab" color="info" prepend-icon="mdi-lock">{{$t('mua.userAccountDetails.tabs.addPasswordLabel')}}</v-tab>
               <v-tab value="changeEmail" :class="tab==='changeEmail'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/change-email`"  data-test-id="meDetails-changeEmailTab" color="info" prepend-icon="mdi-at">{{$t('mua.userAccountDetails.tabs.changeEmailLabel')}}</v-tab>
               <v-tab value="settings" :class="tab==='settings'? 'font-weight-bold':''"  :to="`/accounts/${route.params.urlFriendlyName}/settings`" data-test-id="meDetails-settingsTab" color="info" prepend-icon="mdi-cog">{{$t('mua.userAccountDetails.tabs.settingsLabel')}}</v-tab>
             </v-tabs>
@@ -59,7 +60,11 @@ const tab = ref('me')
                   <MyDetails @updateNameHandler="redirectUpdateNameHandler" @deleteProfilePictureHandler="redirectDeleteProfilePictureHandler" @uploadProfilePictureHandler="redirectUploadProfilePictureHandler" @changeTab="changeTab" :email="props.data.email" :name="props.data.name" :profilePicture="props.data.profilePicture" />
                 </v-window-item>
 
-                    <v-window-item value="changePassword">
+                    <v-window-item v-if="props.data.password" value="changePassword">
+                        <ChangePassword @updatePasswordHandler="redirectUpdatePasswordHandler" />
+                      </v-window-item>
+
+                      <v-window-item v-else value="addPassword">
                         <ChangePassword @updatePasswordHandler="redirectUpdatePasswordHandler" />
                       </v-window-item>
 

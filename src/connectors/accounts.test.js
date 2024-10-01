@@ -306,6 +306,109 @@ describe('test accounts connectors', () => {
     })
   })
 
+  test('test createOne account with google provider', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({
+        result: {
+          newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+          newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+        }
+      })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.createOne({ user: { name: 'userName', email: 'email@email.com', googleProfileId: 'googleProfileId' }, account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/create',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' },
+          user: { name: 'userName', email: 'email@email.com', googleProfileId: 'googleProfileId' }
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({
+      newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+      newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+    })
+  })
+
+  test('test createOne account with github provider', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({
+        result: {
+          newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+          newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+        }
+      })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.createOne({ user: { name: 'userName', email: 'email@email.com', githubProfileId: 'githubProfileId' }, account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/create',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' },
+          user: { name: 'userName', email: 'email@email.com', githubProfileId: 'githubProfileId' }
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({
+      newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+      newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+    })
+  })
+
+  test('test createOne account with microsoft provider', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({
+        result: {
+          newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+          newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+        }
+      })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.createOne({ user: { name: 'userName', email: 'email@email.com', microsoftProfileId: 'microsoftProfileId' }, account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/create',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' },
+          user: { name: 'userName', email: 'email@email.com', microsoftProfileId: 'microsoftProfileId' }
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({
+      newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+      newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+    })
+  })
+
   test('test createOne with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({

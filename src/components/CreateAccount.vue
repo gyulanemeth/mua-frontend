@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import CreateWithProvider from './CreateWithProvider.vue'
 
 const data = ref({
   user: { email: '', name: '', password: '', newPasswordAgain: '' },
@@ -48,13 +49,14 @@ function startCountDownt () {
                 <p class="text-h6">{{ $t('mua.createAccount.header') }}</p>
                 <div v-if="step === 1">
                     <v-divider class="my-3" />
-                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.userSection.header') }}</p><v-divider
-                        class=" mt-3 mb-6" />
+                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.userSection.header')
+                        }}</p><v-divider class=" mt-3 mb-6" />
 
                     <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
                         name="email" type="email" :label="$t('mua.createAccount.userSection.emailLabel')"
                         :placeholder="data.user.email || $t('mua.createAccount.userSection.emailPlaceHolder')"
-                        data-test-id="createAccount-emailField" :value="data.user.email"
+                        :disabled="data.user.googleProfileId" data-test-id="createAccount-emailField"
+                        :value="data.user.email"
                         @update:modelValue="res => data.user.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
                         v-model="data.user.email"
                         @input="(event) => data.user.email = event.target.value.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
@@ -64,32 +66,35 @@ function startCountDownt () {
                         class="my-5 rounded" color="info" variant="solo" placeholder="Your Name" name="name"
                         label="Name" type="text" v-model="data.user.name" required />
 
-                    <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
-                        name="newPassword" data-test-id="createAccount-newPasswordField"
+                    <v-text-field v-if="!data.user.googleProfileId" hide-details density="compact" class="my-5 rounded"
+                        color="info" variant="solo" name="newPassword" data-test-id="createAccount-newPasswordField"
                         :label="$t('mua.createAccount.userSection.newPasswordLabel')" type="password"
                         :placeholder="data.user.password || $t('mua.createAccount.userSection.newPasswordPlaceholder')"
                         v-model="data.user.password" required />
 
-                    <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
-                        name="newPasswordAgain" data-test-id="createAccount-newPasswordAgainField"
+                    <v-text-field v-if="!data.user.googleProfileId" hide-details density="compact" class="my-5 rounded"
+                        color="info" variant="solo" name="newPasswordAgain"
+                        data-test-id="createAccount-newPasswordAgainField"
                         :label="$t('mua.createAccount.userSection.confirmNewPasswordLabel')" type="password"
                         :placeholder="data.user.newPasswordAgain || $t('mua.createAccount.userSection.confirmNewPasswordPlaceholder')"
                         v-model="data.user.newPasswordAgain" required />
 
                     <v-col>
                         <v-btn color="info"
-                            :disabled="data.user.name.length === 0 || data.user.newPasswordAgain.length === 0 || data.user.password.length === 0 || data.user.email.length === 0"
+                            :disabled="!(data.user.name?.length > 0 && data.user.email?.length > 0 && ((data.user.password?.length > 0 && data.user.newPasswordAgain?.length > 0) || data.user.googleProfileId?.length > 0))"
                             data-test-id="createAccount-nextStepBtn" @click="step = 2">
 
                             next step
 
                         </v-btn>
                     </v-col>
+                    <CreateWithProvider v-if="!data.user.googleProfileId" @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
                 </div>
                 <div v-if="step === 2"
                     @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() }) : null">
                     <v-divider class="my-3" />
-                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.accountSection.header') }}</p>
+                    <p class="ma-10 d-inline text-body-2 font-weight-bold">{{
+                        $t('mua.createAccount.accountSection.header') }}</p>
 
                     <v-divider class=" mt-3 mb-6" />
                     <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4" class="elevation-5 bg-blue-lighten-5">

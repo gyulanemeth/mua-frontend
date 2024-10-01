@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUsersStore } from '../stores/index.js'
+import LoginWithProvider from './LoginWithProvider.vue'
 
 const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginHandler'])
 
@@ -49,28 +50,29 @@ function submitForm () {
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card v-if="!props.tokenData.accounts && openRecentLogins" class="ma-2 pa-2  rounded-xl  elevation-0 loggedOutState" width="80%" max-width="600px">
+        <v-card v-if="!props.tokenData.accounts && openRecentLogins"
+            class="ma-2 pa-2  rounded-xl  elevation-0 loggedOutState" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm">
                 <p class="text-h6">{{ $t('mua.userLoginAndResetForm.recentloginsHeader') }}</p>
                 <p class="text-body-2 pb-5">{{ $t('mua.userLoginAndResetForm.recentloginsSubheader') }}</p>
                 <v-row class="align-center justify-center">
                     <v-col v-for="(element, i) in recentLogins" :key="i" cols="12" md="auto">
-                            <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill" :href="`/accounts/login/${element.urlFriendlyName}`" :title="element.name">
-                                <template v-slot:prepend>
-                                    <v-avatar size="50">
-                                        <v-img :src="element.logo || defaultLogo"></v-img>
-                                    </v-avatar>
-                                </template>
-                            </v-card>
+                        <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill"
+                            :href="`/accounts/login/${element.urlFriendlyName}`" :title="element.name">
+                            <template v-slot:prepend>
+                                <v-avatar size="50">
+                                    <v-img :src="element.logo || defaultLogo"></v-img>
+                                </v-avatar>
+                            </template>
+                        </v-card>
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-row class="pa-2 mt-2 align-center text-cente justify-center">
-                <v-btn color="info" append-icon="mdi-arrow-right"
-                @click="openRecentLogins = false">
-                {{ $t('mua.userLoginAndResetForm.loginToAnotherAccount') }}
-            </v-btn>
-        </v-row>
+                <v-btn color="info" append-icon="mdi-arrow-right" @click="openRecentLogins = false">
+                    {{ $t('mua.userLoginAndResetForm.loginToAnotherAccount') }}
+                </v-btn>
+            </v-row>
         </v-card>
         <v-card v-else class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center" @keydown.enter="submitForm">
@@ -101,7 +103,7 @@ function submitForm () {
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-btn color="info" data-test-id="loginAndResetForm-loginBtn"
+                        <v-btn color="info" data-test-id="loginAndResetForm-loginBtn" class="mb-3"
                             @click="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
 
                             {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
@@ -110,6 +112,9 @@ function submitForm () {
                                 processing ? $t('mua.processing') : '' }}
 
                         </v-btn>
+
+                        <LoginWithProvider :accountId="data.account" />
+
                     </div>
                 </div>
                 <div v-if="!props.tokenData.accounts">
@@ -128,9 +133,8 @@ function submitForm () {
         </v-card>
         <v-container v-if="!props.tokenData.accounts && !cb" class="w-100">
             <v-col v-if="recentLogins && !openRecentLogins" class="text-center justify-center align-center ">
-                <p data-test-id="loginAndResetForm-createAccountBtn"
-                    style="cursor: pointer;  color: #888888;" class="font-weight-bold"
-                    @click="openRecentLogins = true">{{
+                <p data-test-id="loginAndResetForm-createAccountBtn" style="cursor: pointer;  color: #888888;"
+                    class="font-weight-bold" @click="openRecentLogins = true">{{
                         $t('mua.userLoginAndResetForm.cb.backToRecentLoginsBtn') }}</p>
             </v-col>
             <v-col class="text-center justify-center align-center ">

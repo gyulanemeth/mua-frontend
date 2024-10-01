@@ -90,7 +90,46 @@ export default (connectors) => {
           return e
         }
       },
-
+      async getAccessToken (loginToken) {
+        try {
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          localStorage.setItem('accountId', loginTokenData.account._id)
+          saveRecentLogins(loginTokenData.account._id)
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async loginWithProvider ({ id, provider }) {
+        try {
+          const res = await connectors.user.loginWithProvider({ id, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async createWithProvider ({ accountId, userId, provider }) {
+        try {
+          const res = await connectors.user.createWithProvider({ provider }, { accountId, userId })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async linkToProvider ({ accountId, id, provider }) {
+        try {
+          const res = await connectors.user.linkToProvider({ accountId, id, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async loginGetAccounts (email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })
@@ -232,6 +271,15 @@ export default (connectors) => {
             throw new RouteError('Admin ID Is Required')
           }
           await connectors.user.patchPassword({ accountId: localStorage.getItem('accountId'), id: this.user._id, oldPassword, newPassword, newPasswordAgain })
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async createPassword ({ token, id, accountId }) {
+        try {
+          await connectors.user.createPassword({ accountId, id, token })
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)

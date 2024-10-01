@@ -22,6 +22,8 @@ export default function (fetch, apiUrl) {
 
   const generatePatchPasswordRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/password`
 
+  const generatePatchCreatePasswordRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/create-password`
+
   const generatePatchRoleRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/role`
 
   const generatePatchEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email`
@@ -46,9 +48,13 @@ export default function (fetch, apiUrl) {
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
+  const patchCreatePassword = createPatchConnector(fetch, apiUrl, generatePatchCreatePasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('createPasswordToken')}` }))
   const updateRole = createPatchConnector(fetch, apiUrl, generatePatchRoleRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
+  const postLoginWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/provider/${params.provider}`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`)
+  const postCreateWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/create-account/provider/${params.provider}`)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
   const delPermissionUser = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
@@ -83,6 +89,27 @@ export default function (fetch, apiUrl) {
       localStorage.setItem('accessToken', res.accessToken)
       localStorage.removeItem('loginToken')
     }
+    return res
+  }
+
+  const loginWithProvider = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('Account id is Required')
+    }
+    const res = await postLoginWithProvider(params)
+    return res
+  }
+
+  const createWithProvider = async function (params, data) {
+    const res = await postCreateWithProvider(params, data)
+    return res
+  }
+
+  const linkToProvider = async function (params) {
+    if (!params || !params.accountId || !params.id) {
+      throw new RouteError('AccountId and user id is Required')
+    }
+    const res = await postLinkToProvider(params)
     return res
   }
 
@@ -133,10 +160,21 @@ export default function (fetch, apiUrl) {
   }
 
   const patchPassword = async function (formData) {
-    if (!formData || !formData.id || !formData.accountId || !formData.oldPassword || !formData.newPassword || !formData.newPasswordAgain) {
+    if (!formData || !formData.id || !formData.accountId || !formData.newPassword || !formData.newPasswordAgain) {
       throw new RouteError('User ID, Account ID And New Password Is Required')
     }
     const res = await updatePassword({ id: formData.id, accountId: formData.accountId }, { oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    return res
+  }
+
+  const createPassword = async function (formData) {
+    if (!formData || !formData.token || !formData.accountId || !formData.id) {
+      throw new RouteError('User ID, Account ID And Token Is Required')
+    }
+    localStorage.setItem('createPasswordToken', formData.token)
+    const res = await patchCreatePassword({ id: formData.id, accountId: formData.accountId })
+    localStorage.removeItem('createPasswordToken')
+    localStorage.setItem('accessToken', res.accessToken)
     return res
   }
 
@@ -206,6 +244,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword
   }
 }
