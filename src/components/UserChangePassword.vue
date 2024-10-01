@@ -22,10 +22,10 @@ const resetForm = () => {
 <template>
     <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col class="pt-3">
-            <p class="text-body-1 font-weight-bold">{{ route.name !== 'accounts-addPassword' ? $t('mua.userChangePassword.header'): $t('mua.userChangePassword.setPasswordHeader')  }}</p>
+            <p class="text-body-1 font-weight-bold">{{ route.name !== 'accounts-add-password' ? $t('mua.userChangePassword.header'): $t('mua.userChangePassword.setPasswordHeader')  }}</p>
             <v-divider />
 
-            <v-row align="center" v-if="route.name !== 'accounts-addPassword'" class="mt-3">
+            <v-row align="center" v-if="route.name !== 'accounts-add-password'" class="mt-3">
                 <v-col>
                     <p class="font-weight-bold">{{ $t('mua.userChangePassword.oldPasswordLabel') }}</p>
                 </v-col>
@@ -68,9 +68,9 @@ const resetForm = () => {
 
             </v-row>
             <v-btn color="info" class="mt-5" data-test-id="meDetails-changePasswordTab-submitBtn"
-                @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({message: route.name !== 'accounts-addPassword'? $t('mua.userChangePassword.updateAlert'): $t('mua.userChangePassword.addAlert') }); resetForm(); processing = false })">
+                @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({message: route.name !== 'accounts-add-password'? $t('mua.userChangePassword.updateAlert'): $t('mua.userChangePassword.addAlert') }); resetForm(); processing = false })">
 
-                {{ !processing ? route.name !== 'accounts-addPassword' ? $t('mua.userChangePassword.submitBtn'): $t('mua.userChangePassword.submitAddPasswordBtn') : '' }}
+                {{ !processing ? route.name !== 'accounts-add-password' ? $t('mua.userChangePassword.submitBtn'): $t('mua.userChangePassword.submitAddPasswordBtn') : '' }}
 
                 <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                     processing ? $t('mua.processing') : '' }}
