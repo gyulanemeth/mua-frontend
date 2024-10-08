@@ -7,9 +7,9 @@ const props = defineProps({
   userId: String
 })
 
-const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('google')
-const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('microsoft')
-const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('github')
+const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
+const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('microsoft')
+const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('github')
 
 async function submitLinkToProvider (provider) {
   const res = await useUsersStore().linkToProvider({ provider, accountId: props.accountId, id: props.userId })

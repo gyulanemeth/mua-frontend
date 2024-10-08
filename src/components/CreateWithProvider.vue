@@ -13,9 +13,9 @@ const props = defineProps({
 
 const route = useRoute()
 const router = useRouter()
-const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('google')
-const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('microsoft')
-const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('github')
+const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
+const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('microsoft')
+const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('github')
 
 async function submitCreateWithProvider (provider) {
   const res = await useUsersStore().createWithProvider({ provider, accountId: props.accountId, userId: props.userId })
