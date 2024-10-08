@@ -13,6 +13,9 @@ const props = defineProps({
 
 const route = useRoute()
 const router = useRouter()
+const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('google')
+const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('microsoft')
+const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS.includes('github')
 
 async function submitCreateWithProvider (provider) {
   const res = await useUsersStore().createWithProvider({ provider, accountId: props.accountId, userId: props.userId })
@@ -53,14 +56,14 @@ async function submitCreateWithProvider (provider) {
 
 <template>
   <v-card-text align="left">
-    <div class="w-100 d-flex flex-wrap justify-center align-center text-center mb-7">
+    <div v-if="googleProvider ||microsoftProvider || githubProvider" class="w-100 d-flex flex-wrap justify-center align-center text-center mb-7">
       <v-divider style="flex: 1; margin-right: 10px;" :thickness="2"></v-divider>
 
       <span class=" text-grey">Or</span>
 
       <v-divider style="flex: 1; margin-left: 10px;" :thickness="2"></v-divider>
     </div>
-    <v-btn block @click="submitCreateWithProvider('google')" class="pa-2 border" variant="text">
+    <v-btn v-if="googleProvider" block @click="submitCreateWithProvider('google')" class="pa-2 border" variant="text">
       <span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
           <path fill="#FFC107"
@@ -75,7 +78,7 @@ async function submitCreateWithProvider (provider) {
       </span>
       <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.createWithProvider.googleBtn') }}</span>
     </v-btn>
-    <v-btn block @click="submitCreateWithProvider('microsoft')" class="pa-2 border mt-2" variant="text">
+    <v-btn v-if="microsoftProvider"  block @click="submitCreateWithProvider('microsoft')" class="pa-2 border mt-2" variant="text">
       <span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 48 48">
@@ -89,7 +92,7 @@ async function submitCreateWithProvider (provider) {
       <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.createWithProvider.microsoftBtn') }}</span>
     </v-btn>
 
-    <v-btn block @click="submitCreateWithProvider('github')" class="pa-2 border mt-2" variant="text">
+    <v-btn v-if="githubProvider" block @click="submitCreateWithProvider('github')" class="pa-2 border mt-2" variant="text">
       <span>
         <span>
           <!-- eslint-disable no-tabs -->
