@@ -7,6 +7,10 @@ const props = defineProps({
   userId: String
 })
 
+const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
+const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('microsoft')
+const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('github')
+
 async function submitLinkToProvider (provider) {
   const res = await useUsersStore().linkToProvider({ provider, accountId: props.accountId, id: props.userId })
   if (res.redirectUrl) {
@@ -37,11 +41,11 @@ async function submitLinkToProvider (provider) {
 </script>
 
 <template>
-  <div class="mb-5">
+  <div class="mb-5" v-if="googleProvider ||microsoftProvider || githubProvider">
     <p class="text-body-1 font-weight-bold ">{{ $t('mua.linkToProvider.header') }}</p>
     <v-divider />
     <v-card-text align="left">
-      <v-btn @click="submitLinkToProvider('google')" class="pa-2 border mr-3" variant="text">
+      <v-btn v-if="googleProvider" @click="submitLinkToProvider('google')" class="pa-2 border mr-3" variant="text">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
             <path fill="#FFC107"
@@ -56,7 +60,7 @@ async function submitLinkToProvider (provider) {
         </span>
         <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.googleBtn') }}</span>
       </v-btn>
-      <v-btn @click="submitLinkToProvider('microsoft')" class="pa-2 border mr-3" variant="text">
+      <v-btn v-if="microsoftProvider"  @click="submitLinkToProvider('microsoft')" class="pa-2 border mr-3" variant="text">
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 48 48">
             <path fill="#ff5722" d="M6 6H22V22H6z" transform="rotate(-180 14 14)"></path>
@@ -67,7 +71,7 @@ async function submitLinkToProvider (provider) {
         </span>
         <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.microsoftBtn') }}</span>
       </v-btn>
-      <v-btn @click="submitLinkToProvider('github')" class="pa-2 border" variant="text">
+      <v-btn v-if="githubProvider" @click="submitLinkToProvider('github')" class="pa-2 border" variant="text">
         <span>
           <!-- eslint-disable no-tabs -->
           <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 72 72">
