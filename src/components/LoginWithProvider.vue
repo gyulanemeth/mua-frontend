@@ -47,8 +47,8 @@ async function submitLoginWithProvider (provider) {
 </script>
 
 <template>
-  <v-card-text align="left">
-    <div v-if="googleProvider ||microsoftProvider || githubProvider" class="w-100 d-flex flex-wrap justify-center align-center text-center mb-7">
+  <v-card-text v-if="googleProvider ||microsoftProvider || githubProvider" align="left">
+    <div class="w-100 d-flex flex-wrap justify-center align-center text-center mb-7">
       <v-divider style="flex: 1; margin-right: 10px;" :thickness="2"></v-divider>
 
       <span class=" text-grey">Or</span>
