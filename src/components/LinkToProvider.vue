@@ -33,7 +33,7 @@ async function submitLinkToProvider (provider) {
         } catch (e) {
           console.error('Error accessing popup URL parameters:', e)
         }
-      }, 1000)
+      }, 500)
     }
   }
 }
