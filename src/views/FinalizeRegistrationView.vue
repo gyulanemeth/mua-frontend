@@ -31,8 +31,13 @@ async function loadData () {
     }
   }
   if (route.name === 'accounts-finalize-registration' && route.query.token) {
+    const tokenData = jwtDecode(route.query.token)
     loading.value = true
-    finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
+    if (tokenData.type === 'login') {
+      finalizeRegistrationRes.value = await store.getAccessToken(route.query.token)
+    } else {
+      finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
+    }
     if (finalizeRegistrationRes.value.success) {
       await accountsStore.readOne()
     }
