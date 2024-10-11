@@ -34,6 +34,7 @@ async function loadData () {
     const tokenData = jwtDecode(route.query.token)
     loading.value = true
     if (tokenData.type === 'login') {
+      localStorage.setItem('loginToken', route.query.token)
       finalizeRegistrationRes.value = await store.getAccessToken(route.query.token)
     } else {
       finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
