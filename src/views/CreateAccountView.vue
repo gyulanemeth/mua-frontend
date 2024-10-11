@@ -14,10 +14,7 @@ async function createEventHandler (data, statusCallBack) {
   const res = await accountsStore.createAccount(data)
   if (res.loginToken) {
     localStorage.setItem('loginToken', res.loginToken)
-    const accessToken = await useUsersStore().getAccessToken(res.loginToken)
-    if (accessToken.success) {
-      router.push('/accounts/urlFriendlyName/dashboard')
-    }
+    router.push(`/accounts/finalize-registration?token=${res.loginToken}`)
   } else {
     statusCallBack(res)
   }

@@ -47,7 +47,7 @@ async function submitCreateWithProvider (provider) {
         } catch (e) {
           console.error('Error accessing popup URL parameters:', e)
         }
-      }, 1000)
+      }, 500)
     }
   }
 }
