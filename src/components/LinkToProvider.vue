@@ -15,7 +15,7 @@ const confirmDialogRef = ref()
 const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
 const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('microsoft')
 const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('github')
-async function submitLinkToProvider (provider) {
+async function submitLinkToProvider(provider) {
   const res = await useUsersStore().linkToProvider({ provider, accountId: props.accountId, id: props.userId })
   if (res.redirectUrl) {
     const popup = window.open(res.redirectUrl, 'provider-link-popup', 'width=600,height=600')
@@ -30,6 +30,17 @@ async function submitLinkToProvider (provider) {
             popup.close()
             if (successQuery) {
               useSystemMessagesStore().addSuccess({ name: 'Linked Successfully' })
+              switch (provider) {
+                case 'google':
+                  userData.value.googleProfileId = true
+                  break
+                case 'microsoft':
+                  userData.value.microsoftProfileId = true
+                  break
+                case 'github':
+                  userData.value.githubProfileId = true
+                  break
+              }
             } else if (failedQuery) {
               useSystemMessagesStore().addError({ name: 'Authentication failed' })
             }
@@ -42,7 +53,7 @@ async function submitLinkToProvider (provider) {
   }
 }
 
-async function disconnect ({ provider, password }) {
+async function disconnect({ provider, password }) {
   const res = await useUsersStore().disconnectProvider({ provider, accountId: props.accountId, id: props.userId, password })
   if (!res.message) {
     userData.value = res
@@ -54,7 +65,7 @@ async function disconnect ({ provider, password }) {
 
 <template>
   <div class="mb-5" v-if="googleProvider || microsoftProvider || githubProvider">
-    <ConfirmDisconnectProviderDialog ref="confirmDialogRef" @okButtonPressed="(params)=>disconnect(params) " />
+    <ConfirmDisconnectProviderDialog ref="confirmDialogRef" @okButtonPressed="(params) => disconnect(params)" />
 
     <p class="text-body-1 font-weight-bold ">{{ $t('mua.linkToProvider.header') }}</p>
     <v-divider />
@@ -80,7 +91,9 @@ async function disconnect ({ provider, password }) {
           variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.connectBtn') }}</span>
         </v-btn>
-        <v-btn v-if="userData.googleProfileId" @click="confirmDialogRef.show({provider: 'google', name: $t('mua.linkToProvider.googleLabel')})" class="pa-2 border" variant="text">
+        <v-btn v-if="userData.googleProfileId"
+          @click="confirmDialogRef.show({ provider: 'google', name: $t('mua.linkToProvider.googleLabel') })"
+          class="pa-2 border" variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.disconnectBtn') }}</span>
         </v-btn>
       </v-col>
@@ -101,7 +114,9 @@ async function disconnect ({ provider, password }) {
           variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.connectBtn') }}</span>
         </v-btn>
-        <v-btn v-if="userData.microsoftProfileId" @click="confirmDialogRef.show({provider: 'microsoft', name: $t('mua.linkToProvider.microsoftLabel')})" class="pa-2 border" variant="text">
+        <v-btn v-if="userData.microsoftProfileId"
+          @click="confirmDialogRef.show({ provider: 'microsoft', name: $t('mua.linkToProvider.microsoftLabel') })"
+          class="pa-2 border" variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.disconnectBtn') }}</span>
         </v-btn>
       </v-col>
@@ -123,7 +138,9 @@ async function disconnect ({ provider, password }) {
           variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.connectBtn') }}</span>
         </v-btn>
-        <v-btn v-if="userData.githubProfileId" @click="confirmDialogRef.show({provider: 'github', name: $t('mua.linkToProvider.githubLabel')})" class="pa-2 border" variant="text">
+        <v-btn v-if="userData.githubProfileId"
+          @click="confirmDialogRef.show({ provider: 'github', name: $t('mua.linkToProvider.githubLabel') })"
+          class="pa-2 border" variant="text">
           <span class="mx-2 text-caption font-weight-medium">{{ $t('mua.linkToProvider.disconnectBtn') }}</span>
         </v-btn>
       </v-col>
