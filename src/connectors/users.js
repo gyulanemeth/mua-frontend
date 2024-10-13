@@ -28,6 +28,10 @@ export default function (fetch, apiUrl) {
 
   const generatePatchEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email`
 
+  const generatePatchDisconnectProviderRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/provider/${params.provider}`
+
+  const generateDisconnectPermissionRoute = (params) => `/v1/${params.type}/permission/disconnect`
+
   const generatePatchConfirmEmailRoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/email-confirm`
 
   const generateLoginGetAccountsRoute = () => '/v1/accounts/login'
@@ -63,6 +67,8 @@ export default function (fetch, apiUrl) {
   const postLoginUrlFriendlyName = createPostConnector(fetch, apiUrl, generateLoginWithUrlFriendlyNameRoute)
   const postReFinalizeRegistration = createPostConnector(fetch, apiUrl, generateReFinalizeRegistrationRoute)
   const postUploadImage = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImage, generateAdditionalHeaders)
+  const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('disconnect-permission-token')}` }))
+  const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     if (!param) {
@@ -195,6 +201,23 @@ export default function (fetch, apiUrl) {
     return res
   }
 
+  const disconnectProvider = async function (data) {
+    if (!data || !data.id || !data.accountId || !data.provider) {
+      throw new RouteError('User ID, Provider and Account ID Is Required')
+    }
+    const res = await patchDisconnectProvider({ id: data.id, accountId: data.accountId, provider: data.provider })
+    localStorage.removeItem('disconnect-permission-token')
+    return res
+  }
+
+  const disconnectPermission = async function (password) {
+    if (!password) {
+      throw new RouteError('Password Is Required')
+    }
+    const res = await disconnectPermissionUser({ type: 'accounts' }, { password })
+    localStorage.setItem('disconnect-permission-token', res.permissionToken)
+  }
+
   const deletePermission = async function (password) {
     if (!password) {
       throw new RouteError('Password Is Required')
@@ -244,6 +267,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission
   }
 }

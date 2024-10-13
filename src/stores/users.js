@@ -130,6 +130,16 @@ export default (connectors) => {
           return e
         }
       },
+      async disconnectProvider ({ id, password, accountId, provider }) {
+        try {
+          await connectors.user.disconnectPermission(password)
+          const res = await connectors.user.disconnectProvider({ id, accountId, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async loginGetAccounts (email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })
