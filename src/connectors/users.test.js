@@ -726,4 +726,79 @@ describe('test accounts connectors', () => {
     })
     await expect(users(fetch, apiUrl).createPassword()).rejects.toThrowError('User ID, Account ID And Token Is Required')
   })
+
+  test('test disconnect permission admin', async () => {
+    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNTE2MjM5MDIyfQ.7leGQ_Qr3r-fI2lG2grYSpxmWCTI6zhTb_jrDrMhx8g')
+
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).disconnectPermission('142536')
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/permission/disconnect',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: '142536' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(undefined)
+  })
+
+  test('test delete permission error ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+    await expect(users(fetch, apiUrl).disconnectPermission()).rejects.toThrowError('Password Is Required')
+  })
+
+  test('test disconnect ', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'Name1', email: 'email@gmail.com' } })
+    })
+
+    localStorage.setItem('disconnect-permission-token', 'permissionToken')
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).disconnectProvider({ id: '123', accountId: '112233', provider: 'google' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/112233/users/123/provider/google',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer permissionToken'
+        },
+        body: undefined
+      })
+
+    expect(res).toEqual({ _id: '123', name: 'Name1', email: 'email@gmail.com' })
+  })
+
+  test('test disconnect without params ', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
+    })
+
+    await expect(users(fetch, apiUrl).disconnectProvider()).rejects.toThrowError('User ID, Provider and Account ID Is Required')
+  })
 })

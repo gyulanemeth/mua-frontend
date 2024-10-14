@@ -252,8 +252,22 @@ describe('users Store', () => {
       return { success: true }
     }
 
+    const mockDisconnectProvider = async function (data) {
+      if (!data || !data.id || !data.accountId || !data.provider) {
+        throw new RouteError('User ID, Provider and Account ID Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
+
+    const mockDisconnectPermission = async function (password) {
+      if (!password) {
+        throw new RouteError('Password Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
+
     return {
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword },
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
       account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
@@ -776,5 +790,23 @@ describe('users Store', () => {
     const store = usersStore()
     const res = await store.createPassword({})
     expect(res.message).toEqual('User ID, Account ID And Token Is Required')
+  })
+
+  test('test success disconnect provider', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    await store.load()
+    store.params = { accountId: '12test' }
+    const res = await store.disconnectProvider({ accountId: '12test', id: '11Test1', provider: 'google', password: '123' })
+    expect(res.name).toEqual('user1')
+  })
+
+  test('test disconnect provider error missing password', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    await store.load()
+    store.params = { accountId: '12test' }
+    const res = await store.disconnectProvider({ accountId: '12test', id: '11Test1', provider: 'google' })
+    expect(res.message).toEqual('Password Is Required')
   })
 })
