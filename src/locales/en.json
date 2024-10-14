@@ -118,7 +118,9 @@
       "createFirstProjectLabel": "To get started, you can now create your first project. Click the button below to begin:",
       "redirectToMainPageMsgPart1": "Or navigate to",
       "redirectToMainPageLink": "Main Page",
-      "createFirstProjectBtn": "Create Your First Project"
+      "createFirstProjectBtn": "Create Your First Project",
+      "accountcreatedHeader": "Welcome on board",
+      "accountcreatedMessage": "Congratulations! You have successfully created your account."
     },
     "createAccount": {
       "header": "Create New Account",

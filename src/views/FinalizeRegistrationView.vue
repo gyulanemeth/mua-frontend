@@ -13,7 +13,8 @@ const store = useUsersStore()
 const accountsStore = useAccountsStore()
 const route = useRoute()
 const router = useRouter()
-const finalizeRegistrationRes = ref()
+const finalizeRegistrationRes = ref({})
+const finalizeAccountRegistrationRes =ref({})
 const data = ref()
 const formData = ref()
 const loading = ref()
@@ -35,11 +36,11 @@ async function loadData () {
     loading.value = true
     if (tokenData.type === 'login') {
       localStorage.setItem('loginToken', route.query.token)
-      finalizeRegistrationRes.value = await store.getAccessToken(route.query.token)
+      finalizeAccountRegistrationRes.value = await store.getAccessToken(route.query.token)
     } else {
       finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
     }
-    if (finalizeRegistrationRes.value.success) {
+    if (finalizeRegistrationRes.value.success || finalizeAccountRegistrationRes.value.success ) {
       await accountsStore.readOne()
     }
     loading.value = false
@@ -77,7 +78,8 @@ watchEffect(async () => {
           <p class="mt-3 text-body-2 font-weight-bold">{{ $t('loading') }}</p>
         </v-card>
       </v-layout>
-      <slot v-else-if="accountsStore.account && finalizeRegistrationRes"></slot>
+      <slot name="emailVerified" v-else-if="accountsStore.account && finalizeRegistrationRes.success"></slot>
+      <slot name="accountCreated" v-else-if="accountsStore.account && finalizeAccountRegistrationRes.success"></slot>
       <v-card-text v-else align="left">
         <p class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</p>
         <p class="mt-3 pa-2 text-center">{{ finalizeRegistrationRes?.message }}</p>
