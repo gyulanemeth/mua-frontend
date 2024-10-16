@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "main": "src/index.js",
   "scripts": {
     "serve": "vite preview",
@@ -20,7 +20,6 @@
   "homepage": "https://github.com/gyulanemeth/mua-frontend#readme",
   "dependencies": {
     "@mdi/font": "5.9.55",
-    "@sweetalert2/theme-material-ui": "^5.0.11",
     "@vueuse/core": "^10.2.1",
     "apexcharts": "^3.53.0",
     "jwt-decode": "^3.1.2",
