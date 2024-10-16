@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUsersStore } from '../stores/index.js'
 import LoginWithProvider from './LoginWithProvider.vue'
 
@@ -11,6 +11,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
+const router = useRouter()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
@@ -39,6 +40,13 @@ function submitForm () {
   }
 }
 
+async function removeAccount (urlFriendlyName) {
+  const res = await useUsersStore().removeRecentLoginAccount(urlFriendlyName)
+  if (res.success) {
+    recentLogins.value = await useUsersStore().getRecentLoginsAccounts()
+    openRecentLogins.value = recentLogins.value
+  }
+}
 </script>
 
 <template>
@@ -57,12 +65,21 @@ function submitForm () {
                 <p class="text-body-2 pb-5">{{ $t('mua.userLoginAndResetForm.recentloginsSubheader') }}</p>
                 <v-row class="align-center justify-center">
                     <v-col v-for="(element, i) in recentLogins" :key="i" cols="12" md="auto">
-                        <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill"
-                            :href="`/accounts/login/${element.urlFriendlyName}`" :title="element.name">
+                        <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill" min-width="150px"
+                        @click="router.push({ path: `/accounts/login/${element.urlFriendlyName}`})" :title="element.name">
                             <template v-slot:prepend>
                                 <v-avatar size="50">
                                     <v-img :src="element.logo || defaultLogo"></v-img>
                                 </v-avatar>
+                            </template>
+                            <template v-slot:append>
+                                <v-hover>
+                                    <template v-slot:default="{ isHovering, props }">
+                                        <v-icon v-bind="props" size="25"
+                                            @click.stop="removeAccount(element.urlFriendlyName)" style="cursor: pointer;"
+                                            :class="`${isHovering ? 'text-red' : ''}`">mdi-close</v-icon>
+                                    </template>
+                                </v-hover>
                             </template>
                         </v-card>
                     </v-col>

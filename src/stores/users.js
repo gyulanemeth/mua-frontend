@@ -161,6 +161,16 @@ export default (connectors) => {
         }
       },
 
+      async removeRecentLoginAccount (urlFriendlyName) {
+        const getRecentLogins = await JSON.parse(localStorage.getItem('recentLogins'))
+        if (getRecentLogins) {
+          const recentLogins = getRecentLogins.filter(item => item.urlFriendlyName !== urlFriendlyName)
+          localStorage.setItem('recentLogins', JSON.stringify(recentLogins))
+          useSystemMessagesStore().addSuccess({ message: 'Removed Successfully' })
+          return { success: true }
+        }
+      },
+
       logout () {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
