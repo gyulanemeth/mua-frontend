@@ -10,6 +10,8 @@ const data = ref({
 const cb = ref()
 const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 const url = import.meta.env.VITE_APP_BASE_URL
+const terms = import.meta.env.VITE_APP_TERMS_URL
+const privacy = import.meta.env.VITE_APP_PRIVACY_URL
 const processing = ref(false)
 const checkbox = ref()
 const step = ref(1)
@@ -28,10 +30,6 @@ function startCountDownt () {
       show.value = false
     }, 15000)
   }
-}
-
-function redirect (to) {
-  window.open(to, '_blank')
 }
 
 </script>
@@ -127,13 +125,11 @@ function redirect (to) {
 
                     <div class="d-flex align-center justify-start my-2" style="width: 100%;">
                         <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
-                        <p>{{  $t('mua.termsAndCondition.checkboxLabe') }}
-                        <span @click="redirect('https://bluefox.email/terms-of-use.html')"
-                            style="color: #3949AB; cursor: pointer;"
-                            class="text-decoration-underline font-weight-medium text-body-2 ">{{  $t('mua.termsAndCondition.terms') }}.</span>and
-                        <span @click="redirect('https://bluefox.email/privacy-policy.html')"
-                            style="color: #3949AB;cursor: pointer;"
-                            class="text-body-2 text-decoration-underline font-weight-medium">{{  $t('mua.termsAndCondition.privacy') }}.</span></p>
+                        <p v-if="terms && privacy" >{{  $t('mua.termsAndCondition.checkboxLabe') }}
+                            <a style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2 mr-2" :href="terms">{{$t('mua.termsAndCondition.terms')}}</a> and
+                            <a  style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{$t('mua.termsAndCondition.privacy')}}</a>
+                        </p>
+                        <p v-else> {{$t('mua.createAccount.checkboxLabel')}}</p>
                     </div>
 
                     <v-col>
