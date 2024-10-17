@@ -30,6 +30,10 @@ function startCountDownt () {
   }
 }
 
+function redirect (to) {
+  window.open(to, '_blank')
+}
+
 </script>
 
 <template>
@@ -88,7 +92,8 @@ function startCountDownt () {
 
                         </v-btn>
                     </v-col>
-                    <CreateWithProvider v-if="!data.user.googleProfileId" @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
+                    <CreateWithProvider v-if="!data.user.googleProfileId"
+                        @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
                 </div>
                 <div v-if="step === 2"
                     @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() }) : null">
@@ -120,8 +125,16 @@ function startCountDownt () {
                             data.account.urlFriendlyName }}</span>
                     </div>
 
-                    <v-checkbox :label="$t('mua.createAccount.checkboxLabel')" color="info" v-model="checkbox"
-                        hide-details></v-checkbox>
+                    <div class="d-flex align-center justify-start my-2" style="width: 100%;">
+                        <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
+                        <p>{{  $t('mua.termsAndCondition.checkboxLabe') }}
+                        <span @click="redirect('https://bluefox.email/terms-of-use.html')"
+                            style="color: #3949AB; cursor: pointer;"
+                            class="text-decoration-underline font-weight-medium text-body-2 ">{{  $t('mua.termsAndCondition.terms') }}.</span>and
+                        <span @click="redirect('https://bluefox.email/privacy-policy.html')"
+                            style="color: #3949AB;cursor: pointer;"
+                            class="text-body-2 text-decoration-underline font-weight-medium">{{  $t('mua.termsAndCondition.privacy') }}.</span></p>
+                    </div>
 
                     <v-col>
                         <v-btn color="info" data-test-id="createAccount-submitBtn"

@@ -14,7 +14,7 @@ const accountsStore = useAccountsStore()
 const route = useRoute()
 const router = useRouter()
 const finalizeRegistrationRes = ref({})
-const finalizeAccountRegistrationRes =ref({})
+const finalizeAccountRegistrationRes = ref({})
 const data = ref()
 const formData = ref()
 const loading = ref()
@@ -40,7 +40,7 @@ async function loadData () {
     } else {
       finalizeRegistrationRes.value = await store.finalizeRegistration(route.query.token)
     }
-    if (finalizeRegistrationRes.value.success || finalizeAccountRegistrationRes.value.success ) {
+    if (finalizeRegistrationRes.value.success || finalizeAccountRegistrationRes.value.success) {
       await accountsStore.readOne()
     }
     loading.value = false
