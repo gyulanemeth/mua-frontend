@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CreateWithProvider from './CreateWithProvider.vue'
 
 const data = ref({
@@ -14,7 +14,8 @@ const terms = import.meta.env.VITE_APP_TERMS_URL
 const privacy = import.meta.env.VITE_APP_PRIVACY_URL
 const processing = ref(false)
 const checkbox = ref()
-const step = ref(1)
+const urlFriendlyNameFocused = ref(false)
+const step = ref(2)
 const countDown = ref(15)
 const show = ref(false)
 
@@ -31,6 +32,16 @@ function startCountDownt () {
     }, 15000)
   }
 }
+
+watch(() => data.value.account.name, () => {
+  if (!urlFriendlyNameFocused.value) {
+    data.value.account.urlFriendlyName = data.value.account.name.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()/* eslint-disable-line */
+  }
+})
+
+watch(() => data.value.account.urlFriendlyName, () => {
+  data.value.account.urlFriendlyName = data.value.account.urlFriendlyName.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()/* eslint-disable-line */
+})
 
 </script>
 
@@ -110,13 +121,12 @@ function startCountDownt () {
                         :label="$t('mua.createAccount.accountSection.nameLabel')" v-model="data.account.name"
                         :placeholder="$t('mua.createAccount.accountSection.namePlaceholder')" required />
 
-                    <v-text-field hide-details density="compact" class="my-5 rounded mb-0 pb-0"
+                    <v-text-field hide-details @update:focused="()=> {urlFriendlyNameFocused = true}" density="compact" class="my-5 rounded mb-0 pb-0"
                         data-test-id="createAccount-urlFriendlyNameField" color="info" variant="solo"
                         name="urlFriendlyName" type="text"
                         :label="$t('mua.createAccount.accountSection.urlFriendlyNameLabel')"
                         :placeholder="data.account.urlFriendlyName || $t('mua.createAccount.accountSection.urlFriendlyNamePlaceholder')"
-                        :value="data.account.urlFriendlyName"
-                        @update:modelValue="res => data.account.urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
+                        v-model="data.account.urlFriendlyName"
                         required />
                     <div class="justify-left align-left text-left w-100">
                         <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url + 'accounts/' +
@@ -126,7 +136,7 @@ function startCountDownt () {
                     <div class="d-flex align-center justify-start my-2" style="width: 100%;">
                         <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
                         <p v-if="terms && privacy" >{{  $t('mua.termsAndCondition.checkboxLabe') }}
-                            <a style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2 mr-2" :href="terms">{{$t('mua.termsAndCondition.terms')}}</a>and
+                            <a style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="terms">{{$t('mua.termsAndCondition.terms')}}</a> and
                             <a  style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{$t('mua.termsAndCondition.privacy')}}</a>
                         </p>
                         <p v-else> {{$t('mua.createAccount.checkboxLabel')}}</p>
