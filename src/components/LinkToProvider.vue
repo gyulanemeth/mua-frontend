@@ -15,7 +15,7 @@ const confirmDialogRef = ref()
 const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
 const microsoftProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('microsoft')
 const githubProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('github')
-async function submitLinkToProvider(provider) {
+async function submitLinkToProvider (provider) {
   const res = await useUsersStore().linkToProvider({ provider, accountId: props.accountId, id: props.userId })
   if (res.redirectUrl) {
     const popup = window.open(res.redirectUrl, 'provider-link-popup', 'width=600,height=600')
@@ -53,7 +53,7 @@ async function submitLinkToProvider(provider) {
   }
 }
 
-async function disconnect({ provider, password }) {
+async function disconnect ({ provider, password }) {
   const res = await useUsersStore().disconnectProvider({ provider, accountId: props.accountId, id: props.userId, password })
   if (!res.message) {
     userData.value = res

@@ -10,6 +10,8 @@ const data = ref({
 const cb = ref()
 const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 const url = import.meta.env.VITE_APP_BASE_URL
+const terms = import.meta.env.VITE_APP_TERMS_URL
+const privacy = import.meta.env.VITE_APP_PRIVACY_URL
 const processing = ref(false)
 const checkbox = ref()
 const step = ref(1)
@@ -88,7 +90,8 @@ function startCountDownt () {
 
                         </v-btn>
                     </v-col>
-                    <CreateWithProvider v-if="!data.user.googleProfileId" @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
+                    <CreateWithProvider v-if="!data.user.googleProfileId"
+                        @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
                 </div>
                 <div v-if="step === 2"
                     @keydown.enter="checkbox ? processing = true && $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() }) : null">
@@ -120,8 +123,14 @@ function startCountDownt () {
                             data.account.urlFriendlyName }}</span>
                     </div>
 
-                    <v-checkbox :label="$t('mua.createAccount.checkboxLabel')" color="info" v-model="checkbox"
-                        hide-details></v-checkbox>
+                    <div class="d-flex align-center justify-start my-2" style="width: 100%;">
+                        <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
+                        <p v-if="terms && privacy" >{{  $t('mua.termsAndCondition.checkboxLabe') }}
+                            <a style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2 mr-2" :href="terms">{{$t('mua.termsAndCondition.terms')}}</a>and
+                            <a  style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{$t('mua.termsAndCondition.privacy')}}</a>
+                        </p>
+                        <p v-else> {{$t('mua.createAccount.checkboxLabel')}}</p>
+                    </div>
 
                     <v-col>
                         <v-btn color="info" data-test-id="createAccount-submitBtn"
