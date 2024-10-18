@@ -230,6 +230,10 @@
         "loginToDifferentAccountMessage": "Login to different account?",
         "loginToDifferentAccountCbBtn": "Switch Account",
         "loginMessage": "To continue logging in, please check your inbox and click the link we sent you."
+      },
+      "confirmDialog": {
+        "removeHeader": "Are you sure you want to delete your recent login?",
+        "removeBtn": "Delete"
       }
     },
     "userAccountDetails": {

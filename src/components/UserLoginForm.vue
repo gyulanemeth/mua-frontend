@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUsersStore } from '../stores/index.js'
 import LoginWithProvider from './LoginWithProvider.vue'
+import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 
 const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginHandler'])
 
@@ -17,6 +18,7 @@ const cb = ref(false)
 const processing = ref(false)
 const recentLogins = ref(await useUsersStore().getRecentLoginsAccounts())
 const openRecentLogins = ref(recentLogins.value)
+const confirmDialogRef = ref()
 
 const defaultLogo = import.meta.env.BASE_URL + 'placeholder.jpg'
 
@@ -51,6 +53,10 @@ async function removeAccount (urlFriendlyName) {
 
 <template>
     <v-layout class="d-flex flex-column justify-center align-center h-100">
+        <ConfirmDialog ref="confirmDialogRef" :title="$t('mua.userLoginAndResetForm.confirmDialog.removeHeader')" icon="mdi-help-circle-outline"
+            iconColor="error" :okBtnLabel="$t('mua.userLoginAndResetForm.confirmDialog.removeBtn')" okBtnColor="error"
+            cancelBtnColor="info"
+            @okButtonPressed="(params)=>removeAccount(params)" />
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
@@ -66,7 +72,8 @@ async function removeAccount (urlFriendlyName) {
                 <v-row class="align-center justify-center">
                     <v-col v-for="(element, i) in recentLogins" :key="i" cols="12" md="auto">
                         <v-card class="mx-auto ma-2 text-start align-center elevation-1 rounded-pill" min-width="150px"
-                        @click="router.push({ path: `/accounts/login/${element.urlFriendlyName}`})" :title="element.name">
+                            @click="router.push({ path: `/accounts/login/${element.urlFriendlyName}` })"
+                            :title="element.name">
                             <template v-slot:prepend>
                                 <v-avatar size="50">
                                     <v-img :src="element.logo || defaultLogo"></v-img>
@@ -76,7 +83,8 @@ async function removeAccount (urlFriendlyName) {
                                 <v-hover>
                                     <template v-slot:default="{ isHovering, props }">
                                         <v-icon v-bind="props" size="25"
-                                            @click.stop="removeAccount(element.urlFriendlyName)" style="cursor: pointer;"
+                                            @click.stop="confirmDialogRef.show(element.urlFriendlyName)"
+                                            style="cursor: pointer;"
                                             :class="`${isHovering ? 'text-red' : ''}`">mdi-close</v-icon>
                                     </template>
                                 </v-hover>
