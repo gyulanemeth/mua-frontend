@@ -338,6 +338,16 @@ describe('users Store', () => {
     expect(store.accessToken).toEqual(token)
   })
 
+  test('test success remove recent logins', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const token = jwt.sign({ type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    await store.login(token, '12123password', '112233')
+    expect(JSON.parse(localStorage.getItem('recentLogins'))[0].urlFriendlyName).toEqual('urlFriendlyNameTest')
+    await store.removeRecentLoginAccount('urlFriendlyNameTest')
+    expect(JSON.parse(localStorage.getItem('recentLogins')).length).toEqual(0)
+  })
+
   test('test success login get accounts', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
