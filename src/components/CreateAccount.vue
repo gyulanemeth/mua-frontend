@@ -15,7 +15,7 @@ const privacy = import.meta.env.VITE_APP_PRIVACY_URL
 const processing = ref(false)
 const checkbox = ref()
 const urlFriendlyNameFocused = ref(false)
-const step = ref(2)
+const step = ref(1)
 const countDown = ref(15)
 const show = ref(false)
 
