@@ -1,7 +1,7 @@
 {
   "name": "mua-frontend",
-  "version": "0.3.11",
-  "main": "src/index.js",
+  "version": "0.4.0",
+  "main": "src/plugin.js",
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
