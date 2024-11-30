@@ -369,7 +369,7 @@ watch(usersStatsFilter, async () => {
         </v-card>
       </v-card>
       <v-card flat :width="$vuetify.display.mdAndUp ? '70%' : '100%'">
-        <slot />
+        <CustomSystemStats />
       </v-card>
     </v-layout>
   </div>
