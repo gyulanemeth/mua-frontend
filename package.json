@@ -63,6 +63,7 @@
   "peerDependencies": {
     "pinia": "^2.0.14",
     "vue": "^3.2.36",
-    "vue-router": "^4.0.15"
+    "vue-router": "^4.0.15",
+    "vuetify": "^3.4.0"
   }
 }
