@@ -54,7 +54,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <v-col>
                         <p class="font-weight-bold">{{ $t('mua.adminDeleteAccount.nameLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded"
+                    <v-text-field hide-details density="compact" color="primary" disabled class="my-5 rounded"
                         variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text"
                         required />
                 </v-row>
@@ -63,7 +63,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     <v-col>
                         <p class="font-weight-bold">{{ $t('mua.adminDeleteAccount.emailLabel') }}</p>
                     </v-col>
-                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded"
+                    <v-text-field hide-details density="compact" color="primary" disabled class="my-5 rounded"
                         variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email"
                         type="text" required />
                 </v-row>
@@ -88,7 +88,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                             <p class="font-weight-bold">{{ $t('mua.adminDeleteAccount.passwordLabel')}}</p>
                         </v-col>
                         <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact"
-                            color="info" class="my-5 rounded" variant="solo" name="password" type="password"
+                            color="primary" class="my-5 rounded" variant="solo" name="password" type="password"
                             :placeholder="password || $t('mua.adminDeleteAccount.passwordPlaceholder')"
                             :value="password"
                             @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
@@ -96,7 +96,7 @@ const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL
                     </v-row>
                 </v-col>
                 <v-card-actions>
-                    <v-btn color="info" data-test-id="deleteAccount-cancelBtn"
+                    <v-btn color="primary" data-test-id="deleteAccount-cancelBtn"
                         @click="resetForm">{{ $t('mua.adminDeleteAccount.closeBtn')}}</v-btn>
                     <v-spacer />
                     <v-btn color="error" data-test-id="deleteAccount-submitBtn"

@@ -85,7 +85,7 @@ defineExpose({
             </v-card-text>
             <v-col align="left">
                     <p class="font-weight-bold mb-0 pb-0">{{$t('mua.confirmDisconnectProviderDialog.passwordLabel')}}:</p>
-                <v-text-field hide-details density="compact" color="info" class="my-2 rounded" variant="solo"
+                <v-text-field hide-details density="compact" color="primary" class="my-2 rounded" variant="solo"
                     name="password" type="password" :placeholder="$t('mua.confirmDisconnectProviderDialog.passwordPlaceholder')"
 
                     :value="data.password"
@@ -93,7 +93,7 @@ defineExpose({
                     required />
             </v-col>
             <v-card-actions class="d-flex justify-center">
-                <v-btn @click="cancel" color="info" data-test-id="confirmDialog-cancel" variant="outlined">
+                <v-btn @click="cancel" color="primary" data-test-id="confirmDialog-cancel" variant="outlined">
                     {{$t('mua.confirmDisconnectProviderDialog.cancelBtn')}}
                 </v-btn>
                 <v-spacer />

@@ -67,12 +67,12 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
       <v-spacer />
       <v-col cols="12" md="4" class="d-flex align-end mb-n5 pt-1">
         <v-text-field density="compact" label="Search" data-test-id="tableList-searchBar" variant="underlined"
-          append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
+          append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
       <v-col cols="12" md="auto"  class="d-flex align-end">
         <v-select @update:modelValue="(params)=>redirectSortEventHandler(params)" v-model="sortBy" hide-details density="compact" item-name="name" item-value="value"
-          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="info" color="info"
+          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="primary" color="primary"
           :items="[{ name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: -1 } }]"
           variant="outlined">
           <template v-slot:selection="{ item }">
@@ -98,7 +98,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
         </v-select>
       </v-col>
       <v-col cols="12" md="auto" class="d-flex align-end  pt-1">
-        <v-btn variant="outlined" block color="info" @click="createAccountDialog.show()">
+        <v-btn variant="outlined" block color="primary" @click="createAccountDialog.show()">
           {{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.createAdminBtn') :
             $t('mua.listAdminsAndAccounts.createAccountBtn') }}
         </v-btn>
@@ -112,7 +112,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
       <v-col cols="2" class="d-flex align-center ma-0 pa-0">
         <div>
           <v-col cols="5">
-            <v-icon class="ml-10" color="info" icon="mdi-arrow-up" size="x-large" />
+            <v-icon class="ml-10" color="primary" icon="mdi-arrow-up" size="x-large" />
           </v-col>
           <v-card-text class="pt-0">
             <p class="font-weight-medium">{{ route.name === 'system-admins' ? $t('mua.emptyList.inviteFirstAdmin') :
@@ -124,7 +124,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
     <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
       <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
-        <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
+        <v-progress-circular color="primary" indeterminate :size="90"></v-progress-circular>
         <p class="mt-3 text-body-2 font-weight-bold">{{ $t('mua.loading') }}</p>
       </v-card>
     </v-layout>
@@ -183,14 +183,14 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
             </v-card-subtitle>
           </v-card-text>
           <v-card-actions v-if="item._id !== props.adminId" class="px-0">
-            <v-btn color="info" v-if="route.name === 'system-admins' && !item.data.name" variant="text" class="ma-2"
+            <v-btn color="primary" v-if="route.name === 'system-admins' && !item.data.name" variant="text" class="ma-2"
               size="small" @click="$emit('reSendInvitationEventHandler', { email: item.data.email })">{{
                 $t('mua.listAdminsAndAccounts.resendMessage') }}
             </v-btn>
             <v-spacer />
             <DeleteMyAccount v-if="route.name === 'system-admins'" @deleteEventHandler='redirectDeleteEventHandler'
               :data="item.data" />
-            <v-btn v-if="route.name !== 'system-admins'" color="info" variant="text" class="ma-2"
+            <v-btn v-if="route.name !== 'system-admins'" color="primary" variant="text" class="ma-2"
               append-icon="mdi-arrow-right" size="small"
               @click="$emit('detailsEventHandler', { id: item._id, urlFriendlyName: item.data.urlFriendlyName })">{{
                 $t('mua.listAdminsAndAccounts.navigateToAccountBtn') }}</v-btn>

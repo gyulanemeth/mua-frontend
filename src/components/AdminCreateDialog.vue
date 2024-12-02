@@ -77,7 +77,7 @@ defineExpose({
                             <p>{{ input.placeholder }}</p>
                         </v-card>
                         <v-text-field v-else hide-details density="compact" :data-test-id="`formDialog-field-${i}`"
-                            class=" my-5 rounded" color="info" variant="solo"
+                            class=" my-5 rounded" color="primary" variant="solo"
                             :placeholder="input.placeholder" :name="input.name" v-model="data[input.name]"
                             :type="input.type" required />
                     </v-col>
@@ -87,9 +87,9 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
-              <v-btn color="info" data-test-id="formDialog-cancelBtn"
+              <v-btn color="primary" data-test-id="formDialog-cancelBtn"
                   @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.adminCreateDialog.cb.closeBtn') }}</v-btn>
-                <v-btn color="info" v-if="operation === $t('mua.adminCreateDialog.operation.accounts')"
+                <v-btn color="primary" v-if="operation === $t('mua.adminCreateDialog.operation.accounts')"
                     data-test-id="formDialog-submitBtn"
                     @click="processing = true; $emit('createEventHandler', data, () => { processing = false; dialogShown = false }); resetForm()">
 
@@ -99,9 +99,9 @@ defineExpose({
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
 
                 </v-btn>
-                <v-btn color="info" v-else-if="cb" data-test-id="formDialog-resetBtn" @click="cb = null">{{
+                <v-btn color="primary" v-else-if="cb" data-test-id="formDialog-resetBtn" @click="cb = null">{{
                     $t('mua.adminCreateDialog.cb.resetbtn') }}</v-btn>
-                <v-btn color="info" v-else data-test-id="formDialog-inviteAnotherBtn"
+                <v-btn color="primary" v-else data-test-id="formDialog-inviteAnotherBtn"
                     @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){ cb = res} processing = false; resetForm() })">
                     {{ !processing ? operation : '' }}
                     <v-progress-circular v-if="processing" :size="20"

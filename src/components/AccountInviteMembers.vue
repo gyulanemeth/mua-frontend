@@ -50,7 +50,7 @@ defineExpose({
                         <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.accountLabel') }}</p>
                     </v-col>
                     <v-col cols="12" md="8" align='center'>
-                        <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
+                        <v-text-field hide-details density="compact" class="my-5 rounded" color="primary"
                             variant="solo" placeholder="currentAccount" name="name" disabled v-model="data.name"
                             required />
                     </v-col>
@@ -61,7 +61,7 @@ defineExpose({
                     </v-col>
                     <v-col cols="12" md="8" align='center'>
                         <v-text-field hide-details data-test-id="inviteMember-emailField" density="compact"
-                            class="my-5 rounded" color="info" variant="solo" name="email" type="email"
+                            class="my-5 rounded" color="primary" variant="solo" name="email" type="email"
                             :placeholder="data.email || $t('mua.accountInviteMembers.emailPlaceHolder')" :value="data.email"
                             @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
                     </v-col>
@@ -72,7 +72,7 @@ defineExpose({
                     </v-col>
                     <v-col cols="12" md="8" align='center'>
                         <v-text-field hide-details density="compact" data-test-id="inviteMember-emailAgainField"
-                            class="my-5 rounded" color="info" variant="solo" name="confirmEmail"
+                            class="my-5 rounded" color="primary" variant="solo" name="confirmEmail"
                             type="email" :placeholder="data.confirmEmail || $t('mua.accountInviteMembers.confirmEmailPlaceHolder')"
                             :value="data.confirmEmail"
                             @update:modelValue="res => data.confirmEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
@@ -85,14 +85,14 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="info" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.accountInviteMembers.closeBtn') }}</v-btn>
-                <v-btn color="info" v-if="!cb" data-test-id="inviteMember-submitBtn"
+                <v-btn color="primary" data-test-id="inviteMember-cancelBtn" @click="dialogShown = false; cb = undefined; resetForm()">{{ $t('mua.accountInviteMembers.closeBtn') }}</v-btn>
+                <v-btn color="primary" v-if="!cb" data-test-id="inviteMember-submitBtn"
                     @click="processing = true; $emit('inviteEventHandler', data, (res) => { if(res){cb = res} resetForm(); processing = false })">
                     {{ !processing ? $t('mua.accountInviteMembers.submitBtn') : '' }}
                     <v-progress-circular v-if="processing" :size="20"
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
                 </v-btn>
-                <v-btn color="info" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('mua.accountInviteMembers.cb.cbBtn') }}</v-btn>
+                <v-btn color="primary" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{ $t('mua.accountInviteMembers.cb.cbBtn') }}</v-btn>
             </v-card-actions>
             </v-container>
         </v-card>
