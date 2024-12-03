@@ -6,10 +6,8 @@ import { useAccountsStore, useUsersStore } from "./stores/index.js";
 
 const MuaPlugin = {
   install(app, options = {}) {
-    const { router, userComponents = {}, pinia, useAccountsStore } = options;    
-    
+    const { router, userComponents = {}, pinia } = options;    
     setActivePinia(pinia);
-    
     if (router) {
       useMuaRoutes(router)
       router.beforeEach(async (to, from, next) => {
