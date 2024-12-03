@@ -6,6 +6,7 @@
       "confirmNewPasswordLabel": "Confirm New Password",
       "confirmNewPasswordPlaceholder": "********",
       "checkboxLabel": "I am human.",
+      "tokenExpiredMsg": "The token has expired. Please contact the admin to request a new invitation.",
       "cb": {
         "header": "Password changed",
         "message": "Your password has been changed. You will be automatically logged in in 5 seconds. Please",
