@@ -30,12 +30,12 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('mua.userChangePassword.oldPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-oldPassword" density="compact"
-                    class=" my-5  rounded" color="primary" variant="solo"
+                    class=" my-5  rounded" color="info" variant="solo"
                     :type="show.oldPassword ? 'text' : 'password'" name="oldPassword"
                     :placeholder="data.oldPassword || $t('mua.userChangePassword.oldPasswordPlaceholder')" :value="data.oldPassword"
                     @update:modelValue="res => data.oldPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')">
                 </v-text-field>
-                <v-btn color="primary" variant="text" :icon="show.oldPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                <v-btn color="info" variant="text" :icon="show.oldPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     @click="show.oldPassword = !show.oldPassword" />
             </v-row>
 
@@ -44,12 +44,12 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('mua.userChangePassword.newPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-newPassword" density="compact"
-                    class="my-5 rounded" color="primary" variant="solo"
+                    class="my-5 rounded" color="info" variant="solo"
                     :type="show.newPassword ? 'text' : 'password'" name="newPassword"
                     :placeholder="data.newPassword || $t('mua.userChangePassword.newPasswordPlaceholder')" :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')">
                 </v-text-field>
-                <v-btn color="primary" variant="text" :icon="show.newPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                <v-btn color="info" variant="text" :icon="show.newPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     @click="show.newPassword = !show.newPassword" />
             </v-row>
             <v-row align="center" class="mt-3">
@@ -57,17 +57,17 @@ const resetForm = () => {
                     <p class="font-weight-bold">{{ $t('mua.userChangePassword.confirmNewPasswordLabel') }}</p>
                 </v-col>
                 <v-text-field hide-details data-test-id="meDetails-changePasswordTab-newPasswordAgain" density="compact"
-                    class="my-5 rounded" color="primary" variant="solo"
+                    class="my-5 rounded" color="info" variant="solo"
                     :type="show.confirmNewPassword ? 'text' : 'password'" name="confirmNewPassword"
                     :placeholder="data.confirmNewPassword || $t('mua.userChangePassword.confirmNewPasswordPlaceholder')"
                     :value="data.confirmNewPassword"
                     @update:modelValue="res => data.confirmNewPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')">
                 </v-text-field>
-                <v-btn color="primary" variant="text" :icon="show.confirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                <v-btn color="info" variant="text" :icon="show.confirmNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
                     @click="show.confirmNewPassword = !show.confirmNewPassword" />
 
             </v-row>
-            <v-btn color="primary" class="mt-5" data-test-id="meDetails-changePasswordTab-submitBtn"
+            <v-btn color="info" class="mt-5" data-test-id="meDetails-changePasswordTab-submitBtn"
                 @click="processing = true; $emit('updatePasswordHandler', data, (res) => { res && useSystemMessagesStore().addSuccess({message: route.name !== 'accounts-add-password'? $t('mua.userChangePassword.updateAlert'): $t('mua.userChangePassword.addAlert') }); resetForm(); processing = false })">
 
                 {{ !processing ? route.name !== 'accounts-add-password' ? $t('mua.userChangePassword.submitBtn'): $t('mua.userChangePassword.submitAddPasswordBtn') : '' }}

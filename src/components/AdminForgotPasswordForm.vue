@@ -23,15 +23,15 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                 <p class="text-h6">{{ $t('mua.adminForgotPasswordForm.header') }}</p>
 
                 <v-text-field hide-details data-test-id="forgotPassword-emailField" density="compact"
-                    class=" my-5 rounded" color="primary" variant="solo" name="email"
+                    class=" my-5 rounded" color="info" variant="solo" name="email"
                     :label="$t('mua.adminForgotPasswordForm.emailLabel')" type="email" :disabled="cb"
                     :placeholder="data || $t('mua.adminForgotPasswordForm.emailPlaceHolder')" :value="data"
                     @update:modelValue="res => data = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
-                <v-checkbox v-if="!cb" :label="$t('mua.adminForgotPasswordForm.checkboxLabel')" color="primary" v-model="checkbox"
+                <v-checkbox v-if="!cb" :label="$t('mua.adminForgotPasswordForm.checkboxLabel')" color="info" v-model="checkbox"
                     hide-details></v-checkbox>
 
                 <div v-if="!cb" @keydown.enter="checkbox? processing = true && $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } processing = false; }): null" >
-                    <v-btn data-test-id="forgotPassword-submitBtn" :disabled="!checkbox || !data" color="primary"
+                    <v-btn data-test-id="forgotPassword-submitBtn" :disabled="!checkbox || !data" color="info"
                         @click="processing = true; $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } processing = false; })">
 
                         {{ !processing ? $t('mua.adminForgotPasswordForm.submitBtn') : '' }}

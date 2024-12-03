@@ -41,7 +41,7 @@ const resetForm = () => {
             <v-col>
                 <p class="font-weight-bold">{{$t('mua.adminChangeEmail.newEmailLabel')}}</p>
             </v-col>
-            <v-text-field hide-details density="compact" data-test-id="meDetails-changeEmailTab-newEmail" class="my-5 rounded" color="primary" variant="solo" name="newEmail"
+            <v-text-field hide-details density="compact" data-test-id="meDetails-changeEmailTab-newEmail" class="my-5 rounded" color="info" variant="solo" name="newEmail"
             :placeholder="data.newEmail || $t('mua.adminChangeEmail.newEmailPlaceHolder')"
             :value="data.newEmail"
             @update:modelValue="res => data.newEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
@@ -52,7 +52,7 @@ const resetForm = () => {
             <v-col>
                 <p class="font-weight-bold">{{$t('mua.adminChangeEmail.confirmEmailLabel')}}</p>
             </v-col>
-            <v-text-field hide-details density="compact" data-test-id="meDetails-changeEmailTab-newEmailAgain" class="my-5 rounded" color="primary" variant="solo" name="confirmNewEmail"
+            <v-text-field hide-details density="compact" data-test-id="meDetails-changeEmailTab-newEmailAgain" class="my-5 rounded" color="info" variant="solo" name="confirmNewEmail"
             :placeholder="data.confirmNewEmail || $t('mua.adminChangeEmail.confirmEmailPlaceHolder')"
             :value="data.confirmNewEmail"
             @update:modelValue="res => data.confirmNewEmail = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')"
@@ -60,7 +60,7 @@ const resetForm = () => {
             </v-text-field>
 
         </v-row>
-        <v-btn color="primary" class="mt-5" data-test-id="meDetails-changeEmailTab-submitBtn" @click="processing = true; $emit('updateEmailHandler',data, (res) => {res &&  useSystemMessagesStore().addSuccess({name: $t('mua.adminChangeEmail.cb.message'), message: $t('mua.adminChangeEmail.cb.header') }); resetForm(); processing= false})">
+        <v-btn color="info" class="mt-5" data-test-id="meDetails-changeEmailTab-submitBtn" @click="processing = true; $emit('updateEmailHandler',data, (res) => {res &&  useSystemMessagesStore().addSuccess({name: $t('mua.adminChangeEmail.cb.message'), message: $t('mua.adminChangeEmail.cb.header') }); resetForm(); processing= false})">
              {{!processing? $t('mua.adminChangeEmail.submitBtn'):''}}
 
                    <v-progress-circular v-if="processing" :size="20" class="pa-3 ma-3"

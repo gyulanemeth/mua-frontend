@@ -55,7 +55,7 @@ async function removeAccount (urlFriendlyName) {
     <v-layout class="d-flex flex-column justify-center align-center h-100">
         <ConfirmDialog ref="confirmDialogRef" :title="$t('mua.userLoginAndResetForm.confirmDialog.removeHeader')" icon="mdi-help-circle-outline"
             iconColor="error" :okBtnLabel="$t('mua.userLoginAndResetForm.confirmDialog.removeBtn')" okBtnColor="error"
-            cancelBtnColor="primary"
+            cancelBtnColor="info"
             @okButtonPressed="(params)=>removeAccount(params)" />
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
@@ -94,7 +94,7 @@ async function removeAccount (urlFriendlyName) {
                 </v-row>
             </v-card-text>
             <v-row class="pa-2 mt-2 align-center text-cente justify-center">
-                <v-btn color="primary" append-icon="mdi-arrow-right" @click="openRecentLogins = false">
+                <v-btn color="info" append-icon="mdi-arrow-right" @click="openRecentLogins = false">
                     {{ $t('mua.userLoginAndResetForm.loginToAnotherAccount') }}
                 </v-btn>
             </v-row>
@@ -104,31 +104,31 @@ async function removeAccount (urlFriendlyName) {
                 <p class="text-h6">{{ $t('mua.userLoginAndResetForm.loginHeader') }} </p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class=" my-5 rounded" color="primary" variant="solo" :disabled="!!cb || !!props.tokenData.user"
+                    class=" my-5 rounded" color="info" variant="solo" :disabled="!!cb || !!props.tokenData.user"
                     type="email" name="email"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-select v-if="props.tokenData.accounts || props.tokenData.account"
                     data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
-                    density="compact" color="primary" class="my-5 rounded" variant="solo" :disabled="!!cb"
+                    density="compact" color="info" class="my-5 rounded" variant="solo" :disabled="!!cb"
                     :items="props.tokenData.accounts" item-title="name" item-value="_id"
                     :label="$t('mua.userLoginAndResetForm.selectLabel')" name="account" />
 
                 <div v-if="props.tokenData.accounts">
                     <v-btn v-if="!cb" :disabled="!!!data.account" data-test-id="loginAndResetForm-signInBtn"
-                        color="primary" @click="cb = 'signIn'">{{
+                        color="info" @click="cb = 'signIn'">{{
                             $t('mua.userLoginAndResetForm.nextBtn') }}
                     </v-btn>
                     <div v-if="cb">
-                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary" variant="solo"
+                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="info" variant="solo"
                             name="password" data-test-id="loginAndResetForm-passwordField"
                             :label="$t('mua.userLoginAndResetForm.passwordLabel')" type="password"
                             :placeholder="data.password || $t('mua.userLoginAndResetForm.passwordPlaceholder')"
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-btn color="primary" data-test-id="loginAndResetForm-loginBtn" class="mb-3"
+                        <v-btn color="info" data-test-id="loginAndResetForm-loginBtn" class="mb-3"
                             @click="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
 
                             {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
@@ -144,7 +144,7 @@ async function removeAccount (urlFriendlyName) {
                 </div>
                 <div v-if="!props.tokenData.accounts">
                     <div v-if="!cb">
-                        <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
+                        <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                             @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{

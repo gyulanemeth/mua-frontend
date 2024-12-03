@@ -37,37 +37,37 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                 <p class="text-h6">{{ $t('mua.userLoginAndResetForm.resetHeader') }} </p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class="my-5 rounded" color="primary" variant="solo" :disabled="!!cb || !!props.formData.email"
+                    class="my-5 rounded" color="info" variant="solo" :disabled="!!cb || !!props.formData.email"
                     type="email" name="email"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-select data-test-id="loginAndResetForm-selectAccountField" hide-details v-model="data.account"
-                    density="compact" color="primary" class="my-5 rounded" variant="solo" disabled item-title="name"
+                    density="compact" color="info" class="my-5 rounded" variant="solo" disabled item-title="name"
                     item-value="_id" :label="$t('mua.userLoginAndResetForm.selectLabel')" name="account" />
 
                 <div v-if="route.name === 'accounts-forgot-password-reset'">
-                    <v-btn v-if="!cb" color="primary" data-test-id="loginAndResetForm-submitForgotRestBtn"
+                    <v-btn v-if="!cb" color="info" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb"
                         @keydown.enter="checkbox && $emit('handleForgotPasswordResetHandler', data, () => { })">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
-                            class=" my-5 rounded" color="primary" variant="solo" name="password"
+                            class=" my-5 rounded" color="info" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
                             :placeholder="data.password || $t('mua.userLoginAndResetForm.newPasswordPlaceholder')"
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary" variant="solo"
+                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="info" variant="solo"
                             name="confirmPassword" data-test-id="loginAndResetForm-newPasswordAgainField"
                             :label="$t('mua.userLoginAndResetForm.confirmNewPasswordLabel')" type="password"
                             :placeholder="data.confirmPassword || $t('mua.userLoginAndResetForm.confirmNewPasswordPlaceholder')"
                             :value="data.confirmPassword"
                             @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="primary"
+                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="info"
                             v-model="checkbox" hide-details></v-checkbox>
-                        <v-btn color="primary" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
+                        <v-btn color="info" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
                             @click="$emit('handleForgotPasswordResetHandler', data, data, () => { })">{{
                                 $t('mua.userLoginAndResetForm.resetBtnText') }}</v-btn>
                     </div>
@@ -76,9 +76,9 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                 <div v-if="route.name !== 'accounts-forgot-password-reset'">
                     <div v-if="cb !== 'reset'"
                         @keydown.enter="checkbox ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false }) : null">
-                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="primary"
+                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="info"
                             v-model="checkbox" hide-details></v-checkbox>
-                        <v-btn color="primary" :disabled="!checkbox || !data.account || !data.email"
+                        <v-btn color="info" :disabled="!checkbox || !data.account || !data.email"
                             data-test-id="loginAndResetForm-forgotPasswordBtn"
                             @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.resetBtnText') : '' }}

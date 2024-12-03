@@ -33,15 +33,15 @@ async function submit () {
             <v-card-text align="center">
                 <p class="text-h6">{{ $t('mua.adminLogin.header') }}</p>
                 <v-text-field hide-details density="compact" data-test-id="login-emailField"
-                    class="my-5 rounded" color="primary" variant="solo" name="email"
+                    class="my-5 rounded" color="info" variant="solo" name="email"
                     :label="$t('mua.adminLogin.emailLabel')" id="email" type="email" :placeholder="email || 'your@email.com'"
                     :value="email" @update:modelValue="res => email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
                 <v-text-field hide-details density="compact" data-test-id="login-passwordField"
-                    class="my-5 rounded" color="primary" variant="solo" name="password"
+                    class="my-5 rounded" color="info" variant="solo" name="password"
                     :label="$t('mua.adminLogin.passwordLabel')" id="password" type="password"
                     :placeholder="password || '********'" :value="password"
                     @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" active required />
-                <v-btn color="primary" data-test-id="login-submitBtn" @click="processing = true; submit()">
+                <v-btn color="info" data-test-id="login-submitBtn" @click="processing = true; submit()">
                     {{ !processing ? $t('mua.adminLogin.submitBtn') : '' }}
 
                     <v-progress-circular v-if="processing" :size="20"

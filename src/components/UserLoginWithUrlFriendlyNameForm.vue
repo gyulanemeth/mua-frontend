@@ -34,12 +34,12 @@ const url = ref(window.location.origin + window.location.pathname)
                 <p class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class="my-5 rounded" color="primary" variant="solo" type="email" name="email"
+                    class="my-5 rounded" color="info" variant="solo" type="email" name="email"
                     :label="'Email'"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
-                <v-text-field hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
                     name="password" data-test-id="loginAndResetForm-passwordField"
                     :label="$t('mua.userLoginAndResetForm.passwordLabel')" type="password"
                     :placeholder="data.password || $t('mua.userLoginAndResetForm.passwordPlaceholder')"
@@ -48,7 +48,7 @@ const url = ref(window.location.origin + window.location.pathname)
                     required />
 
                 <div>
-                    <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
+                    <v-btn color="info" data-test-id="loginAndResetForm-getLoginAccountsBtn"
                         @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
                         {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                         <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{

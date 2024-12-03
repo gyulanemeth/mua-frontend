@@ -58,14 +58,14 @@ watch(() => data.value.account.urlFriendlyName, () => {
         <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
             <v-card-text align="center">
                 <v-btn v-if="step === 2" @click="step = 1" style="position: absolute; left: 25px;" density="compact"
-                    class="ma-0 pa-0" variant="outlined" color="primary" icon="mdi-arrow-left"></v-btn>
+                    class="ma-0 pa-0" variant="outlined" color="info" icon="mdi-arrow-left"></v-btn>
                 <p class="text-h6">{{ $t('mua.createAccount.header') }}</p>
                 <div v-if="step === 1">
                     <v-divider class="my-3" />
                     <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.userSection.header')
                         }}</p><v-divider class=" mt-3 mb-6" />
 
-                    <v-text-field hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"
+                    <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
                         name="email" type="email" :label="$t('mua.createAccount.userSection.emailLabel')"
                         :placeholder="data.user.email || $t('mua.createAccount.userSection.emailPlaceHolder')"
                         :disabled="data.user.googleProfileId" data-test-id="createAccount-emailField"
@@ -76,24 +76,24 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         required />
 
                     <v-text-field hide-details data-test-id="createAccount-userNameField" density="compact"
-                        class="my-5 rounded" color="primary" variant="solo" placeholder="Your Name" name="name"
+                        class="my-5 rounded" color="info" variant="solo" placeholder="Your Name" name="name"
                         label="Name" type="text" v-model="data.user.name" required />
 
                     <v-text-field v-if="!data.user.googleProfileId" hide-details density="compact" class="my-5 rounded"
-                        color="primary" variant="solo" name="newPassword" data-test-id="createAccount-newPasswordField"
+                        color="info" variant="solo" name="newPassword" data-test-id="createAccount-newPasswordField"
                         :label="$t('mua.createAccount.userSection.newPasswordLabel')" type="password"
                         :placeholder="data.user.password || $t('mua.createAccount.userSection.newPasswordPlaceholder')"
                         v-model="data.user.password" required />
 
                     <v-text-field v-if="!data.user.googleProfileId" hide-details density="compact" class="my-5 rounded"
-                        color="primary" variant="solo" name="newPasswordAgain"
+                        color="info" variant="solo" name="newPasswordAgain"
                         data-test-id="createAccount-newPasswordAgainField"
                         :label="$t('mua.createAccount.userSection.confirmNewPasswordLabel')" type="password"
                         :placeholder="data.user.newPasswordAgain || $t('mua.createAccount.userSection.confirmNewPasswordPlaceholder')"
                         v-model="data.user.newPasswordAgain" required />
 
                     <v-col>
-                        <v-btn color="primary"
+                        <v-btn color="info"
                             :disabled="!(data.user.name?.length > 0 && data.user.email?.length > 0 && ((data.user.password?.length > 0 && data.user.newPasswordAgain?.length > 0) || data.user.googleProfileId?.length > 0))"
                             data-test-id="createAccount-nextStepBtn" @click="step = 2">
 
@@ -112,17 +112,17 @@ watch(() => data.value.account.urlFriendlyName, () => {
 
                     <v-divider class=" mt-3 mb-6" />
                     <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4" class="elevation-5 bg-blue-lighten-5">
-                        <v-banner-text style="overflow-y: auto;" class="text-primary px-0">
+                        <v-banner-text style="overflow-y: auto;" class="text-info px-0">
                             <p class="text-left">{{ $t('mua.createAccount.accountSection.banner') }}</p>
                         </v-banner-text>
                     </v-banner>
                     <v-text-field hide-details density="compact" data-test-id="createAccount-accNameField"
-                        class=" my-5 rounded" color="primary" variant="solo" name="AccName" type="text"
+                        class=" my-5 rounded" color="info" variant="solo" name="AccName" type="text"
                         :label="$t('mua.createAccount.accountSection.nameLabel')" v-model="data.account.name"
                         :placeholder="$t('mua.createAccount.accountSection.namePlaceholder')" required />
 
                     <v-text-field hide-details @update:focused="()=> {urlFriendlyNameFocused = true}" density="compact" class="my-5 rounded mb-0 pb-0"
-                        data-test-id="createAccount-urlFriendlyNameField" color="primary" variant="solo"
+                        data-test-id="createAccount-urlFriendlyNameField" color="info" variant="solo"
                         name="urlFriendlyName" type="text"
                         :label="$t('mua.createAccount.accountSection.urlFriendlyNameLabel')"
                         :placeholder="data.account.urlFriendlyName || $t('mua.createAccount.accountSection.urlFriendlyNamePlaceholder')"
@@ -134,7 +134,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                     </div>
 
                     <div class="d-flex align-center justify-start my-2" style="width: 100%;">
-                        <v-checkbox color="primary" v-model="checkbox" hide-details></v-checkbox>
+                        <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
                         <p v-if="terms && privacy" >{{  $t('mua.termsAndCondition.checkboxLabe') }}
                             <a style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="terms">{{$t('mua.termsAndCondition.terms')}}</a> and
                             <a  style="color: #3949AB; cursor: pointer;" target=“_blank” class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{$t('mua.termsAndCondition.privacy')}}</a>
@@ -143,7 +143,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                     </div>
 
                     <v-col>
-                        <v-btn color="primary" data-test-id="createAccount-submitBtn"
+                        <v-btn color="info" data-test-id="createAccount-submitBtn"
                             :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
                             @click="processing = true; $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt() })">
 
@@ -185,7 +185,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                 <v-tooltip location="top" v-model="show">
                     <template v-slot:activator="{ props }">
                         <div v-bind="countDown !== 0 && props">
-                            <v-btn color="primary" variant="elevated" :disabled="countDown !== 0"
+                            <v-btn color="info" variant="elevated" :disabled="countDown !== 0"
                                 @click="$emit('reSendFinalizeRegistrationEvent', { accountId: cb.newAccount._id, userId: cb.newUser._id })">
 
                                 {{ $t('mua.createAccount.resendBtn') }}
