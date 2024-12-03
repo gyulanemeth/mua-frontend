@@ -1,11 +1,15 @@
 import { useMuaRoutes, muaBeforeEach } from './router/index.js'
 import MuaErrorMessage from './components/ErrorMessage.vue'
+import { setActivePinia } from 'pinia'
 import 'vuetify/styles';
 import { useAccountsStore, useUsersStore } from "./stores/index.js";
 
 const MuaPlugin = {
   install(app, options = {}) {
     const { router, userComponents = {}, pinia, useAccountsStore } = options;    
+    
+    setActivePinia(pinia);
+    
     if (router) {
       useMuaRoutes(router)
       router.beforeEach(async (to, from, next) => {
