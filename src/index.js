@@ -3,18 +3,17 @@ import MuaErrorMessage from './components/ErrorMessage.vue'
 import { setActivePinia } from 'pinia'
 import 'vuetify/styles';
 import { useAccountsStore, useUsersStore } from "./stores/index.js";
-import AppLoading from './components/AppLoading.vue';
 
 const MuaPlugin = {
   install(app, options = {}) {
     const { router, userComponents = {}, pinia } = options;    
-    setActivePinia(pinia);
-    /*if (router) {
+    setActivePinia(pinia)
+    if (router) {
       useMuaRoutes(router)
       router.beforeEach(async (to, from, next) => {
         await muaBeforeEach(to, from, next)
-      });
-    }*/
+      })
+    }
     app.component('MuaErrorMessage', MuaErrorMessage)
     if (userComponents.FinalizeRegistrationLinks) {
       app.component('CustomFinalizeRegistrationLinks', userComponents.FinalizeRegistrationLinks);
@@ -38,7 +37,5 @@ export function useMusAccountStore() {
 export function useMusUsersStore() {
   return useUsersStore()
 }
-
-export { AppLoading }
 
 export default MuaPlugin
