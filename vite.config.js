@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
 import vuetify from 'vite-plugin-vuetify'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -14,7 +15,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'src/plugin.js'),
+      entry: path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'src/index.js'),
       name: 'mua-frontend',
       fileName: (format) => `mua-frontend.${format}.js`
     },
