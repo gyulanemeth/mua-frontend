@@ -6,7 +6,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
 <template>
     <div class="d-flex flex-column justify-center align-center text-center h-screen">
-            <v-progress-circular indeterminate :size="300" :width="10" color="info">
+            <v-progress-circular indeterminate :size="300" :width="10" color="primary">
 
                 <v-avatar size="100">
                     <v-img :src="appIcon" cover></v-img>

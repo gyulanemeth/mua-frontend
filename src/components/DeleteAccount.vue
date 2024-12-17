@@ -66,13 +66,13 @@ defineExpose({
                         <p class="font-weight-bold">{{ t('mua.deleteAccount.nameLabel') }} </p>
                     </v-col>
                     <v-col cols="8" align='center'>
-                        <v-text-field disabled hide-details density="compact" class="my-5 rounded" color="info" variant="solo"  v-model="data.name"/>
+                        <v-text-field disabled hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"  v-model="data.name"/>
                     </v-col>
                     <v-col cols="4">
                         <p class="font-weight-bold">{{ t('mua.deleteAccount.urlFriendlyName') }} </p>
                     </v-col>
                     <v-col cols="8" align='center'>
-                        <v-text-field  disabled hide-details density="compact" class="my-5 rounded" color="info" variant="solo" v-model="data.urlFriendlyName"  />
+                        <v-text-field  disabled hide-details density="compact" class="my-5 rounded" color="primary" variant="solo" v-model="data.urlFriendlyName"  />
                     </v-col>
                     <v-col cols="12" md="4">
                         <p class="font-weight-bold">{{ t('mua.deleteAccount.picLabel') }}</p>
@@ -95,7 +95,7 @@ defineExpose({
                     <v-col>
                         <p class="font-weight-bold">{{$t('mua.deleteAccount.passwordLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details density="compact" color="info" class="my-5 rounded" variant="solo"
+                    <v-text-field hide-details density="compact" color="primary" class="my-5 rounded" variant="solo"
                     name="password" type="password"
                     :placeholder="password || $t('mua.deleteAccount.passwordPlaceholder')"
                     :value="password"
@@ -106,7 +106,7 @@ defineExpose({
                 </v-row>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="info" data-test-id="formDialog-cancelBtn"
+                <v-btn color="primary" data-test-id="formDialog-cancelBtn"
                     @click="hide">{{ t('mua.deleteAccount.cancelBtn') }}</v-btn>
                     <v-spacer />
                 <v-btn color="error" :disabled="!password"

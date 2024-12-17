@@ -36,10 +36,10 @@ onMounted(async () => {
       </v-card>
       <v-card class="pa-5 ma-5 elevation-4" width="800px">
         <v-card-text class="text-center">
-          <v-icon icon="mdi-magnify-remove-outline" color="info" size="90"></v-icon>
+          <v-icon icon="mdi-magnify-remove-outline" color="primary" size="90"></v-icon>
         </v-card-text>
         <v-card-text class="text-center">
-          <p class="text-info text-h5 font-weight-black d-inline">{{ $t('notFoundView.title', { name: route.params.catchAll }) }}</p>
+          <p class="text-primary text-h5 font-weight-black d-inline">{{ $t('notFoundView.title', { name: route.params.catchAll }) }}</p>
         </v-card-text>
         <v-card-text class="text-center">
           {{ $t('notFoundView.header', {

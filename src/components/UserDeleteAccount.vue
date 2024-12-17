@@ -55,7 +55,7 @@ defineExpose({
                     <p class="font-weight-bold">{{$t('mua.userDeleteAccount.nameLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
+                    <v-text-field hide-details density="compact" color="primary" disabled class="my-5 rounded" variant="solo" :placeholder="props.data.name" name="name" :value="props.data.name" type="text" required />
                 </v-col>
 
             </v-row>
@@ -65,7 +65,7 @@ defineExpose({
                     <p class="font-weight-bold">{{$t('mua.userDeleteAccount.emailLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-text-field hide-details density="compact" color="info" disabled class=" my-5 rounded" variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
+                    <v-text-field hide-details density="compact" color="primary" disabled class=" my-5 rounded" variant="solo" :placeholder="props.data.email" name="email" :value="props.data.email" type="text" required />
                 </v-col>
 
             </v-row>
@@ -75,7 +75,7 @@ defineExpose({
                     <p class="font-weight-bold">{{$t('mua.userDeleteAccount.roleLabel')}}</p>
                 </v-col>
                 <v-col cols="7">
-                    <v-select hide-details density="compact" color="info" disabled class=" my-5 rounded" variant="solo" name="role" :label="props.data.role" />
+                    <v-select hide-details density="compact" color="primary" disabled class=" my-5 rounded" variant="solo" name="role" :label="props.data.role" />
                 </v-col>
             </v-row>
 
@@ -99,7 +99,7 @@ defineExpose({
                     <v-col>
                         <p class="font-weight-bold">{{$t('mua.userDeleteAccount.passwordLabel')}}</p>
                     </v-col>
-                    <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="info" class=" my-5 rounded" variant="solo"
+                    <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact" color="primary" class=" my-5 rounded" variant="solo"
                     name="password" type="password"
                     :placeholder="password ||$t('mua.userDeleteAccount.passwordPlaceholder')"
                     :value="password"
@@ -110,7 +110,7 @@ defineExpose({
 
         </v-card-text>
         <v-card-actions>
-            <v-btn color="info" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('mua.userDeleteAccount.closeBtn')}}</v-btn>
+            <v-btn color="primary" data-test-id="deleteAccount-submitBtn" @click="resetForm">{{$t('mua.userDeleteAccount.closeBtn')}}</v-btn>
             <v-spacer />
             <v-btn color="error" data-test-id="deleteAccount-cancelBtn" @click="$emit('deleteEventHandler',{id:props.data._id, password, accountId:props.data.accountId});resetForm()">{{$t('mua.userDeleteAccount.submitBtn')}}</v-btn>
         </v-card-actions>

@@ -52,23 +52,23 @@ function submitForm () {
                 <p class="text-h6">{{ props.formData.text }}</p>
 
                 <v-text-field v-if="operation === 'setPassword'" hide-details density="compact"
-                    class=" my-5 rounded" color="info" variant="solo" name="email" type="text"
+                    class=" my-5 rounded" color="primary" variant="solo" name="email" type="text"
                     :value="email" :placeholder="email" disabled required />
 
                 <v-text-field v-if="operation === 'setPassword'" data-test-id="setAndRestPassword-nameField" hide-details
-                    density="compact" class=" my-5 rounded" color="info" variant="solo" name="name"
+                    density="compact" class=" my-5 rounded" color="primary" variant="solo" name="name"
                     :label="$t('mua.adminSetAndReSetPassword.nameLabel')" type="text"
                     :placeholder="data.name || $t('mua.adminSetAndReSetPassword.namePlaceHolder')" :value="data.name"
                     @update:modelValue="res => data.name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" required />
 
-                <v-text-field hide-details density="compact" class="my-5 rounded" color="info"
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="primary"
                     variant="solo" name="newPassword" data-test-id="setAndRestPassword-newPasswordField"
                     :label="$t('mua.adminSetAndReSetPassword.newPasswordLabel')" type="password"
                     :placeholder="data.newPassword || $t('mua.adminSetAndReSetPassword.newPasswordPlaceholder')"
                     :value="data.newPassword"
                     @update:modelValue="res => data.newPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" required />
 
-                <v-text-field hide-details density="compact" class=" my-5 rounded" color="info"
+                <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary"
                     variant="solo" name="newPasswordAgain" data-test-id="setAndRestPassword-newPasswordAgainField"
                     :label="$t('mua.adminSetAndReSetPassword.confirmNewPasswordLabel')" type="password"
                     :placeholder="data.newPasswordAgain || $t('mua.adminSetAndReSetPassword.confirmNewPasswordPlaceholder')"
@@ -76,11 +76,11 @@ function submitForm () {
                     @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
-                <v-checkbox :label="$t('mua.adminSetAndReSetPassword.checkboxLabel')" color="info" v-model="checkbox"
+                <v-checkbox :label="$t('mua.adminSetAndReSetPassword.checkboxLabel')" color="primary" v-model="checkbox"
                     hide-details></v-checkbox>
 
                 <v-col>
-                    <v-btn color="info" data-test-id="setAndRestPassword-submitBtn" :disabled="!checkbox"
+                    <v-btn color="primary" data-test-id="setAndRestPassword-submitBtn" :disabled="!checkbox"
                         @click="submitForm()">
 
                         {{ !processing ? props.formData.text : '' }}

@@ -30,7 +30,7 @@ window.addEventListener('online', async (e) => {
       <v-card-text >
         <v-row>
             <v-col cols="2">
-                <v-icon size="50" :color="status === 'offline'?'error':'success'"  icon="mdi-information-outline" />
+                <v-icon size="50" :color="status === 'offline'?'error':'success'"  icon="mdi-primaryrmation-outline" />
             </v-col>
             <v-col>
                 <p class="font-weight-bold"> {{$t(`networkChecker.${status}.header`)}}</p>

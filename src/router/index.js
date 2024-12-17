@@ -314,7 +314,7 @@ export const useMuaRoutes = (router) => {
       {
         path: '',
         beforeEnter: async (to, from, next) => {
-          const accountsStore = readOne()
+          const accountsStore = await useAccountsStore().readOne()
           next(`/accounts/${accountsStore.account.urlFriendlyName}/dashboard`)
         },
         name: 'notFound'
