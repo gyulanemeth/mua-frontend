@@ -136,6 +136,11 @@ export const useMuaRoutes = (router) => {
     children: [
       {
         path: '',
+        redirect: { name: 'admins-dashboard' },
+        name: 'system-admins-redirect'
+      },
+      {
+        path: 'admins',
         name: 'system-admins',
         component: AdminsAndAccountsView,
         meta: {
