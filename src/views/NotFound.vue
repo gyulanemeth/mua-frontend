@@ -11,7 +11,7 @@ const urlFriendlyName = ref()
 
 const title = import.meta.env.VITE_APP_TITLE
 const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const domain = window.location.origin
 onMounted(async () => {
   await accountsStore.readOneAccount()
   urlFriendlyName.value = accountsStore.account.urlFriendlyName
@@ -24,7 +24,7 @@ onMounted(async () => {
     <div class="w-100 ma-auto d-flex flex-wrap align-center justify-center">
       <v-card elevation="0" class="w-100 loggedOutState">
         <v-card-text align="center">
-          <a style="text-decoration: none; color: black;" :href="`/accounts/${urlFriendlyName}/design-systems`">
+          <a style="text-decoration: none; color: black;" :href="`${domain}`">
             <v-avatar size="100">
               <v-img :src="appIcon" cover></v-img>
             </v-avatar>
@@ -48,7 +48,7 @@ onMounted(async () => {
         </v-card-text>
         <v-card-text class="text-center">
           {{ $t('notFoundView.bodyPart1') }} <a style="text-decoration: none; color: black;"
-            :href="`/accounts/${urlFriendlyName}/design-systems`"><b> {{ $t('notFoundView.redirectBtn') }} </b></a> {{
+            :href="`${domain}`"><b> {{ $t('notFoundView.redirectBtn') }} </b></a> {{
               $t('notFoundView.bodyPart2') }}
         </v-card-text>
       </v-card>

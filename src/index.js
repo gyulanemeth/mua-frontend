@@ -2,7 +2,7 @@ import { useMuaRoutes, muaBeforeEach } from './router/index.js'
 import MuaErrorMessage from './components/ErrorMessage.vue'
 import { setActivePinia } from 'pinia'
 import 'vuetify/styles'
-import { useAccountsStore, useUsersStore, useAdminsStore } from './stores/index.js'
+import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore } from './stores/index.js'
 let pluginEnv = null
 const MuaPlugin = {
   install (app, options = {}) {
@@ -33,17 +33,7 @@ const MuaPlugin = {
   }
 }
 
-export function useMuaAccountStore () {
-  return useAccountsStore()
-}
-
-export function useMuaUsersStore () {
-  return useUsersStore()
-}
-
-export function useMuaAdminsStore () {
-  return useAdminsStore()
-}
+export { useMuaAccountStore, useMuaUsersStore, useMuaAdminsStore }
 
 export default MuaPlugin
 
