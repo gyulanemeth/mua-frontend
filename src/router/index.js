@@ -44,7 +44,7 @@ const checkUrlFriendlyName = async (to, next) => {
     if (!useAccountsStore().account) {
       await useAccountsStore().readOne()
     }
-    if (to.params.urlFriendlyName !== useAccountsStore().account?.urlFriendlyName) {
+    if (to.params.urlFriendlyName !== useAccountsStore().account?.urlFriendlyName && to.matched.some((record) => record.path.includes(':'))) {
       to.params.urlFriendlyName = useAccountsStore().account.urlFriendlyName
       return next({ ...to, params: { ...to.params }, replace: true })
     }
@@ -56,9 +56,7 @@ export const muaBeforeEach = async (to, from, next) => {
   if (checkTokenRes) {
     return next(checkTokenRes)
   }
-
   await checkUrlFriendlyName(to, next)
-
   if (to.path === '/logout') {
     logout(from, next)
   } else next()
