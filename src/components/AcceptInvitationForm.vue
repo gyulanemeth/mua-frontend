@@ -7,7 +7,7 @@ import CreateWithProvider from './CreateWithProvider.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const props = defineProps({
-    formData: Object
+  formData: Object
 })
 
 const { t } = useI18n()
@@ -74,7 +74,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                     required />
 
                 <div class="d-flex align-center justify-start my-2" style="width: 100%;">
-                    <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
+                    <v-checkbox color="primary" v-model="checkbox" hide-details></v-checkbox>
                     <p v-if="terms && privacy">{{ $t('mua.termsAndCondition.checkboxLabe') }}
                         <a style="color: #3949AB; cursor: pointer;" target=“_blank”
                             class="text-decoration-underline font-weight-medium text-body-2" :href="terms">{{
