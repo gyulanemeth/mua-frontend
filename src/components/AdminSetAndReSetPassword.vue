@@ -22,12 +22,10 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 email.value = jwtDecode(route.query.token).user.email
 
 function submitForm () {
-  console.log('hereee')
   if (!checkbox.value) {
     return
   }
   processing.value = true
-  console.log(operation.value, { token: route.query.token, ...data.value })
   if (operation.value === 'resetPassword') {
     emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res } processing.value = false })
   } else {

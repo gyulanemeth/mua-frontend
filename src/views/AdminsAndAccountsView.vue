@@ -158,8 +158,6 @@ async function searchBarHandler (filter, statusCallBack) {
   if (filter === '') {
     store.filter = {}
   } else {
-    console.log(filterParam)
-
     store.filter = {
       $or: filterParam
     }
