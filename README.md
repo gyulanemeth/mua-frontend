@@ -28,7 +28,7 @@ npm install mua-frontend
 
 ### Add `mua-backend` to your backend
 
-You can find more details about `mua-backend` on its [npm page](https://www.npmjs.com/package/mua-backend) or [github repository](https://www.npmjs.com/package/mua-backend). `mua-frontend` works seamlessly with `mua-backend` to provide a complete authentication and user management system
+You can find more details about `mua-backend` on its [npm page](https://www.npmjs.com/package/mua-backend) or [github repository](https://github.com/gyulanemeth/mua-backend). `mua-frontend` works seamlessly with `mua-backend` to provide a complete authentication and user management system
 
 ## Setup
 ### 1. Import and Configure the Plugin
