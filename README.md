@@ -45,6 +45,7 @@ createApp(App)
   .use(MuaFrontend, {
     router,
     pinia,
+    env: import.meta.env,
     userComponents: {
       SignupSuccessMessage
     }
@@ -59,6 +60,7 @@ Mua-Frontend requires the following:
 
 - **router**: The Vue Router instance for routing.
 - **pinia**: The Pinia instance for state management.
+- **env**: App ENV variables
 - **userComponents**: Custom Vue components for specific UI messages (e.g., sign-up messages).
 
 ### 3. Add `<MuaErrorMessage />` to App.vue
@@ -102,6 +104,106 @@ Users can:
 
 - Access account-specific details
 - Update their profile and account settings
+
+
+
+## `mua-frontend` Store Methods Documentation
+
+The `mua-frontend` package exports the following stores, which allow users to interact with accounts, users, and admins:
+
+- `useMuaAccountStore`
+- `useMuaUsersStore`
+- `useMuaAdminsStore`
+
+Each store provides various methods to manage and interact with the respective entities.
+
+---
+
+### Account Store (`useMuaAccountStore`)
+
+Methods for managing accounts:
+
+#### Methods
+
+- **load**: Load account data.
+- **loadMore**: Load additional account data.
+- **async createOneByAdmin(formData)**: Create an account by an admin.
+- **async createAccount(formData)**: Create a new account.
+- **async readOne()**: Get details of a single account.
+- **async patchAccountName({ user, name })**: Update account name.
+- **async patchUrlFriendlyName(newUrlFriendlyName)**: Update the URL-friendly name for the account.
+- **async uploadLogo(formData)**: Upload a logo for the account.
+- **async deleteLogo()**: Delete the account logo.
+- **async deleteAccount(password)**: Delete the account using a password.
+- **async getAccountByUrlFriendlyName(urlFriendlyName)**: Retrieve an account using its URL-friendly name.
+
+---
+
+### User Store (`useMuaUsersStore`)
+
+Methods for managing users:
+
+#### Methods
+
+- **load**: Load user data.
+- **loadMore**: Load more user data.
+- **patchRole**: Modify a user's role.
+- **async deleteOne({ id, password, accountId })**: Delete a user account.
+- **async login(token, password, accountId)**: Log in a user with the provided token and credentials.
+- **async loginWithUrlFriendlyName(params)**: Log in with a URL-friendly name.
+- **async getAccessToken(loginToken)**: Get an access token using the login token.
+- **async loginWithProvider({ id, provider })**: Log in with a third-party provider.
+- **async createWithProvider({ accountId, userId, provider })**: Create a user with a third-party provider.
+- **async linkToProvider({ accountId, id, provider })**: Link a user account to a third-party provider.
+- **async disconnectProvider({ id, password, accountId, provider })**: Disconnect a third-party provider from a user account.
+- **async loginGetAccounts(email)**: Get accounts associated with the email during login.
+- **async getRecentLoginsAccounts()**: Retrieve a list of recent logins by users.
+- **async removeRecentLoginAccount(urlFriendlyName)**: Remove a recent login account.
+- **logout()**: Log out the user.
+- **async sendForgotPassword(data)**: Send a forgot password email.
+- **async resetForgotPassword(forgotPasswordToken, newPassword, newPasswordAgain)**: Reset the user’s password.
+- **async sendInvitation(email)**: Send an invitation email to a user.
+- **async reSendInvitation(email)**: Resend an invitation email.
+- **async acceptInvitation(acceptInvitationToken, newPassword, newPasswordAgain, name)**: Accept an invitation and set the user’s password.
+- **async readOne()**: Get details of the logged-in user.
+- **async patchUserName(name)**: Update the user’s name.
+- **async patchPassword(oldPassword, newPassword, newPasswordAgain)**: Update the user’s password.
+- **async createPassword({ token, id, accountId })**: Create a password during user registration.
+- **async reSendFinalizeRegistration({ accountId, userId })**: Resend the final registration email.
+- **async finalizeRegistration(token)**: Finalize the user’s registration.
+- **async patchEmail(newEmail, newEmailAgain)**: Update the user’s email.
+- **async patchEmailConfirm(token)**: Confirm the user’s new email.
+- **async uploadProfilePicture(formData)**: Upload a new profile picture.
+- **async deleteProfilePicture()**: Delete the user’s profile picture.
+
+---
+
+### Admin Store (`useMuaAdminsStore`)
+
+Methods for managing admins:
+
+#### Methods
+
+- **load**: Load admin data.
+- **loadMore**: Load more admin data.
+- **delete**: Delete an admin account.
+- **async deleteOne({ id, password })**: Delete an admin account by ID and password.
+- **async login(email, password)**: Log in as an admin.
+- **logout()**: Log out the admin.
+- **async sendForgotPassword(email)**: Send a forgot password email to the admin.
+- **async resetForgotPassword(forgotPasswordToken, newPassword, newPasswordAgain)**: Reset an admin’s password.
+- **async sendInvitation(email)**: Send an invitation email to an admin.
+- **async reSendInvitation(email)**: Resend an admin invitation email.
+- **async acceptInvitation(acceptInvitationToken, newPassword, newPasswordAgain, name)**: Accept an admin invitation and set a new password.
+- **async refreshAccessToken()**: Refresh the admin’s access token.
+- **async patchName(name)**: Update the admin’s name.
+- **async patchPassword(oldPassword, newPassword, newPasswordAgain)**: Change the admin’s password.
+- **async patchEmail(newEmail, newEmailAgain)**: Update the admin’s email.
+- **async patchEmailConfirm(token)**: Confirm the admin’s updated email.
+- **async readOne()**: Get details of the logged-in admin.
+- **async uploadProfilePicture(formData)**: Upload the admin’s profile picture.
+- **async deleteProfilePicture()**: Delete the admin’s profile picture.
+
 
 
 ## Route Documentation
