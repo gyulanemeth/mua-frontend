@@ -71,6 +71,18 @@ Mua-Frontend requires the following:
 
 To receive Mua operation notifications in your Vue 3 app, add the `<MuaErrorMessage />` component to `App.vue`. This component will display a snackbar that slides down from the top with messages for success, errors, and warnings. The success messages will appear with a green background, errors with a red background, and warnings with a yellow background. To trigger the notifications, use a method or store action after operations like user actions to show the relevant message in the snackbar.
 
+### 4. Add to app .env file
+Mua-Frontend requires the following variables to be included in your `.env` file
+
+```bash
+VITE_APP_TERMS_URL=<url>
+VITE_APP_PRIVACY_URL=<url>
+VITE_APP_NAME=<app_name>
+VITE_APP_TITLE=<app_title>
+VITE_APP_BASE_URL=<app_url>
+VITE_AUTH_PROVIDERS=['google', 'github', 'microsoft']
+```
+
 ## Customization
 ### Custom Components
 Pass custom components to Mua-Frontend to fit your app's needs.
