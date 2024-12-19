@@ -24,8 +24,8 @@ const MuaPlugin = {
     if (userComponents.AccountFinalizedMsg) {
       app.component('CustomAccountFinalizedMsg', userComponents.AccountFinalizedMsg)
     }
-    if (userComponents.VerifyEmaVerifyEmailMsg) {
-      app.component('CustomVerifyEmaVerifyEmailMsg', userComponents.VerifyEmaVerifyEmailMsg)
+    if (userComponents.VerifyEmailMsg) {
+      app.component('CustomVerifyEmailMsg', userComponents.VerifyEmailMsg)
     }
     if (userComponents.CustomSystemStats) {
       app.component('CustomSystemStats', userComponents.CustomSystemStats)

@@ -78,7 +78,7 @@ watchEffect(async () => {
           <p class="mt-3 text-body-2 font-weight-bold">{{ $t('loading') }}</p>
         </v-card>
       </v-layout>
-      <CustomVerifyEmaVerifyEmailMsg v-else-if="accountsStore.account && finalizeRegistrationRes.success" />
+      <CustomVerifyEmailMsg v-else-if="accountsStore.account && finalizeRegistrationRes.success" />
       <CustomAccountFinalizedMsg v-else-if="accountsStore.account && finalizeAccountRegistrationRes.success" />
       <v-card-text v-else align="left">
         <p class="text-h6 text-center text-red">{{ finalizeRegistrationRes?.name }}</p>
