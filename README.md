@@ -90,7 +90,7 @@ Pass custom components to Mua-Frontend to fit your app's needs.
 ```
 
 ::: warning
-AccountFinalizedMsg and VerifyEmailMsg has no default.
+AccountFinalizedMsg and VerifyEmailMsg has no default. Not providing them means users will not receive a welcome message after completing registration or verifying their email.
 :::
 
 
