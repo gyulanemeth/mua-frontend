@@ -68,7 +68,8 @@ Mua-Frontend requires the following:
 - **userComponents**: Custom Vue components for specific UI messages (e.g., sign-up messages).
 
 ### 3. Add `<MuaErrorMessage />` to App.vue
-To receive notifications, success messages, errors, and warnings, you must include the `<MuaErrorMessage />` component in your `App.vue`
+
+To receive Mua operation notifications in your Vue 3 app, add the `<MuaErrorMessage />` component to `App.vue`. This component will display a snackbar that slides down from the top with messages for success, errors, and warnings. The success messages will appear with a green background, errors with a red background, and warnings with a yellow background. To trigger the notifications, use a method or store action after operations like user actions to show the relevant message in the snackbar.
 
 ## Customization
 ### Custom Components
@@ -228,7 +229,7 @@ Methods for managing admins:
 
 | **Path**                          | **Name**                          | **Requires Authentication** | **Description**                                                   |
 |------------------------------------|-----------------------------------|-----------------------------|-------------------------------------------------------------------|
-| `/`                                | `defaultRoute`                    | No                          | Default route, redirects to login                                |
+| `/`                                | `defaultRoute`                    | No                          | Default route, redirects to accounts login `accounts/login`                               |
 | `/provider-auth`                   | `provider-auth`                   | No                          | Route for provider authentication                                |
 | `/system-admins/login`             | `system-admins-login`             | No                          | Login page for system admins                                     |
 | `/system-admins/forgot-password`   | `system-admins-forgot-password`   | No                          | Forgot password page for system admins                            |
