@@ -1,6 +1,6 @@
 # Mua-Frontend Documentation and Integration Guide
 
-mua-frontend is a Vue 3 plugin that integrates seamlessly with mua-backend to provide a complete authentication and user management system. By combining mua-frontend and mua-backend, developers can easily implement a robust system featuring login, user management, admin tools, and more.
+mua-frontend is a Vue 3 plugin that integrates seamlessly with mua-backend to provide a complete authentication and user management system. By combining mua-frontend and mua-backend, developers can easily implement a robust system featuring login, user management, admin tools, and more. The system is "slack-like," meaning it supports multiple workspaces where users can log into each workspace separately. Users can have distinct credentials for each workspace, such as different passwords or a mix of login methods like Google login for one and password login for another.
 
 ## Overview
 
@@ -25,6 +25,10 @@ Install mua-frontend via npm:
 ```sh
 npm install mua-frontend
 ```
+
+### Add `mua-backend` to your backend
+
+You can find more details about `mua-backend` on its [npm page](https://www.npmjs.com/package/mua-backend) and [GitHub repository](https://www.npmjs.com/package/mua-backend). `mua-frontend` works seamlessly with `mua-backend` to provide a complete authentication and user management system
 
 ## Setup
 ### 1. Import and Configure the Plugin
