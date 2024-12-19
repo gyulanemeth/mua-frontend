@@ -229,7 +229,7 @@ Methods for managing admins:
 
 | **Path**                          | **Name**                          | **Requires Authentication** | **Description**                                                   |
 |------------------------------------|-----------------------------------|-----------------------------|-------------------------------------------------------------------|
-| `/`                                | `defaultRoute`                    | No                          | Default route, redirects to accounts login `accounts/login`                               |
+| `/`                                | `default-route`                    | No                          | Default route, redirects to accounts login `accounts/login`                               |
 | `/provider-auth`                   | `provider-auth`                   | No                          | Route for provider authentication                                |
 | `/system-admins/login`             | `system-admins-login`             | No                          | Login page for system admins                                     |
 | `/system-admins/forgot-password`   | `system-admins-forgot-password`   | No                          | Forgot password page for system admins                            |
@@ -241,12 +241,12 @@ Methods for managing admins:
 | `/system-admins/dashboard`         | `admins-dashboard`                | Yes                         | Dashboard page for system admins                                  |
 | `/system-admins/accounts`          | `system-admins-accounts`          | Yes                         | Accounts management page for system admins                        |
 | `/system-admins/me`                | `system-admins-me`                | Yes                         | Profile page for system admins                                    |
-| `/system-admins/change-password`   | `system-admins-changePassword`    | Yes                         | Change password page for system admins                            |
-| `/system-admins/change-email`      | `system-admins-changeEmail`       | Yes                         | Change email page for system admins                               |
+| `/system-admins/change-password`   | `system-admins-change-password`    | Yes                         | Change password page for system admins                            |
+| `/system-admins/change-email`      | `system-admins-change-email`       | Yes                         | Change email page for system admins                               |
 | `/system-admins/settings`          | `system-admins-settings`          | Yes                         | Settings page for system admins                                   |
 | `/system-admins/:id`               | `system-admins-admin`             | Yes                         | Admin details page for system admins                              |
 | `/accounts/login`                  | `accounts-login`                  | No                          | Login page for accounts                                           |
-| `/accounts/login/:urlFriendlyName` | `accounts-loginWithUrlFriendlyName` | No                          | Login page for accounts with URL-friendly name                    |
+| `/accounts/login/:urlFriendlyName` | `accounts-login-with-urlFriendlyName` | No                          | Login page for accounts with URL-friendly name                    |
 | `/accounts/login-select`           | `accounts-login-select`           | No                          | Login select page for accounts                                    |
 | `/accounts/finalize-registration`  | `accounts-finalize-registration`  | No                          | Finalize registration page for accounts                           |
 | `/accounts/create-account`         | `accounts-create-account`         | No                          | Create account page for accounts                                  |
@@ -259,12 +259,12 @@ Methods for managing admins:
 | `/accounts/:urlFriendlyName`       | `accounts-default`                | Yes                         | Default account page (redirect to dashboard)                      |
 | `/accounts/:urlFriendlyName/users` | `accounts-users`                  | Yes                         | User management page for accounts                                 |
 | `/accounts/:urlFriendlyName/me`    | `accounts-me`                     | Yes                         | Profile page for the account owner                                |
-| `/accounts/:urlFriendlyName/change-password` | `accounts-changePassword` | Yes                         | Change password page for the account owner                        |
+| `/accounts/:urlFriendlyName/change-password` | `accounts-change-password` | Yes                         | Change password page for the account owner                        |
 | `/accounts/:urlFriendlyName/add-password`  | `accounts-add-password` | Yes                         | Add password page for the account owner                           |
-| `/accounts/:urlFriendlyName/change-email`  | `accounts-changeEmail`  | Yes                         | Change email page for the account owner                           |
+| `/accounts/:urlFriendlyName/change-email`  | `accounts-change-email`  | Yes                         | Change email page for the account owner                           |
 | `/accounts/:urlFriendlyName/settings`      | `accounts-settings`      | Yes                         | Settings page for the account owner                               |
 | `/accounts/:urlFriendlyName/account`       | `accounts-account`       | Yes                         | Account details page for the account owner                        |
-| `/redirect-to-login-message`      | `redirectToLoginMessage`         | No                          | Redirect to login message page                                    |
+| `/redirect-to-login-message`      | `redirect-to-login-message`         | No                          | Redirect to login message page                                    |
 | `/:catchAll(.*)`                   | `notFound`                       | No                          | Catch-all page for unknown routes                                 |
 
 

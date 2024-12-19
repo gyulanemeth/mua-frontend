@@ -20,7 +20,7 @@ const formData = ref()
 const accountData = ref()
 
 async function loadData () {
-  if (route.name === 'accounts-loginWithUrlFriendlyName') {
+  if (route.name === 'accounts-login-with-urlFriendlyName') {
     accountData.value = await accountsStore.getAccountByUrlFriendlyName(route.params.urlFriendlyName)
     if (accountData.value.message) {
       return router.push('/accounts/')
@@ -127,7 +127,7 @@ watchEffect(async () => {
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
-  <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-loginWithUrlFriendlyName'"
+  <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
     :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"

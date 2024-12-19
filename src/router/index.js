@@ -66,7 +66,7 @@ export const useMuaRoutes = (router) => {
   router.addRoute({
     path: '/',
     redirect: { name: 'accounts-login' },
-    name: 'defaultRoute'
+    name: 'default-route'
   })
   router.addRoute({
     path: '/provider-auth',
@@ -177,7 +177,7 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: 'change-password',
-        name: 'system-admins-changePassword',
+        name: 'system-admins-change-password',
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
@@ -186,7 +186,7 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: 'change-email',
-        name: 'system-admins-changeEmail',
+        name: 'system-admins-change-email',
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
@@ -230,7 +230,7 @@ export const useMuaRoutes = (router) => {
   })
   router.addRoute({
     path: '/accounts/login/:urlFriendlyName',
-    name: 'accounts-loginWithUrlFriendlyName',
+    name: 'accounts-login-with-urlFriendlyName',
     component: LoginAndResetView,
     meta: {
       requiresAuth: false
@@ -354,7 +354,7 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: ':urlFriendlyName/change-password',
-        name: 'accounts-changePassword',
+        name: 'accounts-change-password',
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
@@ -372,7 +372,7 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: ':urlFriendlyName/change-email',
-        name: 'accounts-changeEmail',
+        name: 'accounts-change-password',
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
@@ -401,7 +401,7 @@ export const useMuaRoutes = (router) => {
   })
   router.addRoute({
     path: '/redirect-to-login-message',
-    name: 'redirectToLoginMessage',
+    name: 'redirect-to-login-message',
     component: RedirectToLoginMessage,
     meta: {
       requiresAuth: false
