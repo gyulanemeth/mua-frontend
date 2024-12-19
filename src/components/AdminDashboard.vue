@@ -300,27 +300,27 @@ watch(usersStatsFilter, async () => {
         <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
         <v-col cols="12" md="auto" class="d-flex align-end">
           <v-select v-model="accountsStatsFilter" hide-details density="compact" item-title="name" item-value="value"
-            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="info" color="info"
+            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="primary" color="primary"
             :items="[{ name: $t('mua.adminDashboard.filter.currentWeek'), value: 'currentWeek' }, { name: $t('mua.adminDashboard.filter.past2weeks'), value: 'past2weeks' }, { name: $t('mua.adminDashboard.filter.currentMonth'), value: 'currentMonth' }, { name: $t('mua.adminDashboard.filter.past2Months'), value: 'past2Months' }, { name: $t('mua.adminDashboard.filter.past3Months'), value: 'past3Months' }, { name: $t('mua.adminDashboard.filter.overall'), value: 'overall' }]"
             variant="outlined"></v-select>
         </v-col>
         <v-col class="mt-0 ml-4 mb-3 ">
           <v-row>
             <v-chip variant="elevated" @click="accountsSelectedGrouping = 'monthly'"
-              :color="accountsSelectedGrouping === 'monthly' ? 'info' : 'grey'" class="mr-2">{{
+              :color="accountsSelectedGrouping === 'monthly' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.monthlyBasisBtn') }}</v-chip>
             <v-chip variant="elevated" @click="accountsSelectedGrouping = 'weekly'"
-              :color="accountsSelectedGrouping === 'weekly' ? 'info' : 'grey'" class="mr-2">{{
+              :color="accountsSelectedGrouping === 'weekly' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.weeklyBasisBtn') }}</v-chip>
             <v-chip variant="elevated" @click="accountsSelectedGrouping = 'daily'"
-              :color="accountsSelectedGrouping === 'daily' ? 'info' : 'grey'" class="mr-2">{{
+              :color="accountsSelectedGrouping === 'daily' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.dailyBasisBtn') }}</v-chip>
           </v-row>
         </v-col>
         <v-layout v-if="accountsLoading" class="ma-auto d-flex flex-wrap pa-4">
           <v-card class="ma-auto align-self-start d-flex elevation-0 text-center" min-height="400" min-width="400">
             <div class="ma-auto">
-              <v-progress-circular color="info" indeterminate :size="100" :width="5">
+              <v-progress-circular color="primary" indeterminate :size="100" :width="5">
                 <v-avatar size="50">
                   <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -335,27 +335,27 @@ watch(usersStatsFilter, async () => {
         <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
         <v-col cols="12" md="auto" class="d-flex align-end">
           <v-select v-model="usersStatsFilter" hide-details density="compact" item-title="name" item-value="value"
-            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="info" color="info"
+            :label="$t('mua.adminDashboard.filter.statsFilterLabel')" base-color="primary" color="primary"
             :items="[{ name: $t('mua.adminDashboard.filter.currentWeek'), value: 'currentWeek' }, { name: $t('mua.adminDashboard.filter.past2weeks'), value: 'past2weeks' }, { name: $t('mua.adminDashboard.filter.currentMonth'), value: 'currentMonth' }, { name: $t('mua.adminDashboard.filter.past2Months'), value: 'past2Months' }, { name: $t('mua.adminDashboard.filter.past3Months'), value: 'past3Months' }, { name: $t('mua.adminDashboard.filter.overall'), value: 'overall' }]"
             variant="outlined"></v-select>
         </v-col>
         <v-col class="mt-0 ml-4 my-3 ">
           <v-row>
             <v-chip variant="elevated" @click="usersSelectedGrouping = 'monthly'"
-              :color="usersSelectedGrouping === 'monthly' ? 'info' : 'grey'" class="mr-2">{{
+              :color="usersSelectedGrouping === 'monthly' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.monthlyBasisBtn') }}</v-chip>
             <v-chip variant="elevated" @click="usersSelectedGrouping = 'weekly'"
-              :color="usersSelectedGrouping === 'weekly' ? 'info' : 'grey'" class="mr-2">{{
+              :color="usersSelectedGrouping === 'weekly' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.weeklyBasisBtn') }}</v-chip>
             <v-chip variant="elevated" @click="usersSelectedGrouping = 'daily'"
-              :color="usersSelectedGrouping === 'daily' ? 'info' : 'grey'" class="mr-2">{{
+              :color="usersSelectedGrouping === 'daily' ? 'primary' : 'grey'" class="mr-2">{{
                 $t('mua.adminDashboard.dailyBasisBtn') }}</v-chip>
           </v-row>
         </v-col>
         <v-layout v-if="usersLoading" class="ma-auto d-flex flex-wrap pa-4">
           <v-card class="ma-auto align-self-start d-flex elevation-0 text-center" min-height="400" min-width="400">
             <div class="ma-auto">
-              <v-progress-circular color="info" indeterminate :size="100" :width="5">
+              <v-progress-circular color="primary" indeterminate :size="100" :width="5">
                 <v-avatar size="50">
                   <v-img :src="appIcon" cover></v-img>
                 </v-avatar>
@@ -369,7 +369,7 @@ watch(usersStatsFilter, async () => {
         </v-card>
       </v-card>
       <v-card flat :width="$vuetify.display.mdAndUp ? '70%' : '100%'">
-        <slot />
+        <CustomSystemStats />
       </v-card>
     </v-layout>
   </div>

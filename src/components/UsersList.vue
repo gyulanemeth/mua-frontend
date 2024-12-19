@@ -63,7 +63,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
       <v-col cols="12" md="auto" class="pt-3 d-flex align-end">
         <v-btn append-icon="mdi-account-plus" block data-test-id="open-inviteDialog" size="small" variant="outlined"
-          color="info" @click="inviteMembersDialog.show()">
+          color="primary" @click="inviteMembersDialog.show()">
           {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
         <Invite ref="inviteMembersDialog" :name="props.currentAccName"
@@ -72,12 +72,12 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
       <v-spacer />
       <v-col cols="12" md="4" class="pt-5">
         <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
-          variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="info"
+          variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
       <v-col cols="12" md="auto"  class="d-flex align-end">
         <v-select @update:modelValue="(params)=>redirectSortEventHandler(params)" v-model="sortBy" hide-details density="compact" item-name="name" item-value="value"
-          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="info" color="info"
+          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="primary" color="primary"
           :items="[{ name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: -1 } }]"
           variant="outlined">
           <template v-slot:selection="{ item }">
@@ -106,7 +106,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
     </v-layout>
     <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
       <v-col cols="5">
-        <v-icon class="ml-16" color="info" icon="mdi-arrow-up" size="x-large" />
+        <v-icon class="ml-16" color="primary" icon="mdi-arrow-up" size="x-large" />
       </v-col>
       <v-card-text class="pt-0">
         <p class="font-weight-medium">{{ $t('mua.emptyList.addFirstElement') }} </p>
@@ -115,7 +115,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
     <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
       <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
-        <v-progress-circular color="info" indeterminate :size="90"></v-progress-circular>
+        <v-progress-circular color="primary" indeterminate :size="90"></v-progress-circular>
         <p class="mt-3 text-body-2 font-weight-bold">{{ $t('mua.loading') }}</p>
       </v-card>
     </v-layout>
@@ -179,7 +179,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
 
         </v-card-actions>
         <v-card-actions v-if="props.currentUser._id === item._id">
-          <v-btn color="info" class="text-white" :to="`/accounts/${route.params.urlFriendlyName}/me`">{{
+          <v-btn color="primary" class="text-white" :to="`/accounts/${route.params.urlFriendlyName}/me`">{{
             $t('mua.userList.openBtn') }}</v-btn>
         </v-card-actions>
 

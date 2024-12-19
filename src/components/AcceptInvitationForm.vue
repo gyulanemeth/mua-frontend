@@ -7,7 +7,7 @@ import CreateWithProvider from './CreateWithProvider.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const props = defineProps({
-    formData: Object
+  formData: Object
 })
 
 const { t } = useI18n()
@@ -22,8 +22,8 @@ const checkbox = ref()
 tokenData.value = jwtDecode(route.query.token)
 const now = Date.now().valueOf() / 1000
 if (typeof tokenData.value.exp !== 'undefined' && tokenData.value.exp < now) {
-    useSystemMessagesStore().addError({ message: t('mua.acceptInvitationForm.tokenExpiredMsg') })
-    router.push('/accounts/')
+  useSystemMessagesStore().addError({ message: t('mua.acceptInvitationForm.tokenExpiredMsg') })
+  router.push('/accounts/')
 }
 const terms = import.meta.env.VITE_APP_TERMS_URL
 const privacy = import.meta.env.VITE_APP_PRIVACY_URL
@@ -45,20 +45,20 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                 align="center" v-if="!cb">
                 <p class="text-h6">{{ props.formData.header }}</p>
 
-                <v-text-field hide-details density="compact" class="my-5 rounded" color="info" variant="solo"
+                <v-text-field hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"
                     name="email" type="text" :value="tokenData.user.email" :placeholder="tokenData.user.email" disabled
                     required />
 
-                <v-text-field hide-details density="compact" class=" my-5 rounded" color="info" variant="solo"
+                <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary" variant="solo"
                     name="urlFriendlyName" type="text" :value="tokenData.account.urlFriendlyName"
                     :placeholder="tokenData.account.urlFriendlyName" disabled required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-nameField"
-                    class=" my-5 rounded" color="info" variant="solo" placeholder="Your Name" name="name"
+                    class=" my-5 rounded" color="primary" variant="solo" placeholder="Your Name" name="name"
                     label="Name" type="text" v-model="data.name" required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordField"
-                    class=" my-5 rounded" color="info" variant="solo" name="newPassword"
+                    class=" my-5 rounded" color="primary" variant="solo" name="newPassword"
                     :label="$t('mua.acceptInvitationForm.newPasswordLabel')" type="password"
                     :placeholder="data.newPassword || $t('mua.acceptInvitationForm.newPasswordPlaceholder')"
                     :value="data.newPassword"
@@ -66,7 +66,7 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                     required />
 
                 <v-text-field hide-details density="compact" data-test-id="acceptInvitation-newPasswordAgainField"
-                    class=" my-5 rounded" color="info" variant="solo" name="newPasswordAgain"
+                    class=" my-5 rounded" color="primary" variant="solo" name="newPasswordAgain"
                     :label="$t('mua.acceptInvitationForm.confirmNewPasswordLabel')" type="password"
                     :placeholder="data.newPasswordAgain || $t('mua.acceptInvitationForm.confirmNewPasswordPlaceholder')"
                     :value="data.newPasswordAgain"
@@ -74,20 +74,20 @@ const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
                     required />
 
                 <div class="d-flex align-center justify-start my-2" style="width: 100%;">
-                    <v-checkbox color="info" v-model="checkbox" hide-details></v-checkbox>
+                    <v-checkbox color="primary" v-model="checkbox" hide-details></v-checkbox>
                     <p v-if="terms && privacy">{{ $t('mua.termsAndCondition.checkboxLabe') }}
                         <a style="color: #3949AB; cursor: pointer;" target=“_blank”
-                            class="text-decoration-underline font-weight-medium text-body-2"
-                            :href="terms">{{ $t('mua.termsAndCondition.terms') }}</a> and
+                            class="text-decoration-underline font-weight-medium text-body-2" :href="terms">{{
+                                $t('mua.termsAndCondition.terms') }}</a> and
                         <a style="color: #3949AB; cursor: pointer;" target=“_blank”
-                            class="text-decoration-underline font-weight-medium text-body-2"
-                            :href="privacy">{{ $t('mua.termsAndCondition.privacy') }}</a>
+                            class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{
+                                $t('mua.termsAndCondition.privacy') }}</a>
                     </p>
                     <p v-else> {{ $t('mua.acceptInvitationForm.checkboxLabel') }}</p>
                 </div>
 
                 <v-col>
-                    <v-btn color="info" data-test-id="acceptInvitation-submitBtn" :disabled="!checkbox"
+                    <v-btn color="primary" data-test-id="acceptInvitation-submitBtn" :disabled="!checkbox"
                         @click="processing = true; $emit('handleAcceptInvitationHandler', data, () => { processing = false })">
                         {{ !processing ? props.formData.btnText : '' }}
 

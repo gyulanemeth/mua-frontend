@@ -30,10 +30,10 @@ onBeforeUnmount(() => {
   <v-layout class="d-flex flex-wrap w-100 align-center justify-center">
     <v-card class="pa-5 ma-5 elevation-4" width="80%" max-width="800px">
       <v-card-text class="text-center">
-        <v-icon icon="mdi-alert-circle-outline" color="info" size="60"></v-icon>
+        <v-icon icon="mdi-alert-circle-outline" color="primary" size="60"></v-icon>
       </v-card-text>
       <v-card-text class="text-center">
-        <v-alert class="w-100" color="info" prominent>
+        <v-alert class="w-100" color="primary" prominent>
           {{ $t('mua.redirectToLoginMessage.title') }}
         </v-alert>
 
