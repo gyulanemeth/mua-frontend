@@ -159,7 +159,7 @@ Users can:
 | `/:catchAll(.*)`                   | `notFound`                       | No                          | Catch-all page for unknown routes                                 |
 
 
-#### Token Validation and Redirection
+### Token Validation and Redirection
 
 Before route transitions, the following checks are performed:
 
@@ -167,7 +167,7 @@ Before route transitions, the following checks are performed:
 2. **`urlFriendlyName` Check**: Ensures the urlFriendlyName in the URL matches the stored account name. If not, the route is updated.
 3. **Protected Routes**: Routes with the requiresAuth flag check for a valid token and correct urlFriendlyName before allowing access.
 
-#### Logout Function
+### Logout Function
 Path: `/logout`
 - Clears the `accessToken` and `accountId` from `localStorage` and redirects to the login page.
 
