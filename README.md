@@ -195,7 +195,7 @@ Methods for managing admins:
 - **async sendInvitation(email)**: Send an invitation email to an admin.
 - **async reSendInvitation(email)**: Resend an admin invitation email.
 - **async acceptInvitation(acceptInvitationToken, newPassword, newPasswordAgain, name)**: Accept an admin invitation and set a new password.
-- **async refreshAccessToken()**: Refresh the admin’s access token.
+- **async refreshAccessToken()**: Get admin’s access token.
 - **async patchName(name)**: Update the admin’s name.
 - **async patchPassword(oldPassword, newPassword, newPasswordAgain)**: Change the admin’s password.
 - **async patchEmail(newEmail, newEmailAgain)**: Update the admin’s email.
