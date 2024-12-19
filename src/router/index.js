@@ -325,7 +325,7 @@ export const useMuaRoutes = (router) => {
       {
         path: ':urlFriendlyName',
         redirect: { name: 'dashboard' },
-        name: 'accounts-Default'
+        name: 'accounts-default'
       },
       {
         path: ':urlFriendlyName/users',

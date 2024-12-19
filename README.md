@@ -256,7 +256,7 @@ Methods for managing admins:
 | `/accounts/forgot-password/reset`  | `accounts-forgot-password-reset`  | No                          | Reset password page for accounts                                  |
 | `/accounts/invitation/accept`      | `accounts-accept-invitation`      | No                          | Accept invitation page for accounts                               |
 | `/accounts`                        | `accounts`                        | Yes                         | Main account page with child routes                               |
-| `/accounts/:urlFriendlyName`       | `accounts-Default`                | Yes                         | Default account page (redirect to dashboard)                      |
+| `/accounts/:urlFriendlyName`       | `accounts-default`                | Yes                         | Default account page (redirect to dashboard)                      |
 | `/accounts/:urlFriendlyName/users` | `accounts-users`                  | Yes                         | User management page for accounts                                 |
 | `/accounts/:urlFriendlyName/me`    | `accounts-me`                     | Yes                         | Profile page for the account owner                                |
 | `/accounts/:urlFriendlyName/change-password` | `accounts-changePassword` | Yes                         | Change password page for the account owner                        |
