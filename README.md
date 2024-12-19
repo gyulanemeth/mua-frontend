@@ -107,7 +107,7 @@ Users can:
 
 
 
-## `mua-frontend` Store Methods Documentation
+## `mua-frontend` Store Exports
 
 The `mua-frontend` package exports the following stores, which allow users to interact with accounts, users, and admins:
 
