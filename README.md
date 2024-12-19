@@ -61,6 +61,8 @@ Mua-Frontend requires the following:
 - **pinia**: The Pinia instance for state management.
 - **userComponents**: Custom Vue components for specific UI messages (e.g., sign-up messages).
 
+### 3. Add `<MuaErrorMessage />` to App.vue
+To receive notifications, success messages, errors, and warnings, you must include the `<MuaErrorMessage />` component in your `App.vue`
 
 ## Customization
 ### Custom Components
