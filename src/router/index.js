@@ -372,7 +372,7 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: ':urlFriendlyName/change-email',
-        name: 'accounts-change-password',
+        name: 'accounts-change-email',
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,

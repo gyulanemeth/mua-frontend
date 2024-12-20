@@ -71,6 +71,29 @@ Mua-Frontend requires the following:
 
 To receive Mua operation notifications in your Vue 3 app, add the `<MuaErrorMessage />` component to `App.vue`. This component will display a snackbar that slides down from the top with messages for success, errors, and warnings. The success messages will appear with a green background, errors with a red background, and warnings with a yellow background. To trigger the notifications, use a method or store action after operations like user actions to show the relevant message in the snackbar.
 
+### 4. Add to app `.env` file
+Mua-Frontend requires the following variables to be included in your `.env` file
+
+```bash
+VITE_APP_TERMS_URL=<url>
+VITE_APP_PRIVACY_URL=<url>
+VITE_APP_NAME=<app_name>
+VITE_APP_TITLE=<app_title>
+VITE_APP_BASE_URL=<app_url>
+VITE_AUTH_PROVIDERS=['google', 'github', 'microsoft']
+```
+
+#### Explanation of Variables:
+
+- **`VITE_APP_TERMS_URL`**: The URL to your Terms and Conditions page. This link will be displayed in relevant parts of the app to provide access to your terms.
+- **`VITE_APP_PRIVACY_URL`**: The URL to your Privacy Policy page. This link will be shown wherever privacy details need to be shared with users.
+- **`VITE_APP_NAME`**: The name of your application, which will be displayed in places like the navbar, loading screens, and headers.
+- **`VITE_APP_TITLE`**: The title of your application, used in browser titles or other display areas where a more descriptive name is needed.
+- **`VITE_APP_BASE_URL`**: The base URL of your backend server. This is used by the app to communicate with your backend services.
+
+- **`VITE_AUTH_PROVIDERS`**: An array of OAuth providers, which can include `'google'`, `'github'`, and `'microsoft'`. These providers must be properly configured in [mua-backend](https://www.npmjs.com/package/mua-backend). If setup is complete for any of these providers, adding them here will automatically enable them in your app for user authentication.
+
+
 ## Customization
 ### Custom Components
 Pass custom components to Mua-Frontend to fit your app's needs.
