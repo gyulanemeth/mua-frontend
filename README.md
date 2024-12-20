@@ -83,6 +83,17 @@ VITE_APP_BASE_URL=<app_url>
 VITE_AUTH_PROVIDERS=['google', 'github', 'microsoft']
 ```
 
+#### Explanation of Variables:
+
+- **`VITE_APP_TERMS_URL`**: The URL to your Terms and Conditions page. This link will be displayed in relevant parts of the app to provide access to your terms.
+- **`VITE_APP_PRIVACY_URL`**: The URL to your Privacy Policy page. This link will be shown wherever privacy details need to be shared with users.
+- **`VITE_APP_NAME`**: The name of your application, which will be displayed in places like the navbar, loading screens, and headers.
+- **`VITE_APP_TITLE`**: The title of your application, used in browser titles or other display areas where a more descriptive name is needed.
+- **`VITE_APP_BASE_URL`**: The base URL of your backend server. This is used by the app to communicate with your backend services.
+
+- **`VITE_AUTH_PROVIDERS`**: An array of OAuth providers, which can include `'google'`, `'github'`, and `'microsoft'`. These providers must be properly configured in [mua-backend](https://www.npmjs.com/package/mua-backend). If setup is complete for any of these providers, adding them here will automatically enable them in your app for user authentication.
+
+
 ## Customization
 ### Custom Components
 Pass custom components to Mua-Frontend to fit your app's needs.
