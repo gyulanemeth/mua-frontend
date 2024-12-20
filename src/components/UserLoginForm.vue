@@ -76,7 +76,7 @@ async function removeAccount (urlFriendlyName) {
                             :title="element.name">
                             <template v-slot:prepend>
                                 <v-avatar size="50">
-                                    <v-img :src="element.logo || defaultLogo"></v-img>
+                                    <v-img :src="element.logo? element.logo + '?' + Math.random().toString(36).substring(2, 7) : defaultLogo"></v-img>
                                 </v-avatar>
                             </template>
                             <template v-slot:append>
