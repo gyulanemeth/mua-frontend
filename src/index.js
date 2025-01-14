@@ -2,6 +2,8 @@ import { useMuaRoutes, muaBeforeEach } from './router/index.js'
 import MuaErrorMessage from './components/ErrorMessage.vue'
 import { setActivePinia } from 'pinia'
 import 'vuetify/styles'
+import VueApexCharts from 'vue3-apexcharts'
+ 
 import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore } from './stores/index.js'
 let pluginEnv = null
 const MuaPlugin = {
@@ -30,6 +32,7 @@ const MuaPlugin = {
     if (userComponents.CustomSystemStats) {
       app.component('CustomSystemStats', userComponents.CustomSystemStats)
     }
+    app.use(VueApexCharts)
   }
 }
 
