@@ -37,28 +37,42 @@ In your `main.js` file:
 ```javascript
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { createVuetify } from 'vuetify'
+import { createI18n } from 'vue-i18n'
 import App from './App.vue';
 import router from './router';
 import MuaFrontend from 'mua-frontend';
+import muaEnglish from 'mua-frontend/src/locales/en.json'
+import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles'
 
+const vuetify = createVuetify({})
 const pinia = createPinia();
+const i18n = createI18n({
+  legacy: false,
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {
+    en: muaEnglish
+  }
+})
 
 createApp(App)
-  .use(router)
+  .use(i18n)
   .use(pinia)
+  .use(vuetify)
   .use(MuaFrontend, {
     router,
     pinia,
     env: import.meta.env,
-    userComponents: {
-      SignupSuccessMessage
-    }
+    userComponents: {}
   })
+  .use(router)
   .mount('#app');
 
 ```
 
-### 2. Pass Required Options
+### 2. Mua-Frontend Required Options
 
 Mua-Frontend requires the following:
 
@@ -67,11 +81,21 @@ Mua-Frontend requires the following:
 - **env**: App ENV variables
 - **userComponents**: Custom Vue components for specific UI messages (e.g., sign-up messages).
 
-### 3. Add `<MuaErrorMessage />` to App.vue
+### 3. App Required Options
+
+Your app must have the following:
+
+- **i18n**: Configures internationalization for translations and localization using vue-i18n.
+- **pinia**: Sets up state management with Pinia.
+- **vuetify**: Adds Material Design components and styling with Vuetify.
+- **router**: Integrates the Vue Router instance for app routing.
+These plugins are essential for the functionality and customization of your app.
+
+### 4. Add `<MuaErrorMessage />` to App.vue
 
 To receive Mua operation notifications in your Vue 3 app, add the `<MuaErrorMessage />` component to `App.vue`. This component will display a snackbar that slides down from the top with messages for success, errors, and warnings. The success messages will appear with a green background, errors with a red background, and warnings with a yellow background. To trigger the notifications, use a method or store action after operations like user actions to show the relevant message in the snackbar.
 
-### 4. Add to app `.env` file
+### 5. Add to app `.env` file
 Mua-Frontend requires the following variables to be included in your `.env` file
 
 ```bash
@@ -92,6 +116,24 @@ VITE_AUTH_PROVIDERS=['google', 'github', 'microsoft']
 - **`VITE_APP_BASE_URL`**: The base URL of your backend server. This is used by the app to communicate with your backend services.
 
 - **`VITE_AUTH_PROVIDERS`**: An array of OAuth providers, which can include `'google'`, `'github'`, and `'microsoft'`. These providers must be properly configured in [mua-backend](https://www.npmjs.com/package/mua-backend). If setup is complete for any of these providers, adding them here will automatically enable them in your app for user authentication.
+
+### 6. Add to `vite.config.js` file
+To ensure proper optimization of dependencies, include the following in your `vite.config.js`
+
+```javascript
+export default defineConfig({
+  optimizeDeps: {
+    include: ['qs', 'vue3-apexcharts'],
+  },
+});
+```
+
+#### Explanation
+The `optimizeDeps.include` option tells Vite to pre-bundle specific dependencies during the development build. This can:
+
+1. **Improve Startup Time**: By pre-bundling, Vite optimizes these dependencies, reducing the time taken to load them during development.
+2. **Ensure Compatibility**: Some packages (like `qs` and `vue3-apexcharts`) may require explicit inclusion to avoid issues like failed imports or slow performance.
+This setup ensures that these dependencies are ready for use and integrated seamlessly.
 
 
 ## Customization
