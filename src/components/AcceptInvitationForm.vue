@@ -27,8 +27,7 @@ if (typeof tokenData.value.exp !== 'undefined' && tokenData.value.exp < now) {
 }
 const terms = import.meta.env.VITE_APP_TERMS_URL
 const privacy = import.meta.env.VITE_APP_PRIVACY_URL
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
 <template>

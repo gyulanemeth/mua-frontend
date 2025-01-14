@@ -9,16 +9,20 @@ const decoded = jwtDecode(localStorage.getItem('accessToken'))
 const loginPageUrl = decoded.type === 'admin' ? '/system-admins/login' : '/accounts/login'
 
 function redirect () {
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('accountId')
+  router.push(loginPageUrl)
+}
+
+function redirectCheck () {
   if (countDown.value === 0) {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('accountId')
-    router.push(loginPageUrl)
+    redirect()
   } else {
     countDown.value = countDown.value - 1
   }
 };
 
-const intervalId = setInterval(redirect, 1000)
+const intervalId = setInterval(redirectCheck, 1000)
 
 onBeforeUnmount(() => {
   clearInterval(intervalId)
@@ -39,10 +43,12 @@ onBeforeUnmount(() => {
 
       </v-card-text>
       <v-card-text class="text-center">
-        {{ $t('mua.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{ $t('mua.redirectToLoginMessage.bodyPart1')
-        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a style="text-decoration: none; cursor: pointer; color: black;"
-          @click="()=> router.push(loginPageUrl)"><b> {{ $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
-            $t('mua.redirectToLoginMessage.bodyPart3') }}
+        {{ $t('mua.redirectToLoginMessage.autoRedirectMessage') }} {{ countDown }} {{
+          $t('mua.redirectToLoginMessage.bodyPart1')
+        }}<br /> {{ $t('mua.redirectToLoginMessage.bodyPart2') }} <a
+          style="text-decoration: none; cursor: pointer; color: black;" @click="redirect"><b> {{
+            $t('mua.redirectToLoginMessage.redirectBtn') }} </b></a> {{
+              $t('mua.redirectToLoginMessage.bodyPart3') }}
 
       </v-card-text>
     </v-card>

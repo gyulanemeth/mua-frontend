@@ -9,8 +9,7 @@ const email = ref('')
 const password = ref('')
 const processing = ref(false)
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 async function submit () {
   const res = await adminStore.login(email.value, password.value)
   if (res) {

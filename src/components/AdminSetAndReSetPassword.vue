@@ -17,8 +17,7 @@ const cb = ref()
 const checkbox = ref()
 const processing = ref(false)
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 email.value = jwtDecode(route.query.token).user.email
 
 function submitForm () {
