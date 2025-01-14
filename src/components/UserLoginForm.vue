@@ -29,8 +29,7 @@ if (props.tokenData.account) {
   data.value.account = ref(props.tokenData.account._id)
 }
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 function submitForm () {
   if (!props.tokenData.accounts && !cb.value) {
     processing.value = true

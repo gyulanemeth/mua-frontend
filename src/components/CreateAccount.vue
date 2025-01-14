@@ -8,7 +8,7 @@ const data = ref({
 })
 
 const cb = ref()
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 const url = import.meta.env.VITE_APP_BASE_URL
 const terms = import.meta.env.VITE_APP_TERMS_URL
 const privacy = import.meta.env.VITE_APP_PRIVACY_URL

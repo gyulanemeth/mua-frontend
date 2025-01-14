@@ -19,7 +19,7 @@ const data = ref()
 const formData = ref()
 const loading = ref()
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 if (!route.query.token) {
   router.push('./redirect-to-login-message')
 }

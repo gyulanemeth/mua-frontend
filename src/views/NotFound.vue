@@ -10,7 +10,7 @@ const route = useRoute()
 const urlFriendlyName = ref()
 
 const title = import.meta.env.VITE_APP_TITLE
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 const domain = window.location.origin
 onMounted(async () => {
   await accountsStore.readOne()

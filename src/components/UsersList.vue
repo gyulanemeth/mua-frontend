@@ -53,7 +53,7 @@ async function visibilityChanged (isVisible) {
   }
 }
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
 <template>

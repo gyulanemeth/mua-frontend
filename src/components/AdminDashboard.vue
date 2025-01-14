@@ -18,8 +18,7 @@ const usersSeries = ref()
 const accountsStatsFilter = ref('past3Months')
 const usersStatsFilter = ref('past3Months')
 
-const appIcon = import.meta.env.BASE_URL + 'bluefoxemail-logo.png'
-
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 const groupedAccountByMonth = {
   daily: {},
   weekly: {},
