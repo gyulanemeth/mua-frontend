@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { useUsersStore } from '../stores/index.js'
+import { useUsersStore, useAccountsStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const props = defineProps({
@@ -30,6 +30,7 @@ async function submitLoginWithProvider (provider) {
               localStorage.setItem('loginToken', loginToken)
               const res = await useUsersStore().getAccessToken(loginToken)
               if (res.success) {
+                await useAccountsStore().readOne()
                 router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
               }
             } else if (failedQuery) {
