@@ -84,9 +84,9 @@ export default (connectors) => {
           return e
         }
       },
-      async loginWithProvider ({ id, provider }) {
+      async loginWithProvider () {
         try {
-          const res = await connectors.admins.loginWithProvider({ id, provider })
+          const res = await connectors.admins.loginWithProvider()
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

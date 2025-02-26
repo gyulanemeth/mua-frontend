@@ -7,7 +7,7 @@ const router = useRouter()
 const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
 
 async function submitLoginWithProvider () {
-  const res = await useAdminsStore().loginWithProvider({ provider: 'google' })
+  const res = await useAdminsStore().loginWithProvider()
   if (res.redirectUrl) {
     const popup = window.open(res.redirectUrl, 'provider-signin-popup', 'width=600,height=600')
     if (popup) {

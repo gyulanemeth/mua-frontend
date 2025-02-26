@@ -111,8 +111,8 @@ export default function (fetch, apiUrl) {
     return res
   }
 
-  const loginWithProvider = async function (params) {
-    const res = await postLoginWithProvider(params)
+  const loginWithProvider = async function () {
+    const res = await postLoginWithProvider(null)
     return res
   }
   const linkToProvider = async function (params) {
