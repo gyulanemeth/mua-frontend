@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 import { useAdminsStore } from '../stores/index.js'
+import AdminLoginWithProvider from './AdminLoginWithProvider.vue'
 
 const adminStore = useAdminsStore()
 
@@ -47,6 +48,7 @@ async function submit () {
                         indeterminate></v-progress-circular>{{ processing ? $t('mua.processing') : '' }}
                 </v-btn>
             </v-card-text>
+            <AdminLoginWithProvider />
         </v-card>
         <v-container class="w-100">
             <v-col class="text-center justify-center align-center">
