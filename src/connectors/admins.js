@@ -31,7 +31,7 @@ export default function (fetch, apiUrl) {
   const generateDeletePermissionRoute = () => '/v1/system-admins/permission/delete'
   const generateUploadImageRoute = (params) => `/v1/system-admins/${params.id}/profile-picture/`
 
-  const generatePatchDisconnectProviderRoute = (params) => `/v1/system-admins/${params.id}/provider`
+  const generatePatchDisconnectProviderRoute = (params) => `/v1/system-admins/${params.id}/provider/google`
   const generateDisconnectPermissionRoute = (params) => `/v1/${params.type}/permission/disconnect`
 
   const getAdmin = createGetConnector(fetch, apiUrl, generateAdminRoute, generateAdditionalHeaders)
@@ -52,7 +52,7 @@ export default function (fetch, apiUrl) {
   const uploadImageRoute = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImageRoute, generateAdditionalHeaders)
   const postLoginWithProvider = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/login/provider')
   const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`)
-  const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('disconnect-permission-token')}` }))
+  const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('admin-disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
@@ -127,7 +127,7 @@ export default function (fetch, apiUrl) {
     if (!data || !data.id) {
       throw new RouteError('Admin ID Is Required')
     }
-    const res = await patchDisconnectProvider({ id: data.id, accountId: data.accountId, provider: data.provider })
+    const res = await patchDisconnectProvider({ id: data.id, provider: data.provider })
     localStorage.removeItem('admin-disconnect-permission-token')
     return res
   }
