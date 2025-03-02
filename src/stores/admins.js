@@ -64,9 +64,9 @@ export default (connectors) => {
         router.push('/system-admins/login')
       },
 
-      async sendForgotPassword (email) {
+      async sendForgotPassword (data) {
         try {
-          const res = await connectors.forgotPassword.send({ email })
+          const res = await connectors.forgotPassword.send(data)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -112,9 +112,9 @@ export default (connectors) => {
           return e
         }
       },
-      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
+      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe) {
         try {
-          const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain })
+          const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe })
           const resetPasswordTokenData = jwtDecode(resetPasswordToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: resetPasswordTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: resetPasswordTokenData.user._id })
@@ -143,9 +143,9 @@ export default (connectors) => {
           return e
         }
       },
-      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name) {
+      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name, captchaText, captchaProbe) {
         try {
-          const invitationToken = await connectors.invitation.accept({ token: acceptInvitationToken, newPassword, newPasswordAgain, name })
+          const invitationToken = await connectors.invitation.accept({ token: acceptInvitationToken, newPassword, newPasswordAgain, name, captchaText, captchaProbe })
           const invitationTokenData = jwtDecode(invitationToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: invitationTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: invitationTokenData.user._id })

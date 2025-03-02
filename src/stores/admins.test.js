@@ -289,7 +289,7 @@ describe('admins Store', () => {
   test('test success send forgot Password', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const userStore = adminStore()
-    const res = await userStore.sendForgotPassword('user1@gmail.com')
+    const res = await userStore.sendForgotPassword({ email: 'user1@gmail.com' })
     expect(res.success).toEqual(true)
   })
 

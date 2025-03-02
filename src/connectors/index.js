@@ -2,6 +2,7 @@ import accounts from './accounts.js'
 import users from './users.js'
 import admins from './admins.js'
 import stats from './stats.js'
+import captcha from './captcha.js'
 import { env } from '../index.js'
 
 export default function () {
@@ -10,6 +11,7 @@ export default function () {
   const userConnectors = users(fetch, import.meta.env.VITE_API_BASE_URL)
   const adminConnectors = admins(fetch, import.meta.env.VITE_API_BASE_URL)
   const statsConnectors = stats(fetch, import.meta.env.VITE_API_BASE_URL)
+  const captchaConnectors = captcha(fetch, import.meta.env.VITE_API_BASE_URL)
 
-  return { userConnectors, accountsConnectors, adminConnectors, statsConnectors }
+  return { userConnectors, accountsConnectors, adminConnectors, statsConnectors, captchaConnectors }
 }
