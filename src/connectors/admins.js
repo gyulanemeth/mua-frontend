@@ -184,7 +184,7 @@ export default function (fetch, apiUrl) {
     if (!data || !data.email) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postSendForgotPassword({}, { email: data.email })
+    const res = await postSendForgotPassword({}, data)
     return res
   }
 
@@ -193,7 +193,7 @@ export default function (fetch, apiUrl) {
       throw new RouteError('Admin Password and confirmPassword Required')
     }
     localStorage.setItem('resetPasswordToken', formData.token)
-    const res = await postResetForgotPassword({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    const res = await postResetForgotPassword({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('resetPasswordToken')

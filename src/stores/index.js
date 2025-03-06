@@ -2,6 +2,7 @@ import createUsersStore from './users.js'
 import createAdminsStore from './admins.js'
 import createAccountsStore from './accounts.js'
 import createStatsStore from './stats.js'
+import createCaptchaStore from './captcha.js'
 
 import connectors from '../connectors/index.js'
 
@@ -25,4 +26,9 @@ const useStatsStore = () => {
   return store()
 }
 
-export { useUsersStore, useAdminsStore, useAccountsStore, useStatsStore }
+const useCaptchaStore = () => {
+  const store = createCaptchaStore(connectors().captchaConnectors)
+  return store()
+}
+
+export { useUsersStore, useAdminsStore, useAccountsStore, useStatsStore, useCaptchaStore }

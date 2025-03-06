@@ -1,17 +1,19 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useCaptchaStore } from '../stores/index.js'
 
 const props = defineProps({
   formData: Object
 })
 
+const captchaStore = useCaptchaStore()
 const route = useRoute()
 
+const captchaData = ref()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
-const checkbox = ref()
 
 if (props.formData.email) {
   data.value.email = ref(props.formData.email)
@@ -21,6 +23,14 @@ if (props.formData.account) {
   data.value.account = ref(props.formData.account)
 }
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
+
+async function generateCaptcha () {
+  const res = await captchaStore.getCaptcha()
+  captchaData.value = res.data
+  data.value.captchaProbe = res.text
+}
+
+generateCaptcha()
 </script>
 
 <template>
@@ -50,7 +60,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                     <v-btn v-if="!cb" color="primary" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb"
-                        @keydown.enter="checkbox && $emit('handleForgotPasswordResetHandler', data, () => { })">
+                        @keydown.enter="data.captchaText && $emit('handleForgotPasswordResetHandler', data, () => { })">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
                             class=" my-5 rounded" color="primary" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
@@ -58,16 +68,22 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary" variant="solo"
-                            name="confirmPassword" data-test-id="loginAndResetForm-newPasswordAgainField"
+                        <v-text-field hide-details density="compact" class=" my-5 rounded" color="primary"
+                            variant="solo" name="confirmPassword" data-test-id="loginAndResetForm-newPasswordAgainField"
                             :label="$t('mua.userLoginAndResetForm.confirmNewPasswordLabel')" type="password"
                             :placeholder="data.confirmPassword || $t('mua.userLoginAndResetForm.confirmNewPasswordPlaceholder')"
                             :value="data.confirmPassword"
                             @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="primary"
-                            v-model="checkbox" hide-details></v-checkbox>
-                        <v-btn color="primary" :disabled="!checkbox" data-test-id="loginAndResetForm-submitBtn"
+
+                        <div class="d-flex flex-wrap align-center justify-center">
+                            <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
+                                class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
+                                :placeholder="'Captcha text'" v-model="data.captchaText" required />
+                            <div v-html="captchaData"></div>
+                        </div>
+
+                        <v-btn color="primary" :disabled="!data.captchaText" data-test-id="loginAndResetForm-submitBtn"
                             @click="$emit('handleForgotPasswordResetHandler', data, data, () => { })">{{
                                 $t('mua.userLoginAndResetForm.resetBtnText') }}</v-btn>
                     </div>
@@ -75,10 +91,14 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
                 <div v-if="route.name !== 'accounts-forgot-password-reset'">
                     <div v-if="cb !== 'reset'"
-                        @keydown.enter="checkbox ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false }) : null">
-                        <v-checkbox :label="$t('mua.userLoginAndResetForm.checkboxLabel')" color="primary"
-                            v-model="checkbox" hide-details></v-checkbox>
-                        <v-btn color="primary" :disabled="!checkbox || !data.account || !data.email"
+                        @keydown.enter="data.captchaText ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null;  processing = false }) : null">
+                        <div class="d-flex flex-wrap align-center justify-center">
+                            <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
+                                class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
+                                :placeholder="'Captcha text'" v-model="data.captchaText" required />
+                            <div v-html="captchaData"></div>
+                        </div>
+                        <v-btn color="primary" :disabled="!data.captchaText || !data.account || !data.email"
                             data-test-id="loginAndResetForm-forgotPasswordBtn"
                             @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.resetBtnText') : '' }}
