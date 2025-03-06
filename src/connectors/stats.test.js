@@ -32,6 +32,28 @@ describe('test stats connectors', () => {
     localStorage.setItem('accessToken', 'Token')
   })
 
+  test('test overall stats', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { items: [], count: 0 } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await stats(fetch, apiUrl).getOverallStats()
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/statistics/overall',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer Token',
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res).toEqual({ items: [], count: 0 })
+  })
+
   test('test get accounts stats', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({

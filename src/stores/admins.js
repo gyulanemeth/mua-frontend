@@ -64,7 +64,7 @@ export default (connectors) => {
         router.push('/system-admins/login')
       },
 
-      async  sendForgotPassword (email) {
+      async sendForgotPassword (email) {
         try {
           const res = await connectors.forgotPassword.send({ email })
           return res
@@ -73,8 +73,46 @@ export default (connectors) => {
           return e
         }
       },
-
-      async  resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
+      async getAccessToken (loginToken) {
+        try {
+          const loginTokenData = jwtDecode(loginToken)
+          this.accessToken = await connectors.admins.getAccessToken({ id: loginTokenData.user._id })
+          this.user = await connectors.admins.readOne({ id: loginTokenData.user._id })
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async loginWithProvider () {
+        try {
+          const res = await connectors.admins.loginWithProvider()
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async linkToProvider ({ id, provider }) {
+        try {
+          const res = await connectors.admins.linkToProvider({ id, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async disconnectProvider ({ id, password, provider }) {
+        try {
+          await connectors.admins.disconnectPermission(password)
+          const res = await connectors.admins.disconnectProvider({ id, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
           const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain })
           const resetPasswordTokenData = jwtDecode(resetPasswordToken)

@@ -286,6 +286,135 @@ describe('test admin connectors', () => {
     expect(res).toEqual('Token')
   })
 
+  test('test login with provider ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { redirectUrl: 'link' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await admin(fetch, apiUrl).admins.loginWithProvider({})
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/admin/v1/system-admins/login/provider',
+      {
+        method: 'POST',
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.redirectUrl).toEqual('link')
+  })
+
+  test('test link with provider ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { redirectUrl: 'link' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await admin(fetch, apiUrl).admins.linkToProvider({ id: 'userId' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/admin/v1/system-admins/userId/link',
+      {
+        method: 'POST',
+        body: undefined,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.redirectUrl).toEqual('link')
+  })
+
+  test('test link with provider undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(admin(fetch, apiUrl).admins.linkToProvider()).rejects.toThrowError('admin id is Required')
+  })
+
+  test('test disconnect ', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'Name1', email: 'email@gmail.com' } })
+    })
+
+    localStorage.setItem('admin-disconnect-permission-token', 'permissionToken')
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await admin(fetch, apiUrl).admins.disconnectProvider({ id: '123', accountId: '112233', provider: 'google' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/admin/v1/system-admins/123/provider/google',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer permissionToken'
+        },
+        body: undefined
+      })
+
+    expect(res).toEqual({ _id: '123', name: 'Name1', email: 'email@gmail.com' })
+  })
+
+  test('test disconnect without params ', async () => {
+    const fetch = vi.fn()
+
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
+    })
+
+    await expect(admin(fetch, apiUrl).admins.disconnectProvider()).rejects.toThrowError('Admin ID Is Required')
+  })
+
+  test('test disconnect permission admin', async () => {
+    localStorage.setItem('accessToken', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6ImFkbWluIiwiaWF0IjoxNTE2MjM5MDIyfQ.7leGQ_Qr3r-fI2lG2grYSpxmWCTI6zhTb_jrDrMhx8g')
+
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await admin(fetch, apiUrl).admins.disconnectPermission('142536')
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/admin/v1/system-admins/permission/disconnect',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: '142536' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(undefined)
+  })
+
+  test('test disconnect permission error ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
+    })
+    await expect(admin(fetch, apiUrl).admins.disconnectPermission()).rejects.toThrowError('Password Is Required')
+  })
+
   test('test login with undefined input admin', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({

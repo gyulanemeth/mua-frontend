@@ -12,12 +12,16 @@ describe('stats Store', () => {
       return { items: [], count: 0 }
     }
 
+    const mockGetOverallStats = async function () {
+      return { items: [], count: 0 }
+    }
+
     const mockGetUsersStats = async function () {
       return { items: [], count: 0 }
     }
 
     return {
-      getAccountsStats: mockGetAccountStats, getUsersStats: mockGetUsersStats
+      getAccountsStats: mockGetAccountStats, getUsersStats: mockGetUsersStats, getOverallStats: mockGetOverallStats
     }
   }
 
@@ -25,6 +29,13 @@ describe('stats Store', () => {
     const pinia = createPinia().use(useStatsStore)
     app.use(pinia)
     setActivePinia(createPinia())
+  })
+
+  test('test get overall stats', async () => {
+    const statsStore = useStatsStore(mokeConnector())
+    const stats = statsStore()
+    const res = await stats.getOverallStats()
+    expect(res).toEqual({ items: [], count: 0 })
   })
 
   test('test get accounts stats', async () => {

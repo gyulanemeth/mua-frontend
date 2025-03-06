@@ -31,6 +31,9 @@ export default function (fetch, apiUrl) {
   const generateDeletePermissionRoute = () => '/v1/system-admins/permission/delete'
   const generateUploadImageRoute = (params) => `/v1/system-admins/${params.id}/profile-picture/`
 
+  const generatePatchDisconnectProviderRoute = (params) => `/v1/system-admins/${params.id}/provider/google`
+  const generateDisconnectPermissionRoute = (params) => `/v1/${params.type}/permission/disconnect`
+
   const getAdmin = createGetConnector(fetch, apiUrl, generateAdminRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateAdminRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getToken = createGetConnector(fetch, apiUrl, generateTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
@@ -47,6 +50,10 @@ export default function (fetch, apiUrl) {
   const delPermission = createPostConnector(fetch, apiUrl, generateDeletePermissionRoute, generateAdditionalHeaders)
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/profile-picture`, generateAdditionalHeaders)
   const uploadImageRoute = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImageRoute, generateAdditionalHeaders)
+  const postLoginWithProvider = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/login/provider')
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`)
+  const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('admin-disconnect-permission-token')}` }))
+  const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     const res = await getAdmin({}, query)
@@ -102,6 +109,35 @@ export default function (fetch, apiUrl) {
     }
     const res = await updatePassword({ id: formData.id }, { oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
     return res
+  }
+
+  const loginWithProvider = async function () {
+    const res = await postLoginWithProvider(null)
+    return res
+  }
+  const linkToProvider = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('admin id is Required')
+    }
+    const res = await postLinkToProvider(params)
+    return res
+  }
+
+  const disconnectProvider = async function (data) {
+    if (!data || !data.id) {
+      throw new RouteError('Admin ID Is Required')
+    }
+    const res = await patchDisconnectProvider({ id: data.id, provider: data.provider })
+    localStorage.removeItem('admin-disconnect-permission-token')
+    return res
+  }
+
+  const disconnectPermission = async function (password) {
+    if (!password) {
+      throw new RouteError('Password Is Required')
+    }
+    const res = await disconnectPermissionUser({ type: 'system-admins' }, { password })
+    localStorage.setItem('admin-disconnect-permission-token', res.permissionToken)
   }
 
   const login = async function (formData) {
@@ -200,7 +236,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission },
+    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, disconnectPermission, disconnectProvider },
     invitation: { send: sendInvitation, accept, reSend: reSendInvitation },
     forgotPassword: { send: sendForgotPassword, reset }
   }

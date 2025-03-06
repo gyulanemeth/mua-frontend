@@ -155,8 +155,33 @@ describe('admins Store', () => {
       return { success: true }
     }
 
+    const mockLoginWithProvider = async function () {
+      return { success: true }
+    }
+
+    const mockLinkToProvider = async function (params) {
+      if (!params || !params.id) {
+        throw new RouteError('admin id is Required')
+      }
+      return { success: true }
+    }
+
+    const mockDisconnectProvider = async function (data) {
+      if (!data || !data.id) {
+        throw new RouteError('Admin ID Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
+
+    const mockDisconnectPermission = async function (password) {
+      if (!password) {
+        throw new RouteError('Password Is Required')
+      }
+      return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
+    }
+
     return {
-      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm },
+      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, loginWithProvider: mockLoginWithProvider, linkToProvider: mockLinkToProvider, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation }
     }
@@ -475,8 +500,67 @@ describe('admins Store', () => {
   test('test success delete profilePicture params error', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const userStore = adminStore()
-    userStore.user = { }
+    userStore.user = {}
     const res = await userStore.deleteProfilePicture()
     expect(res.message).toEqual('User Id Is Required')
+  })
+
+  test('test success login with provider', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.loginWithProvider()
+    expect(res.success).toEqual(true)
+  })
+
+  test('test get access token error missing id', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.getAccessToken()
+    expect(res.message).toEqual('Invalid token specified')
+  })
+
+  test('test success link with provider', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.linkToProvider({ provider: 'test', id: 'userId' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test link with provider error missing params', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.linkToProvider({ provider: 'test' })
+    expect(res.message).toEqual('admin id is Required')
+  })
+
+  test('test success disconnect provider', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    await userStore.load()
+    const res = await userStore.disconnectProvider({ accountId: '12test', id: '11Test1', provider: 'google', password: '123' })
+    expect(res.name).toEqual('user1')
+  })
+
+  test('test disconnect provider error missing password', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    await userStore.load()
+    const res = await userStore.disconnectProvider({ accountId: '12test', id: '11Test1', provider: 'google' })
+    expect(res.message).toEqual('Password Is Required')
+  })
+
+  test('test success get access token', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const token = jwt.sign(
+      {
+        type: 'login',
+        user: {
+          _id: '123',
+          email: 'user@email.com'
+        }
+      }, secrets)
+    const res = await userStore.getAccessToken(token)
+    expect(res.success).toEqual(true)
   })
 })

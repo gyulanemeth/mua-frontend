@@ -1,6 +1,7 @@
 <script setup >
 import { ref } from 'vue'
 import DeleteMyAccount from './AdminDeleteAccount.vue'
+import AdminLinkToProvider from './AdminLinkToProvider.vue'
 
 const emit = defineEmits(['deleteEventHandler'])
 
@@ -18,6 +19,7 @@ function redirectDeleteHandler (data) {
 <template >
     <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col class="pt-3">
+            <AdminLinkToProvider :userId="props.data._id" />
             <p class="text-body-1 font-weight-bold text-error">{{ $t('mua.adminSettings.deleteLabel') }}</p>
             <v-divider color="error" />
 

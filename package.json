@@ -1,6 +1,6 @@
 {
   "name": "mua-frontend",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "main": "src/index.js",
   "scripts": {
     "serve": "vite preview",
@@ -28,7 +28,8 @@
     "pinia-system-messages-store": "^0.0.1",
     "roboto-fontface": "*",
     "standard-json-api-connectors": "^0.2.0",
-    "vue": "^3.2.36",
+    "v-calendar": "^3.1.2",
+    "vue": "^3.5.13",
     "vue-i18n": "^9.1.0",
     "vue-image-crop-upload": "^3.0.3",
     "vue-observe-visibility": "^1.0.0",
