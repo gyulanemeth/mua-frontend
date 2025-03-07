@@ -25,7 +25,7 @@ email.value = jwtDecode(route.query.token).user.email
 async function generateCaptcha () {
   const res = await captchaStore.getCaptcha()
   captchaData.value = res.data
-  data.value.captchaProbe = res.text
+  data.value.captchaProbe = res.probe
 }
 
 function submitForm () {

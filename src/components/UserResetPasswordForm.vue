@@ -27,7 +27,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 async function generateCaptcha () {
   const res = await captchaStore.getCaptcha()
   captchaData.value = res.data
-  data.value.captchaProbe = res.text
+  data.value.captchaProbe = res.probe
 }
 
 generateCaptcha()
