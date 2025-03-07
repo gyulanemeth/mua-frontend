@@ -88,7 +88,7 @@ generateCaptcha()
                 </div>
 
                 <v-col>
-                    <v-btn color="primary" data-test-id="setAndRestPassword-submitBtn" :disabled="data.captchaText"
+                    <v-btn color="primary" data-test-id="setAndRestPassword-submitBtn" :disabled="!data.captchaText"
                         @click="submitForm()">
 
                         {{ !processing ? props.formData.text : '' }}
