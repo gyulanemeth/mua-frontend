@@ -172,7 +172,7 @@ export default function (fetch, apiUrl) {
       throw new RouteError('New Password, confirm Password, name and token Required')
     }
     localStorage.setItem('invitationToken', formData.token)
-    const res = await postAcceptedInvitaion({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
+    const res = await postAcceptedInvitaion({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('invitationToken')

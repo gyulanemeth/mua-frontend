@@ -11,32 +11,32 @@ const { t } = useI18n()
 const statsStore = useStatsStore()
 
 const overall = ref(await statsStore.getOverallStats())
-const accountStats = ref(await statsStore.getAccountsStats({ filter: { type: 'daily' } }))
-const userStats = ref(await statsStore.getUsersStats({ filter: { type: 'daily' } }))
+const accountStats = ref(await statsStore.getAccountsStats({ filter: { type: 'monthly', startDate: new Date(new Date().setMonth(new Date().getMonth() - 6)), endDate: new Date() } }))
+const userStats = ref(await statsStore.getUsersStats({ filter: { type: 'monthly', startDate: new Date(new Date().setMonth(new Date().getMonth() - 6)), endDate: new Date() } }))
 
 const accountdateRange = ref({
-  start: new Date(new Date().setMonth(new Date().getUTCMonth() - 1)),
+  start: new Date(new Date().setMonth(new Date().getMonth() - 6)),
   end: new Date()
 })
 
-const accountSelectedGrouping = ref('daily')
+const accountSelectedGrouping = ref('monthly')
 const accountSeries = ref()
 const accountLoading = ref()
 const accountChartTypeLine = ref(false)
-const accumulatedAccountChart = ref(false)
+const accumulatedAccountChart = ref(true)
 const accountTimeZone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
 let isAccountResettingValue = false
 
 const userdateRange = ref({
-  start: new Date(new Date().setMonth(new Date().getUTCMonth() - 1)),
+  start: new Date(new Date().setMonth(new Date().getMonth() - 6)),
   end: new Date()
 })
 
-const userSelectedGrouping = ref('daily')
+const userSelectedGrouping = ref('monthly')
 const userSeries = ref()
 const userLoading = ref()
 const userChartTypeLine = ref(false)
-const accumulatedUserChart = ref(false)
+const accumulatedUserChart = ref(true)
 const userTimeZone = ref(Intl.DateTimeFormat().resolvedOptions().timeZone)
 
 let isUserResettingValue = false
@@ -280,10 +280,10 @@ watch(accountTimeZone, () => {
   accountStatsFilter({ type: accountSelectedGrouping.value, startDate: accountdateRange.value.start, endDate: accountdateRange.value.end })
 })
 
-watch(accountStats, () => {
+watch(accountStats, async() => {
   if (accountStats.value) {
     accountSeries.value = createAccountSeries()
-  }
+  }  
 }, { immediate: true })
 
 watch(userSelectedGrouping, (_, oldValue) => {
@@ -492,7 +492,7 @@ watch(userStats, () => {
           <v-switch v-model="accumulatedUserChart" color="primary" class="ml-4 mt-4 " :label="`Accumulated`"
             hide-details inset></v-switch>
         </div>
-        <v-layout v-if="usersLoading" class="ma-auto d-flex flex-wrap pa-4">
+        <v-layout v-if="userLoading" class="ma-auto d-flex flex-wrap pa-4">
           <v-card class="ma-auto align-self-start d-flex elevation-0 text-center" min-height="400" min-width="400">
             <div class="ma-auto">
               <v-progress-circular color="primary" indeterminate :size="100" :width="5">
@@ -514,8 +514,10 @@ watch(userStats, () => {
       })"></VueApexCharts>
         </v-card>
       </v-card>
-      <v-card flat :width="'100%'">
-        <CustomSystemStats />
+      <v-card v-if="!loadSlot" flat :width="'100%'">
+        <Suspense>
+          <CustomSystemStats />
+        </Suspense>
       </v-card>
     </v-layout>
   </div>
