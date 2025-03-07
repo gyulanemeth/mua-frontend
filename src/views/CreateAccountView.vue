@@ -16,6 +16,8 @@ async function createEventHandler (data, statusCallBack) {
     localStorage.setItem('loginToken', res.loginToken)
     router.push(`/accounts/finalize-registration?token=${res.loginToken}`)
   } else {
+    console.log(res)
+    
     statusCallBack(res)
   }
 }

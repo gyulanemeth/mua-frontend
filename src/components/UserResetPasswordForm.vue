@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { useCaptchaStore } from '../stores/index.js'
 
 const props = defineProps({
-  formData: Object
+    formData: Object
 })
 
 const captchaStore = useCaptchaStore()
@@ -16,18 +16,18 @@ const cb = ref(false)
 const processing = ref(false)
 
 if (props.formData.email) {
-  data.value.email = ref(props.formData.email)
+    data.value.email = ref(props.formData.email)
 }
 
 if (props.formData.account) {
-  data.value.account = ref(props.formData.account)
+    data.value.account = ref(props.formData.account)
 }
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
-async function generateCaptcha () {
-  const res = await captchaStore.getCaptcha()
-  captchaData.value = res.data
-  data.value.captchaProbe = res.probe
+async function generateCaptcha() {
+    const res = await captchaStore.getCaptcha()
+    captchaData.value = res.data
+    data.value.captchaProbe = res.probe
 }
 
 generateCaptcha()
@@ -60,7 +60,7 @@ generateCaptcha()
                     <v-btn v-if="!cb" color="primary" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb"
-                        @keydown.enter="data.captchaText && $emit('handleForgotPasswordResetHandler', data, () => { })">
+                        @keydown.enter="data.captchaText && $emit('handleForgotPasswordResetHandler', data, () => { generateCaptcha() })">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
                             class=" my-5 rounded" color="primary" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
@@ -77,30 +77,32 @@ generateCaptcha()
                             required />
 
                         <div class="d-flex flex-wrap align-center justify-center">
+                            <div v-html="captchaData"></div><v-btn density="compact" size="large"
+                                class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
                             <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
                                 class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
                                 :placeholder="'Captcha text'" v-model="data.captchaText" required />
-                            <div v-html="captchaData"></div>
                         </div>
 
                         <v-btn color="primary" :disabled="!data.captchaText" data-test-id="loginAndResetForm-submitBtn"
-                            @click="$emit('handleForgotPasswordResetHandler', data, data, () => { })">{{
+                            @click="$emit('handleForgotPasswordResetHandler', data, () => { generateCaptcha() })">{{
                                 $t('mua.userLoginAndResetForm.resetBtnText') }}</v-btn>
                     </div>
                 </div>
 
                 <div v-if="route.name !== 'accounts-forgot-password-reset'">
                     <div v-if="cb !== 'reset'"
-                        @keydown.enter="data.captchaText ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null;  processing = false }) : null">
+                        @keydown.enter="data.captchaText ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; generateCaptcha(); processing = false }) : null">
                         <div class="d-flex flex-wrap align-center justify-center">
+                            <div v-html="captchaData"></div><v-btn density="compact" size="large"
+                                class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
                             <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
                                 class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
                                 :placeholder="'Captcha text'" v-model="data.captchaText" required />
-                            <div v-html="captchaData"></div>
                         </div>
                         <v-btn color="primary" :disabled="!data.captchaText || !data.account || !data.email"
                             data-test-id="loginAndResetForm-forgotPasswordBtn"
-                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; processing = false })">
+                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; generateCaptcha(); processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.resetBtnText') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                                 processing ? $t('mua.processing') : '' }}

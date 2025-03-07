@@ -38,10 +38,10 @@ generateCaptcha()
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <div v-if="!cb" class="d-flex flex-wrap align-center justify-center">
+                    <div v-html="captchaData"></div><v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
                     <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
                         class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
                         :placeholder="'Captcha text'" v-model="data.captchaText" required />
-                    <div v-html="captchaData"></div>
                 </div>
 
                 <div v-if="!cb"
