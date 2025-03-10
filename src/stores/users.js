@@ -196,13 +196,13 @@ export default (connectors) => {
           return e
         }
       },
-      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe) {
+      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
           const forgotPasswordTokenData = jwtDecode(forgotPasswordToken)
           if (!forgotPasswordToken || !forgotPasswordTokenData || Date.now() >= forgotPasswordTokenData.exp * 1000 || !newPassword || !newPasswordAgain) {
             throw new RouteError('Valid token, password and new password Is Required')
           }
-          const loginToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe })
+          const loginToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })

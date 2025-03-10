@@ -79,7 +79,7 @@ async function loadData () {
 }
 
 async function handleForgotPasswordResetEvent (params, statusCallBack) {
-  await usersStore.resetForgotPassword(route.query.token, params.password, params.confirmPassword, params.captchaText, params.captchaProbe)
+  await usersStore.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
   statusCallBack()
 }
 

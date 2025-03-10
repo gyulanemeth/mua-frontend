@@ -172,7 +172,7 @@ export default function (fetch, apiUrl) {
       throw new RouteError('New Password, confirm Password, name and token Required')
     }
     localStorage.setItem('invitationToken', formData.token)
-    const res = await postAcceptedInvitaion({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
+    const res = await postAcceptedInvitaion({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('invitationToken')
@@ -193,7 +193,7 @@ export default function (fetch, apiUrl) {
       throw new RouteError('Admin Password and confirmPassword Required')
     }
     localStorage.setItem('resetPasswordToken', formData.token)
-    const res = await postResetForgotPassword({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
+    const res = await postResetForgotPassword({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('resetPasswordToken')
