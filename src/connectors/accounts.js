@@ -185,7 +185,7 @@ export default function (fetch, apiUrl) {
       throw new RouteError('User Password Is Required')
     }
     localStorage.setItem('resetPasswordToken', formData.token)
-    const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
+    const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('resetPasswordToken')

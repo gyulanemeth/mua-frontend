@@ -60,7 +60,7 @@ generateCaptcha()
                     <v-btn v-if="!cb" color="primary" data-test-id="loginAndResetForm-submitForgotRestBtn"
                         @click="cb = true">{{ $t('mua.userLoginAndResetForm.submitBtn') }}</v-btn>
                     <div v-if="cb"
-                        @keydown.enter="data.captchaText && $emit('handleForgotPasswordResetHandler', data, () => { generateCaptcha() })">
+                        @keydown.enter="$emit('handleForgotPasswordResetHandler', data, () => {})">
                         <v-text-field hide-details data-test-id="loginAndResetForm-newPasswordField" density="compact"
                             class=" my-5 rounded" color="primary" variant="solo" name="password"
                             :label="$t('mua.userLoginAndResetForm.newPasswordLabel')" type="password"
@@ -76,16 +76,8 @@ generateCaptcha()
                             @update:modelValue="res => data.confirmPassword = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
 
-                        <div class="d-flex flex-wrap align-center justify-center">
-                            <div v-html="captchaData"></div><v-btn density="compact" size="large"
-                                class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
-                            <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
-                                class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
-                                :placeholder="'Captcha text'" v-model="data.captchaText" required />
-                        </div>
-
-                        <v-btn color="primary" :disabled="!data.captchaText" data-test-id="loginAndResetForm-submitBtn"
-                            @click="$emit('handleForgotPasswordResetHandler', data, () => { generateCaptcha() })">{{
+                        <v-btn color="primary" :disabled="!data.password || !data.confirmPassword" data-test-id="loginAndResetForm-submitBtn"
+                            @click="$emit('handleForgotPasswordResetHandler', data, () => {})">{{
                                 $t('mua.userLoginAndResetForm.resetBtnText') }}</v-btn>
                     </div>
                 </div>

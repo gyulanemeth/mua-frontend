@@ -2,13 +2,11 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
-import { useCaptchaStore } from '../stores/index.js'
 
 const props = defineProps({
     formData: Object
 })
 
-const captchaStore = useCaptchaStore()
 const route = useRoute()
 const operation = computed(() => route.name === 'system-admins-accept-invitation' ? 'setPassword' : 'resetPassword')
 const emit = defineEmits(['setPasswordEventHandler', 'resetPasswordEventHandler'])
@@ -16,30 +14,21 @@ const emit = defineEmits(['setPasswordEventHandler', 'resetPasswordEventHandler'
 const email = ref()
 const data = ref({})
 const cb = ref()
-const captchaData = ref()
 const processing = ref(false)
 
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 email.value = jwtDecode(route.query.token).user.email
 
-async function generateCaptcha() {
-    const res = await captchaStore.getCaptcha()
-    captchaData.value = res.data
-    data.value.captchaProbe = res.probe
-}
 
 function submitForm() {
     processing.value = true
     if (operation.value === 'resetPassword') {
-        emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res } generateCaptcha(); processing.value = false })
+        emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res }; processing.value = false })
     } else {
         emit('setPasswordEventHandler', { token: route.query.token, ...data.value })
-        generateCaptcha()
         processing.value = false
     }
 }
-
-generateCaptcha()
 </script>
 
 <template>
@@ -81,15 +70,8 @@ generateCaptcha()
                     @update:modelValue="res => data.newPasswordAgain = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
-                <div class="d-flex flex-wrap align-center justify-center">
-                    <div v-html="captchaData"></div><v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
-                    <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
-                        class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
-                        :placeholder="'Captcha text'" v-model="data.captchaText" required />
-                </div>
-
                 <v-col>
-                    <v-btn color="primary" data-test-id="setAndRestPassword-submitBtn" :disabled="!data.captchaText"
+                    <v-btn color="primary" data-test-id="setAndRestPassword-submitBtn" :disabled="!data.newPassword || !data.newPasswordAgain"
                         @click="submitForm()">
 
                         {{ !processing ? props.formData.text : '' }}

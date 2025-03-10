@@ -112,9 +112,9 @@ export default (connectors) => {
           return e
         }
       },
-      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe) {
+      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
-          const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain, captchaText, captchaProbe })
+          const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain })
           const resetPasswordTokenData = jwtDecode(resetPasswordToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: resetPasswordTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: resetPasswordTokenData.user._id })
@@ -143,9 +143,9 @@ export default (connectors) => {
           return e
         }
       },
-      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name, captchaText, captchaProbe) {
+      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name) {
         try {
-          const invitationToken = await connectors.invitation.accept({ token: acceptInvitationToken, newPassword, newPasswordAgain, name, captchaText, captchaProbe })
+          const invitationToken = await connectors.invitation.accept({ token: acceptInvitationToken, newPassword, newPasswordAgain, name })
           const invitationTokenData = jwtDecode(invitationToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: invitationTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: invitationTokenData.user._id })

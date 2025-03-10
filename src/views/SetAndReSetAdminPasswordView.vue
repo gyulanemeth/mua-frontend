@@ -29,14 +29,14 @@ async function loadData () {
 }
 
 async function handleSetPasswordEvent (params) {
-  const res = await store.acceptInvitation(params.token, params.newPassword, params.newPasswordAgain, params.name, params.captchaText, params.captchaProbe)
+  const res = await store.acceptInvitation(params.token, params.newPassword, params.newPasswordAgain, params.name )
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.adminSetAndReSetPassword.registeredAlert') })
   }
 }
 
 async function handleResetPassword (params, statusCallBack) {
-  const res = await store.resetForgotPassword(params.token, params.newPassword, params.newPasswordAgain, params.captchaText, params.captchaProbe)
+  const res = await store.resetForgotPassword(params.token, params.newPassword, params.newPasswordAgain )
   statusCallBack(!res.message && res)
   if (!res.message) {
     await new Promise(resolve => setTimeout(resolve, 5000))
