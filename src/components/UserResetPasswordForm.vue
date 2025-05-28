@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { useCaptchaStore } from '../stores/index.js'
 
 const props = defineProps({
-    formData: Object
+  formData: Object
 })
 
 const captchaStore = useCaptchaStore()
@@ -16,18 +16,18 @@ const cb = ref(false)
 const processing = ref(false)
 
 if (props.formData.email) {
-    data.value.email = ref(props.formData.email)
+  data.value.email = ref(props.formData.email)
 }
 
 if (props.formData.account) {
-    data.value.account = ref(props.formData.account)
+  data.value.account = ref(props.formData.account)
 }
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
-async function generateCaptcha() {
-    const res = await captchaStore.getCaptcha()
-    captchaData.value = res.data
-    data.value.captchaProbe = res.probe
+async function generateCaptcha () {
+  const res = await captchaStore.getCaptcha()
+  captchaData.value = res.data
+  data.value.captchaProbe = res.probe
 }
 
 generateCaptcha()

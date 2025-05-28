@@ -57,12 +57,12 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
 <template>
-  <div class="mx-3 h-100">
+  <div class="mx-0 h-100 pr-4">
 
-    <v-layout class="d-flex flex-wrap my-n3 mx-0 pt-2">
+    <v-layout class="d-flex flex-wrap mx-0 ">
 
       <v-col cols="12" md="auto" class="pt-3 d-flex align-end">
-        <v-btn append-icon="mdi-account-plus" block data-test-id="open-inviteDialog" size="small" variant="outlined"
+        <v-btn append-icon="mdi-account-plus" style="height: 40px;" block data-test-id="open-inviteDialog" size="small" variant="outlined"
           color="primary" @click="inviteMembersDialog.show()">
           {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
@@ -102,7 +102,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
           </template>
         </v-select>
       </v-col>
-      <v-divider />
+      <v-divider class="mx-3" />
     </v-layout>
     <div v-if="filter.length === 0 && props.items.length === 0 && !loading">
       <v-col cols="5">
@@ -139,7 +139,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-card>
     </v-layout>
     <v-layout class="d-flex flex-wrap" v-else>
-      <v-card :class="`${!$vuetify.display.mdAndUp ? 'mx-auto' : 'mx-2'} my-5 align-self-start `" min-width="350"
+      <v-card :class="`mx-3 my-5 align-self-start`" min-width="350"
         v-for="item in props.items" :key="item._id">
         <v-card-title>
           <p data-test-id="userList-card-0-name">{{ item.data.name }}<span class="font-weight-light pl-2">{{
