@@ -280,10 +280,10 @@ watch(accountTimeZone, () => {
   accountStatsFilter({ type: accountSelectedGrouping.value, startDate: accountdateRange.value.start, endDate: accountdateRange.value.end })
 })
 
-watch(accountStats, async() => {
+watch(accountStats, async () => {
   if (accountStats.value) {
     accountSeries.value = createAccountSeries()
-  }  
+  }
 }, { immediate: true })
 
 watch(userSelectedGrouping, (_, oldValue) => {
@@ -324,8 +324,8 @@ watch(userStats, () => {
   <div class="mx-3">
     <v-layout :class="`d-flex flex-wrap`">
       <v-card flat :width="'100%'">
-        <p class="text-start text-h5 mt-4 ml-4 font-weight-bold"> {{ $t('mua.adminDashboard.mainHeader') }}</p>
-        <v-card-text class="text-center align-center">
+        <p class="text-start text-h5 mt-4 font-weight-bold"> {{ $t('mua.adminDashboard.mainHeader') }}</p>
+        <v-card-text class="text-center px-0 align-center">
           <v-row class=" my-5 mx-0">
             <v-col class="border border-thin rounded-s-lg">
               <p>{{ $t('mua.adminDashboard.accountsOverAllLabel') }}</p>
@@ -337,12 +337,12 @@ watch(userStats, () => {
             </v-col>
           </v-row>
         </v-card-text>
-        <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
-        <div class="d-flex flex-wrap align-center justify-start text-center w-100 px-2">
+        <p class="text-start text-h5 mt-5 font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart1') }}</p>
+        <div class="d-flex flex-wrap align-center justify-start text-center w-100">
           <DatePicker v-model="accountdateRange" :timezone="accountTimeZone" :popover="false"
             :disabled-dates="[{ start: new Date(Date.now() + 86400000), end: null }]" is-range>
             <template #default="{ togglePopover, inputValue, inputEvents }">
-              <v-col cols="12" md="3" class="d-flex mt-2" @click="togglePopover">
+              <v-col cols="12" md="3" class="d-flex pl-0 mt-2" @click="togglePopover">
                 <v-col>
                   <v-row>
                     <p class="text-body-2">{{ $t('detailedStats.fromLabel') }}: </p>
@@ -416,17 +416,17 @@ watch(userStats, () => {
             </div>
           </v-card>
         </v-layout>
-        <v-card v-else-if="accountSeries" class="text-center w-100 align-center justify-center elevation-0">
-      <VueApexCharts height="400" :type="accountChartTypeLine ? 'line' : 'bar'" :options="chartOptions" :series="accountSeries.filter(ele => {
-        if (accumulatedAccountChart && ele.statsType === 'accumulated') {
-          return ele
-        } else if (!accumulatedAccountChart && ele.statsType !== 'accumulated') {
-          return ele
-        }
-      })"></VueApexCharts>
-    </v-card>
-        <p class="text-start text-h5 mt-10 ml-4  font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
-        <div class="d-flex flex-wrap align-center justify-start text-center w-100 px-2">
+        <v-card v-else-if="accountSeries" class="text-center w-100 align-center mx-n4 justify-center elevation-0">
+          <VueApexCharts height="400" :type="accountChartTypeLine ? 'line' : 'bar'" :options="chartOptions" :series="accountSeries.filter(ele => {
+            if (accumulatedAccountChart && ele.statsType === 'accumulated') {
+              return ele
+            } else if (!accumulatedAccountChart && ele.statsType !== 'accumulated') {
+              return ele
+            }
+          })"></VueApexCharts>
+        </v-card>
+        <p class="text-start text-h5 mt-10 font-weight-bold">{{ $t('mua.adminDashboard.chart.headerChart2') }}</p>
+        <div class="d-flex flex-wrap align-center justify-start mx-n4 text-center w-100 px-1">
           <DatePicker v-model="userdateRange" :timezone="userTimeZone" :popover="false"
             :disabled-dates="[{ start: new Date(Date.now() + 86400000), end: null }]" is-range>
             <template #default="{ togglePopover, inputValue, inputEvents }">
@@ -504,14 +504,14 @@ watch(userStats, () => {
             </div>
           </v-card>
         </v-layout>
-          <v-card v-else-if="userSeries" class="text-center w-100 align-center justify-center elevation-0">
-      <VueApexCharts height="400" :type="userChartTypeLine ? 'line' : 'bar'" :options="chartOptions" :series="userSeries.filter(ele => {
-        if (accumulatedUserChart && ele.statsType === 'accumulated') {
-          return ele
-        } else if (!accumulatedUserChart && ele.statsType !== 'accumulated') {
-          return ele
-        }
-      })"></VueApexCharts>
+        <v-card v-else-if="userSeries" class="text-center w-100 mx-n4 align-center justify-center elevation-0">
+          <VueApexCharts height="400" :type="userChartTypeLine ? 'line' : 'bar'" :options="chartOptions" :series="userSeries.filter(ele => {
+            if (accumulatedUserChart && ele.statsType === 'accumulated') {
+              return ele
+            } else if (!accumulatedUserChart && ele.statsType !== 'accumulated') {
+              return ele
+            }
+          })"></VueApexCharts>
         </v-card>
       </v-card>
       <v-card v-if="!loadSlot" flat :width="'100%'">

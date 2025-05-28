@@ -118,7 +118,7 @@ export default function (fetch, apiUrl) {
     } else if (!formData.user || !formData.user.name || !formData.user.email || (!formData.user.password && !formData.user.googleProfileId && !formData.user.microsoftProfileId && !formData.user.githubProfileId)) {
       throw new RouteError('User Name, Email And Password Is Required')
     }
-    const res = await postCreateAccount({}, { account: formData.account, user: formData.user, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe  })
+    const res = await postCreateAccount({}, { account: formData.account, user: formData.user, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
     return res
   }
 

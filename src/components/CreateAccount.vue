@@ -4,8 +4,8 @@ import CreateWithProvider from './CreateWithProvider.vue'
 import { useCaptchaStore } from '../stores/index.js'
 
 const data = ref({
-    user: { email: '', name: '', password: '', newPasswordAgain: '' },
-    account: { urlFriendlyName: '', name: '' }
+  user: { email: '', name: '', password: '', newPasswordAgain: '' },
+  account: { urlFriendlyName: '', name: '' }
 })
 
 const captchaStore = useCaptchaStore()
@@ -23,32 +23,32 @@ const step = ref(1)
 const countDown = ref(15)
 const show = ref(false)
 
-function startCountDownt() {
-    if (cb.value && cb.value.success) {
-        const intervalId = setInterval(() => {
-            if (countDown.value !== 0) {
-                countDown.value = countDown.value - 1
-            }
-        }, 1000)
-        setTimeout(() => {
-            clearInterval(intervalId)
-            show.value = false
-        }, 15000)
-    }
+function startCountDownt () {
+  if (cb.value && cb.value.success) {
+    const intervalId = setInterval(() => {
+      if (countDown.value !== 0) {
+        countDown.value = countDown.value - 1
+      }
+    }, 1000)
+    setTimeout(() => {
+      clearInterval(intervalId)
+      show.value = false
+    }, 15000)
+  }
 }
 
-async function generateCaptcha() {
-    const res = await captchaStore.getCaptcha()
-    captchaData.value = res.data
-    data.value.captchaProbe = res.probe
+async function generateCaptcha () {
+  const res = await captchaStore.getCaptcha()
+  captchaData.value = res.data
+  data.value.captchaProbe = res.probe
 }
 
 generateCaptcha()
 
 watch(() => data.value.account.name, () => {
-    if (!urlFriendlyNameFocused.value) {
+  if (!urlFriendlyNameFocused.value) {
         data.value.account.urlFriendlyName = data.value.account.name.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()/* eslint-disable-line */
-    }
+  }
 })
 
 watch(() => data.value.account.urlFriendlyName, () => {
@@ -143,7 +143,6 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url + 'accounts/' +
                             data.account.urlFriendlyName }}</span>
                     </div>
-
 
                     <div class="d-flex flex-wrap align-center justify-center">
                         <div v-html="captchaData"></div><v-btn density="compact" size="large"

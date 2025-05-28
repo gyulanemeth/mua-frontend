@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import jwtDecode from 'jwt-decode'
 
 const props = defineProps({
-    formData: Object
+  formData: Object
 })
 
 const route = useRoute()
@@ -19,15 +19,14 @@ const processing = ref(false)
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 email.value = jwtDecode(route.query.token).user.email
 
-
-function submitForm() {
-    processing.value = true
-    if (operation.value === 'resetPassword') {
-        emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res }; processing.value = false })
-    } else {
-        emit('setPasswordEventHandler', { token: route.query.token, ...data.value })
-        processing.value = false
-    }
+function submitForm () {
+  processing.value = true
+  if (operation.value === 'resetPassword') {
+    emit('resetPasswordEventHandler', { token: route.query.token, ...data.value }, (res) => { if (res) { cb.value = res }; processing.value = false })
+  } else {
+    emit('setPasswordEventHandler', { token: route.query.token, ...data.value })
+    processing.value = false
+  }
 }
 </script>
 
