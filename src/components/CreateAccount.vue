@@ -59,7 +59,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
 
 <template>
 
-    <v-layout v-if="!cb || !cb.success" class="d-flex flex-column justify-center align-center h-100">
+    <v-layout style="z-index: 10;" v-if="!cb || !cb.success" class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
@@ -187,7 +187,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
             </v-col>
         </v-container>
     </v-layout>
-    <v-layout v-else class="d-flex flex-column justify-center align-center h-100">
+    <v-layout style="z-index: 10;" v-else class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">

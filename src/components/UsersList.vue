@@ -59,7 +59,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 <template>
   <div class="mx-0 h-100 pr-4">
 
-    <v-layout class="d-flex flex-wrap mx-0 ">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap mx-0 ">
 
       <v-col cols="12" md="auto" class="pt-3 d-flex align-end">
         <v-btn append-icon="mdi-account-plus" style="height: 40px;" block data-test-id="open-inviteDialog" size="small" variant="outlined"
@@ -113,14 +113,14 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-card-text>
     </div>
 
-    <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
+    <v-layout style="z-index: 10;" v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
       <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
         <v-progress-circular color="primary" indeterminate :size="90"></v-progress-circular>
         <p class="mt-3 text-body-2 font-weight-bold">{{ $t('mua.loading') }}</p>
       </v-card>
     </v-layout>
 
-    <v-layout v-else-if="props.items.length === 0"
+    <v-layout style="z-index: 10;" v-else-if="props.items.length === 0"
       :class="`ma-auto d-flex flex-wrap pa-4 ${filter.length > 0 ? 'h-75' : 'h-50'}`">
       <v-card class="ma-auto align-self-start elevation-0 text-center" :min-width="filter.length === 0 ? 220 : 400">
         <v-avatar size="150">
@@ -138,7 +138,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         <p class="w-100 text-body-1 font-weight-bold" v-if="filter.length > 0">{{ filter }}</p>
       </v-card>
     </v-layout>
-    <v-layout class="d-flex flex-wrap" v-else>
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap" v-else>
       <v-card :class="`mx-3 my-5 align-self-start`" min-width="350"
         v-for="item in props.items" :key="item._id">
         <v-card-title>

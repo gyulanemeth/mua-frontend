@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-layout>
+  <v-layout style="z-index: 10;">
         <Suspense>
           <router-view class="w-100"></router-view>
         </Suspense>

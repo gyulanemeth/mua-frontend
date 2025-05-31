@@ -65,7 +65,7 @@ const openFileInput = () => {
 
 <template>
     <div class="mx-0 mt-4">
-    <v-layout class="d-flex flex-wrap w-100">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap w-100">
       <v-col cols="12" md="8"  class="pt-3">
         <p class="text-body-1 font-weight-bold">{{ $t('mua.accountDetails.detailsLabel') }}</p>
         <v-divider />
@@ -139,7 +139,7 @@ const openFileInput = () => {
         </v-col>
       </v-col>
 
-      <v-layout class="d-flex flex-wrap w-75" v-if="componentProps.role">
+      <v-layout style="z-index: 10;" class="d-flex flex-wrap w-75" v-if="componentProps.role">
         <v-col class="pt-3">
             <p class="text-body-1 font-weight-bold text-error">{{ $t('mua.accountDetails.deleteLabel') }}</p>
             <v-divider color="error" />

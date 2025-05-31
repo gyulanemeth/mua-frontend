@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <v-layout class="d-flex flex-wrap w-100 h-screen align-center justify-center">
+  <v-layout style="z-index: 10;" class="d-flex flex-wrap w-100 h-screen align-center justify-center">
     <div class="w-100 ma-auto d-flex flex-wrap align-center justify-center">
       <v-card elevation="0" class="w-100 loggedOutState">
         <v-card-text align="center">

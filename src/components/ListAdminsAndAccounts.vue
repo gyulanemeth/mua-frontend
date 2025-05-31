@@ -59,7 +59,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 <template>
 
   <div class="rounded">
-    <v-layout class="d-flex flex-wrap">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap">
       <v-col cols="12" md="2" class="d-flex align-end pt-1">
         <p class="text-h6">{{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.header.admin') :
           $t('mua.listAdminsAndAccounts.header.account') }} </p>
@@ -107,7 +107,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-col>
       <v-divider class="mx-3" />
     </v-layout>
-    <v-layout v-if="filter.length === 0 && props.items.length === 0 && !loading" class="d-flex flex-wrap ma-0 pa-0">
+    <v-layout style="z-index: 10;" v-if="filter.length === 0 && props.items.length === 0 && !loading" class="d-flex flex-wrap ma-0 pa-0">
       <v-spacer />
       <v-col cols="2" class="d-flex align-center ma-0 pa-0">
         <div>
@@ -122,14 +122,14 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-col>
     </v-layout>
 
-    <v-layout v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
+    <v-layout style="z-index: 10;" v-if="loading" class="ma-auto d-flex flex-wrap pa-4 h-75">
       <v-card class="ma-auto align-self-start elevation-0 text-center" min-width="400">
         <v-progress-circular color="primary" indeterminate :size="90"></v-progress-circular>
         <p class="mt-3 text-body-2 font-weight-bold">{{ $t('mua.loading') }}</p>
       </v-card>
     </v-layout>
 
-    <v-layout v-else-if="props.items.length === 0"
+    <v-layout style="z-index: 10;" v-else-if="props.items.length === 0"
       :class="`ma-auto d-flex flex-wrap pa-4 ${filter.length > 0 ? 'h-75' : 'h-50'}`">
       <v-card class="ma-auto align-self-start elevation-0 text-center"
         :min-width="filter.length === 0 ? route.name === 'system-admins' ? 320 : 280 : 400">
@@ -153,7 +153,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
     </v-layout>
 
     <div v-else>
-      <v-layout class="d-flex flex-wrap">
+      <v-layout style="z-index: 10;" class="d-flex flex-wrap">
         <v-card :class="`${!$vuetify.display.mdAndUp ? 'mx-auto' : 'mx-2'} my-5 align-self-start`" min-width="350"
           height="340px" v-for="item in props.items" :key="item._id">
           <v-card-title>

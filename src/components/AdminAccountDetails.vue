@@ -41,13 +41,13 @@ const tab = ref('me')
 <template>
 
 <div :class="`elevation-0 ${!$vuetify.display.mdAndUp? 'pa-0 ma-0':'pa-2'} rounded`">
-    <v-layout class="d-flex flex-wrap align-end justify-end">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap align-end justify-end">
         <p class="text-h4 ml-4" data-test-id="meDetails-userName">{{props.data.name}}
           <span class="text-subtitle-1 font-weight-bold ">{{$t('mua.adminAccountDetails.header')}}</span>
         </p>
         <v-spacer />
     </v-layout>
-    <v-layout class="d-flex flex-wrap">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap">
         <v-card class="w-100">
             <v-tabs v-model="tab" >
                 <v-tab value="me" to="/system-admins/me" :class="tab==='me'? 'font-weight-bold':''" color="primary" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('mua.adminAccountDetails.tabs.meLabel')}}</v-tab>

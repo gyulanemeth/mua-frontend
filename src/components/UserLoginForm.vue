@@ -51,7 +51,7 @@ async function removeAccount (urlFriendlyName) {
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-100">
+    <v-layout style="z-index: 10;" class="d-flex flex-column justify-center align-center h-100">
         <ConfirmDialog ref="confirmDialogRef" :title="$t('mua.userLoginAndResetForm.confirmDialog.removeHeader')" icon="mdi-help-circle-outline"
             iconColor="error" :okBtnLabel="$t('mua.userLoginAndResetForm.confirmDialog.removeBtn')" okBtnColor="error"
             cancelBtnColor="primary"

@@ -31,7 +31,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
 <template>
-    <v-layout class="d-flex flex-column justify-center align-center h-100">
+    <v-layout style="z-index: 10;" class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
