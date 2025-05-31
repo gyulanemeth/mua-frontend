@@ -58,7 +58,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
 <template>
 
-  <div class="elevation-2 pa-3 pt-0 rounded">
+  <div class="rounded">
     <v-layout class="d-flex flex-wrap">
       <v-col cols="12" md="2" class="d-flex align-end pt-1">
         <p class="text-h6">{{ route.name === 'system-admins' ? $t('mua.listAdminsAndAccounts.header.admin') :
@@ -105,7 +105,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         <Dialog ref="createAccountDialog" :header="props.btn.header" @createEventHandler='redirectCreateEventHandler'
           @inviteEventHandler='redirectInviteEventHandler' :inputs="props.btn.input" />
       </v-col>
-      <v-divider />
+      <v-divider class="mx-3" />
     </v-layout>
     <v-layout v-if="filter.length === 0 && props.items.length === 0 && !loading" class="d-flex flex-wrap ma-0 pa-0">
       <v-spacer />
