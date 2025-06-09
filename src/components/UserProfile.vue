@@ -54,7 +54,7 @@ const openFileInput = () => {
 </script>
 
 <template>
-  <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp ? 'w-100' : 'w-75'}`">
+  <v-layout style="z-index: 10;" :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp ? 'w-100' : 'w-75'}`">
     <v-col cols="12" md="8" class="pt-3">
       <p class="text-body-1 font-weight-bold">{{ $t('mua.userProfile.header') }}</p>
       <v-divider />

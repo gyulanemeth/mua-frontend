@@ -322,7 +322,7 @@ watch(userStats, () => {
 
 <template>
   <div class="mx-3">
-    <v-layout :class="`d-flex flex-wrap`">
+    <v-layout style="z-index: 10;" :class="`d-flex flex-wrap`">
       <v-card flat :width="'100%'">
         <p class="text-start text-h5 mt-4 font-weight-bold"> {{ $t('mua.adminDashboard.mainHeader') }}</p>
         <v-card-text class="text-center px-0 align-center">
@@ -404,7 +404,7 @@ watch(userStats, () => {
           <v-switch v-model="accumulatedAccountChart" color="primary" class="ml-4 mt-4 " :label="`Accumulated`"
             hide-details inset></v-switch>
         </div>
-        <v-layout v-if="accountLoading" class="ma-auto d-flex flex-wrap pa-4">
+        <v-layout style="z-index: 10;" v-if="accountLoading" class="ma-auto d-flex flex-wrap pa-4">
           <v-card class="ma-auto align-self-start d-flex elevation-0 text-center" min-height="400" min-width="400">
             <div class="ma-auto">
               <v-progress-circular color="primary" indeterminate :size="100" :width="5">
@@ -492,7 +492,7 @@ watch(userStats, () => {
           <v-switch v-model="accumulatedUserChart" color="primary" class="ml-4 mt-4 " :label="`Accumulated`"
             hide-details inset></v-switch>
         </div>
-        <v-layout v-if="userLoading" class="ma-auto d-flex flex-wrap pa-4">
+        <v-layout style="z-index: 10;" v-if="userLoading" class="ma-auto d-flex flex-wrap pa-4">
           <v-card class="ma-auto align-self-start d-flex elevation-0 text-center" min-height="400" min-width="400">
             <div class="ma-auto">
               <v-progress-circular color="primary" indeterminate :size="100" :width="5">

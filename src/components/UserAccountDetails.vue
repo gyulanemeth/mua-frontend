@@ -43,7 +43,7 @@ const tab = ref('me')
 
 <template>
   <div :class="`elevation-0 ${!$vuetify.display.mdAndUp? 'pa-0 ma-0':'mx-3'} elevation-0 rounded`">
-    <v-layout class="d-flex flex-wrap">
+    <v-layout style="z-index: 10;" class="d-flex flex-wrap">
       <v-card class="w-100">
             <v-tabs v-model="tab">
               <v-tab value="me" :class="tab==='me'? 'font-weight-bold':''" :to="`/accounts/${route.params.urlFriendlyName}/me`" color="primary" data-test-id="meDetails-meTab" prepend-icon="mdi-account">{{$t('mua.userAccountDetails.tabs.meLabel')}}</v-tab>

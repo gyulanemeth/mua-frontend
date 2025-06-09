@@ -20,7 +20,7 @@ const resetForm = () => {
 </script>
 
 <template>
-    <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
+    <v-layout style="z-index: 10;" :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
         <v-col class="pt-3">
             <p class="text-body-1 font-weight-bold">{{ route.name !== 'accounts-add-password' ? $t('mua.userChangePassword.header'): $t('mua.userChangePassword.setPasswordHeader')  }}</p>
             <v-divider />

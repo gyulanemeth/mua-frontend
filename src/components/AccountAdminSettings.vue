@@ -18,7 +18,7 @@ await store.readOne()
 </script>
 
 <template >
-  <v-layout :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
+  <v-layout style="z-index: 10;" :class="`d-flex flex-wrap ${!$vuetify.display.mdAndUp? 'w-100':'w-75'}`">
       <v-col class="pt-3">
               <LinkToProvider :accountId="props.data.accountId" :userId="props.data._id" />
             <p class="text-body-1 font-weight-bold text-error">{{ $t(`mua.accountAdminSettings.delete${props.data.role}Label`) }}</p>
