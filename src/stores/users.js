@@ -20,27 +20,6 @@ export default (connectors) => {
     storage.accessToken = storedAccessToken
   }
 
-  async function saveRecentLogins (accountId) {
-    const getAccount = await connectors.account.readOne({ id: accountId })
-    let recentLogins = localStorage.getItem('recentLogins')
-    const accountData = {
-      name: getAccount.name,
-      urlFriendlyName: getAccount.urlFriendlyName,
-      logo: getAccount.logo
-    }
-    if (!recentLogins) {
-      localStorage.setItem('recentLogins', JSON.stringify([accountData]))
-    } else {
-      recentLogins = JSON.parse(recentLogins)
-      const checkIndex = recentLogins.findIndex(element => element.urlFriendlyName === getAccount.urlFriendlyName)
-      if (checkIndex >= 0) {
-        recentLogins.splice(checkIndex, 1)
-      }
-      recentLogins.push(accountData)
-      localStorage.setItem('recentLogins', JSON.stringify(recentLogins))
-    }
-  }
-
   const userStore = defineStore('mua-frontend-users', {
     state: () => ({
       accessToken: storage.accessToken,
@@ -51,7 +30,27 @@ export default (connectors) => {
       load: load(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
       loadMore: loadMore(connectors.user.list, useSystemMessagesStore().addError, { metaFirst: false }),
       patchRole: patchOne(connectors.user.patchRole, useSystemMessagesStore().addError, { optimistic: false }),
-      async deleteOne ({ id, password, accountId }) {
+      async saveRecentLogins(accountId) {
+        const getAccount = await connectors.account.readOne({ id: accountId })
+        let recentLogins = localStorage.getItem('recentLogins')
+        const accountData = {
+          name: getAccount.name,
+          urlFriendlyName: getAccount.urlFriendlyName,
+          logo: getAccount.logo
+        }
+        if (!recentLogins) {
+          localStorage.setItem('recentLogins', JSON.stringify([accountData]))
+        } else {
+          recentLogins = JSON.parse(recentLogins)
+          const checkIndex = recentLogins.findIndex(element => element.urlFriendlyName === getAccount.urlFriendlyName)
+          if (checkIndex >= 0) {
+            recentLogins.splice(checkIndex, 1)
+          }
+          recentLogins.push(accountData)
+          localStorage.setItem('recentLogins', JSON.stringify(recentLogins))
+        }
+      },
+      async deleteOne({ id, password, accountId }) {
         try {
           await connectors.user.deletePermission(password)
           const res = await connectors.user.deleteOne({ id, accountId })
@@ -61,7 +60,7 @@ export default (connectors) => {
           return e
         }
       },
-      async login (token, password, accountId) {
+      async login(token, password, accountId) {
         try {
           localStorage.setItem('loginToken', token)
           const loginToken = await connectors.user.login({ password, accountId })
@@ -69,41 +68,41 @@ export default (connectors) => {
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          saveRecentLogins(loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async loginWithUrlFriendlyName (params) {
+      async loginWithUrlFriendlyName(params) {
         try {
           const loginToken = await connectors.user.loginWithUrlFriendlyName({ password: params.password, urlFriendlyName: params.urlFriendlyName, email: params.email })
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          saveRecentLogins(loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async getAccessToken (loginToken) {
+      async getAccessToken(loginToken) {
         try {
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)
-          saveRecentLogins(loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
           return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async loginWithProvider ({ id, provider }) {
+      async loginWithProvider({ id, provider }) {
         try {
           const res = await connectors.user.loginWithProvider({ id, provider })
           return res
@@ -112,7 +111,7 @@ export default (connectors) => {
           return e
         }
       },
-      async createWithProvider ({ accountId, userId, provider }) {
+      async createWithProvider({ accountId, userId, provider }) {
         try {
           const res = await connectors.user.createWithProvider({ provider }, { accountId, userId })
           return res
@@ -121,7 +120,7 @@ export default (connectors) => {
           return e
         }
       },
-      async linkToProvider ({ accountId, id, provider }) {
+      async linkToProvider({ accountId, id, provider }) {
         try {
           const res = await connectors.user.linkToProvider({ accountId, id, provider })
           return res
@@ -130,7 +129,7 @@ export default (connectors) => {
           return e
         }
       },
-      async disconnectProvider ({ id, password, accountId, provider }) {
+      async disconnectProvider({ id, password, accountId, provider }) {
         try {
           await connectors.user.disconnectPermission(password)
           const res = await connectors.user.disconnectProvider({ id, accountId, provider })
@@ -140,7 +139,7 @@ export default (connectors) => {
           return e
         }
       },
-      async loginGetAccounts (email) {
+      async loginGetAccounts(email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })
           return res
@@ -150,7 +149,7 @@ export default (connectors) => {
         }
       },
 
-      async getRecentLoginsAccounts () {
+      async getRecentLoginsAccounts() {
         try {
           const getRecentLogins = await JSON.parse(localStorage.getItem('recentLogins'))
           if (getRecentLogins) {
@@ -161,7 +160,7 @@ export default (connectors) => {
         }
       },
 
-      async removeRecentLoginAccount (urlFriendlyName) {
+      async removeRecentLoginAccount(urlFriendlyName) {
         const getRecentLogins = await JSON.parse(localStorage.getItem('recentLogins'))
         if (getRecentLogins) {
           const recentLogins = getRecentLogins.filter(item => item.urlFriendlyName !== urlFriendlyName)
@@ -171,7 +170,7 @@ export default (connectors) => {
         }
       },
 
-      logout () {
+      logout() {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('accountId')
         localStorage.removeItem('loginToken')
@@ -179,7 +178,7 @@ export default (connectors) => {
         this.user = null
         router.push('/accounts/' + window.location.pathname.split('/')[1])
       },
-      async sendForgotPassword (data) {
+      async sendForgotPassword(data) {
         try {
           if (!data || !data.email || !data.accountId) {
             throw new RouteError('account Id and email Is Required')
@@ -196,7 +195,7 @@ export default (connectors) => {
           return e
         }
       },
-      async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
+      async resetForgotPassword(forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
           const forgotPasswordTokenData = jwtDecode(forgotPasswordToken)
           if (!forgotPasswordToken || !forgotPasswordTokenData || Date.now() >= forgotPasswordTokenData.exp * 1000 || !newPassword || !newPasswordAgain) {
@@ -214,7 +213,7 @@ export default (connectors) => {
           return e
         }
       },
-      async sendInvitation (email) {
+      async sendInvitation(email) {
         try {
           if (!localStorage.getItem('accountId')) {
             throw new RouteError('account ID Is Required')
@@ -226,7 +225,7 @@ export default (connectors) => {
           return e
         }
       },
-      async reSendInvitation (email) {
+      async reSendInvitation(email) {
         try {
           if (!localStorage.getItem('accountId')) {
             throw new RouteError('account ID Is Required')
@@ -238,7 +237,7 @@ export default (connectors) => {
           return e
         }
       },
-      async acceptInvitation (acceptInvitationToken, newPassword, newPasswordAgain, name) {
+      async acceptInvitation(acceptInvitationToken, newPassword, newPasswordAgain, name) {
         try {
           const acceptInvitationTokenData = jwtDecode(acceptInvitationToken)
           const loginToken = await connectors.invitation.accept({ id: acceptInvitationTokenData.account._id, token: acceptInvitationToken, newPassword, newPasswordAgain, name })
@@ -253,7 +252,7 @@ export default (connectors) => {
           return e
         }
       },
-      async readOne () {
+      async readOne() {
         try {
           if (localStorage.getItem('accessToken') && jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
             if (window.location.pathname.split('/').includes('me')) {
@@ -277,7 +276,7 @@ export default (connectors) => {
           return e
         }
       },
-      async patchUserName (name) {
+      async patchUserName(name) {
         try {
           if (this.user === null || this.user._id === undefined) {
             throw new RouteError('User ID Is Required')
@@ -290,7 +289,7 @@ export default (connectors) => {
           return e
         }
       },
-      async patchPassword (oldPassword, newPassword, newPasswordAgain) {
+      async patchPassword(oldPassword, newPassword, newPasswordAgain) {
         try {
           if (this.user === null || this.user._id === undefined || !localStorage.getItem('accountId')) {
             throw new RouteError('Admin ID Is Required')
@@ -302,7 +301,7 @@ export default (connectors) => {
           return e
         }
       },
-      async createPassword ({ token, id, accountId }) {
+      async createPassword({ token, id, accountId }) {
         try {
           await connectors.user.createPassword({ accountId, id, token })
           return { success: true }
@@ -311,7 +310,7 @@ export default (connectors) => {
           return e
         }
       },
-      async reSendFinalizeRegistration ({ accountId, userId }) {
+      async reSendFinalizeRegistration({ accountId, userId }) {
         try {
           if (accountId === null || userId === undefined) {
             throw new RouteError('User ID and Account ID Is Required')
@@ -323,7 +322,7 @@ export default (connectors) => {
           return e
         }
       },
-      async finalizeRegistration (token) {
+      async finalizeRegistration(token) {
         try {
           const tokenData = jwtDecode(token)
           if (!token || !tokenData || Date.now() >= tokenData.exp * 1000) {
@@ -339,7 +338,7 @@ export default (connectors) => {
           return e
         }
       },
-      async patchEmail (newEmail, newEmailAgain) {
+      async patchEmail(newEmail, newEmailAgain) {
         try {
           if (!this.user || !this.user._id || !localStorage.getItem('accountId')) {
             throw new RouteError('User ID And Account ID Is Required')
@@ -351,7 +350,7 @@ export default (connectors) => {
           return e
         }
       },
-      async patchEmailConfirm (token) {
+      async patchEmailConfirm(token) {
         try {
           const tokenData = jwtDecode(token)
           if (!tokenData || !tokenData.user || !tokenData.user._id || !tokenData.account || !tokenData.account._id) {
@@ -364,7 +363,7 @@ export default (connectors) => {
           return e
         }
       },
-      async uploadProfilePicture (formData) {
+      async uploadProfilePicture(formData) {
         try {
           const res = await connectors.user.uploadProfilePicture({ accountId: localStorage.getItem('accountId'), id: this.user._id }, formData)
           this.user.profilePicture = res.profilePicture
@@ -374,7 +373,7 @@ export default (connectors) => {
           return e
         }
       },
-      async deleteProfilePicture () {
+      async deleteProfilePicture() {
         try {
           const res = await connectors.user.deleteProfilePicture({ accountId: localStorage.getItem('accountId'), id: this.user._id })
           delete this.user.profilePicture
