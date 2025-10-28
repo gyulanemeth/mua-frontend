@@ -292,7 +292,7 @@ Methods for managing admins:
 
 ### Route Table
 
-| **Path**                                     | **Name**                              | **Title**               | **Requires Authentication** | **Description**                                                   |
+| **Path**                                     | **Name**                              | **Title**               | **Requires Authentication** | **Description**                                                   
 |----------------------------------------------|---------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------|
 | `/`                                          | `default-route`                       |                         | No                          | Default route, redirects to accounts login `accounts/login`       |
 | `/provider-auth`                             | `provider-auth`                       | Sign in                 | No                          | Route for provider authentication                                 |
