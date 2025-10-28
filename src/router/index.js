@@ -73,7 +73,8 @@ export const useMuaRoutes = (router) => {
     name: 'provider-auth',
     component: AppLoading,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Sign in'
     }
   })
   router.addRoute({
@@ -89,7 +90,8 @@ export const useMuaRoutes = (router) => {
     },
     component: AdminLogin,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Sign in'
     }
   })
   router.addRoute({
@@ -97,7 +99,8 @@ export const useMuaRoutes = (router) => {
     name: 'system-admins-forgot-password',
     component: AdminForgotPasswordView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Forgot Password'
     }
   })
   router.addRoute({
@@ -105,7 +108,8 @@ export const useMuaRoutes = (router) => {
     name: 'system-admins-forgot-password-reset',
     component: SetAndReSetAdminPasswordView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Reset Password'
     }
   })
   router.addRoute({
@@ -113,7 +117,8 @@ export const useMuaRoutes = (router) => {
     name: 'system-admins-accept-invitation',
     component: SetAndReSetAdminPasswordView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Accept Invitation'
     }
   })
   router.addRoute({
@@ -121,7 +126,8 @@ export const useMuaRoutes = (router) => {
     name: 'system-admins-verify-email',
     component: AdminProfileView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Verify Email'
     }
   })
   router.addRoute({
@@ -145,7 +151,8 @@ export const useMuaRoutes = (router) => {
         component: AdminsAndAccountsView,
         meta: {
           requiresAuth: true,
-          header: 'admins'
+          header: 'admins',
+          title: 'Admins'
         }
       },
       {
@@ -154,7 +161,8 @@ export const useMuaRoutes = (router) => {
         component: AdminDashboard,
         meta: {
           requiresAuth: true,
-          header: 'adminsDashboard'
+          header: 'adminsDashboard',
+          title: 'Dashboard'
         }
       },
       {
@@ -163,7 +171,8 @@ export const useMuaRoutes = (router) => {
         component: AdminsAndAccountsView,
         meta: {
           requiresAuth: true,
-          header: 'accounts'
+          header: 'accounts',
+          title: 'Accounts'
         }
       },
       {
@@ -172,7 +181,8 @@ export const useMuaRoutes = (router) => {
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -181,7 +191,8 @@ export const useMuaRoutes = (router) => {
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -190,7 +201,8 @@ export const useMuaRoutes = (router) => {
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -199,7 +211,8 @@ export const useMuaRoutes = (router) => {
         component: AdminProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -207,7 +220,8 @@ export const useMuaRoutes = (router) => {
         name: 'system-admins-admin',
         component: AdminsAndAccountsView,
         meta: {
-          requiresAuth: true
+          requiresAuth: true,
+          title: 'My Profile'
         }
       }
     ]
@@ -225,7 +239,8 @@ export const useMuaRoutes = (router) => {
     },
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Sign in'
     }
   })
   router.addRoute({
@@ -233,7 +248,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-login-with-urlFriendlyName',
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Sign in'
     }
   })
   router.addRoute({
@@ -241,7 +257,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-login-select',
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Sign in'
     }
   })
   router.addRoute({
@@ -249,7 +266,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-finalize-registration',
     component: FinalizeRegistrationView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Finalize Registration'
     }
   })
   router.addRoute({
@@ -257,7 +275,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-create-account',
     component: CreateAccountView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Registration'
     }
   })
   router.addRoute({
@@ -265,7 +284,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-create-password',
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Create Password'
     }
   })
   router.addRoute({
@@ -273,7 +293,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-forgot-password',
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Forgot Password'
     }
   })
   router.addRoute({
@@ -281,7 +302,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-verify-email',
     component: AccountUserProfileView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Verify Email'
     }
   })
   router.addRoute({
@@ -289,7 +311,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-forgot-password-reset',
     component: LoginAndResetView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Reset Password'
     }
   })
   router.addRoute({
@@ -297,7 +320,8 @@ export const useMuaRoutes = (router) => {
     name: 'accounts-accept-invitation',
     component: FinalizeRegistrationView,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Accept Invitation'
     }
   })
   router.addRoute({
@@ -333,7 +357,8 @@ export const useMuaRoutes = (router) => {
         component: UserView,
         meta: {
           requiresAuth: true,
-          header: 'users'
+          header: 'users',
+          title: 'Users'
         }
       },
       {
@@ -349,7 +374,8 @@ export const useMuaRoutes = (router) => {
         },
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -358,7 +384,8 @@ export const useMuaRoutes = (router) => {
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -367,7 +394,8 @@ export const useMuaRoutes = (router) => {
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -376,7 +404,8 @@ export const useMuaRoutes = (router) => {
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -385,7 +414,8 @@ export const useMuaRoutes = (router) => {
         component: AccountUserProfileView,
         meta: {
           requiresAuth: true,
-          header: 'myProfile'
+          header: 'myProfile',
+          title: 'My Profile'
         }
       },
       {
@@ -394,7 +424,8 @@ export const useMuaRoutes = (router) => {
         component: AccountView,
         meta: {
           requiresAuth: true,
-          header: 'account'
+          header: 'account',
+          title: 'Account'
         }
       }
     ]
@@ -404,7 +435,8 @@ export const useMuaRoutes = (router) => {
     name: 'redirect-to-login-message',
     component: RedirectToLoginMessage,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Redirect'
     }
   })
   router.addRoute({
@@ -412,7 +444,8 @@ export const useMuaRoutes = (router) => {
     name: 'notFound',
     component: NotFound,
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: 'Not Found'
     }
   })
 }
