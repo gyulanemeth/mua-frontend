@@ -292,7 +292,7 @@ Methods for managing admins:
 
 ### Route Table
 
-| **Path**                                     | **Name**                              | **Title**               | **Requires Authentication** | **Description**                                                   
+| **Path**                                     | **Name**                              | **Title**               | **Requires Authentication** | **Description**                                                   |
 |----------------------------------------------|---------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------|
 | `/`                                          | `default-route`                       |                         | No                          | Default route, redirects to accounts login `accounts/login`       |
 | `/provider-auth`                             | `provider-auth`                       | Sign in                 | No                          | Route for provider authentication                                 |
@@ -332,6 +332,52 @@ Methods for managing admins:
 | `/redirect-to-login-message`                 | `redirect-to-login-message`           | Redirect                | No                          | Redirect to login message page                                    |
 | `/:catchAll(.*)`                             | `notFound`                            | Not Found               | No                          | Catch-all page for unknown routes                                 |
 
+
+
+
+
+
+### Route Table
+
+| **Path** | **Name** | **Title** | **Layout** | **Requires Authentication** | **Description** |
+|----------------------------------------------|---------------------------------------|-------------------------|-------------------|-----------------------------|-------------------------------------------------------------------------------------------------|
+| `/` | `default-route` |  | `PublicLayout` | No | Default route, redirects to accounts login `accounts/login` |
+| `/provider-auth` | `provider-auth` | `Sign in` | `PublicLayout` | No | Route for provider authentication |
+| `/system-admins/login` | `system-admins-login` | `Sign in` | `AuthLayout` | No | Login page for system admins |
+| `/system-admins/forgot-password` | `system-admins-forgot-password` | `Forgot Password` | `AuthLayout` | No | Forgot password page for system admins |
+| `/system-admins/forgot-password/reset` | `system-admins-forgot-password-reset` | `Reset Password` | `AuthLayout` | No | Reset password page for system admins |
+| `/system-admins/invitation/accept` | `system-admins-accept-invitation` | `Accept Invitation` | `AuthLayout` | No | Accept invitation page for system admins |
+| `/system-admins/verify-email` | `system-admins-verify-email` | `Verify Email` | `AuthLayout` | No | Email verification page for system admins |
+| `/system-admins` | `system-admins-main` |  | `AdminLayout` | Yes | Main page for system admins |
+| `/system-admins/admins` | `system-admins` | `Admins` | `AdminLayout` | Yes | Admin management page |
+| `/system-admins/dashboard` | `admins-dashboard` | `Dashboard` | `AdminLayout` | Yes | Dashboard page for system admins |
+| `/system-admins/accounts` | `system-admins-accounts` | `Accounts` | `AdminLayout` | Yes | Accounts management page for system admins |
+| `/system-admins/me` | `system-admins-me` | `My Profile` | `AdminLayout` | Yes | Profile page for system admins |
+| `/system-admins/change-password` | `system-admins-change-password` | `My Profile` | `AdminLayout` | Yes | Change password page for system admins |
+| `/system-admins/change-email` | `system-admins-change-email` | `My Profile` | `AdminLayout` | Yes | Change email page for system admins |
+| `/system-admins/settings` | `system-admins-settings` | `My Profile` | `AdminLayout` | Yes | Settings page for system admins |
+| `/system-admins/:id` | `system-admins-admin` | `My Profile` | `AdminLayout` | Yes | Admin details page for system admins |
+| `/accounts/login` | `accounts-login` | `Sign in` | `AuthLayout` | No | Login page for accounts |
+| `/accounts/login/:urlFriendlyName` | `accounts-login-with-urlFriendlyName` | `Sign in` | `AuthLayout` | No | Login page for accounts with URL-friendly name |
+| `/accounts/login-select` | `accounts-login-select` | `Sign in` | `AuthLayout` | No | Login select page for accounts |
+| `/accounts/finalize-registration` | `accounts-finalize-registration` | `Finalize Registration` | `AuthLayout` | No | Finalize registration page for accounts |
+| `/accounts/create-account` | `accounts-create-account` | `Registration` | `AuthLayout` | No | Create account page for accounts |
+| `/accounts/create-password` | `accounts-create-password` | `Create Password` | `AuthLayout` | No | Create password page for accounts |
+| `/accounts/forgot-password` | `accounts-forgot-password` | `Forgot Password` | `AuthLayout` | No | Forgot password page for accounts |
+| `/accounts/verify-email` | `accounts-verify-email` | `Verify Email` | `AuthLayout` | No | Email verification page for accounts |
+| `/accounts/forgot-password/reset` | `accounts-forgot-password-reset` | `Reset Password` | `AuthLayout` | No | Reset password page for accounts |
+| `/accounts/invitation/accept` | `accounts-accept-invitation` | `Accept Invitation` | `AuthLayout` | No | Accept invitation page for accounts |
+| `/accounts` | `accounts` |  | `AccountLayout` | Yes | Main account page with child routes |
+| `/accounts/:urlFriendlyName` | `accounts-default` |  | `AccountLayout` | Yes | Default account page (redirect to dashboard) |
+| `/accounts/:urlFriendlyName/users` | `accounts-users` | `Users` | `AccountLayout` | Yes | User management page for accounts |
+| `/accounts/:urlFriendlyName/me` | `accounts-me` | `My Profile` | `AccountLayout` | Yes | Profile page for the account owner |
+| `/accounts/:urlFriendlyName/change-password` | `accounts-change-password` | `My Profile` | `AccountLayout` | Yes | Change password page for the account owner |
+| `/accounts/:urlFriendlyName/add-password` | `accounts-add-password` | `My Profile` | `AccountLayout` | Yes | Add password page for the account owner |
+| `/accounts/:urlFriendlyName/change-email` | `accounts-change-email` | `My Profile` | `AccountLayout` | Yes | Change email page for the account owner |
+| `/accounts/:urlFriendlyName/settings` | `accounts-settings` | `My Profile` | `AccountLayout` | Yes | Settings page for the account owner |
+| `/accounts/:urlFriendlyName/account` | `accounts-account` | `Account` | `AccountLayout` | Yes | Account details page for the account owner |
+| `/redirect-to-login-message` | `redirect-to-login-message` | `Redirect` | `PublicLayout` | No | Redirect to login message page |
+| `/:catchAll(.*)` | `notFound` | `Not Found` | `PublicLayout` | No | Catch-all page for unknown routes |
 
 ### Token Validation and Redirection
 
