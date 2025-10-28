@@ -292,45 +292,45 @@ Methods for managing admins:
 
 ### Route Table
 
-| **Path**                          | **Name**                          | **Requires Authentication** | **Description**                                                   |
-|------------------------------------|-----------------------------------|-----------------------------|-------------------------------------------------------------------|
-| `/`                                | `default-route`                    | No                          | Default route, redirects to accounts login `accounts/login`                               |
-| `/provider-auth`                   | `provider-auth`                   | No                          | Route for provider authentication                                |
-| `/system-admins/login`             | `system-admins-login`             | No                          | Login page for system admins                                     |
-| `/system-admins/forgot-password`   | `system-admins-forgot-password`   | No                          | Forgot password page for system admins                            |
-| `/system-admins/forgot-password/reset` | `system-admins-forgot-password-reset` | No                          | Reset password page for system admins                             |
-| `/system-admins/invitation/accept` | `system-admins-accept-invitation` | No                          | Accept invitation page for system admins                          |
-| `/system-admins/verify-email`      | `system-admins-verify-email`      | No                          | Email verification page for system admins                         |
-| `/system-admins`                   | `system-admins-main`              | Yes                         | Main page for system admins                                       |
-| `/system-admins/admins`            | `system-admins`                   | Yes                         | Admin management page                                             |
-| `/system-admins/dashboard`         | `admins-dashboard`                | Yes                         | Dashboard page for system admins                                  |
-| `/system-admins/accounts`          | `system-admins-accounts`          | Yes                         | Accounts management page for system admins                        |
-| `/system-admins/me`                | `system-admins-me`                | Yes                         | Profile page for system admins                                    |
-| `/system-admins/change-password`   | `system-admins-change-password`    | Yes                         | Change password page for system admins                            |
-| `/system-admins/change-email`      | `system-admins-change-email`       | Yes                         | Change email page for system admins                               |
-| `/system-admins/settings`          | `system-admins-settings`          | Yes                         | Settings page for system admins                                   |
-| `/system-admins/:id`               | `system-admins-admin`             | Yes                         | Admin details page for system admins                              |
-| `/accounts/login`                  | `accounts-login`                  | No                          | Login page for accounts                                           |
-| `/accounts/login/:urlFriendlyName` | `accounts-login-with-urlFriendlyName` | No                          | Login page for accounts with URL-friendly name                    |
-| `/accounts/login-select`           | `accounts-login-select`           | No                          | Login select page for accounts                                    |
-| `/accounts/finalize-registration`  | `accounts-finalize-registration`  | No                          | Finalize registration page for accounts                           |
-| `/accounts/create-account`         | `accounts-create-account`         | No                          | Create account page for accounts                                  |
-| `/accounts/create-password`        | `accounts-create-password`        | No                          | Create password page for accounts                                 |
-| `/accounts/forgot-password`        | `accounts-forgot-password`        | No                          | Forgot password page for accounts                                 |
-| `/accounts/verify-email`           | `accounts-verify-email`           | No                          | Email verification page for accounts                              |
-| `/accounts/forgot-password/reset`  | `accounts-forgot-password-reset`  | No                          | Reset password page for accounts                                  |
-| `/accounts/invitation/accept`      | `accounts-accept-invitation`      | No                          | Accept invitation page for accounts                               |
-| `/accounts`                        | `accounts`                        | Yes                         | Main account page with child routes                               |
-| `/accounts/:urlFriendlyName`       | `accounts-default`                | Yes                         | Default account page (redirect to dashboard)                      |
-| `/accounts/:urlFriendlyName/users` | `accounts-users`                  | Yes                         | User management page for accounts                                 |
-| `/accounts/:urlFriendlyName/me`    | `accounts-me`                     | Yes                         | Profile page for the account owner                                |
-| `/accounts/:urlFriendlyName/change-password` | `accounts-change-password` | Yes                         | Change password page for the account owner                        |
-| `/accounts/:urlFriendlyName/add-password`  | `accounts-add-password` | Yes                         | Add password page for the account owner                           |
-| `/accounts/:urlFriendlyName/change-email`  | `accounts-change-email`  | Yes                         | Change email page for the account owner                           |
-| `/accounts/:urlFriendlyName/settings`      | `accounts-settings`      | Yes                         | Settings page for the account owner                               |
-| `/accounts/:urlFriendlyName/account`       | `accounts-account`       | Yes                         | Account details page for the account owner                        |
-| `/redirect-to-login-message`      | `redirect-to-login-message`         | No                          | Redirect to login message page                                    |
-| `/:catchAll(.*)`                   | `notFound`                       | No                          | Catch-all page for unknown routes                                 |
+| **Path**                                     | **Name**                              | **Title**               | **Requires Authentication** | **Description**                                                   |
+|----------------------------------------------|---------------------------------------|-------------------------|-------------------------------------------------------------------------------------------------|
+| `/`                                          | `default-route`                       |                         | No                          | Default route, redirects to accounts login `accounts/login`       |
+| `/provider-auth`                             | `provider-auth`                       | Sign in                 | No                          | Route for provider authentication                                 |
+| `/system-admins/login`                       | `system-admins-login`                 | Sign in                 | No                          | Login page for system admins                                      |
+| `/system-admins/forgot-password`             | `system-admins-forgot-password`       | Forgot Password         | No                          | Forgot password page for system admins                            |
+| `/system-admins/forgot-password/reset`       | `system-admins-forgot-password-reset` | Reset Password          | No                          | Reset password page for system admins                             |
+| `/system-admins/invitation/accept`           | `system-admins-accept-invitation`     | Accept Invitation       | No                          | Accept invitation page for system admins                          |
+| `/system-admins/verify-email`                | `system-admins-verify-email`          | Verify Email            | No                          | Email verification page for system admins                         |
+| `/system-admins`                             | `system-admins-main`                  |                         | Yes                         | Main page for system admins                                       |
+| `/system-admins/admins`                      | `system-admins`                       | Admins                  | Yes                         | Admin management page                                             |
+| `/system-admins/dashboard`                   | `admins-dashboard`                    | Dashboard               | Yes                         | Dashboard page for system admins                                  |
+| `/system-admins/accounts`                    | `system-admins-accounts`              | Accounts                | Yes                         | Accounts management page for system admins                        |
+| `/system-admins/me`                          | `system-admins-me`                    | My Profile              | Yes                         | Profile page for system admins                                    |
+| `/system-admins/change-password`             | `system-admins-change-password`       | My Profile              | Yes                         | Change password page for system admins                            |
+| `/system-admins/change-email`                | `system-admins-change-email`          | My Profile              | Yes                         | Change email page for system admins                               |
+| `/system-admins/settings`                    | `system-admins-settings`              | My Profile              | Yes                         | Settings page for system admins                                   |
+| `/system-admins/:id`                         | `system-admins-admin`                 | My Profile              | Yes                         | Admin details page for system admins                              |
+| `/accounts/login`                            | `accounts-login`                      | Sign in                 | No                          | Login page for accounts                                           |
+| `/accounts/login/:urlFriendlyName`           | `accounts-login-with-urlFriendlyName` | Sign in                 | No                          | Login page for accounts with URL-friendly name                    |
+| `/accounts/login-select`                     | `accounts-login-select`               | Sign in                 | No                          | Login select page for accounts                                    |
+| `/accounts/finalize-registration`            | `accounts-finalize-registration`      | Finalize Registration   | No                          | Finalize registration page for accounts                           |
+| `/accounts/create-account`                   | `accounts-create-account`             | Registration            | No                          | Create account page for accounts                                  |
+| `/accounts/create-password`                  | `accounts-create-password`            | Create Password         | No                          | Create password page for accounts                                 |
+| `/accounts/forgot-password`                  | `accounts-forgot-password`            | Forgot Password         | No                          | Forgot password page for accounts                                 |
+| `/accounts/verify-email`                     | `accounts-verify-email`               | Verify Email            | No                          | Email verification page for accounts                              |
+| `/accounts/forgot-password/reset`            | `accounts-forgot-password-reset`      | Reset Password          | No                          | Reset password page for accounts                                  |
+| `/accounts/invitation/accept`                | `accounts-accept-invitation`          | Accept Invitation       | No                          | Accept invitation page for accounts                               |
+| `/accounts`                                  | `accounts`                            |                         | Yes                         | Main account page with child routes                               |
+| `/accounts/:urlFriendlyName`                 | `accounts-default`                    |                         | Yes                         | Default account page (redirect to dashboard)                      |
+| `/accounts/:urlFriendlyName/users`           | `accounts-users`                      | Users                   | Yes                         | User management page for accounts                                 |
+| `/accounts/:urlFriendlyName/me`              | `accounts-me`                         | My Profile              | Yes                         | Profile page for the account owner                                |
+| `/accounts/:urlFriendlyName/change-password` | `accounts-change-password`            | My Profile              | Yes                         | Change password page for the account owner                        |
+| `/accounts/:urlFriendlyName/add-password`    | `accounts-add-password`               | My Profile              | Yes                         | Add password page for the account owner                           |
+| `/accounts/:urlFriendlyName/change-email`    | `accounts-change-email`               | My Profile              | Yes                         | Change email page for the account owner                           |
+| `/accounts/:urlFriendlyName/settings`        | `accounts-settings`                   | My Profile              | Yes                         | Settings page for the account owner                               |
+| `/accounts/:urlFriendlyName/account`         | `accounts-account`                    | Account                 | Yes                         | Account details page for the account owner                        |
+| `/redirect-to-login-message`                 | `redirect-to-login-message`           | Redirect                | No                          | Redirect to login message page                                    |
+| `/:catchAll(.*)`                             | `notFound`                            | Not Found               | No                          | Catch-all page for unknown routes                                 |
 
 
 ### Token Validation and Redirection
