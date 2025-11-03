@@ -103,7 +103,7 @@ const openFileInput = () => {
             :value="urlFriendlyName" ref="urlFriendlyNameInput"
             @keydown.enter="$emit('updateUrlFriendlyNameHandler', urlFriendlyName); editMode = false"
             @keydown.esc="editMode = false; urlFriendlyName = componentProps.urlFriendlyName"
-            @update:modelValue="res => urlFriendlyName = res.replace(/^https?:\/\/?/i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(/[\s./]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()"
+            @update:modelValue="res => urlFriendlyName = res.replace(' ', '-').replace(/^https?:\/\//i, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase()"
             type="text" required />
           <template v-if='editMode === "urlFriendlyName"'>
             <v-btn color="primary" variant="text" data-test-id="accountDetails--confirmUrlFriendlyNameEdit"
@@ -117,8 +117,8 @@ const openFileInput = () => {
             <v-btn color="primary" variant="text" data-test-id="accountDetails-editUrlFriendlyNameBtn" class="ma-2"
               icon="mdi-pencil-outline" size="small" @click='editMode = "urlFriendlyName"; setUrlFriendlyNameFocus()' />
           </template>
-          <div v-if='editMode === "urlFriendlyName"' class="justify-left align-left text-left w-100">
-            <span class="text-grey-darken-1 text-caption ml-1 pt-0 mt-1">{{ url + 'accounts/' + urlFriendlyName }}</span>
+          <div v-if='editMode === "urlFriendlyName"' class="d-flex flex-wrap justify-left align-left text-left w-100">
+            <span style="padding-left: 46%;" class="text-grey-darken-1 text-caption ml-0 pt-0 mt-0">{{ url + 'accounts/' + urlFriendlyName }}</span>
           </div>
         </v-row>
       </v-col>
