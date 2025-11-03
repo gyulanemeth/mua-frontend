@@ -102,7 +102,7 @@ const openFileInput = () => {
             ref="urlFriendlyNameInput"
             @keydown.enter="$emit('updateUrlFriendlyNameHandler', urlFriendlyName); editMode = false"
             @keydown.esc="editMode = false; urlFriendlyName = componentProps.urlFriendlyName"
-            @update:modelValue="res => urlFriendlyName = res.replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
+            @update:modelValue="res => urlFriendlyName = res.replace(/^https?:\/\//i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()"
             type="text" required />
           <template v-if='editMode === "urlFriendlyName"'>
             <v-btn color="primary" variant="text" data-test-id="accountDetails--confirmUrlFriendlyNameEdit" icon="mdi-check"
