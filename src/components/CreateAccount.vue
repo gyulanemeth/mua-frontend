@@ -47,12 +47,12 @@ generateCaptcha()
 
 watch(() => data.value.account.name, () => {
   if (!urlFriendlyNameFocused.value) {
-        data.value.account.urlFriendlyName = data.value.account.name.replace(/^https?:\/\//i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()/* eslint-disable-line */
+        data.value.account.urlFriendlyName = data.value.account.name.replace(/^https?:\/\/?/i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(/[\s./]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()/* eslint-disable-line */
   }
 })
 
 watch(() => data.value.account.urlFriendlyName, () => {
-    data.value.account.urlFriendlyName = data.value.account.urlFriendlyName.replace(/^https?:\/\//i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(' ', '-').toLowerCase()/* eslint-disable-line */
+    data.value.account.urlFriendlyName = data.value.account.urlFriendlyName.replace(/^https?:\/\/?/i, '').replace(/[^a-z0-9/ \.,_-]/gim, '').replace(/[\s./]+/g, '-') .replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()/* eslint-disable-line */
 })
 
 </script>
