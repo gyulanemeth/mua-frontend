@@ -15,6 +15,7 @@ const router = useRouter()
 const data = ref()
 const accountName = ref()
 const currentUser = ref()
+const projects = ref([])
 
 await usersStore.readOne()
 if (!usersStore.user.role) {
@@ -47,9 +48,16 @@ usersStore.sort = { updatedAt: -1 }
 await usersStore.load()
 data.value = usersStore.items
 
-async function handleUpdateRole (params) {
+const listProjects = await usersStore.listProjects({ accountId: localStorage.getItem('accountId') }, { limit: 'unlimted' })
+projects.value = listProjects ? listProjects : []
+
+async function handleUpdateRole(params) {
+  console.log(params);
+  
   const res = await usersStore.patchRole(params.id, {
-    role: params.role
+    role: params.role,
+    projectId: params.projectId,
+    permission: params.permission
   })
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.roleUpdateAlert') })
@@ -58,7 +66,7 @@ async function handleUpdateRole (params) {
   }
 }
 
-async function handleDeleteUser (params) {
+async function handleDeleteUser(params) {
   const res = await usersStore.deleteOne(params)
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.accountDeleteAlert') })
@@ -70,8 +78,8 @@ async function handleDeleteUser (params) {
   }
 }
 
-async function handleInviteMember (params, statusCallBack) {
-  const res = await usersStore.sendInvitation(params.email)
+async function handleInviteMember(params, statusCallBack) {
+  const res = await usersStore.sendInvitation(params)
   statusCallBack(!res.message)
   if (!res.message) {
     await usersStore.load()
@@ -79,14 +87,14 @@ async function handleInviteMember (params, statusCallBack) {
   }
 }
 
-async function handleReInviteMember (params) {
-  const res = await usersStore.reSendInvitation(params.email)
+async function handleReInviteMember(params) {
+  const res = await usersStore.reSendInvitation(params)
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.invitationSentAlert') })
   }
 }
 
-async function loadMore () {
+async function loadMore() {
   if (usersStore.items.length !== usersStore.count) {
     usersStore.skip = usersStore.skip + 10
     await usersStore.loadMore()
@@ -94,7 +102,7 @@ async function loadMore () {
   }
 }
 
-async function handleSortEvent (sort, statusCallBack) {
+async function handleSortEvent(sort, statusCallBack) {
   usersStore.skip = 0
   usersStore.sort = sort
   await usersStore.load()
@@ -102,7 +110,7 @@ async function handleSortEvent (sort, statusCallBack) {
   statusCallBack()
 }
 
-async function searchBarHandler (filter, statusCallBack) {
+async function searchBarHandler(filter, statusCallBack) {
   if (filter === '') {
     usersStore.filter = {}
   } else {
@@ -131,9 +139,9 @@ async function searchBarHandler (filter, statusCallBack) {
 
 <template>
 
-  <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="['admin', 'user']"
-    @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"
-    @sortEventHandler="handleSortEvent" @updateRoleEventHandler="handleUpdateRole"
-    @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+  <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
+    :roles="['admin', 'user', 'client']" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
+    @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
+    @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>
