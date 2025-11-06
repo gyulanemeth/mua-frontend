@@ -2,38 +2,39 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-    name: String,
-    roles: Array,
-    permissions: Array,
-    projects: Array
+  name: String,
+  roles: Array,
+  permissions: Array,
+  projects: Array
 })
 
 const processing = ref(false)
 const dialogShown = ref(false)
 const data = ref({
-    name: props.name
+  name: props.name,
+  projectsAccess: [{ projectId: '', permission: props.permissions[0] }]
 })
 const cb = ref()
 
 const resetForm = () => {
-    Object.keys(data.value).forEach(key => {
-        data.value[key] = null
-    })
+  Object.keys(data.value).forEach(key => {
+    data.value[key] = null
+  })
 }
 
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 const hide = () => {
-    dialogShown.value = false
-    cb.value = undefined
-    resetForm()
+  dialogShown.value = false
+  cb.value = undefined
+  resetForm()
 }
 
 defineExpose({
-    show,
-    hide
+  show,
+  hide
 })
 
 </script>
@@ -99,28 +100,43 @@ defineExpose({
                         </v-col>
                     </v-row>
 
-                    <v-row v-if="data.role === 'client'" align="center">
-                        <v-col cols="12" md="4">
-                            <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.projectLabel') }}</p>
-                        </v-col>
-                        <v-col cols="12" md="8" align='center'>
-                            <v-select hide-details data-test-id="userProfile-selectRole" v-model="data.projectId"
-                                :disabled="!props.projects" density="compact" color="primary" class="my-5 rounded"
-                                item-title="name" item-value="_id" variant="solo" :items="props.projects"
-                                name="projectId" />
-                        </v-col>
-                    </v-row>
-
-                    <v-row v-if="data.role === 'client'" align="center">
-                        <v-col cols="12" md="4">
-                            <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.permissionLabel') }}</p>
-                        </v-col>
-                        <v-col cols="12" md="8" align='center'>
-                            <v-select hide-details data-test-id="userProfile-selectRole" v-model="data.permission"
-                                :disabled="!props.permissions" density="compact" color="primary" class="my-5 rounded"
-                                variant="solo" :items="props.permissions" name="projectId" />
-                        </v-col>
-                    </v-row>
+                    <div v-if="data.role === 'client'">
+                        <v-row v-for="(item, i) in data.projectsAccess" :key="i"
+                            class="justify-start align-center mt-2">
+                            <v-col cols="5">
+                                <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.projectLabel') }}</p>
+                                <v-select hide-details data-test-id="userProfile-selectRole" v-model="item.projectId"
+                                    :disabled="!props.projects" density="compact" color="primary" class="my-5 rounded"
+                                    item-title="name" item-value="_id" variant="solo" :items="props.projects"
+                                    name="projectId" />
+                            </v-col>
+                            <v-col>
+                                <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.permissionLabel') }}</p>
+                                <v-select hide-details data-test-id="userProfile-selectRole" v-model="item.permission"
+                                    :disabled="!props.permissions" density="compact" color="primary"
+                                    class="my-5 rounded" variant="solo" :items="props.permissions" name="permission" />
+                            </v-col>
+                            <v-col cols="auto">
+                                <div class="tooltip-container">
+                                    <v-btn variant="text" class="mt-5" color="error"
+                                        @click="data.projectsAccess.splice(i, 1)" icon="mdi-delete" />
+                                    <span class="tooltip">{{ $t('mua.accountInviteMembers.removePermissionLabel')
+                                    }}</span>
+                                </div>
+                            </v-col>
+                        </v-row>
+                        <div class="w-100 d-flex flex-wrap justify-center align-center text-center my-7">
+                            <v-divider style="flex: 1; margin-right: 10px;"></v-divider>
+                            <v-tooltip location="top">
+                                <template v-slot:activator="{ props: tooltipProps }">
+                                    <v-btn icon="mdi-plus" v-bind="tooltipProps"
+                                        @click="data.projectsAccess.push({ projectId: '', permission: props.permissions[0] })" />
+                                </template>
+                                <span>{{ $t('mua.accountInviteMembers.addPermissionLabel') }}</span>
+                            </v-tooltip>
+                            <v-divider style="flex: 1; margin-left: 10px;"></v-divider>
+                        </div>
+                    </div>
 
                     <v-row v-if="cb" class="justify-center">
                         <p class="font-weight-bold" data-test-id="inviteMember-headerCb">{{
@@ -144,3 +160,35 @@ defineExpose({
         </v-card>
     </v-dialog>
 </template>
+<style scoped>
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: rgba(61, 61, 61, 0.911);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 10px;
+    /* Added horizontal padding for better spacing */
+    position: absolute;
+    z-index: 5;
+    bottom: 90%;
+    left: 50%;
+    /* Center the tooltip horizontally */
+    transform: translateX(-50%);
+    /* Adjust to center it */
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+</style>

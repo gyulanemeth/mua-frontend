@@ -196,6 +196,8 @@
       "roleLabel": "Role",
       "projectLabel": "Project",
       "permissionLabel": "Permission",
+      "removePermissionLabel": "Delete permission",
+      "addPermissionLabel": "Add permission",
       "cb": {
         "header": "Invitation sent.",
         "cbBtn": "Invite ANOTHER"
