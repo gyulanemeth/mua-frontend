@@ -433,7 +433,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     store.account = { _id: '12test12' }
-    const res = await store.sendInvitation('user1@gmail.com')
+    const res = await store.sendInvitation({ email: 'user1@gmail.com'})
     expect(res.success).toEqual(true)
   })
 
@@ -455,7 +455,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     store.account = { _id: '12test12' }
-    const res = await store.reSendInvitation('user1@gmail.com')
+    const res = await store.reSendInvitation({ email: 'user1@gmail.com'})
     expect(res.success).toEqual(true)
   })
 
@@ -464,7 +464,7 @@ describe('users Store', () => {
     const store = usersStore()
     store.account = {}
     localStorage.removeItem('accountId')
-    const res = await store.sendInvitation()
+    const res = await store.sendInvitation({ email: 'user1@gmail.com'})
     expect(res.message).toEqual('account ID Is Required')
   })
 
@@ -473,7 +473,7 @@ describe('users Store', () => {
     const store = usersStore()
     store.account = {}
     localStorage.removeItem('accountId')
-    const res = await store.reSendInvitation()
+    const res = await store.reSendInvitation({ email: 'user1@gmail.com'})
     expect(res.message).toEqual('account ID Is Required')
   })
 
