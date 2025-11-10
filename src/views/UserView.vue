@@ -15,6 +15,7 @@ const router = useRouter()
 const data = ref()
 const accountName = ref()
 const currentUser = ref()
+const projects = ref([])
 
 await usersStore.readOne()
 if (!usersStore.user.role) {
@@ -47,9 +48,15 @@ usersStore.sort = { updatedAt: -1 }
 await usersStore.load()
 data.value = usersStore.items
 
+const listProjects = await usersStore.listProjects({ accountId: localStorage.getItem('accountId') }, { limit: 'unlimted' })
+projects.value = listProjects || []
+
 async function handleUpdateRole (params) {
+  console.log(params)
+
   const res = await usersStore.patchRole(params.id, {
-    role: params.role
+    role: params.role,
+    projectsAccess: params.projectsAccess
   })
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.roleUpdateAlert') })
@@ -71,7 +78,7 @@ async function handleDeleteUser (params) {
 }
 
 async function handleInviteMember (params, statusCallBack) {
-  const res = await usersStore.sendInvitation(params.email)
+  const res = await usersStore.sendInvitation(params)
   statusCallBack(!res.message)
   if (!res.message) {
     await usersStore.load()
@@ -80,7 +87,7 @@ async function handleInviteMember (params, statusCallBack) {
 }
 
 async function handleReInviteMember (params) {
-  const res = await usersStore.reSendInvitation(params.email)
+  const res = await usersStore.reSendInvitation(params)
   if (!res.message) {
     useSystemMessagesStore().addSuccess({ message: tm('mua.userView.invitationSentAlert') })
   }
@@ -131,9 +138,9 @@ async function searchBarHandler (filter, statusCallBack) {
 
 <template>
 
-  <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :roles="['admin', 'user']"
-    @loadMore='loadMore' @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"
-    @sortEventHandler="handleSortEvent" @updateRoleEventHandler="handleUpdateRole"
-    @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+  <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
+    :roles="['admin', 'user', 'client']" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
+    @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
+    @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>

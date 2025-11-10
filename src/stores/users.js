@@ -102,6 +102,14 @@ export default (connectors) => {
           return e
         }
       },
+      async listProjects (params, query) {
+        try {
+          const res = await connectors.user.listProjects(params, query)
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+        }
+      },
       async loginWithProvider ({ id, provider }) {
         try {
           const res = await connectors.user.loginWithProvider({ id, provider })
@@ -213,24 +221,24 @@ export default (connectors) => {
           return e
         }
       },
-      async sendInvitation (email) {
+      async sendInvitation (data) {
         try {
           if (!localStorage.getItem('accountId')) {
             throw new RouteError('account ID Is Required')
           }
-          const res = await connectors.invitation.send({ email, id: localStorage.getItem('accountId') })
+          const res = await connectors.invitation.send({ ...data, id: localStorage.getItem('accountId') })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
         }
       },
-      async reSendInvitation (email) {
+      async reSendInvitation (data) {
         try {
           if (!localStorage.getItem('accountId')) {
             throw new RouteError('account ID Is Required')
           }
-          const res = await connectors.invitation.reSend({ email, id: localStorage.getItem('accountId') })
+          const res = await connectors.invitation.reSend({ ...data, id: localStorage.getItem('accountId') })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

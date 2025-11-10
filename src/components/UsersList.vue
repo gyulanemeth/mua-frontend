@@ -13,6 +13,8 @@ const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEve
 const props = defineProps({
   items: Array,
   roles: Array,
+  projects: Array,
+  permissions: Array,
   currentAccName: String,
   currentUser: Object
 })
@@ -66,7 +68,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
           color="primary" @click="inviteMembersDialog.show()">
           {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
-        <Invite ref="inviteMembersDialog" :name="props.currentAccName"
+        <Invite ref="inviteMembersDialog" :permissions="props.permissions" :projects="props.projects" :roles="props.roles" :name="props.currentAccName"
           @inviteEventHandler='redirectInviteEventHandler' />
       </v-col>
       <v-spacer />
@@ -165,13 +167,13 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
             </v-card-subtitle>
           </v-card-text>
           <v-btn color="grey" class="mt-3" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text"
-            size="small" @click="$emit('reInviteEventHandler', { email: item.data.email })">
+            size="small" @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
             <v-tooltip activator="parent" location="top">{{ $t('mua.userList.resendMessage') }}</v-tooltip>
             <v-icon size="20">mdi-email-sync</v-icon>
           </v-btn>
         </v-row>
         <v-card-actions data-test-id="userList-card-0-action" v-if="props.currentUser._id !== item._id">
-          <UserCard @updateRoleEventHandler='redirectUpdateRoleEventHandler' :roles="props.roles" :data="item.data" />
+          <UserCard @updateRoleEventHandler='redirectUpdateRoleEventHandler' :permissions="props.permissions" :projects="props.projects" :roles="props.roles" :data="item.data" />
 
           <v-spacer></v-spacer>
           <DeleteUser v-if="props.currentUser.role === 'admin'" @deleteEventHandler='redirectDeleteEventHandler'

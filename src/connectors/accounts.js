@@ -147,7 +147,7 @@ export default function (fetch, apiUrl) {
     if (!data || !data.id || !data.email) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postSendInvitation({ id: data.id }, { email: data.email })
+    const res = await postSendInvitation({ id: data.id }, { email: data.email, role: data.role, projectId: data.projectId, permission: data.permission })
     return res
   }
 
@@ -155,7 +155,7 @@ export default function (fetch, apiUrl) {
     if (!data || !data.id || !data.email) {
       throw new RouteError('Email Is Required')
     }
-    const res = await postReSendInvitation({ id: data.id }, { email: data.email })
+    const res = await postReSendInvitation({ id: data.id }, { email: data.email, role: data.role, projectId: data.projectId, permission: data.permission })
     return res
   }
 

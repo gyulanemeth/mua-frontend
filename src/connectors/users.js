@@ -46,6 +46,8 @@ export default function (fetch, apiUrl) {
 
   const generateUploadImage = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/profile-picture`
 
+  const generateGetProjectsRoute = (params) => `/v1/accounts/${params.accountId}/projects-for-access`
+
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
@@ -69,12 +71,21 @@ export default function (fetch, apiUrl) {
   const postUploadImage = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImage, generateAdditionalHeaders)
   const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
+  const getProjectsRoute = createGetConnector(fetch, apiUrl, generateGetProjectsRoute, generateAdditionalHeaders)
 
   const list = async function (param, query) {
     if (!param) {
       throw new RouteError('Account ID Is Required')
     }
     const res = await getUserList(param, query)
+    return res
+  }
+
+  const listProjects = async function (param, query) {
+    if (!param) {
+      throw new RouteError('Account ID Is Required')
+    }
+    const res = await getProjectsRoute(param, query)
     return res
   }
 
@@ -188,7 +199,7 @@ export default function (fetch, apiUrl) {
     if (!formData || !formData.id || !formData.accountId || !body.role) {
       throw new RouteError('User ID, Account ID And New Role Is Required')
     }
-    const res = await updateRole({ id: formData.id, accountId: formData.accountId }, { role: body.role })
+    const res = await updateRole({ id: formData.id, accountId: formData.accountId }, body)
     return res
   }
 
@@ -267,6 +278,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects
   }
 }

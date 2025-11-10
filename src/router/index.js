@@ -353,6 +353,14 @@ export const useMuaRoutes = (router) => {
       },
       {
         path: ':urlFriendlyName/users',
+        beforeEnter: async (to, from, next) => {
+          const decoded = jwtDecode(localStorage.getItem('accessToken'))
+          if (decoded.type === 'user' && decoded.role === 'client') {
+            const accountsStore = await useAccountsStore().readOne()
+            return next(`/accounts/${accountsStore.urlFriendlyName}/dashboard`)
+          }
+          next()
+        },
         name: 'accounts-users',
         component: UserView,
         meta: {
