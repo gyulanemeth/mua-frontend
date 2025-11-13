@@ -48,7 +48,7 @@ usersStore.sort = { updatedAt: -1 }
 await usersStore.load()
 data.value = usersStore.items
 
-const listProjects = await usersStore.listProjects({ accountId: localStorage.getItem('accountId') }, { limit: 'unlimted' })
+const listProjects = await usersStore.listProjects({ accountId: localStorage.getItem('accountId') }, { limit: 'unlimited' })
 projects.value = listProjects || []
 
 async function handleUpdateRole (params) {
