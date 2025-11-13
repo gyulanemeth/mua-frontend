@@ -52,8 +52,6 @@ const listProjects = await usersStore.listProjects({ accountId: localStorage.get
 projects.value = listProjects || []
 
 async function handleUpdateRole (params) {
-  console.log(params)
-
   const res = await usersStore.patchRole(params.id, {
     role: params.role,
     projectsAccess: params.projectsAccess

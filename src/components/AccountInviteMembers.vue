@@ -20,9 +20,17 @@ const resetForm = () => {
   Object.keys(data.value).forEach(key => {
     data.value[key] = null
   })
+  data.value = {
+    name: props.name,
+    projectsAccess: [{ projectId: '', permission: props.permissions[0] }]
+  }
 }
 
 const show = () => {
+  data.value = {
+    name: props.name,
+    projectsAccess: [{ projectId: '', permission: props.permissions[0] }]
+  }
   dialogShown.value = true
 }
 
@@ -48,7 +56,7 @@ defineExpose({
 
                 <v-toolbar color="white" align="center">
                     <v-toolbar-title class="font-weight-bold">{{ $t('mua.accountInviteMembers.header')
-                    }}</v-toolbar-title>
+                        }}</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text align="start">
 
@@ -121,7 +129,7 @@ defineExpose({
                                     <v-btn variant="text" class="mt-5" color="error"
                                         @click="data.projectsAccess.splice(i, 1)" icon="mdi-delete" />
                                     <span class="tooltip">{{ $t('mua.accountInviteMembers.removePermissionLabel')
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </v-col>
                         </v-row>
