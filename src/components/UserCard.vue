@@ -9,7 +9,7 @@ const props = defineProps({
 })
 
 const role = ref(props.data.role)
-const projectsAccess = ref(props.data.projectsAccess)
+const projectsAccess = ref(props.data.projectsAccess || [])
 
 const dialogShown = ref()
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
@@ -20,7 +20,7 @@ const show = () => {
 
 defineExpose({
   show,
-  hide: () => { dialogShown.value = false; role.value = props.data.role; projectsAccess.value = props.data.projectsAccess }
+  hide: () => { dialogShown.value = false; role.value = props.data.role; projectsAccess.value = props.data.projectsAccess || [] }
 })
 
 </script>
