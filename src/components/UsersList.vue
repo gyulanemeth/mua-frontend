@@ -28,20 +28,20 @@ const debouncedFn = useDebounceFn(() => {
   emit('searchEvent', filter.value, () => { loading.value = false })
 }, 500)
 
-function redirectSortEventHandler (params) {
+function redirectSortEventHandler(params) {
   loading.value = true
   emit('sortEventHandler', params, () => { loading.value = false })
 }
 
-function redirectDeleteEventHandler (data) {
+function redirectDeleteEventHandler(data) {
   emit('deleteEventHandler', data)
 }
 
-function redirectInviteEventHandler (data, cb) {
+function redirectInviteEventHandler(data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectUpdateRoleEventHandler (data) {
+function redirectUpdateRoleEventHandler(data) {
   emit('updateRoleEventHandler', data)
 }
 
@@ -49,10 +49,23 @@ const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 
-async function visibilityChanged (isVisible) {
+async function visibilityChanged(isVisible) {
   if (isVisible) {
     emit('loadMore')
   }
+}
+
+const getProjectsAccessSummary = (projectsAccess) => {
+  const res = projectsAccess.map(item => {
+    const project = props.projects.find(p => p._id === item.projectId)
+    return {
+      name: project?.name || '(Unknown Project)',
+      permission: item.permission
+    }
+  })
+  console.log(res);
+
+  return res
 }
 
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
@@ -64,12 +77,12 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
     <v-layout style="z-index: 10;" class="d-flex flex-wrap mx-0 ">
 
       <v-col cols="12" md="auto" class="pt-3 d-flex align-end">
-        <v-btn append-icon="mdi-account-plus" style="height: 40px;" block data-test-id="open-inviteDialog" size="small" variant="outlined"
-          color="primary" @click="inviteMembersDialog.show()">
+        <v-btn append-icon="mdi-account-plus" style="height: 40px;" block data-test-id="open-inviteDialog" size="small"
+          variant="outlined" color="primary" @click="inviteMembersDialog.show()">
           {{ $t('mua.accountInviteMembers.openBtn') }}
         </v-btn>
-        <Invite ref="inviteMembersDialog" :permissions="props.permissions" :projects="props.projects" :roles="props.roles" :name="props.currentAccName"
-          @inviteEventHandler='redirectInviteEventHandler' />
+        <Invite ref="inviteMembersDialog" :permissions="props.permissions" :projects="props.projects"
+          :roles="props.roles" :name="props.currentAccName" @inviteEventHandler='redirectInviteEventHandler' />
       </v-col>
       <v-spacer />
       <v-col cols="12" md="4" class="pt-5">
@@ -77,9 +90,10 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
           variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
-      <v-col cols="12" md="auto"  class="d-flex align-end">
-        <v-select @update:modelValue="(params)=>redirectSortEventHandler(params)" v-model="sortBy" hide-details density="compact" item-name="name" item-value="value"
-          :label="$t('mua.listAdminsAndAccounts.sortLabel')" base-color="primary" color="primary"
+      <v-col cols="12" md="auto" class="d-flex align-end">
+        <v-select @update:modelValue="(params) => redirectSortEventHandler(params)" v-model="sortBy" hide-details
+          density="compact" item-name="name" item-value="value" :label="$t('mua.listAdminsAndAccounts.sortLabel')"
+          base-color="primary" color="primary"
           :items="[{ name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.name'), value: { name: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.updated'), value: { updatedAt: -1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: 1 } }, { name: $t('mua.listAdminsAndAccounts.sort.created'), value: { createdAt: -1 } }]"
           variant="outlined">
           <template v-slot:selection="{ item }">
@@ -133,7 +147,8 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
             <v-icon color="error" icon="mdi-cancel" size="x-large"></v-icon>
           </v-col>
           <v-col cols="10" class="pt-4 ml-0 pl-0">
-            <p class="text-body-1 font-weight-bold" v-if="filter.length === 0">{{ $t('mua.emptyList.addFirstElement') }}</p>
+            <p class="text-body-1 font-weight-bold" v-if="filter.length === 0">{{ $t('mua.emptyList.addFirstElement') }}
+            </p>
             <p class="text-body-1 font-weight-bold" v-else>{{ $t('mua.emptyList.searchNoResult') }}</p>
           </v-col>
         </v-row>
@@ -141,8 +156,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-card>
     </v-layout>
     <v-layout style="z-index: 10;" class="d-flex flex-wrap" v-else>
-      <v-card :class="`mx-3 my-5 align-self-start`" min-width="350"
-        v-for="item in props.items" :key="item._id">
+      <v-card :class="`mx-3 my-5 align-self-start`" min-width="350" v-for="item in props.items" :key="item._id">
         <v-card-title>
           <p data-test-id="userList-card-0-name">{{ item.data.name }}<span class="font-weight-light pl-2">{{
             item.data.role }}</span></p>
@@ -165,15 +179,25 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                 Date(item.data.updatedAt).toLocaleTimeString('en-US') }}
 
             </v-card-subtitle>
+
+            <v-card-subtitle v-if="item.data.role === 'client'" class="px-0 mt-2">
+              <span v-for="(item, i) in getProjectsAccessSummary(item.data?.projectsAccess || [])" :key="i">
+                {{ item.name }} ({{ item.permission }})<span
+                  v-if="item.data && i < item.data.projectsAccess.length - 1">,
+                </span>
+              </span>
+            </v-card-subtitle>
           </v-card-text>
           <v-btn color="grey" class="mt-3" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text"
-            size="small" @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
+            size="small"
+            @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
             <v-tooltip activator="parent" location="top">{{ $t('mua.userList.resendMessage') }}</v-tooltip>
             <v-icon size="20">mdi-email-sync</v-icon>
           </v-btn>
         </v-row>
         <v-card-actions data-test-id="userList-card-0-action" v-if="props.currentUser._id !== item._id">
-          <UserCard @updateRoleEventHandler='redirectUpdateRoleEventHandler' :permissions="props.permissions" :projects="props.projects" :roles="props.roles" :data="item.data" />
+          <UserCard @updateRoleEventHandler='redirectUpdateRoleEventHandler' :permissions="props.permissions"
+            :projects="props.projects" :roles="props.roles" :data="item.data" />
 
           <v-spacer></v-spacer>
           <DeleteUser v-if="props.currentUser.role === 'admin'" @deleteEventHandler='redirectDeleteEventHandler'
