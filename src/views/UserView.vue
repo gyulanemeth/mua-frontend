@@ -110,6 +110,9 @@ async function handleSortEvent (sort, statusCallBack) {
 async function searchBarHandler (filter, statusCallBack) {
   if (filter === '') {
     usersStore.filter = {}
+  } else if (filter.projectId) {
+    usersStore.filter['projectsAccess.projectId'] = filter.projectId
+    usersStore.filter.role = 'client'
   } else {
     usersStore.filter = {
       $or: [{
@@ -137,8 +140,9 @@ async function searchBarHandler (filter, statusCallBack) {
 <template>
 
   <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
-    :roles="['admin', 'user', 'client']" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
-    @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
-    @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+    :roles="['admin', 'user', 'client']" :permissions="['viewer', 'editor']" @loadMore='loadMore'
+    @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"
+    @sortEventHandler="handleSortEvent" @updateRoleEventHandler="handleUpdateRole"
+    @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>

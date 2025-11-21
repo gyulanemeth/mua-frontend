@@ -20,28 +20,39 @@ const props = defineProps({
 })
 
 const filter = ref('')
+const projectFilter = ref(null)
 const loading = ref()
 const inviteMembersDialog = ref()
 const sortBy = ref({ updatedAt: -1 })
 
 const debouncedFn = useDebounceFn(() => {
+  projectFilter.value = null
   emit('searchEvent', filter.value, () => { loading.value = false })
 }, 500)
 
-function redirectSortEventHandler(params) {
+const debouncedProjectFn = useDebounceFn(() => {
+  filter.value = ''
+  if (projectFilter.value) {
+    emit('searchEvent', { projectId: projectFilter.value }, () => { loading.value = false })
+  } else {
+    emit('searchEvent', '', () => { loading.value = false })
+  }
+}, 500)
+
+function redirectSortEventHandler (params) {
   loading.value = true
   emit('sortEventHandler', params, () => { loading.value = false })
 }
 
-function redirectDeleteEventHandler(data) {
+function redirectDeleteEventHandler (data) {
   emit('deleteEventHandler', data)
 }
 
-function redirectInviteEventHandler(data, cb) {
+function redirectInviteEventHandler (data, cb) {
   emit('inviteEventHandler', data, cb)
 }
 
-function redirectUpdateRoleEventHandler(data) {
+function redirectUpdateRoleEventHandler (data) {
   emit('updateRoleEventHandler', data)
 }
 
@@ -49,7 +60,7 @@ const profilePicture = (item) => {
   return item.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg'
 }
 
-async function visibilityChanged(isVisible) {
+async function visibilityChanged (isVisible) {
   if (isVisible) {
     emit('loadMore')
   }
@@ -60,7 +71,8 @@ const getProjectsAccessSummary = (projectsAccess) => {
     const project = props.projects.find(p => p._id === item.projectId)
     return {
       name: project?.name || '(Unknown Project)',
-      permission: item.permission
+      permission: item.permission,
+      _id: item.projectId
     }
   })
 }
@@ -86,6 +98,11 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         <v-text-field hide-details density="compact" data-test-id="userList-searchBar" label="Search"
           variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="auto" class="d-flex align-end">
+        <v-select hide-details v-model="projectFilter" @update:modelValue="loading = true; debouncedProjectFn()" label="Select project" :disabled="!props.projects" style="min-width: 200px"
+          density="compact" base-color="primary" color="primary" class="rounded" item-title="name" item-value="_id" variant="outlined"
+          :items="[{name: 'Filter by Project Access', _id: null},...props.projects]" name="projectId" />
       </v-col>
       <v-col cols="12" md="auto" class="d-flex align-end">
         <v-select @update:modelValue="(params) => redirectSortEventHandler(params)" v-model="sortBy" hide-details
@@ -154,46 +171,52 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
     </v-layout>
     <v-layout style="z-index: 10;" class="d-flex flex-wrap" v-else>
       <v-card v-for="item in props.items"
-        :class="`mx-3 my-5 d-flex flex-column flex-wrap py-0 align-center justify-center ${props.currentUser._id === item._id ? 'border-lg border-opacity-50 border-primary' : ''}`"
-        width="350" :key="item._id">
-        <v-avatar size="150" class="mt-2">
-          <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px" cover></v-img>
-        </v-avatar>
-        <v-card-text class="d-flex flex-wrap my-0 py-0">
+        :class="`mx-3 my-5 d-flex flex-column flex-wrap py-0 align-center justify-center`" width="350" :key="item._id">
+
+        <v-badge v-if="item.data.role === 'admin'" color="warning" bordered location="bottom" rounded="pill"
+          :content="item.data.role">
+          <v-avatar size="150" color="warning">
+            <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
+              class="align-self-stretch" cover></v-img>
+          </v-avatar>
+        </v-badge>
+
+        <v-badge v-if="item.data.role === 'user'" color="success" bordered location="bottom" rounded="pill"
+          :content="item.data.role">
+          <v-avatar size="150" color="success">
+            <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
+              class="align-self-stretch" cover></v-img>
+          </v-avatar>
+        </v-badge>
+
+        <v-badge v-if="item.data.role === 'client'" color="primary" bordered location="bottom" rounded="pill"
+          :content="item.data.role">
+          <v-avatar size="150" color="primary">
+            <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
+              class="align-self-stretch" cover></v-img>
+          </v-avatar>
+        </v-badge>
+
+        <v-card-text class="d-flex flex-wrap mb-0 py-0">
           <div class="w-100 mt-5">
-            <p data-test-id="userList-card-0-name" class="text-center">{{ item.data.name || '-' }}</p>
+            <p data-test-id="userList-card-0-name" class="text-center font-weight-bold">{{ item.data.name || '-' }}</p>
           </div>
-          <div class="w-100 text-center my-2">
-            <v-chip variant="tonal" color="primary">
-              {{ item.data.role }}
+          <v-card-subtitle class="w-100 mt-0 text-center">
+            <p data-test-id="userList-card-0-email">{{ item.data.email }}</p>
+            <p v-if="item.data.role === 'client'" data-test-id="userList-card-0-name" class="text-center mt-2">- Project
+              Access -</p>
+          </v-card-subtitle>
+          <div v-if="item.data.role === 'client'" class="w-100 text-center">
+            <v-chip
+              v-for="(item, i) in getProjectsAccessSummary(item.data?.projectsAccess || [])" :key="i" class="ml-3 my-2"
+              variant="tonal" color="primary" @click="()=> { loading = true; projectFilter = item._id; debouncedProjectFn() }"
+              :prepend-icon="item.permission === 'viewer' ? 'mdi-eye-outline' : 'mdi-pencil-outline'">
+              <p>{{ item.name }}</p>
             </v-chip>
           </div>
-          <v-card-subtitle class="w-100 mt-2 justify-self-start">
-            <p data-test-id="userList-card-0-email">{{ $t('mua.userList.emailLabel') }}: {{ item.data.email }}</p>
-            <p class="mt-2" v-if="item.data.createdAt">{{ $t('mua.userList.creationDateLabel') }}: {{ new
-              Date(item.data.createdAt).toJSON().slice(0, 10) }}@{{ new
-                Date(item.data.createdAt).toLocaleTimeString('en-US') }}</p>
-            <p class="mt-2" v-if="item.data.updatedAt"> {{ $t('mua.userList.lastEditedLabel') }}: {{ new
-              Date(item.data.updatedAt).toJSON().slice(0, 10) }}@{{ new
-                Date(item.data.updatedAt).toLocaleTimeString('en-US') }}</p>
-          </v-card-subtitle>
-          <v-card-subtitle v-if="item.data.role === 'client'" class="mt-2 w-100">
-            <p data-test-id="userList-card-0-name">Project Access:</p>
-            <div v-for="(item, i) in getProjectsAccessSummary(item.data?.projectsAccess || [])" :key="i"
-              class="w-100 d-flex mt-2 ml-2 px-0 pb-2 border-b">
-              <p>
-                {{ item.name }}
-              </p>
-              <v-spacer />
-              <p>
-                ({{ item.permission }})
-              </p>
-            </div>
-          </v-card-subtitle>
         </v-card-text>
         <v-spacer />
-        <v-btn color="grey" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text"
-          size="small"
+        <v-btn color="grey" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text" size="small"
           @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
           {{ $t('mua.userList.resendMessage') }}
         </v-btn>

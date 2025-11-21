@@ -296,9 +296,6 @@
     "userList": {
       "openBtn": "View profile",
       "resendMessage": "Resend invitation",
-      "lastEditedLabel": "Last Edited",
-      "creationDateLabel": "Creation Date",
-      "emailLabel": "Email",
       "sortLabel": "Sort By",
       "sort": {
         "name": "Name",
