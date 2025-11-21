@@ -56,16 +56,13 @@ async function visibilityChanged(isVisible) {
 }
 
 const getProjectsAccessSummary = (projectsAccess) => {
-  const res = projectsAccess.map(item => {
+  return projectsAccess.map(item => {
     const project = props.projects.find(p => p._id === item.projectId)
     return {
       name: project?.name || '(Unknown Project)',
       permission: item.permission
     }
   })
-  console.log(res);
-
-  return res
 }
 
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
@@ -156,45 +153,50 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
       </v-card>
     </v-layout>
     <v-layout style="z-index: 10;" class="d-flex flex-wrap" v-else>
-      <v-card :class="`mx-3 my-5 align-self-start`" min-width="350" v-for="item in props.items" :key="item._id">
-        <v-card-title>
-          <p data-test-id="userList-card-0-name">{{ item.data.name }}<span class="font-weight-light pl-2">{{
-            item.data.role }}</span></p>
-        </v-card-title>
-        <v-img :src="profilePicture(item)" height="150px" cover></v-img>
-        <v-row class="pa-3">
-          <v-card-text>
-            <v-card-subtitle class="px-0">
-              {{ item.data.email }}
-              <span class="ml-2" v-if="props.currentUser._id === item._id"> - Me -</span>
-            </v-card-subtitle>
-            <v-card-subtitle v-if="item.data.createdAt" class="px-0 mt-2">
-              {{ $t('mua.userList.creationDateLabel') }}: {{ new
-                Date(item.data.createdAt).toJSON().slice(0, 10) }}@{{ new
-                Date(item.data.createdAt).toLocaleTimeString('en-US') }}
-            </v-card-subtitle>
-            <v-card-subtitle v-if="item.data.updatedAt" class="px-0 mt-2">
-              {{ $t('mua.userList.lastEditedLabel') }}: {{ new
-                Date(item.data.updatedAt).toJSON().slice(0, 10) }}@{{ new
-                Date(item.data.updatedAt).toLocaleTimeString('en-US') }}
-
-            </v-card-subtitle>
-
-            <v-card-subtitle v-if="item.data.role === 'client'" class="px-0 mt-2">
-              <span v-for="(item, i) in getProjectsAccessSummary(item.data?.projectsAccess || [])" :key="i">
-                {{ item.name }} ({{ item.permission }})<span
-                  v-if="item.data && i < item.data.projectsAccess.length - 1">,
-                </span>
-              </span>
-            </v-card-subtitle>
-          </v-card-text>
-          <v-btn color="grey" class="mt-3" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text"
-            size="small"
-            @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
-            <v-tooltip activator="parent" location="top">{{ $t('mua.userList.resendMessage') }}</v-tooltip>
-            <v-icon size="20">mdi-email-sync</v-icon>
-          </v-btn>
-        </v-row>
+      <v-card v-for="item in props.items"
+        :class="`mx-3 my-5 d-flex flex-column flex-wrap py-0 align-center justify-center ${props.currentUser._id === item._id ? 'border-lg border-opacity-50 border-primary' : ''}`"
+        width="350" :key="item._id">
+        <v-avatar size="150" class="mt-2">
+          <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px" cover></v-img>
+        </v-avatar>
+        <v-card-text class="d-flex flex-wrap my-0 py-0">
+          <div class="w-100 mt-5">
+            <p data-test-id="userList-card-0-name" class="text-center">{{ item.data.name || '-' }}</p>
+          </div>
+          <div class="w-100 text-center my-2">
+            <v-chip variant="tonal" color="primary">
+              {{ item.data.role }}
+            </v-chip>
+          </div>
+          <v-card-subtitle class="w-100 mt-2 justify-self-start">
+            <p data-test-id="userList-card-0-email">{{ $t('mua.userList.emailLabel') }}: {{ item.data.email }}</p>
+            <p class="mt-2" v-if="item.data.createdAt">{{ $t('mua.userList.creationDateLabel') }}: {{ new
+              Date(item.data.createdAt).toJSON().slice(0, 10) }}@{{ new
+                Date(item.data.createdAt).toLocaleTimeString('en-US') }}</p>
+            <p class="mt-2" v-if="item.data.updatedAt"> {{ $t('mua.userList.lastEditedLabel') }}: {{ new
+              Date(item.data.updatedAt).toJSON().slice(0, 10) }}@{{ new
+                Date(item.data.updatedAt).toLocaleTimeString('en-US') }}</p>
+          </v-card-subtitle>
+          <v-card-subtitle v-if="item.data.role === 'client'" class="mt-2 w-100">
+            <p data-test-id="userList-card-0-name">Project Access:</p>
+            <div v-for="(item, i) in getProjectsAccessSummary(item.data?.projectsAccess || [])" :key="i"
+              class="w-100 d-flex mt-2 ml-2 px-0 pb-2 border-b">
+              <p>
+                {{ item.name }}
+              </p>
+              <v-spacer />
+              <p>
+                ({{ item.permission }})
+              </p>
+            </div>
+          </v-card-subtitle>
+        </v-card-text>
+        <v-spacer />
+        <v-btn color="grey" v-if="props.currentUser.role === 'admin' && !item.data.name" variant="text"
+          size="small"
+          @click="$emit('reInviteEventHandler', { email: item.data.email, role: item.data.role, projectId: item.data.projectId, permission: item.data.permission })">
+          {{ $t('mua.userList.resendMessage') }}
+        </v-btn>
         <v-card-actions data-test-id="userList-card-0-action" v-if="props.currentUser._id !== item._id">
           <UserCard @updateRoleEventHandler='redirectUpdateRoleEventHandler' :permissions="props.permissions"
             :projects="props.projects" :roles="props.roles" :data="item.data" />
