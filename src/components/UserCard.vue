@@ -14,6 +14,14 @@ const projectsAccess = ref(props.data.projectsAccess || [])
 const dialogShown = ref()
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 
+const getAvailableProjects = (rowIndex) => {
+  const selectedIds = projectsAccess.value
+    .map((item, i) => i !== rowIndex ? item.projectId : null)
+    .filter(Boolean)
+
+  return (props.projects || []).filter(project => !selectedIds.includes(project._id))
+}
+
 const show = () => {
   dialogShown.value = true
 }
@@ -90,7 +98,7 @@ defineExpose({
                                 <p class="font-weight-bold">{{ $t('mua.userCard.projectLabel') }}</p>
                                 <v-select hide-details data-test-id="userProfile-selectRole" v-model="item.projectId"
                                     :disabled="!props.projects" density="compact" color="primary" class="my-5 rounded"
-                                    item-title="name" item-value="_id" variant="solo" :items="props.projects"
+                                    item-title="name" item-value="_id" variant="solo" :items="getAvailableProjects(i)"
                                     name="projectId" />
                             </v-col>
                             <v-col>

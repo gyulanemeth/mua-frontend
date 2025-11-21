@@ -26,6 +26,14 @@ const resetForm = () => {
   }
 }
 
+const getAvailableProjects = (rowIndex) => {
+  const selectedIds = data.value.projectsAccess
+    .map((item, i) => i !== rowIndex ? item.projectId : null)
+    .filter(Boolean)
+
+  return (props.projects || []).filter(project => !selectedIds.includes(project._id))
+}
+
 const show = () => {
   data.value = {
     name: props.name,
@@ -115,7 +123,7 @@ defineExpose({
                                 <p class="font-weight-bold">{{ $t('mua.accountInviteMembers.projectLabel') }}</p>
                                 <v-select hide-details data-test-id="userProfile-selectRole" v-model="item.projectId"
                                     :disabled="!props.projects" density="compact" color="primary" class="my-5 rounded"
-                                    item-title="name" item-value="_id" variant="solo" :items="props.projects"
+                                    item-title="name" item-value="_id" variant="solo" :items="getAvailableProjects(i)"
                                     name="projectId" />
                             </v-col>
                             <v-col>
