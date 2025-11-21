@@ -14,6 +14,14 @@ const projectsAccess = ref(props.data.projectsAccess || [])
 const dialogShown = ref()
 const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
 
+const getAvailableProjects = (rowIndex) => {
+  const selectedIds = projectsAccess.value
+    .map((item, i) => i !== rowIndex ? item.projectId : null)
+    .filter(Boolean)
+
+  return (props.projects || []).filter(project => !selectedIds.includes(project._id))
+}
+
 const show = () => {
   dialogShown.value = true
 }
@@ -84,13 +92,18 @@ defineExpose({
                     </v-row>
 
                     <div v-if="role === 'client'">
-                        <v-row v-for="(item, i) in projectsAccess" :key="i"
-                            class="justify-start align-center mt-2">
+                        <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4"
+                            class="my-10 elevation-5 bg-blue-lighten-5">
+                            <v-banner-text class="text-primary mt-0">
+                                <div v-html="$t('mua.userCard.clientBanner')"></div>
+                            </v-banner-text>
+                        </v-banner>
+                        <v-row v-for="(item, i) in projectsAccess" :key="i" class="justify-start align-center mt-2">
                             <v-col cols="5">
                                 <p class="font-weight-bold">{{ $t('mua.userCard.projectLabel') }}</p>
                                 <v-select hide-details data-test-id="userProfile-selectRole" v-model="item.projectId"
                                     :disabled="!props.projects" density="compact" color="primary" class="my-5 rounded"
-                                    item-title="name" item-value="_id" variant="solo" :items="props.projects"
+                                    item-title="name" item-value="_id" variant="solo" :items="getAvailableProjects(i)"
                                     name="projectId" />
                             </v-col>
                             <v-col>
@@ -148,33 +161,33 @@ defineExpose({
 </template>
 <style scoped>
 .tooltip-container {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .tooltip {
-  visibility: hidden;
-  background-color: rgba(61, 61, 61, 0.911);
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-  padding: 10px 10px;
-  /* Added horizontal padding for better spacing */
-  position: absolute;
-  z-index: 5;
-  bottom: 90%;
-  left: 50%;
-  /* Center the tooltip horizontally */
-  transform: translateX(-50%);
-  /* Adjust to center it */
-  white-space: nowrap;
-  /* Prevent text wrapping */
-  opacity: 0;
-  transition: opacity 0.3s;
+    visibility: hidden;
+    background-color: rgba(61, 61, 61, 0.911);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px 10px;
+    /* Added horizontal padding for better spacing */
+    position: absolute;
+    z-index: 5;
+    bottom: 90%;
+    left: 50%;
+    /* Center the tooltip horizontally */
+    transform: translateX(-50%);
+    /* Adjust to center it */
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .tooltip-container:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
+    visibility: visible;
+    opacity: 1;
 }
 </style>

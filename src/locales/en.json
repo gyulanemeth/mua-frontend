@@ -198,6 +198,7 @@
       "permissionLabel": "Permission",
       "removePermissionLabel": "Delete permission",
       "addPermissionLabel": "Add permission",
+      "clientBanner": "<div style='font-size:14px; line-height:1.45; padding:12px; border-radius:8px;'><h3 style='margin:0 0 10px 0; font-weight:600;'>Roles &amp; Permissions</h3><p style='margin:6px 0 10px;'><strong>Admin</strong>: Full control over the account. Can manage account settings, users, and all projects.</p><p style='margin:6px 0 10px;'><strong>User</strong>: Works on projects but can’t manage account settings, or invite users.</p><p style='margin:0px 0 0px;'><strong>Client</strong>: Access limited to assigned projects only.</p><p style='margin:0 0 0 50px;'><strong>Viewer:</strong> Can view only / <strong>Editor:</strong> Can view &amp; make changes</p></div>",
       "cb": {
         "header": "Invitation sent.",
         "cbBtn": "Invite ANOTHER"
@@ -289,13 +290,12 @@
       "permissionLabel": "Permission",
       "picLabel": "Profile Picture",
       "submitBtn": "Save changes",
-      "closeBtn": "Close"
+      "closeBtn": "Close",
+      "clientBanner": "<div style='font-size:14px; line-height:1.45; padding:12px; border-radius:8px;'><h3 style='margin:0 0 10px 0; font-weight:600;'>Roles &amp; Permissions</h3><p style='margin:6px 0 10px;'><strong>Admin</strong>: Full control over the account. Can manage account settings, users, and all projects.</p><p style='margin:6px 0 10px;'><strong>User</strong>: Works on projects but can’t manage account settings, or invite users.</p><p style='margin:0px 0 0px;'><strong>Client</strong>: Access limited to assigned projects only.</p><p style='margin:0 0 0 50px;'><strong>Viewer:</strong> Can view only / <strong>Editor:</strong> Can view &amp; make changes</p></div>"
     },
     "userList": {
       "openBtn": "View profile",
       "resendMessage": "Resend invitation",
-      "lastEditedLabel": "Last Edited",
-      "creationDateLabel": "Creation Date",
       "sortLabel": "Sort By",
       "sort": {
         "name": "Name",
