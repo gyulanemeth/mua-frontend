@@ -99,10 +99,10 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
           variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
-      <v-col cols="12" md="auto" class="d-flex align-end">
+      <v-col v-if="props.projects" cols="12" md="auto" class="d-flex align-end">
         <v-select hide-details v-model="projectFilter" @update:modelValue="loading = true; debouncedProjectFn()" label="Select project" :disabled="!props.projects" style="min-width: 200px"
           density="compact" base-color="primary" color="primary" class="rounded" item-title="name" item-value="_id" variant="outlined"
-          :items="[{name: 'Filter by Project Access', _id: null},...props.projects]" name="projectId" />
+          :items="[{name: 'All Projects', _id: null},...props.projects]" name="projectId" />
       </v-col>
       <v-col cols="12" md="auto" class="d-flex align-end">
         <v-select @update:modelValue="(params) => redirectSortEventHandler(params)" v-model="sortBy" hide-details
@@ -174,7 +174,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         :class="`mx-3 my-5 d-flex flex-column flex-wrap py-0 align-center justify-center`" width="350" :key="item._id">
 
         <v-badge v-if="item.data.role === 'admin'" color="warning" bordered location="bottom" rounded="pill"
-          :content="item.data.role">
+          :content="item.data.role" class="mt-4">
           <v-avatar size="150" color="warning">
             <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
               class="align-self-stretch" cover></v-img>
@@ -182,7 +182,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         </v-badge>
 
         <v-badge v-if="item.data.role === 'user'" color="success" bordered location="bottom" rounded="pill"
-          :content="item.data.role">
+          :content="item.data.role" class="mt-4">
           <v-avatar size="150" color="success">
             <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
               class="align-self-stretch" cover></v-img>
@@ -190,7 +190,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         </v-badge>
 
         <v-badge v-if="item.data.role === 'client'" color="primary" bordered location="bottom" rounded="pill"
-          :content="item.data.role">
+          :content="item.data.role" class="mt-4">
           <v-avatar size="150" color="primary">
             <v-img :src="profilePicture(item)" max-height="150px" min-height="150px" height="150px"
               class="align-self-stretch" cover></v-img>
