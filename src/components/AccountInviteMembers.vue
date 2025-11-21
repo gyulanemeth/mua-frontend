@@ -64,7 +64,7 @@ defineExpose({
 
                 <v-toolbar color="white" align="center">
                     <v-toolbar-title class="font-weight-bold">{{ $t('mua.accountInviteMembers.header')
-                        }}</v-toolbar-title>
+                    }}</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text align="start">
 
@@ -117,6 +117,12 @@ defineExpose({
                     </v-row>
 
                     <div v-if="data.role === 'client'">
+                        <v-banner icon="mdi-lightbulb-outline" color="blue-lighten-4"
+                            class="my-10 elevation-5 bg-blue-lighten-5">
+                            <v-banner-text class="text-primary mt-0">
+                                <div v-html="$t('mua.accountInviteMembers.clientBanner')"></div>
+                            </v-banner-text>
+                        </v-banner>
                         <v-row v-for="(item, i) in data.projectsAccess" :key="i"
                             class="justify-start align-center mt-2">
                             <v-col cols="5">
@@ -137,7 +143,7 @@ defineExpose({
                                     <v-btn variant="text" class="mt-5" color="error"
                                         @click="data.projectsAccess.splice(i, 1)" icon="mdi-delete" />
                                     <span class="tooltip">{{ $t('mua.accountInviteMembers.removePermissionLabel')
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </v-col>
                         </v-row>
