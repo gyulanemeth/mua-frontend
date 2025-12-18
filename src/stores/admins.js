@@ -84,6 +84,16 @@ export default (connectors) => {
           return e
         }
       },
+      async renewAccessToken () {
+        try {
+          this.accessToken = await connectors.admins.renewAccessToken({ id: this.user._id })
+          this.user = await connectors.admins.readOne({ id: this.user._id })
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async loginWithProvider () {
         try {
           const res = await connectors.admins.loginWithProvider()

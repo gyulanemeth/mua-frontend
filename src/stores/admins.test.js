@@ -81,6 +81,14 @@ describe('admins Store', () => {
       return token
     }
 
+    const mockgetRenewAccessToken = (data) => {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Admin ID Is Required')
+      }
+      const token = jwt.sign({ type: 'admin', user: { _id: '12test12', email: 'user1@gmail.com' } }, secrets)
+      return token
+    }
+
     const mockSendForgetPasssword = (data) => {
       if (data === undefined || data.email === undefined) {
         throw new RouteError('Email Is Required')
@@ -181,7 +189,7 @@ describe('admins Store', () => {
     }
 
     return {
-      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, loginWithProvider: mockLoginWithProvider, linkToProvider: mockLinkToProvider, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
+      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, renewAccessToken: mockgetRenewAccessToken, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, loginWithProvider: mockLoginWithProvider, linkToProvider: mockLinkToProvider, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation }
     }
@@ -519,6 +527,14 @@ describe('admins Store', () => {
     expect(res.message).toEqual('Invalid token specified')
   })
 
+  test('test renew access token error missing id', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    userStore.user = {}
+    const res = await userStore.renewAccessToken()
+    expect(res.message).toEqual('Admin ID Is Required')
+  })
+
   test('test success link with provider', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const userStore = adminStore()
@@ -561,6 +577,14 @@ describe('admins Store', () => {
         }
       }, secrets)
     const res = await userStore.getAccessToken(token)
+    expect(res.success).toEqual(true)
+  })
+
+  test('test success renew access token', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    userStore.user = { _id: '12test12' }
+    const res = await userStore.renewAccessToken()
     expect(res.success).toEqual(true)
   })
 })

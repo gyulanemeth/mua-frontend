@@ -139,6 +139,40 @@ describe('test accounts connectors', () => {
     await expect(users(fetch, apiUrl).getAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
   })
 
+  test('test renewAccessToken ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { accessToken: 'Token' } })
+    })
+    localStorage.setItem('loginToken', 'Token')
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).renewAccessToken({ id: '123', accountId: '112233' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/112233/users/123/access-token',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({ accessToken: 'Token' })
+  })
+
+  test('test renewAccessToken without id ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { accessToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).renewAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
+  })
+
   test('test get accounts login ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
