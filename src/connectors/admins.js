@@ -37,6 +37,7 @@ export default function (fetch, apiUrl) {
   const getAdmin = createGetConnector(fetch, apiUrl, generateAdminRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateAdminRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getToken = createGetConnector(fetch, apiUrl, generateTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
+  const getRenewAccessToken = createGetConnector(fetch, apiUrl, generateTokenRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute)
@@ -73,6 +74,17 @@ export default function (fetch, apiUrl) {
       throw new RouteError('Admin ID Is Required')
     }
     const res = await getToken({ id: data.id })
+    if (res.accessToken) {
+      localStorage.setItem('accessToken', res.accessToken)
+    }
+    return res
+  }
+
+  const renewAccessToken = async function (data) {
+    if (!data || !data.id) {
+      throw new RouteError('Admin ID Is Required')
+    }
+    const res = await getRenewAccessToken({ id: data.id })
     if (res.accessToken) {
       localStorage.setItem('accessToken', res.accessToken)
     }
@@ -236,7 +248,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, disconnectPermission, disconnectProvider },
+    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, disconnectPermission, disconnectProvider, renewAccessToken },
     invitation: { send: sendInvitation, accept, reSend: reSendInvitation },
     forgotPassword: { send: sendForgotPassword, reset }
   }
