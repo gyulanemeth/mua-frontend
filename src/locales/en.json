@@ -303,18 +303,6 @@
         "created": "Created At"
       }
     },
-    "redirectToLoginMessage": {
-      "title": "Your session is about to expire.",
-      "description": "Your session token is about to expire. Please choose how you would like to proceed:",
-      "autoRedirectMessage": "You will be automatically redirected to the login page in {seconds} seconds if no action is taken.",
-      "renewBtn": "Renew Session",
-      "logoutBtn": "Log Out",
-      "goToLoginBtn": "Go to Login Page",
-      "bodyPart1": "seconds",
-      "bodyPart2": "Please",
-      "redirectBtn": "click here",
-      "bodyPart3": "if you are not redirected"
-    },
     "processing": "processing...",
     "loading": "loading",
     "imageCropper": {

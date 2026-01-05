@@ -21,7 +21,7 @@ const loading = ref()
 
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 if (!route.query.token) {
-  router.push('./redirect-to-login-message')
+  router.push('./accounts/login')
 }
 async function loadData () {
   if (route.name === 'accounts-accept-invitation' && route.query.token) {
