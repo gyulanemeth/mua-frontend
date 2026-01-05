@@ -33,7 +33,7 @@ const checkToken = (to) => {
   } else if (localStorage.getItem('accessToken') && to.path !== '/redirect-to-login-message' && to.meta.requiresAuth) {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
-    if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
+    if (typeof decoded.exp !== 'undefined' && decoded.exp - 600 <= now) {
       return '/redirect-to-login-message'
     }
   }
