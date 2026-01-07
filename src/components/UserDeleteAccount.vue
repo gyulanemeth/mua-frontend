@@ -46,7 +46,8 @@ defineExpose({
                         <v-toolbar-title class="font-weight-bold text-error">{{ $t('mua.userDeleteAccount.header') }}
                             “{{ props.data.name || props.data.email }}”?</v-toolbar-title>
                         <p class="text-body-1">{{ $t('mua.userDeleteAccount.subheader') }}</p>
-                        <p class="font-weight-bold mt-3">{{ $t('mua.userDeleteAccount.passwordConfirmationHeader') }}</p>
+                        <p class="font-weight-bold mt-3">{{ $t('mua.userDeleteAccount.passwordConfirmationHeader') }}
+                        </p>
                         <v-text-field hide-details data-test-id="deleteAccount-passwordField" density="compact"
                             color="grey" class="rounded" variant="outlined" name="password" type="password"
                             prepend-inner-icon="mdi-lock" style="max-width: 400px;"
@@ -58,7 +59,8 @@ defineExpose({
                         <v-btn color="grey" variant="outlined" class="mr-2" data-test-id="deleteAccount-submitBtn"
                             @click="resetForm">{{ $t('mua.userDeleteAccount.closeBtn') }}</v-btn>
                         <v-btn color="error" data-test-id="deleteAccount-cancelBtn"
-                            @click="$emit('deleteEventHandler', { id: props.data._id, password, accountId: props.data.accountId }); resetForm()">{{ $t('mua.userDeleteAccount.submitBtn') }}</v-btn>
+                            @click="$emit('deleteEventHandler', { id: props.data._id, password, accountId: props.data.accountId }); resetForm()">{{
+                                $t('mua.userDeleteAccount.submitBtn') }}</v-btn>
                     </div>
                 </v-card-text>
             </v-container>
