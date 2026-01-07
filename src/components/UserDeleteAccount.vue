@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const props = defineProps({
-    data: Object
+  data: Object
 })
 
 const route = useRoute()
@@ -12,19 +12,17 @@ const password = ref()
 const dialogShown = ref()
 
 const resetForm = () => {
-    password.value = null
-    dialogShown.value = false
+  password.value = null
+  dialogShown.value = false
 }
 
-const profilePicture = ref(props.data.profilePicture || import.meta.env.BASE_URL + 'placeholder.jpg')
-
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 defineExpose({
-    show,
-    hide: resetForm
+  show,
+  hide: resetForm
 })
 
 </script>

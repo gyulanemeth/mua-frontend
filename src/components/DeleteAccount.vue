@@ -8,36 +8,34 @@ const { t } = useI18n()
 const store = useAccountsStore()
 
 const props = defineProps({
-    data: Object
+  data: Object
 })
 
 const dialogShown = ref(false)
 const processing = ref(false)
-const data = ref(props.data || {})
-const logo = ref(import.meta.env.BASE_URL + 'placeholder.jpg')
 const password = ref()
 
-async function deleteAccount() {
-    const res = await store.deleteAccount(password.value)
-    if (res.message) {
-        processing.value = false
-    } else {
-        useSystemMessagesStore().addSuccess({ message: t('mua.deleteAccount.deleteAlert') })
-    }
+async function deleteAccount () {
+  const res = await store.deleteAccount(password.value)
+  if (res.message) {
+    processing.value = false
+  } else {
+    useSystemMessagesStore().addSuccess({ message: t('mua.deleteAccount.deleteAlert') })
+  }
 }
 
 const show = () => {
-    dialogShown.value = true
+  dialogShown.value = true
 }
 
 const hide = () => {
-    dialogShown.value = false
-    password.value = ''
+  dialogShown.value = false
+  password.value = ''
 }
 
 defineExpose({
-    show,
-    hide
+  show,
+  hide
 })
 
 </script>
