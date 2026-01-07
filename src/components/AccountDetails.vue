@@ -91,7 +91,6 @@ const openFileInput = () => {
             <v-btn color="primary" variant="text" data-test-id="accountDetails-editNameBtn" class="ma-2"
               icon="mdi-pencil-outline" size="small" @click='editMode = "name"; setNameFocus()' />
           </template>
-
         </v-row>
         <v-row align="center" class="mt-3">
           <v-col>
