@@ -18,7 +18,7 @@ const cb = ref()
 
 const resetForm = () => {
   Object.keys(data.value).forEach(key => {
-    data.value[key] = null
+    data.value[key] = ''
   })
   data.value = {
     name: props.name,
@@ -169,14 +169,12 @@ defineExpose({
                     <v-btn color="primary" data-test-id="inviteMember-cancelBtn"
                         @click="dialogShown = false; cb = undefined; resetForm()">{{
                             $t('mua.accountInviteMembers.closeBtn') }}</v-btn>
-                    <v-btn color="primary" v-if="!cb" data-test-id="inviteMember-submitBtn"
-                        @click="processing = true; $emit('inviteEventHandler', data, (res) => { if (res) { cb = res } resetForm(); processing = false })">
+                    <v-btn color="primary" data-test-id="inviteMember-submitBtn"
+                        @click="processing = true; cb = null; $emit('inviteEventHandler', data, (res) => { if (res) { cb = res } resetForm(); processing = false })">
                         {{ !processing ? $t('mua.accountInviteMembers.submitBtn') : '' }}
                         <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                             processing ? $t('mua.processing') : '' }}
                     </v-btn>
-                    <v-btn color="primary" v-else data-test-id="inviteMember-resetFormBtn" @click="cb = null">{{
-                        $t('mua.accountInviteMembers.cb.cbBtn') }}</v-btn>
                 </v-card-actions>
             </v-container>
         </v-card>

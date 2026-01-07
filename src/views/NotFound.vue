@@ -39,17 +39,17 @@ onMounted(async () => {
           <v-icon icon="mdi-magnify-remove-outline" color="primary" size="90"></v-icon>
         </v-card-text>
         <v-card-text class="text-center">
-          <p class="text-primary text-h5 font-weight-black d-inline">{{ $t('notFoundView.title', { name: route.params.catchAll }) }}</p>
+          <p class="text-primary text-h5 font-weight-black d-inline">{{ $t('mua.notFoundView.title', { name: route.params.catchAll }) }}</p>
         </v-card-text>
         <v-card-text class="text-center">
-          {{ $t('notFoundView.header', {
+          {{ $t('mua.notFoundView.header', {
             name: route.params.catchAll || 'page', id: route.query.id ? 'with _id: ' +
               route.query.id : ''}) }}
         </v-card-text>
         <v-card-text class="text-center">
-          {{ $t('notFoundView.bodyPart1') }} <a style="text-decoration: none; color: black;"
-            :href="`${domain}`"><b> {{ $t('notFoundView.redirectBtn') }} </b></a> {{
-              $t('notFoundView.bodyPart2') }}
+          {{ $t('mua.notFoundView.bodyPart1') }} <a style="text-decoration: none; color: black;"
+            :href="`${domain}`"><b> {{ $t('mua.notFoundView.redirectBtn') }} </b></a> {{
+              $t('mua.notFoundView.bodyPart2') }}
         </v-card-text>
       </v-card>
     </div>

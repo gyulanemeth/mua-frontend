@@ -16,7 +16,7 @@ const data = ref()
 const accountName = ref()
 const currentUser = ref()
 const projects = ref([])
-
+const rolesList = ['admin', 'user']
 await usersStore.readOne()
 if (!usersStore.user.role) {
   if (!usersStore.user.role) {
@@ -49,7 +49,11 @@ await usersStore.load()
 data.value = usersStore.items
 
 const listProjects = await usersStore.listProjects({ accountId: localStorage.getItem('accountId') }, { limit: 'unlimited' })
-projects.value = listProjects || []
+
+if (!listProjects.disabled) {
+  rolesList.push('client')
+  projects.value = listProjects || []
+}
 
 async function handleUpdateRole (params) {
   const res = await usersStore.patchRole(params.id, {
@@ -140,9 +144,8 @@ async function searchBarHandler (filter, statusCallBack) {
 <template>
 
   <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
-    :roles="['admin', 'user', 'client']" :permissions="['viewer', 'editor']" @loadMore='loadMore'
-    @inviteEventHandler="handleInviteMember" @reInviteEventHandler="handleReInviteMember"
-    @sortEventHandler="handleSortEvent" @updateRoleEventHandler="handleUpdateRole"
-    @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
+    :roles="rolesList" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
+    @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
+    @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
 </template>
