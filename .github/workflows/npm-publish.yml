@@ -28,6 +28,16 @@ jobs:
         run: |
           echo "userconfig: $(npm config get userconfig)"
           ls -la /home/runner/work/_temp/.npmrc || echo "no temp npmrc"
+      - name: Show runner npmrc (this is where _auth is coming from)
+        run: |
+          echo "userconfig: $(npm config get userconfig)"
+          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
+          echo "---- ~/.npmrc ----"
+          ls -la ~/.npmrc || true
+          cat ~/.npmrc || true
+          echo "---- npm config auth lines ----"
+          npm config list -l | grep -iE 'authToken|_auth' || echo "none"
+
 
       - name: Install dependencies
         run: npm i
