@@ -66,8 +66,3 @@ jobs:
           npm config list -l | grep -iE 'authToken|_auth' && exit 1 || true
 
           npm publish
-
-
-          npm publish
-
-
