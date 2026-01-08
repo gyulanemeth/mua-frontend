@@ -2,37 +2,44 @@ name: Build & publish to NPM
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
 
 permissions:
-  id-token: write  # Required for OIDC
   contents: read
+  id-token: write
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: 'master'
-    
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        registry-url: 'https://registry.npmjs.org'
+      - uses: actions/checkout@v4
+        with:
+          ref: master
 
-    - name: Install dependencies
-      run: npm i
+      - name: Use Node.js 20.x
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
 
-    - name: Run tests
-      run: npm run test:unit
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build the package
-      run: npm run build
+      - name: Run tests
+        run: npm run test:unit
 
-    - name: Publish to npm
-      run: npm publish
+      - name: Build the package
+        run: npm run build
+
+      - name: Clear any npm token auth (force OIDC)
+        run: |
+          rm -f ~/.npmrc .npmrc || true
+          npm config delete //registry.npmjs.org/:_authToken || true
+          echo "NODE_AUTH_TOKEN=$NODE_AUTH_TOKEN"
+        env:
+          NODE_AUTH_TOKEN: ""
+
+      - name: Publish to npm (OIDC)
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ""
