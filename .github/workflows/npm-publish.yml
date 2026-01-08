@@ -25,6 +25,10 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Debug npm userconfig after setup-node
+        run: |
+          echo "userconfig: $(npm config get userconfig)"
+          ls -la /home/runner/work/_temp/.npmrc || echo "no temp npmrc"
 
       - name: Install dependencies
         run: npm i
