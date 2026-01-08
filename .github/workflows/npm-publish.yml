@@ -16,28 +16,14 @@ jobs:
         with:
           ref: 'master'
 
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v4
-        env:
-          NODE_AUTH_TOKEN: ""
-          NPM_TOKEN: ""
+      - name: Use Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Debug npm userconfig after setup-node
-        run: |
-          echo "userconfig: $(npm config get userconfig)"
-          ls -la /home/runner/work/_temp/.npmrc || echo "no temp npmrc"
-      - name: Show runner npmrc (this is where _auth is coming from)
-        run: |
-          echo "userconfig: $(npm config get userconfig)"
-          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
-          echo "---- ~/.npmrc ----"
-          ls -la ~/.npmrc || true
-          cat ~/.npmrc || true
-          echo "---- npm config auth lines ----"
-          npm config list -l | grep -iE 'authToken|_auth' || echo "none"
-
+      - name: Install npm
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: npm i
@@ -48,30 +34,5 @@ jobs:
       - name: Build the package
         run: npm run build
 
-      
-      - name: Debug npm auth & OIDC context
-        run: |
-          echo "=== npm version ==="
-          npm -v
-
-          echo "=== registry ==="
-          npm config get registry
-
-          echo "=== auth-related env vars ==="
-          env | grep -iE 'npm|token|auth|oidc' || echo "none"
-
-          echo "=== npm auth config ==="
-          npm config list -l | grep -iE 'registry|authToken|_auth' || echo "none"
-
-          echo "=== GitHub OIDC ==="
-          echo "ACTIONS_ID_TOKEN_REQUEST_URL=${ACTIONS_ID_TOKEN_REQUEST_URL:-missing}"
-          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN=${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+present}"
-
-      - name: Publish to npm (force OIDC, ignore npmrc)
-        run: |
-          rm -f .npmrc || true
-          unset NODE_AUTH_TOKEN
-          unset NPM_TOKEN
-          unset NPM_CONFIG_USERCONFIG
-          npm publish --userconfig=/dev/null
-
+      - name: Publish to npm
+        run: npm publish
