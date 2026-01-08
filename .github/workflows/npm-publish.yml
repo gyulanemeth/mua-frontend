@@ -51,21 +51,22 @@ jobs:
           echo "ACTIONS_ID_TOKEN_REQUEST_URL=${ACTIONS_ID_TOKEN_REQUEST_URL:-missing}"
           echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN=${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+present}"
 
-      - name: Publish to npm (OIDC)
+      - name: Publish to npm (force OIDC)
         run: |
-          echo "Before cleanup:"
-          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
-          test -f "$NPM_CONFIG_USERCONFIG" && (echo "--- .npmrc ---"; cat "$NPM_CONFIG_USERCONFIG"; echo "------------") || true
+          echo "Using userconfig: $NPM_CONFIG_USERCONFIG"
+          test -f "$NPM_CONFIG_USERCONFIG" && echo "temp .npmrc exists" || echo "no temp .npmrc"
 
-          # Remove any token-based auth and temp npmrc created earlier
+          # Stop npm from using setup-node's temp .npmrc
+          rm -f "$NPM_CONFIG_USERCONFIG" || true
           unset NODE_AUTH_TOKEN
           unset NPM_TOKEN
-          rm -f "$NPM_CONFIG_USERCONFIG" || true
           export NPM_CONFIG_USERCONFIG="$HOME/.npmrc"
 
-          echo "After cleanup:"
-          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
-          npm config list -l | grep -iE 'registry|authToken|_auth' || true
+          # sanity check: must NOT show _authToken
+          npm config list -l | grep -iE 'authToken|_auth' && exit 1 || true
+
+          npm publish
+
 
           npm publish
 
