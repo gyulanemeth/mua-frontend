@@ -22,6 +22,12 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Debug Node & npm versions
+        run: |
+          node -v
+          npm -v
+          npm config get registry
+
       - name: Install dependencies
         run: npm i
 
