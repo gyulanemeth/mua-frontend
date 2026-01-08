@@ -22,11 +22,6 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Debug Node & npm versions
-        run: |
-          node -v
-          npm -v
-          npm config get registry
 
       - name: Install dependencies
         run: npm i
@@ -36,6 +31,25 @@ jobs:
 
       - name: Build the package
         run: npm run build
+
+      
+      - name: Debug npm auth & OIDC context
+        run: |
+          echo "=== npm version ==="
+          npm -v
+
+          echo "=== registry ==="
+          npm config get registry
+
+          echo "=== auth-related env vars ==="
+          env | grep -iE 'npm|token|auth|oidc' || echo "none"
+
+          echo "=== npm auth config ==="
+          npm config list -l | grep -iE 'registry|authToken|_auth' || echo "none"
+
+          echo "=== GitHub OIDC ==="
+          echo "ACTIONS_ID_TOKEN_REQUEST_URL=${ACTIONS_ID_TOKEN_REQUEST_URL:-missing}"
+          echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN=${ACTIONS_ID_TOKEN_REQUEST_TOKEN:+present}"
 
       - name: Publish to npm
         run: npm publish
