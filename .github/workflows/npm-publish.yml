@@ -53,8 +53,20 @@ jobs:
 
       - name: Publish to npm (OIDC)
         run: |
+          echo "Before cleanup:"
+          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
+          test -f "$NPM_CONFIG_USERCONFIG" && (echo "--- .npmrc ---"; cat "$NPM_CONFIG_USERCONFIG"; echo "------------") || true
+
+          # Remove any token-based auth and temp npmrc created earlier
           unset NODE_AUTH_TOKEN
           unset NPM_TOKEN
           rm -f "$NPM_CONFIG_USERCONFIG" || true
+          export NPM_CONFIG_USERCONFIG="$HOME/.npmrc"
+
+          echo "After cleanup:"
+          echo "NPM_CONFIG_USERCONFIG=$NPM_CONFIG_USERCONFIG"
+          npm config list -l | grep -iE 'registry|authToken|_auth' || true
+
           npm publish
+
 
