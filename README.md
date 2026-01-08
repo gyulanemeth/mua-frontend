@@ -328,7 +328,6 @@ Methods for managing admins:
 | `/accounts/:urlFriendlyName/change-email` | `accounts-change-email` | `My Profile` | `AccountLayout` | Yes | Change email page for the account owner |
 | `/accounts/:urlFriendlyName/settings` | `accounts-settings` | `My Profile` | `AccountLayout` | Yes | Settings page for the account owner |
 | `/accounts/:urlFriendlyName/account` | `accounts-account` | `Account` | `AccountLayout` | Yes | Account details page for the account owner |
-| `/redirect-to-login-message` | `redirect-to-login-message` | `Redirect` | `PublicLayout` | No | Redirect to login message page |
 | `/:catchAll(.*)` | `notFound` | `Not Found` | `PublicLayout` | No | Catch-all page for unknown routes |
 
 ### Token Validation and Redirection
