@@ -99,7 +99,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
           variant="underlined" append-inner-icon="mdi-magnify" v-model.lazy="filter" color="primary"
           @input="loading = true; debouncedFn()"></v-text-field>
       </v-col>
-      <v-col v-if="props.projects" cols="12" md="auto" class="d-flex align-end">
+      <v-col v-if="props.projects && props.projects.length" cols="12" md="auto" class="d-flex align-end">
         <v-select hide-details v-model="projectFilter" @update:modelValue="loading = true; debouncedProjectFn()" label="Select project" :disabled="!props.projects" style="min-width: 200px"
           density="compact" base-color="primary" color="primary" class="rounded" item-title="name" item-value="_id" variant="outlined"
           :items="[{name: 'All Projects', _id: null},...props.projects]" name="projectId" />
