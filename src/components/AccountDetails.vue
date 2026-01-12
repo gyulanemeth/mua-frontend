@@ -83,15 +83,14 @@ const openFileInput = () => {
             @update:modelValue="res => name = res.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, '')" required />
           <template v-if='editMode === "name"'>
             <v-btn color="primary" variant="text" data-test-id="accountDetails-confirmNameEditBtn" icon="mdi-check"
-              size="small" @click.stop="$emit('updateNameHandler', name); editMode = false" />
+              size="small" @click.stop="$emit('updateNameHandler', name); editMode = false; name = componentProps.name" />
             <v-btn class="ml-2" color="error" data-test-id="accountDetails-cancelmNameEditBtn" variant="text"
-              icon="mdi-window-close" size="small" @click='editMode = false' />
+              icon="mdi-window-close" size="small" @click='editMode = false; name = componentProps.name' />
           </template>
           <template v-else-if="componentProps.role">
             <v-btn color="primary" variant="text" data-test-id="accountDetails-editNameBtn" class="ma-2"
               icon="mdi-pencil-outline" size="small" @click='editMode = "name"; setNameFocus()' />
           </template>
-
         </v-row>
         <v-row align="center" class="mt-3">
           <v-col>

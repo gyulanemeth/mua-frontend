@@ -35,7 +35,7 @@
       "nameLabel": "Account Name",
       "urlFriendlyName": "Account UrlFriendlyName",
       "picLabel": "Account Avatar",
-      "passwordConfirmationHeader": "Please type your password to proceed with deleting the account:",
+      "passwordConfirmationHeader": "Please confirm your identity by entering your password below:",
       "passwordLabel": "Password",
       "passwordPlaceholder": "********",
       "deleteAlert": "Deleted Successfully",
@@ -164,7 +164,7 @@
       "projectLabel": "Project",
       "permissionLabel": "Permission",
       "picLabel": "Profile picture",
-      "passwordConfirmationHeader": "Please type your password to proceed with deleting the account:",
+      "passwordConfirmationHeader": "Please confirm your identity by entering your password below:",
       "passwordLabel": "Password",
       "passwordPlaceholder": "********",
       "submitBtn": "Delete",
@@ -179,7 +179,7 @@
       "nameLabel": "Name",
       "emailLabel": "E-mail",
       "picLabel": "Profile picture",
-      "passwordConfirmationHeader": "Please type your password to proceed with deleting the account:",
+      "passwordConfirmationHeader": "Please confirm your identity by entering your password below:",
       "passwordLabel": "Password",
       "passwordPlaceholder": "********",
       "submitBtn": "Delete",
@@ -508,6 +508,13 @@
       "checkboxLabe": "I have read and agree to the",
       "terms": "Terms of Use",
       "privacy": "Privacy Policy"
+    },
+    "notFoundView": {
+      "title": "404 {name} Not Found",
+      "header": "Oops! The {name} {id} you're looking for does not exist.",
+      "bodyPart1": "Please",
+      "bodyPart2": "to be redirected",
+      "redirectBtn": "click here"
     }
   }
 }
