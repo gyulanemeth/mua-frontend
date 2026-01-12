@@ -32,7 +32,13 @@ const checkToken = async (to) => {
   } else if (localStorage.getItem('accessToken') && to.meta.requiresAuth) {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
-    if (typeof decoded.exp !== 'undefined' && decoded.exp - 600 <= now) {
+    if (typeof decoded.exp !== 'undefined' && decoded.exp <= now) {
+      if (decoded.type === 'admin') {
+        await useAdminsStore().logout()
+      } else {
+        await useUsersStore().logout()
+      }
+    } else if (typeof decoded.exp !== 'undefined' && decoded.exp - 600 <= now) {
       if (decoded.type === 'admin') {
         await useAdminsStore().renewAccessToken()
       } else {
