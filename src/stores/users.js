@@ -102,6 +102,16 @@ export default (connectors) => {
           return e
         }
       },
+      async renewAccessToken () {
+        try {
+          this.accessToken = await connectors.user.renewAccessToken({ id: this.user._id, accountId: localStorage.getItem('accountId') })
+          this.user = await connectors.user.readOne({ id: this.user._id, accountId: localStorage.getItem('accountId') })
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
       async listProjects (params, query) {
         try {
           const res = await connectors.user.listProjects(params, query)

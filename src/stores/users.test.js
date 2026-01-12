@@ -183,6 +183,33 @@ describe('users Store', () => {
       return token
     }
 
+    const mockgetRenewAccessToken = (data) => {
+      if (!data || !data.accountId || !data.id) {
+        throw new RouteError('ID And Account ID Is Required')
+      }
+      const token = jwt.sign(
+        {
+          type: 'user',
+          user: {
+            _id: '123',
+            email: 'user@email.com'
+          },
+          account: {
+            _id: '112233',
+            urlFriendlyName: 'urlFriendlyName1'
+          },
+          role: 'admin'
+        }, secrets)
+      return token
+    }
+
+    const mockListProjects = async (params) => {
+      if (!params) {
+        throw new RouteError('missing prams')
+      }
+      return { success: true }
+    }
+
     const mockFinalizeRegistration = async (data) => {
       if (!data || !data.id || !data.accountId || !data.token) {
         throw new RouteError('User Id And Account Id Is Required')
@@ -267,7 +294,7 @@ describe('users Store', () => {
     }
 
     return {
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, renewAccessToken: mockgetRenewAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission, listProjects: mockListProjects },
       account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
@@ -744,6 +771,38 @@ describe('users Store', () => {
     const store = usersStore()
     const res = await store.getAccessToken()
     expect(res.message).toEqual('Invalid token specified')
+  })
+
+  test('test success renew access token', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = { _id: '12test12' }
+    const res = await store.renewAccessToken()
+    expect(res.success).toEqual(true)
+  })
+
+  test('test renew access token error missing id', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = {}
+    const res = await store.renewAccessToken()
+    expect(res.message).toEqual('ID And Account ID Is Required')
+  })
+
+  test('test success list projects', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = { _id: '12test12' }
+    const res = await store.listProjects({ test: true })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test list projects error missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = {}
+    const res = await store.listProjects()
+    expect(res).toEqual(undefined)
   })
 
   test('test success create with provider', async () => {

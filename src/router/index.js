@@ -1,8 +1,7 @@
-import { useAccountsStore } from '../stores/index.js'
+import { useAccountsStore, useAdminsStore, useUsersStore } from '../stores/index.js'
 
 import jwtDecode from 'jwt-decode'
 
-import RedirectToLoginMessage from '../views/RedirectToLoginMessage.vue'
 import UserView from '../views/UserView.vue'
 import AccountUserProfileView from '../views/AccountUserProfileView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -27,14 +26,24 @@ const logout = (from, next) => {
   next(loginPageUrl)
 }
 
-const checkToken = (to) => {
+const checkToken = async (to) => {
   if (!localStorage.getItem('accessToken') && to.meta.requiresAuth) {
     return '/accounts/login'
-  } else if (localStorage.getItem('accessToken') && to.path !== '/redirect-to-login-message' && to.meta.requiresAuth) {
+  } else if (localStorage.getItem('accessToken') && to.meta.requiresAuth) {
     const decoded = jwtDecode(localStorage.getItem('accessToken'))
     const now = Date.now().valueOf() / 1000
-    if (typeof decoded.exp !== 'undefined' && decoded.exp < now) {
-      return '/redirect-to-login-message'
+    if (typeof decoded.exp !== 'undefined' && decoded.exp <= now) {
+      if (decoded.type === 'admin') {
+        await useAdminsStore().logout()
+      } else {
+        await useUsersStore().logout()
+      }
+    } else if (typeof decoded.exp !== 'undefined' && decoded.exp - 600 <= now) {
+      if (decoded.type === 'admin') {
+        await useAdminsStore().renewAccessToken()
+      } else {
+        await useUsersStore().renewAccessToken()
+      }
     }
   }
 }
@@ -52,7 +61,7 @@ const checkUrlFriendlyName = async (to, next) => {
 }
 
 export const muaBeforeEach = async (to, from, next) => {
-  const checkTokenRes = checkToken(to)
+  const checkTokenRes = await checkToken(to)
   if (checkTokenRes) {
     return next(checkTokenRes)
   }
@@ -437,15 +446,6 @@ export const useMuaRoutes = (router) => {
         }
       }
     ]
-  })
-  router.addRoute({
-    path: '/redirect-to-login-message',
-    name: 'redirect-to-login-message',
-    component: RedirectToLoginMessage,
-    meta: {
-      requiresAuth: false,
-      title: 'Redirect'
-    }
   })
   router.addRoute({
     path: '/:catchAll(.*)',

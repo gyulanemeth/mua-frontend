@@ -52,6 +52,7 @@ export default function (fetch, apiUrl) {
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const getToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
+  const getRenewAccessToken = createGetConnector(fetch, apiUrl, generateAccessTokenRoute, generateAdditionalHeaders)
   const updateName = createPatchConnector(fetch, apiUrl, generatePatchNameRoute, generateAdditionalHeaders)
   const updatePassword = createPatchConnector(fetch, apiUrl, generatePatchPasswordRoute, generateAdditionalHeaders)
   const patchCreatePassword = createPatchConnector(fetch, apiUrl, generatePatchCreatePasswordRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('createPasswordToken')}` }))
@@ -105,6 +106,17 @@ export default function (fetch, apiUrl) {
     if (res.accessToken) {
       localStorage.setItem('accessToken', res.accessToken)
       localStorage.removeItem('loginToken')
+    }
+    return res
+  }
+
+  const renewAccessToken = async function (data) {
+    if (!data || !data.accountId || !data.id) {
+      throw new RouteError('ID And Account ID Is Required')
+    }
+    const res = await getRenewAccessToken({ id: data.id, accountId: data.accountId })
+    if (res.accessToken) {
+      localStorage.setItem('accessToken', res.accessToken)
     }
     return res
   }
@@ -278,6 +290,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects, renewAccessToken
   }
 }
