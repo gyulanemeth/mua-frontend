@@ -25,7 +25,7 @@ async function submit () {
 </script>
 
 <template>
-    <MFALoginForm systemAdmin v-if="twoFactor.enabled" />
+    <MFALoginForm systemAdmin v-if="twoFactorEnabled" />
     <v-layout v-else style="z-index: 10;" class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
