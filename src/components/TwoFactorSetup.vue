@@ -47,9 +47,9 @@ getCode()
     <div class="d-flex flex-wrap mx-0 my-3 align-center justify-center">
         <v-card elevation="0" rounded="lg" class=" w-100">
             <p class="text-body-1 font-weight-bold "> {{ $t('mua.twoFactorSetup.title') }} <span
-                    v-if="userStore.user.twoFactorEnabled" class="font-weight-medium text-primary">{{ $t('mua.twoFactorSetup.isEnabled') }}</span></p>
+                    v-if="userStore.user.twoFactor.enabled" class="font-weight-medium text-primary">{{ $t('mua.twoFactorSetup.isEnabled') }}</span></p>
             <v-divider />
-            <div v-if="!userStore.user.twoFactorEnabled" class="d-flex flex-wrap ma-0 align-center justify-center">
+            <div v-if="!userStore.user.twoFactor.enabled" class="d-flex flex-wrap ma-0 align-center justify-center">
                 <v-col cols="12" md="6">
                     <div class="d-flex flex-column">
                         <p class="my-2" v-html="$t('mua.twoFactorSetup.steps.step1')"></p>
