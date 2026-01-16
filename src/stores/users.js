@@ -63,8 +63,11 @@ export default (connectors) => {
       async login (token, password, accountId) {
         try {
           localStorage.setItem('loginToken', token)
-          const loginToken = await connectors.user.login({ password, accountId })
-          const loginTokenData = jwtDecode(loginToken)
+          const tokenRes = await connectors.user.login({ password, accountId })
+          if (tokenRes.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(tokenRes.loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           localStorage.setItem('accountId', loginTokenData.account._id)

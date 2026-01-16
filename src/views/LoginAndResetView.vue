@@ -115,6 +115,10 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
 
 async function handleLoginEvent (params, statusCallBack) {
   const res = await usersStore.login(route.query.token, params.password, params.account)
+  if (res.twoFactorEnabled) {
+    twoFactorEnabled.value = true
+    return true
+  }
   statusCallBack(res.success)
   if (res.success) {
     await accountsStore.readOne(route.params.urlFriendlyName)
@@ -135,7 +139,7 @@ watchEffect(async () => {
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
-  <MFALoginForm v-else-if="twoFactorEnabled && route.name === 'accounts-login-with-urlFriendlyName'" />
+  <MFALoginForm v-else-if="twoFactorEnabled" />
   <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
     :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 

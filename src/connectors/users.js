@@ -176,7 +176,10 @@ export default function (fetch, apiUrl) {
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
-    return res.loginToken
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
   }
 
   const MFALogin = async function (formData) {
