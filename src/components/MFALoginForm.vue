@@ -47,7 +47,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         <div v-if="!recoveryMode" class="d-flex flex-column justify-center align-center w-100">
             <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
                 <v-card-text align="center"
-                    @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', {}, () => { processing = false })">
+                    @keydown.enter="submit">
                     <p class="text-h6">Two Factor Authentication</p>
                     <p class="text-body-1 text-start mt-5">Enter the verification code from your authenticator app</p>
                     <v-text-field hide-details v-model="code" density="compact" class="mb-5 rounded" color="primary"
