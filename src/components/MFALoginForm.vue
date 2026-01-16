@@ -48,13 +48,13 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
             <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
                 <v-card-text align="center"
                     @keydown.enter="submit">
-                    <p class="text-h6">Two Factor Authentication</p>
-                    <p class="text-body-1 text-start mt-5">Enter the verification code from your authenticator app</p>
+                    <p class="text-h6">{{ $t('mua.mfaLoginForm.codeMode.title') }}</p>
+                    <p class="text-body-1 text-start mt-5">{{ $t('mua.mfaLoginForm.codeMode.codeLable') }}</p>
                     <v-text-field hide-details v-model="code" density="compact" class="mb-5 rounded" color="primary"
-                        variant="solo" name="code" :label="'code'" required />
+                        variant="solo" name="code" required />
                     <div>
                         <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" @click="submit">
-                            {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
+                            {{ !processing ? $t('mua.mfaLoginForm.codeMode.submitBtn') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                                 processing ? $t('mua.processing') : '' }}
                         </v-btn>
@@ -63,10 +63,10 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
             </v-card>
             <v-container class="w-100">
                 <v-col class="text-center justify-center align-center">
-                    <p style="color: #888888;">Can’t provide the code?</p>
+                    <p style="color: #888888;">{{ $t('mua.mfaLoginForm.codeMode.recoveryTitle') }}</p>
                     <p style="text-decoration: none;  color: #888888">
-                        Use your recovery code to sign <span class="text-primary font-weight-bold"
-                            style="cursor: pointer;" @click="() => { recoveryMode = true }">Enter here</span>.
+                        {{ $t('mua.mfaLoginForm.codeMode.recoverySubtitle') }} <span class="text-primary font-weight-bold"
+                            style="cursor: pointer;" @click="() => { recoveryMode = true }">{{ $t('mua.mfaLoginForm.codeMode.recoveryBtn') }}</span>.
                     </p>
                 </v-col>
             </v-container>
@@ -74,13 +74,13 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
         <div v-else class="d-flex flex-column justify-center align-center w-100">
             <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
                 <v-card-text align="center" @keydown.enter="submit">
-                    <p class="text-h6">2FA Recovery Code</p>
-                    <p class="text-body-1 text-start mt-5">Enter your recovery code to sign in to your account.</p>
+                    <p class="text-h6">{{ $t('mua.mfaLoginForm.recoveryMode.title') }}</p>
+                    <p class="text-body-1 text-start mt-5">{{ $t('mua.mfaLoginForm.recoveryMode.codeLable') }}</p>
                     <v-text-field hide-details density="compact" v-model="code" class="mb-5 rounded" color="primary"
-                        variant="solo" name="recoveryCode" :label="'recovery code'" required />
+                        variant="solo" name="recoveryCode" required />
                     <div>
                         <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" @click="submit">
-                            {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
+                            {{ !processing ? $t('mua.mfaLoginForm.recoveryMode.submitBtn') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                                 processing ? $t('mua.processing') : '' }}
                         </v-btn>
@@ -89,11 +89,11 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
             </v-card>
             <v-container class="w-100">
                 <v-col class="text-center justify-center align-center">
-                    <p style="color: #888888;">Back to verification code?</p>
+                    <p style="color: #888888;">{{ $t('mua.mfaLoginForm.recoveryMode.codeTitle') }}</p>
                     <p style="text-decoration: none;  color: #888888">
-                        Enter the verification code from your authenticator app <span
+                        {{ $t('mua.mfaLoginForm.recoveryMode.codeSubtitle') }}<span
                             class="text-primary font-weight-bold" style="cursor: pointer;"
-                            @click="() => { recoveryMode = false }">Enter here</span>.
+                            @click="() => { recoveryMode = false }">{{ $t('mua.mfaLoginForm.recoveryMode.codeBtn') }}</span>.
                     </p>
                 </v-col>
             </v-container>

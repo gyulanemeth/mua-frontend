@@ -523,6 +523,51 @@
       "bodyPart1": "Please",
       "bodyPart2": "to be redirected",
       "redirectBtn": "click here"
+    },
+    "twoFactorSetup": {
+      "title": "Two Factor Authentication",
+      "isEnabled": "(is enabled in your account)",
+      "steps": {
+        "step1": "1. Select <strong>Add account</strong> in your preferred authenticator app.",
+        "step2": "2. Scan the QR code or paste the secret into the authenticator app.",
+        "step3": "3. Enter the code from the authenticator app into the input field."
+      },
+      "imagePlaceholder": "QR goes here",
+      "orLabel": "Or",
+      "secretKeyLable": "Enter secret into app:",
+      "codeLable": "Enter the code (6 digits) from the authenticator app:",
+      "codePlaceholder": "Code",
+      "codeBtn": "Submit",
+      "recoveryTitle": "Recovery",
+      "recoveryDescription": "If your authenticator app or device is no longer available, you can reset your 2FA settings with the recovery code.",
+      "recoveryBtn": "show code",
+      "disableTitle": "Disable 2FA",
+      "disableDescription": "If you want to use single factor authentication, press disable. You can re-enable 2FA at any time.",
+      "disableBtn": "disable",
+      "dialog": {
+        "title": "2FA recovery",
+        "description": "2FA recovery code is used to recover your account by disabling 2FA when your 2FA application is no longer available due to device error or any other accident.",
+        "keyLabel": "Please store this key securely.",
+        "btnLabel": "Ok"
+      }
+    },
+    "mfaLoginForm": {
+      "codeMode": {
+        "title": "Two Factor Authentication",
+        "codeLable": "Enter the verification code from your authenticator app",
+        "submitBtn": "Sign in",
+        "recoveryTitle": "Can’t provide the code?",
+        "recoverySubtitle": "Use your recovery code to sign",
+        "recoveryBtn": "Enter here"
+      },
+      "recoveryMode": {
+        "title": "2FA Recovery Code",
+        "codeLable": "Enter your recovery code to sign in to your account.",
+        "submitBtn": "Sign in",
+        "codeTitle": "Back to verification code?",
+        "codeSubtitle": "Enter the verification code from your authenticator app",
+        "codeBtn": "Enter here"
+      }
     }
   }
 }
