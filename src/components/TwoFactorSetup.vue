@@ -53,8 +53,7 @@ getCode()
             <div v-if="!userStore.user.twoFactorEnabled" class="d-flex flex-wrap ma-0 align-center justify-center">
                 <v-col cols="12" md="6">
                     <div class="d-flex flex-column">
-                        <p class="my-2">1. Select <span style="font-weight:600;">Add account</span> in your preferred <a
-                                href="#" style="color:#3b82f6; text-decoration: underline;">authenticator app</a>.</p>
+                        <p class="my-2">1. Select <span style="font-weight:600;">Add account</span> in your preferred authenticator app.</p>
                         <p class="my-2">2. Scan the QR code or paste the secret into the authenticator app.</p>
                         <p class="my-2">3. Enter the code from the authenticator app into the input field.</p>
                     </div>
