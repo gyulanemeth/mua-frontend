@@ -46,11 +46,53 @@ export default (connectors) => {
       },
       async login (email, password) {
         try {
-          const loginToken = await connectors.admins.login({ email, password })
+          const token = await connectors.admins.login({ email, password })
+          if (token.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(token.loginToken)
+          this.accessToken = await connectors.admins.getAccessToken({ id: loginTokenData.user._id })
+          this.user = await connectors.admins.readOne({ id: loginTokenData.user._id })
+          router.push('/system-admins')
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async MFALogin (params) {
+        try {
+          const loginToken = await connectors.admins.MFALogin(params)
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: loginTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: loginTokenData.user._id })
           router.push('/system-admins')
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async getMFA () {
+        try {
+          const res = await connectors.admins.getMFA({ id: this.user._id })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async disableMFA () {
+        try {
+          const res = await connectors.admins.disableMFA({ id: this.user._id })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async confirmMFA (code) {
+        try {
+          const res = await connectors.admins.confirmMFA({ id: this.user._id }, { code })
+          return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e

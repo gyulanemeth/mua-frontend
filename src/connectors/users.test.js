@@ -191,7 +191,215 @@ describe('test accounts connectors', () => {
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
-    expect(res).toEqual('Token')
+    expect(res.loginToken).toEqual('Token')
+  })
+
+  test('test login', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'Token' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).login({ accountId: '123', password: 'userPassword' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/login',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: 'userPassword' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res.twoFactorLoginToken).toEqual('Token')
+  })
+
+  test('test getMFA', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).getMFA({ accountId: '123', id: 'userId' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/users/userId/mfa',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test getMFA missing params ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).getMFA()).rejects.toThrowError('ID Is Required')
+  })
+
+  test('test disableMFA', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).disableMFA({ accountId: '123', id: 'userId' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/users/userId/mfa',
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test disableMFA missing params ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).disableMFA()).rejects.toThrowError('ID Is Required')
+  })
+
+  test('test confirmMFA', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).confirmMFA({ accountId: '123', id: 'userId' }, { code: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/users/userId/mfa',
+      {
+        method: 'POST',
+        body: JSON.stringify({ code: 'test' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test confirmMFA admin missing params ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).confirmMFA()).rejects.toThrowError('ID and Code Is Required')
+  })
+
+  test('test MFALogin', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).MFALogin({ code: '123132' }, { code: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/mfa-login',
+      {
+        method: 'POST',
+        body: JSON.stringify({ code: '123132' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(true)
+  })
+
+  test('test MFALogin recoveryCode', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).MFALogin({ recoveryCode: '123132' }, { code: 'test' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/mfa-login',
+      {
+        method: 'POST',
+        body: JSON.stringify({ recoveryCode: '123132' }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual(true)
+  })
+
+  test('test MFALogin missing params ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).MFALogin()).rejects.toThrowError('Two Factor Code Is Required')
+  })
+
+  test('test listProjects', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).listProjects({ accountId: '123' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/projects-for-access',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test listProjects missing params ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).listProjects()).rejects.toThrowError('Account ID Is Required')
   })
 
   test('test login with undefined input ', async () => {
@@ -595,7 +803,29 @@ describe('test accounts connectors', () => {
           'Content-Type': 'application/json'
         }
       })
-    expect(res).toEqual('Token')
+    expect(res.loginToken).toEqual('Token')
+  })
+
+  test('test login with urlFriendlyName ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'Token' } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).loginWithUrlFriendlyName({ urlFriendlyName: '123', password: 'userPassword', email: 'test@tes123.com' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/123/login/url-friendly-name',
+      {
+        method: 'POST',
+        body: JSON.stringify({ password: 'userPassword', email: 'test@tes123.com' }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    expect(res.twoFactorLoginToken).toEqual('Token')
   })
 
   test('test login with urlFriendlyName undefined input ', async () => {

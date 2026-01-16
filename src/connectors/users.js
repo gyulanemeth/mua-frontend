@@ -48,6 +48,8 @@ export default function (fetch, apiUrl) {
 
   const generateGetProjectsRoute = (params) => `/v1/accounts/${params.accountId}/projects-for-access`
 
+  const generateMFARoute = (params) => `/v1/accounts/${params.accountId}/users/${params.id}/mfa`
+
   const getUserList = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateUserRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getUser = createGetConnector(fetch, apiUrl, generateUserRoute, generateAdditionalHeaders)
@@ -72,6 +74,10 @@ export default function (fetch, apiUrl) {
   const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
   const getProjectsRoute = createGetConnector(fetch, apiUrl, generateGetProjectsRoute, generateAdditionalHeaders)
+  const getMFARoute = createGetConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const confirmMFARoute = createPostConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const disableMFARoute = createDeleteConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const postMFALogin = createPostConnector(fetch, apiUrl, () => '/v1/accounts/mfa-login', () => ({ Authorization: `Bearer ${localStorage.getItem('two-factor-login')}` }))
 
   const list = async function (param, query) {
     if (!param) {
@@ -86,6 +92,30 @@ export default function (fetch, apiUrl) {
       throw new RouteError('Account ID Is Required')
     }
     const res = await getProjectsRoute(param, query)
+    return res
+  }
+
+  const getMFA = async function (params) {
+    if (!params || !params.accountId || !params.id) {
+      throw new RouteError('ID And Account ID Is Required')
+    }
+    const res = await getMFARoute({ id: params.id, accountId: params.accountId })
+    return res
+  }
+
+  const disableMFA = async function (params) {
+    if (!params || !params.accountId || !params.id) {
+      throw new RouteError('ID And Account ID Is Required')
+    }
+    const res = await disableMFARoute({ id: params.id, accountId: params.accountId })
+    return res
+  }
+
+  const confirmMFA = async function (params, body) {
+    if (!params || !body || !params.accountId || !params.id || !body.code) {
+      throw new RouteError('ID, Account ID and Code Is Required')
+    }
+    const res = await confirmMFARoute({ id: params.id, accountId: params.accountId }, { code: body.code })
     return res
   }
 
@@ -146,6 +176,20 @@ export default function (fetch, apiUrl) {
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
+  }
+
+  const MFALogin = async function (formData) {
+    if (!formData || (!formData.code && !formData.recoveryCode)) {
+      throw new RouteError('Two Factor Code Is Required')
+    }
+    const res = await postMFALogin({}, formData)
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
     return res.loginToken
   }
 
@@ -165,7 +209,10 @@ export default function (fetch, apiUrl) {
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
-    return res.loginToken
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
   }
 
   const patchName = async function (data) {
@@ -278,6 +325,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects, getMFA, confirmMFA, disableMFA, MFALogin
   }
 }

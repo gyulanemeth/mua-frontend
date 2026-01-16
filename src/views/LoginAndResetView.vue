@@ -9,6 +9,7 @@ import ResetPasswordForm from '../components/UserResetPasswordForm.vue'
 
 import { useAccountsStore, useUsersStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
+import MFALoginForm from '../components/MFALoginForm.vue'
 
 const accountsStore = useAccountsStore()
 const usersStore = useUsersStore()
@@ -18,6 +19,7 @@ const router = useRouter()
 const tokenData = ref({})
 const formData = ref()
 const accountData = ref()
+const twoFactorEnabled = ref()
 
 async function loadData () {
   if (route.name === 'accounts-login-with-urlFriendlyName') {
@@ -100,6 +102,10 @@ async function handleGetLoginAccountEvent (params, statusCallBack) {
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   const res = await usersStore.loginWithUrlFriendlyName({ ...params, urlFriendlyName: route.params.urlFriendlyName })
+  if (res.twoFactorEnabled) {
+    twoFactorEnabled.value = true
+    return true
+  }
   statusCallBack(res.success)
   if (res.success) {
     await accountsStore.readOne(route.params.urlFriendlyName)
@@ -109,6 +115,10 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
 
 async function handleLoginEvent (params, statusCallBack) {
   const res = await usersStore.login(route.query.token, params.password, params.account)
+  if (res.twoFactorEnabled) {
+    twoFactorEnabled.value = true
+    return true
+  }
   statusCallBack(res.success)
   if (res.success) {
     await accountsStore.readOne(route.params.urlFriendlyName)
@@ -129,6 +139,7 @@ watchEffect(async () => {
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
+  <MFALoginForm v-else-if="twoFactorEnabled" />
   <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
     :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
 

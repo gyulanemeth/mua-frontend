@@ -90,7 +90,36 @@ describe('users Store', () => {
         throw new RouteError('User Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
+      if (formData.password === '2fa') {
+        return { twoFactorLoginToken: token }
+      }
+      return { loginToken: token }
+    }
+
+    const mockMFALogin = (formData) => {
+      if (formData === undefined) {
+        throw new RouteError('Error')
+      }
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
       return token
+    }
+    const mockGetMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
+    }
+    const mockDisableMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
+    }
+    const mockConfirmMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
     }
 
     const mockLoginWithUrlFriendlyName = (formData) => {
@@ -98,7 +127,10 @@ describe('users Store', () => {
         throw new RouteError('User Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' } }, secrets)
-      return token
+      if (formData.password === '2fa') {
+        return { twoFactorLoginToken: token }
+      }
+      return { loginToken: token }
     }
 
     const mockSendForgetPasssword = (data) => {
@@ -267,7 +299,7 @@ describe('users Store', () => {
     }
 
     return {
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission, getMFA: mockGetMFA, confirmMFA: mockConfirmMFA, disableMFA: mockDisableMFA, MFALogin: mockMFALogin },
       account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
@@ -275,9 +307,18 @@ describe('users Store', () => {
   }
 
   beforeEach(() => {
+    const token = jwt.sign(
+      {
+        type: 'user',
+        user: {
+          _id: '123',
+          email: 'user@email.com'
+        }
+      }, secrets)
     const pinia = createPinia().use(useUsersStore)
     app.use(pinia)
     setActivePinia(createPinia())
+    localStorage.setItem('two-factor-login', token)
   })
 
   test('test success List', async () => {
@@ -327,6 +368,75 @@ describe('users Store', () => {
     await store.login(token, '12123password', '112233')
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
     expect(store.accessToken).toEqual(token)
+  })
+
+  test('test success login', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const token = jwt.sign({ type: 'user', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' }, role: 'admin' }, secrets)
+    const res = await store.login(token, '2fa', '112233')
+    expect(res.twoFactorEnabled).toBe(true)
+  })
+
+  test('test 2fa MFALogin', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.MFALogin({ code: 'test' })
+    expect(res.success).toBe(true)
+  })
+
+  test('test getMFA missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = { _id: 'test' }
+    store.account = { _id: 'test' }
+    const res = await store.getMFA()
+    expect(res.success).toBe(true)
+  })
+
+  test('test 2fa disableMFA', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = { _id: 'test' }
+    store.account = { _id: 'test' }
+    const res = await store.disableMFA()
+    expect(res.success).toBe(true)
+  })
+
+  test('test 2fa confirmMFA', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = { _id: 'test' }
+    store.account = { _id: 'test' }
+    const res = await store.confirmMFA({ code: '123123' })
+    expect(res.success).toBe(true)
+  })
+
+  test('test getMFA missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = {}
+    store.account = {}
+    const res = await store.getMFA()
+    expect(res.message).toEqual('Id Is Required')
+  })
+
+  test('test disableMFA missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = {}
+    store.account = {}
+    const res = await store.disableMFA()
+    expect(res.message).toEqual('Id Is Required')
+  })
+
+  test('test confirmMFA missing params', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    store.user = {}
+    store.account = {}
+    const res = await store.confirmMFA()
+    expect(res.message).toEqual('Id Is Required')
   })
 
   test('test success login check recent logins', async () => {
@@ -710,6 +820,13 @@ describe('users Store', () => {
     const res = await store.loginWithUrlFriendlyName({ password: 'password', urlFriendlyName: 'urlFriendlyName', email: 'test@test.com' })
     expect(store.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
     expect(res.success).toEqual(true)
+  })
+
+  test('test success login with UrlFriendlyName', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginWithUrlFriendlyName({ password: '2fa', urlFriendlyName: 'urlFriendlyName', email: 'test@test.com' })
+    expect(res.twoFactorEnabled).toEqual(true)
   })
 
   test('test login with UrlFriendlyName input error ', async () => {
