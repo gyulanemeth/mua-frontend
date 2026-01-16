@@ -71,7 +71,35 @@ describe('admins Store', () => {
         throw new RouteError('Admin Email And Password Is Required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12' } }, secrets)
+      if (formData.password === '2fa') {
+        return { twoFactorLoginToken: token }
+      }
+      return { loginToken: token }
+    }
+    const mockMFALogin = (formData) => {
+      if (formData === undefined) {
+        throw new RouteError('Error')
+      }
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12' } }, secrets)
       return token
+    }
+    const mockGetMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
+    }
+    const mockDisableMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
+    }
+    const mockConfirmMFA = async function (data) {
+      if (data === undefined || data.id === undefined) {
+        throw new RouteError('Id Is Required')
+      }
+      return { success: true }
     }
     const mockgetAccessToken = (data) => {
       if (data === undefined || data.id === undefined) {
@@ -181,7 +209,7 @@ describe('admins Store', () => {
     }
 
     return {
-      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, loginWithProvider: mockLoginWithProvider, linkToProvider: mockLinkToProvider, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission },
+      admins: { readOne: mockReadOne, list: mockList, deleteOne: mockDeleteOne, deletePermission: mockDeletePermission, deleteProfilePicture: mockDeleteProfilePicture, uploadProfilePicture: mockUploadProfilePicture, login: mockLogin, getAccessToken: mockgetAccessToken, patchName: mockPatchName, patchPassword: mockPatchPassword, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, loginWithProvider: mockLoginWithProvider, linkToProvider: mockLinkToProvider, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission, getMFA: mockGetMFA, confirmMFA: mockConfirmMFA, disableMFA: mockDisableMFA, MFALogin: mockMFALogin },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation }
     }
@@ -198,6 +226,7 @@ describe('admins Store', () => {
       }, secrets)
 
     localStorage.setItem('accessToken', token)
+    localStorage.setItem('two-factor-login', token)
     const pinia = createPinia().use(useAdminsStore)
     app.use(pinia)
     setActivePinia(createPinia())
@@ -272,6 +301,72 @@ describe('admins Store', () => {
     const token = jwt.sign({ type: 'admin', user: { _id: '12test12', email: 'user1@gmail.com' } }, secrets)
     expect(userStore.user).toEqual({ name: 'user1', email: 'user1@gmail.com', _id: '12test12' })
     expect(userStore.accessToken).toEqual(token)
+  })
+
+  test('test 2fa login', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.login('user1@gmail.com', '2fa')
+    expect(res.twoFactorEnabled).toBe(true)
+  })
+
+  test('test 2fa MFALogin', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.MFALogin({ code: 'test' })
+    expect(res).toBe(undefined)
+  })
+
+  test('test 2fa MFALogin error', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.MFALogin()
+    expect(res.message).toEqual('Error')
+  })
+
+  test('test 2fa getMFA', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.getMFA({ id: 'test' })
+    expect(res.success).toBe(true)
+  })
+
+  test('test 2fa disableMFA', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.disableMFA({ id: 'test' })
+    expect(res.success).toBe(true)
+  })
+
+  test('test 2fa confirmMFA', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    const res = await userStore.confirmMFA({ id: 'test' }, { code: '123123' })
+    expect(res.success).toBe(true)
+  })
+
+  test('test getMFA missing params', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    userStore.user._id = undefined
+    const res = await userStore.getMFA()
+    expect(res.message).toEqual('Id Is Required')
+  })
+
+  test('test disableMFA missing params', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    userStore.user._id = undefined
+    const res = await userStore.disableMFA()
+    expect(res.message).toEqual('Id Is Required')
+  })
+
+  test('test confirmMFA missing params', async () => {
+    const adminStore = useAdminsStore(mokeConnector())
+    const userStore = adminStore()
+    userStore.user._id = undefined
+    const res = await userStore.confirmMFA()
+    expect(res.message).toEqual('Id Is Required')
   })
 
   test('test logOut', async () => {
