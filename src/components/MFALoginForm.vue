@@ -32,7 +32,7 @@ async function submit () {
   }
 }
 
-const appIcon = import.meta.env.VITE_APP_LOGO_URL || 'https://bluefox.email/assets/bluefoxemail-logo-48x48.webp'
+const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
 <template>
