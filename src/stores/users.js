@@ -77,7 +77,24 @@ export default (connectors) => {
       },
       async loginWithUrlFriendlyName (params) {
         try {
-          const loginToken = await connectors.user.loginWithUrlFriendlyName({ password: params.password, urlFriendlyName: params.urlFriendlyName, email: params.email })
+          const token = await connectors.user.loginWithUrlFriendlyName({ password: params.password, urlFriendlyName: params.urlFriendlyName, email: params.email })
+          if (token.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(token.loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          localStorage.setItem('accountId', loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async MFALogin (params) {
+        try {
+          const loginToken = await connectors.user.MFALogin(params)
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
@@ -113,6 +130,33 @@ export default (connectors) => {
       async loginWithProvider ({ id, provider }) {
         try {
           const res = await connectors.user.loginWithProvider({ id, provider })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async getMFA () {
+        try {
+          const res = await connectors.user.getMFA({ accountId: this.user.accountId, id: this.user._id })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async disableMFA () {
+        try {
+          const res = await connectors.user.disableMFA({ accountId: this.user.accountId, id: this.user._id })
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+      async confirmMFA (code) {
+        try {
+          const res = await connectors.user.confirmMFA({ accountId: this.user.accountId, id: this.user._id }, { code })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)

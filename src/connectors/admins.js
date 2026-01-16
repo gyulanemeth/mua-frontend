@@ -34,6 +34,8 @@ export default function (fetch, apiUrl) {
   const generatePatchDisconnectProviderRoute = (params) => `/v1/system-admins/${params.id}/provider/google`
   const generateDisconnectPermissionRoute = (params) => `/v1/${params.type}/permission/disconnect`
 
+  const generateMFARoute = (params) => `/v1/system-admins/${params.id}/mfa`
+
   const getAdmin = createGetConnector(fetch, apiUrl, generateAdminRoute, generateAdditionalHeaders)
   const del = createDeleteConnector(fetch, apiUrl, generateAdminRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('delete-permission-token')}` }))
   const getToken = createGetConnector(fetch, apiUrl, generateTokenRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
@@ -54,6 +56,10 @@ export default function (fetch, apiUrl) {
   const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`)
   const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('admin-disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
+  const getMFARoute = createGetConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const confirmMFARoute = createPostConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const disableMFARoute = createDeleteConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const postMFALogin = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/mfa-login', () => ({ Authorization: `Bearer ${localStorage.getItem('two-factor-login')}` }))
 
   const list = async function (param, query) {
     const res = await getAdmin({}, query)
@@ -148,6 +154,44 @@ export default function (fetch, apiUrl) {
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
+  }
+
+  const getMFA = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('ID Is Required')
+    }
+    const res = await getMFARoute({ id: params.id })
+    return res
+  }
+
+  const disableMFA = async function (params) {
+    if (!params || !params.id) {
+      throw new RouteError('ID Is Required')
+    }
+    const res = await disableMFARoute({ id: params.id })
+    return res
+  }
+
+  const confirmMFA = async function (params, body) {
+    if (!params || !body || !params.id || !body.code) {
+      throw new RouteError('ID and Code Is Required')
+    }
+    const res = await confirmMFARoute({ id: params.id }, { code: body.code })
+    return res
+  }
+
+  const MFALogin = async function (formData) {
+    if (!formData || (!formData.code && !formData.recoveryCode)) {
+      throw new RouteError('Two Factor Code Is Required')
+    }
+    const res = await postMFALogin({}, formData)
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
     return res.loginToken
   }
 
@@ -236,7 +280,7 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, disconnectPermission, disconnectProvider },
+    admins: { list, uploadProfilePicture, deleteProfilePicture, readOne, deleteOne, patchName, patchPassword, getAccessToken, login, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, disconnectPermission, disconnectProvider, getMFA, confirmMFA, disableMFA, MFALogin },
     invitation: { send: sendInvitation, accept, reSend: reSendInvitation },
     forgotPassword: { send: sendForgotPassword, reset }
   }
