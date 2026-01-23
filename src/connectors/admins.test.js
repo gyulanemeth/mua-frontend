@@ -608,12 +608,12 @@ describe('test admin connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await admin(fetch, apiUrl).invitation.send({ email: 'newUser@gmail.com' })
+    const res = await admin(fetch, apiUrl).invitation.send({ email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/admin/v1/system-admins/invitation/send',
       {
         method: 'POST',
-        body: JSON.stringify({ email: 'newUser@gmail.com' }),
+        body: JSON.stringify({ email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
@@ -653,7 +653,7 @@ describe('test admin connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(admin(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email is Required')
+    await expect(admin(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and ConfirmEmail is Required')
   })
 
   test('test reSendInvitation undefined input admin', async () => {

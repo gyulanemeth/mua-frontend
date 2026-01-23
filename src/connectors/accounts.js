@@ -144,10 +144,10 @@ export default function (fetch, apiUrl) {
   }
 
   const sendInvitation = async function (data) {
-    if (!data || !data.id || !data.email) {
-      throw new RouteError('Email Is Required')
+    if (!data || !data.id || !data.email || !data.confirmEmail) {
+      throw new RouteError('Email and ConfirmEmail Is Required')
     }
-    const res = await postSendInvitation({ id: data.id }, { email: data.email, role: data.role, projectsAccess: data.projectsAccess })
+    const res = await postSendInvitation({ id: data.id }, { email: data.email, confirmEmail: data.confirmEmail, role: data.role, projectsAccess: data.projectsAccess })
     return res
   }
 

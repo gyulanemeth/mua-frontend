@@ -470,12 +470,12 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).invitation.send({ id: '123', email: 'newUser@gmail.com' })
+    const res = await accounts(fetch, apiUrl).invitation.send({ id: '123', email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/invitation/send',
       {
         method: 'POST',
-        body: JSON.stringify({ email: 'newUser@gmail.com' }),
+        body: JSON.stringify({ email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
@@ -515,7 +515,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email Is Required')
+    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and ConfirmEmail Is Required')
   })
 
   test('test sendInvitation undefined input ', async () => {
