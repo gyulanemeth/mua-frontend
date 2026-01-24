@@ -171,14 +171,14 @@ describe('admins Store', () => {
     }
     const mockUploadProfilePicture = async function (params, formData) {
       if (!params || !params.id || !formData) {
-        throw new RouteError('param and form Data Is Required')
+        throw new RouteError('Param and form data are required')
       }
       return { profilePicture: 'test' }
     }
 
     const mockDeleteProfilePicture = async function (params) {
       if (!params || !params.id) {
-        throw new RouteError('User Id Is Required')
+        throw new RouteError('User id is Required')
       }
       return { success: true }
     }
@@ -589,7 +589,7 @@ describe('admins Store', () => {
     const userStore = adminStore()
     userStore.user = { _id: '12test12' }
     const res = await userStore.uploadProfilePicture()
-    expect(res.message).toEqual('param and form Data Is Required')
+    expect(res.message).toEqual('Param and form data are required')
   })
 
   test('test success delete profilePicture params error', async () => {
@@ -597,7 +597,7 @@ describe('admins Store', () => {
     const userStore = adminStore()
     userStore.user = {}
     const res = await userStore.deleteProfilePicture()
-    expect(res.message).toEqual('User Id Is Required')
+    expect(res.message).toEqual('User id is Required')
   })
 
   test('test success login with provider', async () => {

@@ -66,7 +66,7 @@ export default function (fetch, apiUrl) {
 
   const getAccountByUrlFriendlyName = async function (param, query) {
     if (!param || !param.urlFriendlyName) {
-      throw new RouteError('Account UrlFriendlyName Is Required')
+      throw new RouteError('Account UrlFriendlyName is required')
     }
     const res = await getByUrlFriendlyName(param, query)
     return res
@@ -74,7 +74,7 @@ export default function (fetch, apiUrl) {
 
   const readOne = async function (id) {
     if (!id) {
-      throw new RouteError('Admin ID Is Required')
+      throw new RouteError('Admin id is required')
     }
     const res = await getAccount(id)
     return res
@@ -82,7 +82,7 @@ export default function (fetch, apiUrl) {
 
   const patchName = async function (formData) {
     if (!formData || !formData.id || !formData.name) {
-      throw new RouteError('Account ID And New Name Is Required')
+      throw new RouteError('Account id and new name are required')
     }
     const res = await updateName({ id: formData.id }, { name: formData.name })
     return res
@@ -90,7 +90,7 @@ export default function (fetch, apiUrl) {
 
   const patchUrlFriendlyName = async function (formData) {
     if (!formData || !formData.id || !formData.urlFriendlyName) {
-      throw new RouteError('Account ID And New urlFriendlyName Is Required')
+      throw new RouteError('Account id and new urlFriendlyName are required')
     }
     const res = await updateUrlFriendlyName({ id: formData.id }, { urlFriendlyName: formData.urlFriendlyName })
     return res
@@ -98,7 +98,7 @@ export default function (fetch, apiUrl) {
 
   const deleteOne = async function (id) {
     if (!id) {
-      throw new RouteError('Account ID Is Required')
+      throw new RouteError('Account id is required')
     }
     const res = await del(id)
     return res
@@ -106,7 +106,7 @@ export default function (fetch, apiUrl) {
 
   const checkAvailability = async function (data) {
     if (!data || !data.urlFriendlyName) {
-      throw new RouteError('Account UrlFriendlyName Is Required')
+      throw new RouteError('Account UrlFriendlyName is required')
     }
     const res = await getCheckAvailability({}, { urlFriendlyName: data.urlFriendlyName })
     return res
@@ -114,9 +114,9 @@ export default function (fetch, apiUrl) {
 
   const createOne = async function (formData) {
     if (!formData || !formData.account || !formData.account.name || !formData.account.urlFriendlyName) {
-      throw new RouteError('Account Name And UrlFriendlyName Is Required')
+      throw new RouteError('Account name and UrlFriendlyName are required')
     } else if (!formData.user || !formData.user.name || !formData.user.email || (!formData.user.password && !formData.user.googleProfileId && !formData.user.microsoftProfileId && !formData.user.githubProfileId)) {
-      throw new RouteError('User Name, Email And Password Is Required')
+      throw new RouteError('User name, email and password are required')
     }
     const res = await postCreateAccount({}, { account: formData.account, user: formData.user, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
     return res
@@ -124,7 +124,7 @@ export default function (fetch, apiUrl) {
 
   const createOneByAdmin = async function (formData) {
     if (!formData || !formData.name || !formData.urlFriendlyName) {
-      throw new RouteError('Name And UrlFriendlyName Is Required')
+      throw new RouteError('Name and UrlFriendlyName are required')
     }
     const res = await postCreateAccountByAdmin({}, { name: formData.name, urlFriendlyName: formData.urlFriendlyName })
     return res
@@ -132,7 +132,7 @@ export default function (fetch, apiUrl) {
 
   const finalizeRegistration = async function (data) {
     if (!data || !data.id || !data.accountId || !data.token) {
-      throw new RouteError('User Id And Account Id Is Required')
+      throw new RouteError('User id and account id are required')
     }
     localStorage.setItem('registrationToken', data.token)
     const res = await postFinalizeRegistration({ id: data.id, accountId: data.accountId })
@@ -145,7 +145,7 @@ export default function (fetch, apiUrl) {
 
   const sendInvitation = async function (data) {
     if (!data || !data.id || !data.email || !data.confirmEmail) {
-      throw new RouteError('Email and Email Confirmation are required')
+      throw new RouteError('Email and email confirmation are required')
     }
     const res = await postSendInvitation({ id: data.id }, { email: data.email, confirmEmail: data.confirmEmail, role: data.role, projectsAccess: data.projectsAccess })
     return res
@@ -153,7 +153,7 @@ export default function (fetch, apiUrl) {
 
   const reSendInvitation = async function (data) {
     if (!data || !data.id || !data.email) {
-      throw new RouteError('Email Is Required')
+      throw new RouteError('Email is required')
     }
     const res = await postReSendInvitation({ id: data.id }, { email: data.email, role: data.role, projectsAccess: data.projectsAccess })
     return res
@@ -161,7 +161,7 @@ export default function (fetch, apiUrl) {
 
   const accept = async function (formData) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain || !formData.name) {
-      throw new RouteError('Accouunt Password Is Required')
+      throw new RouteError('Name, password and password confirmation is required')
     }
     localStorage.setItem('invitationToken', formData.token)
     const res = await postAcceptInvitation({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain, name: formData.name })
@@ -174,7 +174,7 @@ export default function (fetch, apiUrl) {
 
   const sendForgotPassword = async function (data) {
     if (!data || !data.email || !data.id) {
-      throw new RouteError('Email Is Required')
+      throw new RouteError('Email is required')
     }
     const res = await postSendForgotPassword({ id: data.id }, { email: data.email, captchaText: data.captchaText, captchaProbe: data.captchaProbe })
     return res
@@ -182,7 +182,7 @@ export default function (fetch, apiUrl) {
 
   const reset = async function (formData) {
     if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
-      throw new RouteError('User Password Is Required')
+      throw new RouteError('Password and password confirmation are required')
     }
     localStorage.setItem('resetPasswordToken', formData.token)
     const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
@@ -195,7 +195,7 @@ export default function (fetch, apiUrl) {
 
   const uploadLogo = async function (params, formData) {
     if (!params || !params.id || !formData) {
-      throw new RouteError('param and form Data Is Required')
+      throw new RouteError('Param and form data are required')
     }
     const res = await uploadImage(params, formData)
     return res
@@ -203,7 +203,7 @@ export default function (fetch, apiUrl) {
 
   const deleteLogo = async function (params) {
     if (!params || !params.id) {
-      throw new RouteError('Account Id Is Required')
+      throw new RouteError('Account id is required')
     }
     const res = await deleteLogoRoute(params)
     return res

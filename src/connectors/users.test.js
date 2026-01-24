@@ -66,7 +66,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { items: [{ _id: '123', name: 'accountName1', email: 'example@gmail.com' }], count: 1 } })
     })
 
-    await expect(users(fetch, apiUrl).list()).rejects.toThrowError('Account ID Is Required')
+    await expect(users(fetch, apiUrl).list()).rejects.toThrowError('Account id is required')
   })
 
   test('test readOne user', async () => {
@@ -102,7 +102,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', email: 'example@gmail.com' } })
     })
 
-    await expect(users(fetch, apiUrl).readOne()).rejects.toThrowError('ID And Account ID Is Required')
+    await expect(users(fetch, apiUrl).readOne()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test getAccessToken ', async () => {
@@ -136,7 +136,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { accessToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).getAccessToken({ accountId: '112233' })).rejects.toThrowError('ID And Account ID Is Required')
+    await expect(users(fetch, apiUrl).getAccessToken({ accountId: '112233' })).rejects.toThrowError('User id and account id are required')
   })
 
   test('test get accounts login ', async () => {
@@ -167,7 +167,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(users(fetch, apiUrl).loginGetAccounts()).rejects.toThrowError('User Email Is Required')
+    await expect(users(fetch, apiUrl).loginGetAccounts()).rejects.toThrowError('User email is required')
   })
 
   test('test login ', async () => {
@@ -246,7 +246,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).getMFA()).rejects.toThrowError('ID Is Required')
+    await expect(users(fetch, apiUrl).getMFA()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test disableMFA', async () => {
@@ -278,7 +278,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).disableMFA()).rejects.toThrowError('ID Is Required')
+    await expect(users(fetch, apiUrl).disableMFA()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test confirmMFA', async () => {
@@ -311,7 +311,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).confirmMFA()).rejects.toThrowError('ID and Code Is Required')
+    await expect(users(fetch, apiUrl).confirmMFA()).rejects.toThrowError('User id, account id and code are required')
   })
 
   test('test MFALogin', async () => {
@@ -367,7 +367,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).MFALogin()).rejects.toThrowError('Two Factor Code Is Required')
+    await expect(users(fetch, apiUrl).MFALogin()).rejects.toThrowError('Two factor code is required')
   })
 
   test('test listProjects', async () => {
@@ -399,7 +399,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).listProjects()).rejects.toThrowError('Account ID Is Required')
+    await expect(users(fetch, apiUrl).listProjects()).rejects.toThrowError('Account id is required')
   })
 
   test('test login with undefined input ', async () => {
@@ -410,7 +410,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(users(fetch, apiUrl).login()).rejects.toThrowError('User Password Is Required')
+    await expect(users(fetch, apiUrl).login()).rejects.toThrowError('User password is required')
   })
 
   test('test patchName account', async () => {
@@ -444,7 +444,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).patchName()).rejects.toThrowError('User ID, Account ID And New Name Is Required')
+    await expect(users(fetch, apiUrl).patchName()).rejects.toThrowError('User id, account id and new name are required')
   })
 
   test('test patchPassword account', async () => {
@@ -500,7 +500,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).reSendfinalizeRegistrationEmail()).rejects.toThrowError('User Id And Account Id Is Required')
+    await expect(users(fetch, apiUrl).reSendfinalizeRegistrationEmail()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test patchPassword with undefined input ', async () => {
@@ -510,7 +510,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).patchPassword()).rejects.toThrowError('User ID, Account ID And New Password Is Required')
+    await expect(users(fetch, apiUrl).patchPassword()).rejects.toThrowError('User id, account id and new password are required')
   })
 
   test('test patchRole account', async () => {
@@ -544,7 +544,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).patchRole({}, {})).rejects.toThrowError('User ID, Account ID And New Role Is Required')
+    await expect(users(fetch, apiUrl).patchRole({}, {})).rejects.toThrowError('User id, account id and new role are required')
   })
 
   test('test deleteOne ', async () => {
@@ -581,7 +581,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    await expect(users(fetch, apiUrl).deleteOne()).rejects.toThrowError('User ID and Account ID Is Required')
+    await expect(users(fetch, apiUrl).deleteOne()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test success patchEmail ', async () => {
@@ -616,7 +616,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(users(fetch, apiUrl).patchEmail({})).rejects.toThrowError('User ID, Account ID, New Email and New Email Confirm Is Required')
+    await expect(users(fetch, apiUrl).patchEmail({})).rejects.toThrowError('User id, account id, new email and email confirmation are required')
   })
 
   test('test success patchEmailConfirm ', async () => {
@@ -650,7 +650,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(users(fetch, apiUrl).patchEmailConfirm({})).rejects.toThrowError('User ID, Account ID and token Is Required')
+    await expect(users(fetch, apiUrl).patchEmailConfirm({})).rejects.toThrowError('User id, account id and token are required')
   })
 
   test('test delete permission admin', async () => {
@@ -712,7 +712,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
     })
-    await expect(users(fetch, apiUrl).deletePermission()).rejects.toThrowError('Password Is Required')
+    await expect(users(fetch, apiUrl).deletePermission()).rejects.toThrowError('Password is required')
   })
 
   test('test upload user profilePicture ', async () => {
@@ -748,7 +748,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).uploadProfilePicture()).rejects.toThrowError('param and form Data Is Required')
+    await expect(users(fetch, apiUrl).uploadProfilePicture()).rejects.toThrowError('Param and form data are required')
   })
 
   test('test delete user profilePicture ', async () => {
@@ -781,7 +781,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(users(fetch, apiUrl).deleteProfilePicture()).rejects.toThrowError('Account and User Id Is Required')
+    await expect(users(fetch, apiUrl).deleteProfilePicture()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test login with urlFriendlyName ', async () => {
@@ -835,7 +835,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).loginWithUrlFriendlyName()).rejects.toThrowError('User Password Is Required')
+    await expect(users(fetch, apiUrl).loginWithUrlFriendlyName()).rejects.toThrowError('User password is required')
   })
 
   test('test login with provider ', async () => {
@@ -867,7 +867,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).loginWithProvider()).rejects.toThrowError('Account id is Required')
+    await expect(users(fetch, apiUrl).loginWithProvider()).rejects.toThrowError('Account id is required')
   })
 
   test('test create with provider ', async () => {
@@ -921,7 +921,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).linkToProvider()).rejects.toThrowError('ccountId and user id is Required')
+    await expect(users(fetch, apiUrl).linkToProvider()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test create password', async () => {
@@ -954,7 +954,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).createPassword()).rejects.toThrowError('User ID, Account ID And Token Is Required')
+    await expect(users(fetch, apiUrl).createPassword()).rejects.toThrowError('User id, account id and token are required')
   })
 
   test('test disconnect permission admin', async () => {
@@ -990,7 +990,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
     })
-    await expect(users(fetch, apiUrl).disconnectPermission()).rejects.toThrowError('Password Is Required')
+    await expect(users(fetch, apiUrl).disconnectPermission()).rejects.toThrowError('Password is required')
   })
 
   test('test disconnect ', async () => {
@@ -1029,6 +1029,6 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    await expect(users(fetch, apiUrl).disconnectProvider()).rejects.toThrowError('User ID, Provider and Account ID Is Required')
+    await expect(users(fetch, apiUrl).disconnectProvider()).rejects.toThrowError('User id, provider and account id are required')
   })
 })

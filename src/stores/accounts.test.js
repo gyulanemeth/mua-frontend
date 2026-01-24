@@ -49,14 +49,14 @@ describe('accounts Store', () => {
     }
     const mockCreateOneByAdmin = async function (formData) {
       if (!formData || !formData.name || !formData.urlFriendlyName) {
-        throw new RouteError('FormData Name And UrlFriendlyName Is Required')
+        throw new RouteError('FormData Name and UrlFriendlyName are required')
       }
       return { name: 'accountExampleNew', urlFriendlyName: 'urlFriendlyNameNew', _id: '112test112' }
     }
 
     const mockCreateOne = async function (formData) {
       if (!formData || !formData.account || !formData.account.name || !formData.account.urlFriendlyName) {
-        throw new RouteError('Account Name And UrlFriendlyName Is Required')
+        throw new RouteError('Account Name and UrlFriendlyName are required')
       } else if (!formData.user || !formData.user.name || !formData.user.email || !formData.user.password) {
         throw new RouteError('User Name, Email And Password Is Required')
       }
@@ -92,14 +92,14 @@ describe('accounts Store', () => {
 
     const mockUploadLogo = async function (params, formData) {
       if (!params || !params.id || !formData) {
-        throw new RouteError('param and form Data Is Required')
+        throw new RouteError('Param and form data are required')
       }
       return { success: true, profilePicture: 'test' }
     }
 
     const mockDeleteLogo = async function (params) {
       if (!params || !params.id) {
-        throw new RouteError('Account Id Is Required')
+        throw new RouteError('Account id is required')
       }
       return { success: true }
     }
@@ -158,7 +158,7 @@ describe('accounts Store', () => {
     const accountStore = useAccountsStore(mokeConnector())
     const store = accountStore()
     const res = await store.createOneByAdmin({})
-    expect(res.message).toEqual('FormData Name And UrlFriendlyName Is Required')
+    expect(res.message).toEqual('FormData Name and UrlFriendlyName are required')
   })
 
   test('test success get account by urlFriendlyName', async () => {
@@ -186,7 +186,7 @@ describe('accounts Store', () => {
     const accountStore = useAccountsStore(mokeConnector())
     const store = accountStore()
     const res = await store.createAccount()
-    expect(res.message).toEqual('Account Name And UrlFriendlyName Is Required')
+    expect(res.message).toEqual('Account Name and UrlFriendlyName are required')
   })
 
   test('test success patchUrlFriendlyName', async () => {
@@ -323,7 +323,7 @@ describe('accounts Store', () => {
     const store = accountStore()
     store.account = {}
     const res = await store.uploadLogo()
-    expect(res.message).toEqual('param and form Data Is Required')
+    expect(res.message).toEqual('Param and form data are required')
   })
 
   test('test success logo params error', async () => {
@@ -331,6 +331,6 @@ describe('accounts Store', () => {
     const store = accountStore()
     store.account = {}
     const res = await store.deleteLogo()
-    expect(res.message).toEqual('Account Id Is Required')
+    expect(res.message).toEqual('Account id is required')
   })
 })

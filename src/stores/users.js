@@ -368,7 +368,7 @@ export default (connectors) => {
       async reSendFinalizeRegistration ({ accountId, userId }) {
         try {
           if (accountId === null || userId === undefined) {
-            throw new RouteError('User ID and Account ID Is Required')
+            throw new RouteError('User id and account id are required')
           }
           const res = await connectors.user.reSendfinalizeRegistrationEmail({ userId, accountId })
           return { ...res, success: true }

@@ -81,7 +81,7 @@ export default function (fetch, apiUrl) {
 
   const list = async function (param, query) {
     if (!param) {
-      throw new RouteError('Account ID Is Required')
+      throw new RouteError('Account id is required')
     }
     const res = await getUserList(param, query)
     return res
@@ -89,7 +89,7 @@ export default function (fetch, apiUrl) {
 
   const listProjects = async function (param, query) {
     if (!param) {
-      throw new RouteError('Account ID Is Required')
+      throw new RouteError('Account id is required')
     }
     const res = await getProjectsRoute(param, query)
     return res
@@ -97,7 +97,7 @@ export default function (fetch, apiUrl) {
 
   const getMFA = async function (params) {
     if (!params || !params.accountId || !params.id) {
-      throw new RouteError('ID And Account ID Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await getMFARoute({ id: params.id, accountId: params.accountId })
     return res
@@ -105,7 +105,7 @@ export default function (fetch, apiUrl) {
 
   const disableMFA = async function (params) {
     if (!params || !params.accountId || !params.id) {
-      throw new RouteError('ID And Account ID Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await disableMFARoute({ id: params.id, accountId: params.accountId })
     return res
@@ -113,7 +113,7 @@ export default function (fetch, apiUrl) {
 
   const confirmMFA = async function (params, body) {
     if (!params || !body || !params.accountId || !params.id || !body.code) {
-      throw new RouteError('ID, Account ID and Code Is Required')
+      throw new RouteError('User id, account id and code are required')
     }
     const res = await confirmMFARoute({ id: params.id, accountId: params.accountId }, { code: body.code })
     return res
@@ -121,7 +121,7 @@ export default function (fetch, apiUrl) {
 
   const readOne = async function (data) {
     if (!data || !data.accountId || !data.id) {
-      throw new RouteError('ID And Account ID Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await getUser({ id: data.id, accountId: data.accountId })
     return res
@@ -129,7 +129,7 @@ export default function (fetch, apiUrl) {
 
   const getAccessToken = async function (data) {
     if (!data || !data.accountId || !data.id) {
-      throw new RouteError('ID And Account ID Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await getToken({ id: data.id, accountId: data.accountId })
     if (res.accessToken) {
@@ -141,7 +141,7 @@ export default function (fetch, apiUrl) {
 
   const loginWithProvider = async function (params) {
     if (!params || !params.id) {
-      throw new RouteError('Account id is Required')
+      throw new RouteError('Account id is required')
     }
     const res = await postLoginWithProvider(params)
     return res
@@ -154,7 +154,7 @@ export default function (fetch, apiUrl) {
 
   const linkToProvider = async function (params) {
     if (!params || !params.accountId || !params.id) {
-      throw new RouteError('AccountId and user id is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await postLinkToProvider(params)
     return res
@@ -162,7 +162,7 @@ export default function (fetch, apiUrl) {
 
   const loginGetAccounts = async function (formData) {
     if (!formData || !formData.email) {
-      throw new RouteError('User Email Is Required')
+      throw new RouteError('User email is required')
     }
     const res = await postLoginGetEmails({}, { email: formData.email })
     return res
@@ -170,7 +170,7 @@ export default function (fetch, apiUrl) {
 
   const login = async function (formData) {
     if (!formData || !formData.password || !formData.accountId) {
-      throw new RouteError('User Password Is Required')
+      throw new RouteError('User password is required')
     }
     const res = await postLogin({ id: formData.accountId }, { password: formData.password })
     if (res.loginToken) {
@@ -184,7 +184,7 @@ export default function (fetch, apiUrl) {
 
   const MFALogin = async function (formData) {
     if (!formData || (!formData.code && !formData.recoveryCode)) {
-      throw new RouteError('Two Factor Code Is Required')
+      throw new RouteError('Two factor code is required')
     }
     const res = await postMFALogin({}, formData)
     if (res.loginToken) {
@@ -195,7 +195,7 @@ export default function (fetch, apiUrl) {
 
   const reSendfinalizeRegistrationEmail = async function (data) {
     if (!data || !data.userId || !data.accountId) {
-      throw new RouteError('User Id And Account Id Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await postReFinalizeRegistration({ userId: data.userId, accountId: data.accountId })
     return res
@@ -203,7 +203,7 @@ export default function (fetch, apiUrl) {
 
   const loginWithUrlFriendlyName = async function (formData) {
     if (!formData || !formData.password || !formData.urlFriendlyName) {
-      throw new RouteError('User Password Is Required')
+      throw new RouteError('User password is required')
     }
     const res = await postLoginUrlFriendlyName({ id: formData.urlFriendlyName }, { password: formData.password, email: formData.email })
     if (res.loginToken) {
@@ -217,7 +217,7 @@ export default function (fetch, apiUrl) {
 
   const patchName = async function (data) {
     if (!data || !data.id || !data.accountId || !data.name) {
-      throw new RouteError('User ID, Account ID And New Name Is Required')
+      throw new RouteError('User id, account id and new name are required')
     }
     const res = await updateName({ id: data.id, accountId: data.accountId }, { name: data.name })
     return res
@@ -225,7 +225,7 @@ export default function (fetch, apiUrl) {
 
   const patchPassword = async function (formData) {
     if (!formData || !formData.id || !formData.accountId || !formData.newPassword || !formData.newPasswordAgain) {
-      throw new RouteError('User ID, Account ID And New Password Is Required')
+      throw new RouteError('User id, account id and new password are required')
     }
     const res = await updatePassword({ id: formData.id, accountId: formData.accountId }, { oldPassword: formData.oldPassword, newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
     return res
@@ -233,7 +233,7 @@ export default function (fetch, apiUrl) {
 
   const createPassword = async function (formData) {
     if (!formData || !formData.token || !formData.accountId || !formData.id) {
-      throw new RouteError('User ID, Account ID And Token Is Required')
+      throw new RouteError('User id, account id and token are required')
     }
     localStorage.setItem('createPasswordToken', formData.token)
     const res = await patchCreatePassword({ id: formData.id, accountId: formData.accountId })
@@ -244,7 +244,7 @@ export default function (fetch, apiUrl) {
 
   const patchRole = async function (formData, body) {
     if (!formData || !formData.id || !formData.accountId || !body.role) {
-      throw new RouteError('User ID, Account ID And New Role Is Required')
+      throw new RouteError('User id, account id and new role are required')
     }
     const res = await updateRole({ id: formData.id, accountId: formData.accountId }, body)
     return res
@@ -252,7 +252,7 @@ export default function (fetch, apiUrl) {
 
   const deleteOne = async function (data) {
     if (!data || !data.id || !data.accountId) {
-      throw new RouteError('User ID and Account ID Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await del({ id: data.id, accountId: data.accountId })
     localStorage.removeItem('delete-permission-token')
@@ -261,7 +261,7 @@ export default function (fetch, apiUrl) {
 
   const disconnectProvider = async function (data) {
     if (!data || !data.id || !data.accountId || !data.provider) {
-      throw new RouteError('User ID, Provider and Account ID Is Required')
+      throw new RouteError('User id, provider and account id are required')
     }
     const res = await patchDisconnectProvider({ id: data.id, accountId: data.accountId, provider: data.provider })
     localStorage.removeItem('disconnect-permission-token')
@@ -270,7 +270,7 @@ export default function (fetch, apiUrl) {
 
   const disconnectPermission = async function (password) {
     if (!password) {
-      throw new RouteError('Password Is Required')
+      throw new RouteError('Password is required')
     }
     const res = await disconnectPermissionUser({ type: 'accounts' }, { password })
     localStorage.setItem('disconnect-permission-token', res.permissionToken)
@@ -278,7 +278,7 @@ export default function (fetch, apiUrl) {
 
   const deletePermission = async function (password) {
     if (!password) {
-      throw new RouteError('Password Is Required')
+      throw new RouteError('Password is required')
     }
     let res
     if (jwtDecode(localStorage.getItem('accessToken')).type === 'admin') {
@@ -291,7 +291,7 @@ export default function (fetch, apiUrl) {
 
   const patchEmail = async function (formData) {
     if (!formData || !formData.id || !formData.accountId || !formData.newEmail || !formData.newEmailAgain) {
-      throw new RouteError('User ID, Account ID, New Email and New Email Confirm Is Required')
+      throw new RouteError('User id, account id, new email and email confirmation are required')
     }
     const res = await updateEmail({ id: formData.id, accountId: formData.accountId }, { newEmail: formData.newEmail, newEmailAgain: formData.newEmailAgain })
     return res
@@ -299,7 +299,7 @@ export default function (fetch, apiUrl) {
 
   const patchEmailConfirm = async function (formData) {
     if (!formData || !formData.id || !formData.accountId || !formData.token) {
-      throw new RouteError('User ID, Account ID and token Is Required')
+      throw new RouteError('User id, account id and token are required')
     }
     localStorage.setItem('verifyEmailToken', formData.token)
     const res = await confirmEmailUpdate({ id: formData.id, accountId: formData.accountId })
@@ -310,7 +310,7 @@ export default function (fetch, apiUrl) {
 
   const uploadProfilePicture = async function (params, formData) {
     if (!params || !params.id || !params.accountId || !formData) {
-      throw new RouteError('param and form Data Is Required')
+      throw new RouteError('Param and form data are required')
     }
     const res = await postUploadImage({ id: params.id, accountId: params.accountId }, formData)
     return res
@@ -318,7 +318,7 @@ export default function (fetch, apiUrl) {
 
   const deleteProfilePicture = async function (params) {
     if (!params || !params.id || !params.accountId) {
-      throw new RouteError('Account and User Id Is Required')
+      throw new RouteError('User id and account id are required')
     }
     const res = await deleteProfilePictureRoute(params)
     return res
