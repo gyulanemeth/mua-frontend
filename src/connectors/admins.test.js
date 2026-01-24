@@ -653,7 +653,7 @@ describe('test admin connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(admin(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and Email Confirmation are Required')
+    await expect(admin(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and Email Confirmation are required')
   })
 
   test('test reSendInvitation undefined input admin', async () => {

@@ -197,7 +197,7 @@ export default function (fetch, apiUrl) {
 
   const sendInvitation = async function (data) {
     if (!data || !data.email || !data.confirmEmail) {
-      throw new RouteError('Email and Email Confirmation are Required')
+      throw new RouteError('Email and Email Confirmation are required')
     }
     const res = await postSendInvitation({}, { email: data.email, confirmEmail: data.confirmEmail })
     return res

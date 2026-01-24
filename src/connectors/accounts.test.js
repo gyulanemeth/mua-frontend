@@ -515,7 +515,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and Email Confirmation are Required')
+    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and Email Confirmation are required')
   })
 
   test('test sendInvitation undefined input ', async () => {
