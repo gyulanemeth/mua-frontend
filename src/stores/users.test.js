@@ -54,7 +54,7 @@ describe('users Store', () => {
 
     const mockPatchRole = (formData, body) => {
       if (formData === undefined || formData.id === undefined || formData.accountId === undefined || body.role === undefined) {
-        throw new RouteError('User ID, Account ID And New Role Is Required')
+        throw new RouteError('User id, account id and new role are required')
       }
       return {
         _id: '14test14',
@@ -80,14 +80,14 @@ describe('users Store', () => {
 
     const mockLoginGetAccounts = (formData) => {
       if (!formData || !formData.email) {
-        throw new RouteError('User Email Is Required')
+        throw new RouteError('User email is required')
       }
       return { success: true }
     }
 
     const mockLogin = (formData) => {
       if (!formData || !formData.password || !formData.accountId) {
-        throw new RouteError('User Password Is Required')
+        throw new RouteError('User password is required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
       if (formData.password === '2fa') {
@@ -124,7 +124,7 @@ describe('users Store', () => {
 
     const mockLoginWithUrlFriendlyName = (formData) => {
       if (!formData || !formData.password || !formData.urlFriendlyName) {
-        throw new RouteError('User Password Is Required')
+        throw new RouteError('User password is required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233', urlFriendlyName: 'urlFriendlyName1' } }, secrets)
       if (formData.password === '2fa') {
@@ -142,7 +142,7 @@ describe('users Store', () => {
 
     const mockReset = async function (formData) {
       if (!formData || !formData.id || !formData.token || !formData.newPassword || !formData.newPasswordAgain) {
-        throw new RouteError('User Password Is Required')
+        throw new RouteError('User password is required')
       }
       const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
       return token
@@ -183,14 +183,14 @@ describe('users Store', () => {
 
     const mockPatchUserName = async function (data) {
       if (!data || !data.id || !data.accountId || !data.name) {
-        throw new RouteError('User ID, Account ID And New Name Is Required')
+        throw new RouteError('User id, account id and new name are required')
       }
       return data.name
     }
 
     const mockPatchPassword = async function (formData) {
       if (!formData || !formData.id || !formData.accountId || !formData.oldPassword || !formData.newPassword || !formData.newPasswordAgain) {
-        throw new RouteError('User ID, Account ID And New Password Is Required')
+        throw new RouteError('User id, account id and new password are required')
       }
       return { success: true }
     }
@@ -217,7 +217,7 @@ describe('users Store', () => {
 
     const mockFinalizeRegistration = async (data) => {
       if (!data || !data.id || !data.accountId || !data.token) {
-        throw new RouteError('User Id And Account Id Is Required')
+        throw new RouteError('User Id And Account id is required')
       }
       return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlciI6eyJfaWQiOiIxMnRlc3QxMiJ9LCJhY2NvdW50Ijp7Il9pZCI6IjEyM3Rlc3QxMjMifSwiaWF0IjoxNTE2MjM5MDIyfQ.dmLGrl7qt43fb34XQQqYA1AirTvWErg_9hnOAA8OmG8'
     }
@@ -231,35 +231,35 @@ describe('users Store', () => {
 
     const mockPatchEmailConfirm = async function (formData) {
       if (!formData || !formData.id || !formData.accountId || !formData.token) {
-        throw new RouteError('User ID, Account ID and token Is Required')
+        throw new RouteError('User id, account id and token are required')
       }
       return 'success'
     }
 
     const mockUploadUserProfilePicture = async function (params, formData) {
       if (!params || !params.id || !params.accountId || !formData) {
-        throw new RouteError('param and form Data Is Required')
+        throw new RouteError('Param and form data are required')
       }
       return { profilePicture: 'test' }
     }
 
     const mockDeleteUserProfilePicture = async function (params) {
       if (!params || !params.id || !params.accountId) {
-        throw new RouteError('Account and User Id Is Required')
+        throw new RouteError('User id and account id are required')
       }
       return { success: true }
     }
 
     const mockReSendfinalizeRegistrationEmail = async function (data) {
       if (!data || !data.userId || !data.accountId) {
-        throw new RouteError('User Id And Account Id Is Required')
+        throw new RouteError('User Id And Account id is required')
       }
       return { success: true }
     }
 
     const mockLoginWithProvider = async function (params) {
       if (!params || !params.id) {
-        throw new RouteError('Account id is Required')
+        throw new RouteError('Account id is required')
       }
       return { success: true }
     }
@@ -272,21 +272,21 @@ describe('users Store', () => {
 
     const mockLinkToProvider = async function (params) {
       if (!params || !params.accountId || !params.id) {
-        throw new RouteError('AccountId and user id is Required')
+        throw new RouteError('AUser id and account id are required')
       }
       return { success: true }
     }
 
     const mockCreatePassword = async function (formData) {
       if (!formData || !formData.token || !formData.accountId || !formData.id) {
-        throw new RouteError('User ID, Account ID And Token Is Required')
+        throw new RouteError('User id, account id and token are required')
       }
       return { success: true }
     }
 
     const mockDisconnectProvider = async function (data) {
       if (!data || !data.id || !data.accountId || !data.provider) {
-        throw new RouteError('User ID, Provider and Account ID Is Required')
+        throw new RouteError('User id, provider and account id are required')
       }
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
@@ -470,7 +470,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.loginGetAccounts()
-    expect(res.message).toEqual('User Email Is Required')
+    expect(res.message).toEqual('User email is required')
     expect(store.user).toEqual(undefined)
     expect(store.accessToken).toEqual(undefined)
   })
@@ -480,7 +480,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.login()
-    expect(res.message).toEqual('User Password Is Required')
+    expect(res.message).toEqual('User password is required')
     expect(store.user).toEqual(undefined)
     expect(store.accessToken).toEqual(undefined)
   })
@@ -558,7 +558,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.reSendFinalizeRegistration({})
-    expect(res.message).toEqual('User ID and Account ID Is Required')
+    expect(res.message).toEqual('User id and account id are required')
   })
 
   test('test success resend admin Invitation', async () => {
@@ -673,7 +673,7 @@ describe('users Store', () => {
     const store = usersStore()
     store.user = { _id: '12test12', name: 'user1' }
     const res = await store.patchPassword('oldPassword', 'newPassword')
-    expect(res.message).toEqual('User ID, Account ID And New Password Is Required')
+    expect(res.message).toEqual('User id, account id and new password are required')
   })
 
   test('test patchPassword fail  password required ', async () => {
@@ -681,7 +681,7 @@ describe('users Store', () => {
     const store = usersStore()
     store.user = { _id: '12test12', name: 'user1' }
     const res = await store.patchPassword('oldPassword', 'newPassword')
-    expect(res.message).toEqual('User ID, Account ID And New Password Is Required')
+    expect(res.message).toEqual('User id, account id and new password are required')
   })
 
   test('test readOne success ', async () => {
@@ -802,7 +802,7 @@ describe('users Store', () => {
     userStore.user = { _id: '12test12' }
     userStore.account = {}
     const res = await userStore.uploadProfilePicture()
-    expect(res.message).toEqual('param and form Data Is Required')
+    expect(res.message).toEqual('Param and form data are required')
   })
 
   test('test success deleteProfilePicture params error', async () => {
@@ -811,7 +811,7 @@ describe('users Store', () => {
     userStore.user = {}
     userStore.account = {}
     const res = await userStore.deleteProfilePicture()
-    expect(res.message).toEqual('Account and User Id Is Required')
+    expect(res.message).toEqual('User id and account id are required')
   })
 
   test('test success login with UrlFriendlyName', async () => {
@@ -833,7 +833,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.loginWithUrlFriendlyName({})
-    expect(res.message).toEqual('User Password Is Required')
+    expect(res.message).toEqual('User password is required')
   })
 
   test('test success get access token', async () => {
@@ -888,7 +888,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.loginWithProvider({ provider: 'test' })
-    expect(res.message).toEqual('Account id is Required')
+    expect(res.message).toEqual('Account id is required')
   })
 
   test('test success link with provider', async () => {
@@ -902,7 +902,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.linkToProvider({ provider: 'test' })
-    expect(res.message).toEqual('AccountId and user id is Required')
+    expect(res.message).toEqual('AUser id and account id are required')
   })
 
   test('test success create password', async () => {
@@ -916,7 +916,7 @@ describe('users Store', () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
     const res = await store.createPassword({})
-    expect(res.message).toEqual('User ID, Account ID And Token Is Required')
+    expect(res.message).toEqual('User id, account id and token are required')
   })
 
   test('test success disconnect provider', async () => {

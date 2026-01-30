@@ -94,7 +94,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName()).rejects.toThrowError('Account UrlFriendlyName Is Required')
+    await expect(accounts(fetch, apiUrl).account.getAccountByUrlFriendlyName()).rejects.toThrowError('Account UrlFriendlyName is required')
   })
 
   test('test readOne account', async () => {
@@ -151,7 +151,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.checkAvailability()).rejects.toThrowError('Account UrlFriendlyName Is Required')
+    await expect(accounts(fetch, apiUrl).account.checkAvailability()).rejects.toThrowError('Account UrlFriendlyName is required')
   })
 
   test('test readOne account error route error', async () => {
@@ -163,7 +163,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    await expect(accounts(fetch, apiUrl).account.readOne()).rejects.toThrowError('Admin ID Is Required')
+    await expect(accounts(fetch, apiUrl).account.readOne()).rejects.toThrowError('Admin id is required')
   })
 
   test('test deleteOne account', async () => {
@@ -200,7 +200,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { _id: '123', name: 'accountName1', urlFriendlyName: 'urlFriendlyNameExample1' } })
     })
 
-    await expect(accounts(fetch, apiUrl).account.deleteOne()).rejects.toThrowError('Account ID Is Required')
+    await expect(accounts(fetch, apiUrl).account.deleteOne()).rejects.toThrowError('Account id is required')
   })
 
   test('test patchName account', async () => {
@@ -234,7 +234,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.patchName({ id: '123' })).rejects.toThrowError('Account ID And New Name Is Required')
+    await expect(accounts(fetch, apiUrl).account.patchName({ id: '123' })).rejects.toThrowError('Account id and new name are required')
   })
 
   test('test patchUrlFriendlyName account', async () => {
@@ -268,7 +268,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.patchUrlFriendlyName({ id: '123' })).rejects.toThrowError('Account ID And New urlFriendlyName Is Required')
+    await expect(accounts(fetch, apiUrl).account.patchUrlFriendlyName({ id: '123' })).rejects.toThrowError('Account id and new urlFriendlyName are required')
   })
 
   test('test createOne account', async () => {
@@ -416,7 +416,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.createOne()).rejects.toThrowError('Account Name And UrlFriendlyName Is Required')
+    await expect(accounts(fetch, apiUrl).account.createOne()).rejects.toThrowError('Account name and UrlFriendlyName are required')
   })
 
   test('test createOne with undefined account input ', async () => {
@@ -426,7 +426,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.createOne({ account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })).rejects.toThrowError('User Name, Email And Password Is Required')
+    await expect(accounts(fetch, apiUrl).account.createOne({ account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' } })).rejects.toThrowError('User name, email and password are required')
   })
 
   test('test finalizeRegistration account', async () => {
@@ -458,7 +458,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.finalizeRegistration()).rejects.toThrowError('User Id And Account Id Is Required')
+    await expect(accounts(fetch, apiUrl).account.finalizeRegistration()).rejects.toThrowError('User id and account id are required')
   })
 
   test('test sendInvitation ', async () => {
@@ -470,12 +470,12 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await accounts(fetch, apiUrl).invitation.send({ id: '123', email: 'newUser@gmail.com' })
+    const res = await accounts(fetch, apiUrl).invitation.send({ id: '123', email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' })
     expect(spy).toHaveBeenLastCalledWith(
       'https:/mua/accounts/v1/accounts/123/invitation/send',
       {
         method: 'POST',
-        body: JSON.stringify({ email: 'newUser@gmail.com' }),
+        body: JSON.stringify({ email: 'newUser@gmail.com', confirmEmail: 'newUser@gmail.com' }),
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + localStorage.getItem('accessToken')
@@ -515,7 +515,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email Is Required')
+    await expect(accounts(fetch, apiUrl).invitation.send()).rejects.toThrowError('Email and email confirmation are required')
   })
 
   test('test sendInvitation undefined input ', async () => {
@@ -526,7 +526,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(accounts(fetch, apiUrl).invitation.reSend()).rejects.toThrowError('Email Is Required')
+    await expect(accounts(fetch, apiUrl).invitation.reSend()).rejects.toThrowError('Email is required')
   })
 
   test('test accept invitation ', async () => {
@@ -561,7 +561,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(accounts(fetch, apiUrl).invitation.accept()).rejects.toThrowError('Accouunt Password Is Required')
+    await expect(accounts(fetch, apiUrl).invitation.accept()).rejects.toThrowError('Name, password and password confirmation is required')
   })
 
   test('test forgotPassword send ', async () => {
@@ -592,7 +592,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { success: true } })
     })
 
-    await expect(accounts(fetch, apiUrl).forgotPassword.send()).rejects.toThrowError('Email Is Required')
+    await expect(accounts(fetch, apiUrl).forgotPassword.send()).rejects.toThrowError('Email is required')
   })
 
   test('test forgotPassword reset admin', async () => {
@@ -626,7 +626,7 @@ describe('test accounts connectors', () => {
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
 
-    await expect(accounts(fetch, apiUrl).forgotPassword.reset()).rejects.toThrowError('User Password Is Required')
+    await expect(accounts(fetch, apiUrl).forgotPassword.reset()).rejects.toThrowError('Password and password confirmation are required')
   })
 
   test('test upload account logo ', async () => {
@@ -662,7 +662,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.uploadLogo()).rejects.toThrowError('param and form Data Is Required')
+    await expect(accounts(fetch, apiUrl).account.uploadLogo()).rejects.toThrowError('Param and form data are required')
   })
 
   test('test delete account logo ', async () => {
@@ -695,7 +695,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.deleteLogo()).rejects.toThrowError('Account Id Is Required')
+    await expect(accounts(fetch, apiUrl).account.deleteLogo()).rejects.toThrowError('Account id is required')
   })
 
   test('test createOneByAdmin account', async () => { // admin
@@ -729,6 +729,6 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { success: true } })
     })
-    await expect(accounts(fetch, apiUrl).account.createOneByAdmin()).rejects.toThrowError('Name And UrlFriendlyName Is Required')
+    await expect(accounts(fetch, apiUrl).account.createOneByAdmin()).rejects.toThrowError('Name and UrlFriendlyName are required')
   })
 })

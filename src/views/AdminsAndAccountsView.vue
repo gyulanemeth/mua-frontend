@@ -92,7 +92,7 @@ async function handleDeleteEvent (params, statusCallBack) {
 
 async function handleInviteEvent (params, statusCallBack) {
   store = useAdminsStore()
-  const res = await store.sendInvitation(params.email)
+  const res = await store.sendInvitation(params.email, params.confirmEmail)
   statusCallBack(!res.message)
   loadData()
 }
