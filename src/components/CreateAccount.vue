@@ -25,7 +25,7 @@ const step = ref(1)
 const countDown = ref(15)
 const show = ref(false)
 
-function startCountDownt () {
+function startCountDown () {
   if (cb.value && cb.value.success) {
     const intervalId = setInterval(() => {
       if (countDown.value !== 0) {
@@ -58,7 +58,7 @@ async function submitBtn () {
     emit('buttonEvent', data.value, (res) => {
       cb.value = res
       processing.value = false
-      startCountDownt()
+      startCountDown()
       if (res.message) {
         generateCaptcha()
       }
