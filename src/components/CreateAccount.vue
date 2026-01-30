@@ -3,6 +3,8 @@ import { ref, watch } from 'vue'
 import CreateWithProvider from './CreateWithProvider.vue'
 import { useCaptchaStore } from '../stores/index.js'
 
+const emit = defineEmits(['buttonEvent', 'reSendFinalizeRegistrationEvent'])
+
 const data = ref({
   user: { email: '', name: '', password: '', newPasswordAgain: '' },
   account: { urlFriendlyName: '', name: '' }
@@ -43,11 +45,62 @@ async function generateCaptcha () {
   data.value.captchaProbe = res.probe
 }
 
+async function submitBtn () {
+  if (checkbox.value) {
+    const localUtmTags = JSON.parse(localStorage.getItem('utmTags') || '[]')
+    data.value.account.utmTags = localUtmTags
+    processing.value = true
+    emit('buttonEvent', data.value, (res) => {
+      cb.value = res
+      processing.value = false
+      startCountDownt()
+      if (res.message) {
+        generateCaptcha()
+      }
+    })
+  }
+}
+
+function injectUtmIframe () {
+  const websiteOrigin = import.meta.env.VITE_DOCS_BASE_URL
+  if (document.getElementById('utm-iframe')) {
+    return false
+  }
+  const iframe = document.createElement('iframe')
+  iframe.id = 'utm-iframe'
+  iframe.src = websiteOrigin + '/utm-tags'
+  iframe.style.display = 'none'
+  iframe.sandbox = 'allow-storage-access-by-user-activation allow-scripts allow-same-origin'
+  document.body.appendChild(iframe)
+}
+
+function listenForWebsiteStorage () {
+  const websiteOrigin = import.meta.env.VITE_DOCS_BASE_URL
+  if (!websiteOrigin) {
+    return false
+  }
+  window.addEventListener('message', (event) => {
+    if (event.origin !== websiteOrigin) {
+      return false
+    }
+    const msg = event.data || {}
+    if (msg.type !== 'WEBSITE_UTM_COOKIE_STORAGE') {
+      return false
+    }
+    const utmTags = msg.payload || []
+    console.log('app recived payload', msg.payload)
+    localStorage.setItem('utmTags', JSON.stringify(utmTags))
+    document.getElementById('utm-iframe')?.remove()
+  })
+  injectUtmIframe()
+}
+
+listenForWebsiteStorage()
 generateCaptcha()
 
 watch(() => data.value.account.name, () => {
   if (!urlFriendlyNameFocused.value) {
-    data.value.account.urlFriendlyName = data.value.account.name.replace(' ', '-').replace(/^https?:\/\//i, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase()/* eslint-disable-line */
+        data.value.account.urlFriendlyName = data.value.account.name.replace(' ', '-').replace(/^https?:\/\//i, '').replace(/[^a-z0-9]+/gi, '-').toLowerCase()/* eslint-disable-line */
   }
 })
 
@@ -59,7 +112,8 @@ watch(() => data.value.account.urlFriendlyName, () => {
 
 <template>
 
-    <v-layout style="z-index: 10;" v-if="!cb || !cb.success" class="d-flex flex-column justify-center align-center h-100">
+    <v-layout style="z-index: 10;" v-if="!cb || !cb.success"
+        class="d-flex flex-column justify-center align-center h-100">
         <v-card elevation="0">
             <v-card-text align="center" class="loggedOutState">
                 <v-avatar size="80">
@@ -75,7 +129,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                 <div v-if="step === 1">
                     <v-divider class="my-3" />
                     <p class="ma-10 d-inline text-body-2 font-weight-bold">{{ $t('mua.createAccount.userSection.header')
-                    }}</p><v-divider class=" mt-3 mb-6" />
+                        }}</p><v-divider class=" mt-3 mb-6" />
 
                     <v-text-field hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"
                         name="email" type="email" :label="$t('mua.createAccount.userSection.emailLabel')"
@@ -116,8 +170,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                     <CreateWithProvider v-if="!data.user.googleProfileId"
                         @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
                 </div>
-                <div v-if="step === 2"
-                    @keydown.enter="checkbox ? (processing = true, $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt(); res.message? generateCaptcha(): null })) : null">
+                <div v-if="step === 2" @keydown.enter="submitBtn">
                     <v-divider class="my-3" />
                     <p class="ma-10 d-inline text-body-2 font-weight-bold">{{
                         $t('mua.createAccount.accountSection.header') }}</p>
@@ -133,9 +186,10 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         :label="$t('mua.createAccount.accountSection.nameLabel')" v-model="data.account.name"
                         :placeholder="$t('mua.createAccount.accountSection.namePlaceholder')" required />
 
-                    <v-text-field hide-details @update:focused="() => { urlFriendlyNameFocused = true }" density="compact"
-                        class="my-5 rounded mb-0 pb-0" data-test-id="createAccount-urlFriendlyNameField" color="primary"
-                        variant="solo" name="urlFriendlyName" type="text"
+                    <v-text-field hide-details @update:focused="() => { urlFriendlyNameFocused = true }"
+                        density="compact" class="my-5 rounded mb-0 pb-0"
+                        data-test-id="createAccount-urlFriendlyNameField" color="primary" variant="solo"
+                        name="urlFriendlyName" type="text"
                         :label="$t('mua.createAccount.accountSection.urlFriendlyNameLabel')"
                         :placeholder="data.account.urlFriendlyName || $t('mua.createAccount.accountSection.urlFriendlyNamePlaceholder')"
                         v-model="data.account.urlFriendlyName" required />
@@ -154,20 +208,20 @@ watch(() => data.value.account.urlFriendlyName, () => {
 
                     <div v-if="terms && privacy" class="d-flex align-center justify-start my-2" style="width: 100%;">
                         <v-checkbox color="primary" v-model="checkbox" hide-details></v-checkbox>
-                        <p >{{ $t('mua.termsAndCondition.checkboxLabe') }}
+                        <p>{{ $t('mua.termsAndCondition.checkboxLabe') }}
                             <a style="color: #3949AB; cursor: pointer;" target=“_blank”
-                                class="text-decoration-underline font-weight-medium text-body-2"
-                                :href="terms">{{ $t('mua.termsAndCondition.terms') }}</a> and
+                                class="text-decoration-underline font-weight-medium text-body-2" :href="terms">{{
+                                    $t('mua.termsAndCondition.terms') }}</a> and
                             <a style="color: #3949AB; cursor: pointer;" target=“_blank”
-                                class="text-decoration-underline font-weight-medium text-body-2"
-                                :href="privacy">{{ $t('mua.termsAndCondition.privacy') }}</a>
+                                class="text-decoration-underline font-weight-medium text-body-2" :href="privacy">{{
+                                    $t('mua.termsAndCondition.privacy') }}</a>
                         </p>
                     </div>
 
                     <v-col>
                         <v-btn color="primary" data-test-id="createAccount-submitBtn"
                             :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
-                            @click="processing = true; $emit('buttonEvent', data, (res) => { cb = res; processing = false; startCountDownt(); res.message? generateCaptcha() : null })">
+                            @click="submitBtn">
 
                             {{ !processing ? $t('mua.createAccount.submitBtn') : '' }}
 
