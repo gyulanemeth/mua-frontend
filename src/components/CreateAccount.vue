@@ -45,10 +45,15 @@ async function generateCaptcha () {
   data.value.captchaProbe = res.probe
 }
 
+function getUTMFromCookies () {
+  const match = document.cookie.match(/(^| )utmTags=([^;]+)/)
+  const res = match ? decodeURIComponent(match[2]) : null
+  data.value.account.utmTags = JSON.parse(res || [])
+}
+
 async function submitBtn () {
   if (checkbox.value) {
-    const localUtmTags = JSON.parse(localStorage.getItem('utmTags') || '[]')
-    data.value.account.utmTags = localUtmTags
+    getUTMFromCookies()
     processing.value = true
     emit('buttonEvent', data.value, (res) => {
       cb.value = res
@@ -61,41 +66,6 @@ async function submitBtn () {
   }
 }
 
-function injectUtmIframe () {
-  const websiteOrigin = import.meta.env.VITE_DOCS_BASE_URL
-  if (document.getElementById('utm-iframe')) {
-    return false
-  }
-  const iframe = document.createElement('iframe')
-  iframe.id = 'utm-iframe'
-  iframe.src = websiteOrigin + '/utm-tags'
-  iframe.style.display = 'none'
-  iframe.sandbox = 'allow-storage-access-by-user-activation allow-scripts allow-same-origin'
-  document.body.appendChild(iframe)
-}
-
-function listenForWebsiteStorage () {
-  const websiteOrigin = import.meta.env.VITE_DOCS_BASE_URL
-  if (!websiteOrigin) {
-    return false
-  }
-  window.addEventListener('message', (event) => {
-    if (event.origin !== websiteOrigin) {
-      return false
-    }
-    const msg = event.data || {}
-    if (msg.type !== 'WEBSITE_UTM_COOKIE_STORAGE') {
-      return false
-    }
-    const utmTags = msg.payload || []
-    console.log('app recived payload', msg.payload)
-    localStorage.setItem('utmTags', JSON.stringify(utmTags))
-    document.getElementById('utm-iframe')?.remove()
-  })
-  injectUtmIframe()
-}
-
-listenForWebsiteStorage()
 generateCaptcha()
 
 watch(() => data.value.account.name, () => {
