@@ -48,7 +48,7 @@ async function generateCaptcha () {
 function getUTMFromCookies () {
   const match = document.cookie.match(/(^| )utmTags=([^;]+)/)
   const res = match ? decodeURIComponent(match[2]) : null
-  data.value.account.utmTags = JSON.parse(res || [])
+  data.value.account.utmTags = JSON.parse(res || '[]')
 }
 
 async function submitBtn () {
