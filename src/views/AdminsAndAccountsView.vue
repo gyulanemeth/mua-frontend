@@ -177,7 +177,7 @@ watch(route, () => {
 </script>
 
 <template>
-  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" @sortEventHandler="handleSortEvent"
+  <CardList v-if="data" :items="data" :btn="btn" :adminId="useAdminsStore().user?._id" :sort="route.name === 'system-admins' ? useAdminsStore().sort : useAccountsStore().sort" @sortEventHandler="handleSortEvent"
     @loadMore='loadMore' @reSendInvitationEventHandler="handleReInviteEvent" @detailsEventHandler="handleDetailsEvent"
     @deleteEventHandler="handleDeleteEvent" @inviteEventHandler="handleInviteEvent"
     @createEventHandler="handleCreateEvent" @searchEvent="searchBarHandler" />

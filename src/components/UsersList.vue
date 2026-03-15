@@ -16,14 +16,15 @@ const props = defineProps({
   projects: Array,
   permissions: Array,
   currentAccName: String,
-  currentUser: Object
+  currentUser: Object,
+  sort: Object
 })
 
 const filter = ref('')
 const projectFilter = ref(null)
 const loading = ref()
 const inviteMembersDialog = ref()
-const sortBy = ref({ updatedAt: -1 })
+const sortBy = ref(props.sort || { updatedAt: -1 })
 
 const debouncedFn = useDebounceFn(() => {
   projectFilter.value = null

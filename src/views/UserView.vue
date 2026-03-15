@@ -145,7 +145,7 @@ async function searchBarHandler (filter, statusCallBack) {
 <template>
 
   <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
-    :roles="rolesList" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
+    :roles="rolesList" :permissions="['viewer', 'editor']" :sort="usersStore.sort" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
     @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
     @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 
