@@ -29,7 +29,7 @@ async function loadData () {
   if (route.name === 'system-admins') {
     store = useAdminsStore()
     store.filter = {}
-    store.sort = { updatedAt: -1 }
+    store.sort = localStorage.getItem('adminsSortBy') ? JSON.parse(localStorage.getItem('adminsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
@@ -50,7 +50,7 @@ async function loadData () {
   } else if (route.name === 'system-admins-accounts') {
     store = useAccountsStore()
     store.filter = {}
-    store.sort = { updatedAt: -1 }
+    store.sort = localStorage.getItem('accountsSortBy') ? JSON.parse(localStorage.getItem('accountsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
     data.value = store.items
@@ -125,6 +125,8 @@ async function loadMore () {
 async function handleSortEvent (sort, statusCallBack) {
   store.skip = 0
   store.sort = sort
+  const key = route.name === 'system-admins' ? 'adminsSortBy' : 'accountsSortBy'
+  localStorage.setItem(key, JSON.stringify(sort))
   await store.load()
   data.value = store.items
   statusCallBack()
