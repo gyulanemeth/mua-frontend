@@ -44,7 +44,7 @@ currentUser.value = usersStore.user
 usersStore.params = {
   accountId: localStorage.getItem('accountId')
 }
-usersStore.sort = { updatedAt: -1 }
+usersStore.sort = localStorage.getItem('usersSortBy') ? JSON.parse(localStorage.getItem('usersSortBy')) : { updatedAt: -1 }
 await usersStore.load()
 data.value = usersStore.items
 
@@ -106,6 +106,7 @@ async function loadMore () {
 async function handleSortEvent (sort, statusCallBack) {
   usersStore.skip = 0
   usersStore.sort = sort
+  localStorage.setItem('usersSortBy', JSON.stringify(sort))
   await usersStore.load()
   data.value = usersStore.items
   statusCallBack()
@@ -144,7 +145,7 @@ async function searchBarHandler (filter, statusCallBack) {
 <template>
 
   <UsersList :items="data" :currentAccName="accountName" :currentUser="currentUser" :projects="projects"
-    :roles="rolesList" :permissions="['viewer', 'editor']" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
+    :roles="rolesList" :permissions="['viewer', 'editor']" :sort="usersStore.sort" @loadMore='loadMore' @inviteEventHandler="handleInviteMember"
     @reInviteEventHandler="handleReInviteMember" @sortEventHandler="handleSortEvent"
     @updateRoleEventHandler="handleUpdateRole" @deleteEventHandler='handleDeleteUser' @searchEvent="searchBarHandler" />
 

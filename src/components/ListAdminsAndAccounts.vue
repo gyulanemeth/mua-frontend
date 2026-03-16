@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDebounceFn } from '@vueuse/core'
 import Dialog from '../components/AdminCreateDialog.vue'
@@ -9,7 +9,8 @@ const emit = defineEmits(['deleteEventHandler', 'inviteEventHandler', 'createEve
 const props = defineProps({
   items: Array,
   btn: Object,
-  adminId: String
+  adminId: String,
+  sort: Object
 })
 
 const route = useRoute()
@@ -17,7 +18,7 @@ const route = useRoute()
 const filter = ref('')
 const loading = ref()
 const createAccountDialog = ref()
-const sortBy = ref({ updatedAt: -1 })
+const sortBy = ref(props.sort || { updatedAt: -1 })
 
 const debouncedFn = useDebounceFn(() => {
   loading.value = true
@@ -53,6 +54,12 @@ async function visibilityChanged (isVisible) {
 }
 
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
+
+watch(() => props.sort, (val) => {
+  if (val) {
+    sortBy.value = val
+  }
+})
 
 </script>
 
