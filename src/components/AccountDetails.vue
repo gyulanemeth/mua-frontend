@@ -144,6 +144,8 @@ const openFileInput = () => {
         </v-col>
       </v-col>
 
+      <slot name="extra-settings" />
+
       <v-layout style="z-index: 10;" class="d-flex flex-wrap w-75" v-if="componentProps.role">
         <v-col class="pt-3">
           <p class="text-body-1 font-weight-bold text-error">{{ $t('mua.accountDetails.deleteLabel') }}</p>

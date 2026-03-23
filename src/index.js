@@ -32,6 +32,7 @@ const MuaPlugin = {
     if (userComponents.CustomSystemStats) {
       app.component('CustomSystemStats', userComponents.CustomSystemStats)
     }
+    app.component('CustomAccountExtraSettings', userComponents.AccountExtraSettings || { template: '<span></span>' })
     app.use(VueApexCharts)
   }
 }
