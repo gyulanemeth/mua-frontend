@@ -41,6 +41,10 @@ const checkToken = (to) => {
 
 const checkUrlFriendlyName = async (to, next) => {
   if (localStorage.getItem('accountId') && to.meta.requiresAuth) {
+    const token = localStorage.getItem('accessToken')
+    if (token && jwtDecode(token).type === 'admin') {
+      return
+    }
     if (!useAccountsStore().account) {
       await useAccountsStore().readOne()
     }
