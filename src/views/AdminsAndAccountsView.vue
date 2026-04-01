@@ -159,8 +159,13 @@ async function searchBarHandler (filter, statusCallBack) {
 
   if (filter === '') {
     store.filter = {}
+  } else if (route.name === 'system-admins') {
+    store.filter = {
+      $or: filterParam
+    }
   } else {
     store.filter = {
+      userEmail: filter,
       $or: filterParam
     }
   }
