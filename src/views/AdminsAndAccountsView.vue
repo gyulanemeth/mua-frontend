@@ -133,40 +133,24 @@ async function handleSortEvent (sort, statusCallBack) {
 }
 
 async function searchBarHandler (filter, statusCallBack) {
-  const filterParam = [
-    {
-      name: {
-        $regex: filter,
-        $options: 'i'
-      }
-    }
-  ]
-
-  if (route.name === 'system-admins') {
-    filterParam.push({
-      email: {
-        $regex: filter,
-        $options: 'i'
-      }
-    })
-  } else {
-    const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(filter)
-    filterParam.push(isValidObjectId
-      ? { _id: filter }
-      : { urlFriendlyName: { $regex: filter, $options: 'i' } }
-    )
-  }
-
   if (filter === '') {
     store.filter = {}
   } else if (route.name === 'system-admins') {
     store.filter = {
-      $or: filterParam
+      $or: [
+        { name: { $regex: filter, $options: 'i' } },
+        { email: { $regex: filter, $options: 'i' } }
+      ]
     }
+  } else if (filter.includes('@')) {
+    store.filter = { userEmail: filter }
   } else {
+    const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(filter)
     store.filter = {
-      userEmail: filter,
-      $or: filterParam
+      $or: [
+        { name: { $regex: filter, $options: 'i' } },
+        isValidObjectId ? { _id: filter } : { urlFriendlyName: { $regex: filter, $options: 'i' } }
+      ]
     }
   }
   store.skip = 0
