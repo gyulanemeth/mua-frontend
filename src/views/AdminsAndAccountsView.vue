@@ -29,6 +29,7 @@ async function loadData () {
   if (route.name === 'system-admins') {
     store = useAdminsStore()
     store.filter = {}
+    store.skip = 0
     store.sort = localStorage.getItem('adminsSortBy') ? JSON.parse(localStorage.getItem('adminsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
@@ -50,6 +51,7 @@ async function loadData () {
   } else if (route.name === 'system-admins-accounts') {
     store = useAccountsStore()
     store.filter = {}
+    store.skip = 0
     store.sort = localStorage.getItem('accountsSortBy') ? JSON.parse(localStorage.getItem('accountsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
