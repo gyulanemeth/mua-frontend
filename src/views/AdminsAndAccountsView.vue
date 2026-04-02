@@ -29,6 +29,7 @@ async function loadData () {
   if (route.name === 'system-admins') {
     store = useAdminsStore()
     store.filter = {}
+    store.skip = 0
     store.sort = localStorage.getItem('adminsSortBy') ? JSON.parse(localStorage.getItem('adminsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
@@ -50,6 +51,7 @@ async function loadData () {
   } else if (route.name === 'system-admins-accounts') {
     store = useAccountsStore()
     store.filter = {}
+    store.skip = 0
     store.sort = localStorage.getItem('accountsSortBy') ? JSON.parse(localStorage.getItem('accountsSortBy')) : { updatedAt: -1 }
     await store.load()
     numOfPages.value = store.numOfPages
@@ -133,35 +135,24 @@ async function handleSortEvent (sort, statusCallBack) {
 }
 
 async function searchBarHandler (filter, statusCallBack) {
-  const filterParam = [
-    {
-      name: {
-        $regex: filter,
-        $options: 'i'
-      }
-    }
-  ]
-
-  if (route.name === 'system-admins') {
-    filterParam.push({
-      email: {
-        $regex: filter,
-        $options: 'i'
-      }
-    })
-  } else {
-    const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(filter)
-    filterParam.push(isValidObjectId
-      ? { _id: filter }
-      : { urlFriendlyName: { $regex: filter, $options: 'i' } }
-    )
-  }
-
   if (filter === '') {
     store.filter = {}
-  } else {
+  } else if (route.name === 'system-admins') {
     store.filter = {
-      $or: filterParam
+      $or: [
+        { name: { $regex: filter, $options: 'i' } },
+        { email: { $regex: filter, $options: 'i' } }
+      ]
+    }
+  } else if (filter.includes('@')) {
+    store.filter = { userEmail: filter }
+  } else {
+    const isValidObjectId = /^[a-fA-F0-9]{24}$/.test(filter)
+    store.filter = {
+      $or: [
+        { name: { $regex: filter, $options: 'i' } },
+        isValidObjectId ? { _id: filter } : { urlFriendlyName: { $regex: filter, $options: 'i' } }
+      ]
     }
   }
   store.skip = 0
