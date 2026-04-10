@@ -126,6 +126,11 @@ async function handleLoginEvent (params, statusCallBack) {
   }
 }
 
+async function handleSendMagicLinkEvent (accountId, statusCallBack) {
+  const res = await usersStore.sendMagicLink(route.query.token, accountId)
+  statusCallBack(!res.message)
+}
+
 watchEffect(async () => {
   loadData()
 })
@@ -145,6 +150,7 @@ watchEffect(async () => {
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
     :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
-    @handleLoginHandler="handleLoginEvent" />
+    @handleLoginHandler="handleLoginEvent"
+    @handleSendMagicLinkHandler="handleSendMagicLinkEvent" />
 
 </template>

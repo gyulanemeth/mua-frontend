@@ -230,6 +230,13 @@
       "checkboxLabel": "I am human.",
       "redirectToLoginMessage": "Ready to log in?",
       "redirectToLoginBtn": "Click here",
+      "backToAccountsBtn": "Back to accounts",
+      "magicLink": {
+        "orText": "Or sign in without a password",
+        "sendBtn": "Send magic link",
+        "sentHeader": "Magic link sent!",
+        "sentMessage": "Check your inbox and click the link to sign in. The link expires in 15 minutes."
+      },
       "cb": {
         "resetMessage": "To continue resetting your password, please check your inbox and click the link we sent you.",
         "forgotMessage": "Don't have account?",
@@ -238,7 +245,7 @@
         "backToRecentLoginsBtn": "View Recent Logins",
         "loginToDifferentAccountMessage": "Login to different account?",
         "loginToDifferentAccountCbBtn": "Switch Account",
-        "loginMessage": "To continue logging in, please check your inbox and click the link we sent you."
+        "loginMessage": "We sent a magic link to your email. Click it to sign in — no password needed. The link expires in 15 minutes."
       },
       "confirmDialog": {
         "removeHeader": "Are you sure you want to delete your recent login?",
@@ -310,6 +317,13 @@
       "bodyPart2": "Please",
       "redirectBtn": "click here",
       "bodyPart3": "if you are not redirected"
+    },
+    "magicLinkVerify": {
+      "verifyingHeader": "Signing you in…",
+      "verifyingMessage": "Please wait while we verify your magic link.",
+      "errorHeader": "Link invalid or expired",
+      "errorMessage": "This magic link has expired or already been used. Please request a new one.",
+      "backToLoginBtn": "Back to sign in"
     },
     "processing": "processing...",
     "loading": "loading",
