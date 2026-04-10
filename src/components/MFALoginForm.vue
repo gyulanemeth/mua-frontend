@@ -44,60 +44,35 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <div v-if="!recoveryMode" class="d-flex flex-column justify-center align-center w-100">
-            <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
-                <v-card-text align="center"
-                    @keydown.enter="submit">
-                    <p class="text-h6">{{ $t('mua.mfaLoginForm.codeMode.title') }}</p>
-                    <p class="text-body-1 text-start mt-5">{{ $t('mua.mfaLoginForm.codeMode.codeLable') }}</p>
-                    <v-text-field hide-details v-model="code" density="compact" class="mb-5 rounded" color="primary"
-                        variant="solo" name="code" required />
-                    <div>
-                        <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" @click="submit">
-                            {{ !processing ? $t('mua.mfaLoginForm.codeMode.submitBtn') : '' }}
-                            <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
-                                processing ? $t('mua.processing') : '' }}
-                        </v-btn>
-                    </div>
-                </v-card-text>
-            </v-card>
-            <v-container class="w-100">
-                <v-col class="text-center justify-center align-center">
-                    <p style="color: #888888;">{{ $t('mua.mfaLoginForm.codeMode.recoveryTitle') }}</p>
-                    <p style="text-decoration: none;  color: #888888">
-                        {{ $t('mua.mfaLoginForm.codeMode.recoverySubtitle') }} <span class="text-primary font-weight-bold"
-                            style="cursor: pointer;" @click="() => { recoveryMode = true }">{{ $t('mua.mfaLoginForm.codeMode.recoveryBtn') }}</span>.
-                    </p>
-                </v-col>
-            </v-container>
-        </div>
-        <div v-else class="d-flex flex-column justify-center align-center w-100">
-            <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
-                <v-card-text align="center" @keydown.enter="submit">
-                    <p class="text-h6">{{ $t('mua.mfaLoginForm.recoveryMode.title') }}</p>
-                    <p class="text-body-1 text-start mt-5">{{ $t('mua.mfaLoginForm.recoveryMode.codeLable') }}</p>
-                    <v-text-field hide-details density="compact" v-model="code" class="mb-5 rounded" color="primary"
-                        variant="solo" name="recoveryCode" required />
-                    <div>
-                        <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" @click="submit">
-                            {{ !processing ? $t('mua.mfaLoginForm.recoveryMode.submitBtn') : '' }}
-                            <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
-                                processing ? $t('mua.processing') : '' }}
-                        </v-btn>
-                    </div>
-                </v-card-text>
-            </v-card>
-            <v-container class="w-100">
-                <v-col class="text-center justify-center align-center">
-                    <p style="color: #888888;">{{ $t('mua.mfaLoginForm.recoveryMode.codeTitle') }}</p>
-                    <p style="text-decoration: none;  color: #888888">
-                        {{ $t('mua.mfaLoginForm.recoveryMode.codeSubtitle') }}<span
-                            class="text-primary font-weight-bold" style="cursor: pointer;"
-                            @click="() => { recoveryMode = false }">{{ $t('mua.mfaLoginForm.recoveryMode.codeBtn') }}</span>.
-                    </p>
-                </v-col>
-            </v-container>
-        </div>
+        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px" @keydown.enter="submit">
+            <v-card-text align="center">
+                <v-icon size="40" color="primary" class="mb-3">mdi-shield-lock-outline</v-icon>
+                <p class="text-h6 mb-1">{{ $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.title`) }}</p>
+                <p class="text-body-2 text-medium-emphasis mb-5">{{ $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.codeLable`) }}</p>
 
+                <v-text-field hide-details v-model="code" density="compact" class="mb-4 rounded" color="primary"
+                    variant="solo" :name="recoveryMode ? 'recoveryCode' : 'code'" required />
+
+                <v-btn block color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" @click="submit">
+                    {{ !processing ? $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.submitBtn`) : '' }}
+                    <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
+                        processing ? $t('mua.processing') : '' }}
+                </v-btn>
+            </v-card-text>
+        </v-card>
+        <v-container class="w-100">
+            <v-col class="text-center justify-center align-center">
+                <p style="color: #888888;">
+                    {{ $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.${recoveryMode ? 'codeTitle' : 'recoveryTitle'}`) }}
+                </p>
+                <p style="color: #888888;">
+                    {{ $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.${recoveryMode ? 'codeSubtitle' : 'recoverySubtitle'}`) }}
+                    <span class="text-primary font-weight-bold" style="cursor: pointer;"
+                        @click="recoveryMode = !recoveryMode">
+                        {{ $t(`mua.mfaLoginForm.${recoveryMode ? 'recoveryMode' : 'codeMode'}.${recoveryMode ? 'codeBtn' : 'recoveryBtn'}`) }}
+                    </span>.
+                </p>
+            </v-col>
+        </v-container>
     </v-layout>
 </template>

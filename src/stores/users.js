@@ -204,6 +204,58 @@ export default (connectors) => {
         }
       },
 
+      async sendMagicLinkUrlFriendlyName (urlFriendlyName, email) {
+        try {
+          const res = await connectors.user.sendMagicLinkUrlFriendlyName(urlFriendlyName, email)
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
+      async loginSelect (token, accountId) {
+        try {
+          if (token) {
+            localStorage.setItem('loginToken', token)
+          }
+          const res = await connectors.user.loginSelect(accountId)
+          if (res.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(res.loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          localStorage.setItem('accountId', loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
+      async verifyMagicLink (token) {
+        try {
+          localStorage.setItem('magicLinkToken', token)
+          const tokenData = jwtDecode(token)
+          const res = await connectors.user.verifyMagicLink(tokenData.account._id)
+          if (res.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(res.loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          localStorage.setItem('accountId', loginTokenData.account._id)
+          localStorage.removeItem('magicLinkToken')
+          this.saveRecentLogins(loginTokenData.account._id)
+          return { success: true }
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
       async getRecentLoginsAccounts () {
         try {
           const getRecentLogins = await JSON.parse(localStorage.getItem('recentLogins'))

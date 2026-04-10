@@ -34,24 +34,23 @@ async function submit () {
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card @keydown.enter="processing = true; submit()" class="ma-2 pa-2  rounded-xl  elevation-2" width="80%"
-            max-width="600px">
+        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px"
+            @keydown.enter="processing = true; submit()">
             <v-card-text align="center">
-                <p class="text-h6">{{ $t('mua.adminLogin.header') }}</p>
-                <v-text-field hide-details density="compact" data-test-id="login-emailField" class="my-5 rounded"
+                <p class="text-h6 mb-5">{{ $t('mua.adminLogin.header') }}</p>
+                <v-text-field hide-details density="compact" data-test-id="login-emailField" class="mb-4 rounded"
                     color="primary" variant="solo" name="email" :label="$t('mua.adminLogin.emailLabel')" id="email"
                     type="email" :placeholder="email || 'your@email.com'" :value="email"
                     @update:modelValue="res => email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
-                <v-text-field hide-details density="compact" data-test-id="login-passwordField" class="my-5 rounded"
+                <v-text-field hide-details density="compact" data-test-id="login-passwordField" class="mb-4 rounded"
                     color="primary" variant="solo" name="password" :label="$t('mua.adminLogin.passwordLabel')"
                     id="password" type="password" :placeholder="password || '********'" :value="password"
-                    @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')" active
+                    @update:modelValue="res => password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
-                <v-btn color="primary" data-test-id="login-submitBtn" @click="processing = true; submit()">
+                <v-btn block color="primary" data-test-id="login-submitBtn" @click="processing = true; submit()">
                     {{ !processing ? $t('mua.adminLogin.submitBtn') : '' }}
-
-                    <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{ processing
-                        ? $t('mua.processing') : '' }}
+                    <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
+                        processing ? $t('mua.processing') : '' }}
                 </v-btn>
             </v-card-text>
             <AdminLoginWithProvider />

@@ -3,6 +3,7 @@ import { useAccountsStore } from '../stores/index.js'
 import jwtDecode from 'jwt-decode'
 
 import RedirectToLoginMessage from '../views/RedirectToLoginMessage.vue'
+import MagicLinkVerifyView from '../views/MagicLinkVerifyView.vue'
 import UserView from '../views/UserView.vue'
 import AccountUserProfileView from '../views/AccountUserProfileView.vue'
 import AccountView from '../views/AccountView.vue'
@@ -260,6 +261,15 @@ export const useMuaRoutes = (router) => {
     path: '/accounts/login-select',
     name: 'accounts-login-select',
     component: LoginAndResetView,
+    meta: {
+      requiresAuth: false,
+      title: 'Sign in'
+    }
+  })
+  router.addRoute({
+    path: '/accounts/login/magic-link/verify',
+    name: 'accounts-magic-link-verify',
+    component: MagicLinkVerifyView,
     meta: {
       requiresAuth: false,
       title: 'Sign in'

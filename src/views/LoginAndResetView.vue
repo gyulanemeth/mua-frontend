@@ -97,7 +97,7 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
 
 async function handleGetLoginAccountEvent (params, statusCallBack) {
   const res = await usersStore.loginGetAccounts(params)
-  statusCallBack(!res.message)
+  statusCallBack(!res.message ? (res.singleAccount ? 'magicLink' : 'selectAccount') : false)
 }
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
@@ -113,15 +113,19 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   }
 }
 
-async function handleLoginEvent (params, statusCallBack) {
-  const res = await usersStore.login(route.query.token, params.password, params.account)
+async function handleSendMagicLinkUrlFriendlyNameEvent (email, statusCallBack) {
+  const res = await usersStore.sendMagicLinkUrlFriendlyName(route.params.urlFriendlyName, email)
+  statusCallBack(!res.message)
+}
+
+async function handleLoginSelectEvent (accountId, statusCallBack) {
+  const res = await usersStore.loginSelect(route.query.token, accountId)
   if (res.twoFactorEnabled) {
     twoFactorEnabled.value = true
-    return true
+    return
   }
   statusCallBack(res.success)
   if (res.success) {
-    await accountsStore.readOne(route.params.urlFriendlyName)
     router.push('accounts/')
   }
 }
@@ -141,10 +145,11 @@ watchEffect(async () => {
 
   <MFALoginForm v-else-if="twoFactorEnabled" />
   <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
-    :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
+    :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent"
+    @handleSendMagicLinkHandler="handleSendMagicLinkUrlFriendlyNameEvent" />
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
     :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
-    @handleLoginHandler="handleLoginEvent" />
+    @handleLoginSelectHandler="handleLoginSelectEvent" />
 
 </template>

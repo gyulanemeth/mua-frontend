@@ -78,6 +78,9 @@ export default function (fetch, apiUrl) {
   const confirmMFARoute = createPostConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
   const disableMFARoute = createDeleteConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
   const postMFALogin = createPostConnector(fetch, apiUrl, () => '/v1/accounts/mfa-login', () => ({ Authorization: `Bearer ${localStorage.getItem('two-factor-login')}` }))
+  const postMagicLinkVerify = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/magic-link/verify`, () => ({ Authorization: `Bearer ${localStorage.getItem('magicLinkToken')}` }))
+  const postLoginSelect = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/select`, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
+  const postMagicLinkUrlFriendlyName = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/url-friendly-name/magic-link`)
 
   const list = async function (param, query) {
     if (!param) {
@@ -173,6 +176,42 @@ export default function (fetch, apiUrl) {
       throw new RouteError('User password is required')
     }
     const res = await postLogin({ id: formData.accountId }, { password: formData.password })
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
+  }
+
+  const sendMagicLinkUrlFriendlyName = async function (urlFriendlyName, email) {
+    if (!urlFriendlyName || !email) {
+      throw new RouteError('urlFriendlyName and email are required')
+    }
+    const res = await postMagicLinkUrlFriendlyName({ id: urlFriendlyName }, { email })
+    return res
+  }
+
+  const loginSelect = async function (accountId) {
+    if (!accountId) {
+      throw new RouteError('Account id is required')
+    }
+    const res = await postLoginSelect({ id: accountId }, {})
+    if (res.loginToken) {
+      localStorage.setItem('loginToken', res.loginToken)
+    }
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+    }
+    return res
+  }
+
+  const verifyMagicLink = async function (accountId) {
+    if (!accountId) {
+      throw new RouteError('Account id is required')
+    }
+    const res = await postMagicLinkVerify({ id: accountId }, {})
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
     }
@@ -325,6 +364,6 @@ export default function (fetch, apiUrl) {
   }
 
   return {
-    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects, getMFA, confirmMFA, disableMFA, MFALogin
+    list, deleteProfilePicture, reSendfinalizeRegistrationEmail, loginWithUrlFriendlyName, uploadProfilePicture, readOne, deleteOne, patchName, patchPassword, patchRole, getAccessToken, login, loginGetAccounts, patchEmail, patchEmailConfirm, deletePermission, loginWithProvider, linkToProvider, createWithProvider, createPassword, disconnectProvider, disconnectPermission, listProjects, getMFA, confirmMFA, disableMFA, MFALogin, verifyMagicLink, loginSelect, sendMagicLinkUrlFriendlyName
   }
 }

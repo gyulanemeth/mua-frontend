@@ -56,6 +56,7 @@ async function submitLoginWithProvider (provider) {
 
       <v-divider style="flex: 1; margin-left: 10px;" :thickness="2"></v-divider>
     </div>
+    <slot />
     <v-btn v-if="googleProvider" block @click="submitLoginWithProvider('google')" class="pa-2 border" variant="text">
       <span>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px">
