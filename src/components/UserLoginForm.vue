@@ -4,8 +4,6 @@ import { useRouter } from 'vue-router'
 import { useUsersStore } from '../stores/index.js'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 
-const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginSelectHandler'])
-
 const props = defineProps({
   tokenData: Object
 })
