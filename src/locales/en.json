@@ -216,7 +216,6 @@
       "resetHeader": "Password recovery",
       "resetBtnText": "Reset Password",
       "emailPlaceHolder": "your{'@'}email.com",
-      "selectLabel": "Select Account",
       "nextBtn": "Continue",
       "passwordLabel": "Password",
       "passwordPlaceholder": "********",
