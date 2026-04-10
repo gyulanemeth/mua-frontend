@@ -14,24 +14,16 @@ const router = useRouter()
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
-const magicLinkProcessing = ref(false)
+const loginProcessing = ref(false)
 const recentLogins = ref(await useUsersStore().getRecentLoginsAccounts())
 const openRecentLogins = ref(recentLogins.value)
 const confirmDialogRef = ref()
 
 const defaultLogo = import.meta.env.BASE_URL + 'placeholder.jpg'
-
-if (props.tokenData.user) {
-  data.value.email = ref(props.tokenData.user.email)
-}
-
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
-function submitForm () {
-  if (!props.tokenData.accounts && !cb.value) {
-    processing.value = true
-    emit('handleGetLoginAccountsHandler', data.value.email, (res) => { res ? cb.value = res : processing.value = false })
-  }
+if (props.tokenData.user) {
+  data.value.email = props.tokenData.user.email
 }
 
 async function removeAccount (urlFriendlyName) {
@@ -95,15 +87,16 @@ async function removeAccount (urlFriendlyName) {
         <v-card v-else class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
 
             <!-- Step 1: email entry -->
-            <v-card-text v-if="!props.tokenData.accounts && !cb" align="center" @keydown.enter="submitForm">
+            <v-card-text v-if="!props.tokenData.accounts && !cb" align="center"
+                @keydown.enter="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })">
                 <p class="text-h6 mb-5">{{ $t('mua.userLoginAndResetForm.loginHeader') }}</p>
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class="mb-5 rounded" color="primary" variant="solo"
                     type="email" name="email"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
-                    @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
+                    @update:modelValue="v => data.email = v.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
                 <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                    @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : null; processing = false })">
+                    @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })">
                     {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                     <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                         processing ? $t('mua.processing') : '' }}
@@ -133,14 +126,14 @@ async function removeAccount (urlFriendlyName) {
                         class="account-picker-card d-flex flex-row align-center rounded-xl elevation-0 px-3 py-2"
                         :class="i > 0 ? 'mt-3' : ''"
                         border
-                        @click="data.account = acc._id; magicLinkProcessing = true; $emit('handleLoginSelectHandler', acc._id, (res) => { magicLinkProcessing = false })"
+                        @click="data.account = acc._id; loginProcessing = true; $emit('handleLoginSelectHandler', acc._id, () => { loginProcessing = false })"
                         style="cursor: pointer;"
                     >
                         <v-avatar size="40" class="mr-3 flex-shrink-0">
                             <v-img :src="acc.logo ? acc.logo + '?' + Math.random().toString(36).substring(2, 7) : defaultLogo" cover />
                         </v-avatar>
                         <span class="text-body-2 font-weight-medium">{{ acc.name }}</span>
-                        <v-progress-circular v-if="magicLinkProcessing && data.account === acc._id" :size="18" width="2" indeterminate class="ml-auto" />
+                        <v-progress-circular v-if="loginProcessing && data.account === acc._id" :size="18" width="2" indeterminate class="ml-auto" />
                         <v-icon v-else class="ml-auto" size="18" color="medium-emphasis">mdi-chevron-right</v-icon>
                     </v-card>
                 </div>

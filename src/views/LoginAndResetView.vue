@@ -118,19 +118,6 @@ async function handleSendMagicLinkUrlFriendlyNameEvent (email, statusCallBack) {
   statusCallBack(!res.message)
 }
 
-async function handleLoginEvent (params, statusCallBack) {
-  const res = await usersStore.login(route.query.token, params.password, params.account)
-  if (res.twoFactorEnabled) {
-    twoFactorEnabled.value = true
-    return true
-  }
-  statusCallBack(res.success)
-  if (res.success) {
-    await accountsStore.readOne(route.params.urlFriendlyName)
-    router.push('accounts/')
-  }
-}
-
 async function handleLoginSelectEvent (accountId, statusCallBack) {
   const res = await usersStore.loginSelect(route.query.token, accountId)
   if (res.twoFactorEnabled) {
@@ -163,7 +150,6 @@ watchEffect(async () => {
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
     :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
-    @handleLoginHandler="handleLoginEvent"
     @handleLoginSelectHandler="handleLoginSelectEvent" />
 
 </template>

@@ -36,14 +36,14 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                     class="mb-4 rounded" color="primary" variant="solo" type="email" name="email"
                     :label="'Email'"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
-                    @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
+                    @update:modelValue="v => data.email = v.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
                 <v-text-field hide-details density="compact" class="mb-4 rounded" color="primary" variant="solo"
                     name="password" data-test-id="loginAndResetForm-passwordField"
                     :label="$t('mua.userLoginAndResetForm.passwordLabel')" type="password"
                     :placeholder="data.password || $t('mua.userLoginAndResetForm.passwordPlaceholder')"
                     :value="data.password"
-                    @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
+                    @update:modelValue="v => data.password = v.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
                 <v-btn block color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" class="mb-3"
