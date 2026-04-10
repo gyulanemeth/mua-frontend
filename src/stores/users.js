@@ -197,7 +197,28 @@ export default (connectors) => {
       async loginGetAccounts (email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })
+          if (res.token) {
+            localStorage.setItem('loginToken', res.token)
+          }
           return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
+      async loginSelect (accountId) {
+        try {
+          const res = await connectors.user.loginSelect(accountId)
+          if (res.twoFactorLoginToken) {
+            return { twoFactorEnabled: true }
+          }
+          const loginTokenData = jwtDecode(res.loginToken)
+          this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
+          localStorage.setItem('accountId', loginTokenData.account._id)
+          this.saveRecentLogins(loginTokenData.account._id)
+          return { success: true }
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e
@@ -206,7 +227,9 @@ export default (connectors) => {
 
       async sendMagicLink (token, accountId) {
         try {
-          localStorage.setItem('loginToken', token)
+          if (token) {
+            localStorage.setItem('loginToken', token)
+          }
           const res = await connectors.user.sendMagicLink(accountId)
           return res
         } catch (e) {

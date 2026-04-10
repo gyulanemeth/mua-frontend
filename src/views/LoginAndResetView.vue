@@ -97,6 +97,9 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
 
 async function handleGetLoginAccountEvent (params, statusCallBack) {
   const res = await usersStore.loginGetAccounts(params)
+  if (res.token) {
+    tokenData.value = jwtDecode(res.token)
+  }
   statusCallBack(!res.message)
 }
 
@@ -126,8 +129,20 @@ async function handleLoginEvent (params, statusCallBack) {
   }
 }
 
+async function handleLoginSelectEvent (accountId, statusCallBack) {
+  const res = await usersStore.loginSelect(accountId)
+  if (res.twoFactorEnabled) {
+    twoFactorEnabled.value = true
+    return
+  }
+  statusCallBack(res.success)
+  if (res.success) {
+    router.push('accounts/')
+  }
+}
+
 async function handleSendMagicLinkEvent (accountId, statusCallBack) {
-  const res = await usersStore.sendMagicLink(route.query.token, accountId)
+  const res = await usersStore.sendMagicLink(route.query.token || null, accountId)
   statusCallBack(!res.message)
 }
 
@@ -151,6 +166,7 @@ watchEffect(async () => {
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
     :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
     @handleLoginHandler="handleLoginEvent"
+    @handleLoginSelectHandler="handleLoginSelectEvent"
     @handleSendMagicLinkHandler="handleSendMagicLinkEvent" />
 
 </template>
