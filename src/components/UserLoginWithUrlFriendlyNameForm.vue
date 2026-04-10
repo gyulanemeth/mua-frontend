@@ -12,7 +12,6 @@ const route = useRoute()
 const data = ref({})
 const processing = ref(false)
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
-const url = ref(window.location.origin + window.location.pathname)
 </script>
 
 <template>
@@ -24,22 +23,19 @@ const url = ref(window.location.origin + window.location.pathname)
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
-            <v-card-text align="center"
-                @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
-                <p class="text-h6">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', {
-                    name:
-                        props.formData.accountName
-                }) }} </p>
-                <p class="text-subtitle-1" style="white-space: normal; word-wrap: break-word;">({{ url }})</p>
+        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px"
+            @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
+            <v-card-text align="center">
+                <p class="text-h6 mb-1">{{ $t('mua.userLoginAndResetForm.loginUrlFriendlyNameHeader', { name: props.formData.accountName }) }}</p>
+                <p class="text-body-2 text-medium-emphasis mb-5">{{ props.formData.urlFriendlyName }}</p>
 
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
-                    class="my-5 rounded" color="primary" variant="solo" type="email" name="email"
+                    class="mb-4 rounded" color="primary" variant="solo" type="email" name="email"
                     :label="'Email'"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
-                <v-text-field hide-details density="compact" class="my-5 rounded" color="primary" variant="solo"
+                <v-text-field hide-details density="compact" class="mb-4 rounded" color="primary" variant="solo"
                     name="password" data-test-id="loginAndResetForm-passwordField"
                     :label="$t('mua.userLoginAndResetForm.passwordLabel')" type="password"
                     :placeholder="data.password || $t('mua.userLoginAndResetForm.passwordPlaceholder')"
@@ -47,17 +43,14 @@ const url = ref(window.location.origin + window.location.pathname)
                     @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
-                <div>
-                    <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                        @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
-                        {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
-                        <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
-                            processing ? $t('mua.processing') : '' }}
-                    </v-btn>
-                </div>
+                <v-btn block color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
+                    @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
+                    {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
+                    <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
+                        processing ? $t('mua.processing') : '' }}
+                </v-btn>
             </v-card-text>
             <LoginWithProvider :accountId="props.formData._id" />
-
         </v-card>
         <v-container class="w-100">
             <v-col class="text-center justify-center align-center">

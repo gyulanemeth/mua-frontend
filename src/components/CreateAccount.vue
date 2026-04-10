@@ -91,10 +91,14 @@ watch(() => data.value.account.urlFriendlyName, () => {
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <v-card class="ma-2 pa-2  rounded-xl  elevation-2" width="80%" max-width="600px">
+        <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px">
+            <v-card-text v-if="step === 2" class="pb-0 pt-3">
+                <v-btn variant="text" size="small" color="medium-emphasis" prepend-icon="mdi-arrow-left"
+                    @click="step = 1">
+                    {{ $t('mua.userLoginAndResetForm.backToAccountsBtn') }}
+                </v-btn>
+            </v-card-text>
             <v-card-text align="center">
-                <v-btn v-if="step === 2" @click="step = 1" style="position: absolute; left: 25px;" density="compact"
-                    class="ma-0 pa-0" variant="outlined" color="primary" icon="mdi-arrow-left"></v-btn>
                 <p class="text-h6">{{ $t('mua.createAccount.header') }}</p>
                 <div v-if="step === 1">
                     <v-divider class="my-3" />
@@ -128,15 +132,11 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         :placeholder="data.user.newPasswordAgain || $t('mua.createAccount.userSection.confirmNewPasswordPlaceholder')"
                         v-model="data.user.newPasswordAgain" required />
 
-                    <v-col>
-                        <v-btn color="primary"
-                            :disabled="!(data.user.name?.length > 0 && data.user.email?.length > 0 && ((data.user.password?.length > 0 && data.user.newPasswordAgain?.length > 0) || data.user.googleProfileId?.length > 0))"
-                            data-test-id="createAccount-nextStepBtn" @click="step = 2">
-
-                            next step
-
-                        </v-btn>
-                    </v-col>
+                    <v-btn block color="primary"
+                        :disabled="!(data.user.name?.length > 0 && data.user.email?.length > 0 && ((data.user.password?.length > 0 && data.user.newPasswordAgain?.length > 0) || data.user.googleProfileId?.length > 0))"
+                        data-test-id="createAccount-nextStepBtn" @click="step = 2">
+                        {{ $t('mua.userLoginAndResetForm.nextBtn') }}
+                    </v-btn>
                     <CreateWithProvider v-if="!data.user.googleProfileId"
                         @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
                 </div>
@@ -188,18 +188,13 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         </p>
                     </div>
 
-                    <v-col>
-                        <v-btn color="primary" data-test-id="createAccount-submitBtn"
-                            :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
-                            @click="submitBtn">
-
-                            {{ !processing ? $t('mua.createAccount.submitBtn') : '' }}
-
-                            <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
-                                processing ? $t('mua.processing') : '' }}
-
-                        </v-btn>
-                    </v-col>
+                    <v-btn block color="primary" data-test-id="createAccount-submitBtn" class="mt-2"
+                        :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
+                        @click="submitBtn">
+                        {{ !processing ? $t('mua.createAccount.submitBtn') : '' }}
+                        <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
+                            processing ? $t('mua.processing') : '' }}
+                    </v-btn>
                 </div>
             </v-card-text>
         </v-card>
