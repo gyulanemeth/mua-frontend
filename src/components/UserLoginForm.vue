@@ -174,7 +174,7 @@ async function removeAccount (urlFriendlyName) {
                             :value="data.password"
                             @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                             required />
-                        <v-btn color="primary" data-test-id="loginAndResetForm-loginBtn" class="mb-3"
+                        <v-btn block color="primary" data-test-id="loginAndResetForm-loginBtn" class="mb-3"
                             @click="processing = true; $emit('handleLoginHandler', data, () => { processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
