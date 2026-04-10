@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import LoginWithProvider from './LoginWithProvider.vue'
+import MagicLinkDialog from '../dialogs/MagicLinkDialog.vue'
 
 const props = defineProps({
   formData: Object
@@ -11,6 +12,7 @@ const route = useRoute()
 
 const data = ref({})
 const processing = ref(false)
+const magicLinkDialogRef = ref()
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 </script>
 
@@ -23,6 +25,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                 </v-avatar>
             </v-card-text>
         </v-card>
+        <MagicLinkDialog ref="magicLinkDialogRef" @send="(email, cb) => $emit('handleSendMagicLinkHandler', email, cb)" />
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px"
             @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
             <v-card-text align="center">
@@ -43,14 +46,20 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                     @update:modelValue="res => data.password = res.replace(/[^a-z0-9!@#$%^&* \.,_-]/gim, '')"
                     required />
 
-                <v-btn block color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
+                <v-btn block color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn" class="mb-3"
                     @click="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
                     {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                     <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                         processing ? $t('mua.processing') : '' }}
                 </v-btn>
+                <LoginWithProvider :accountId="props.formData._id">
+                    <v-btn block variant="outlined" color="primary" class="mb-2"
+                        @click="magicLinkDialogRef.show(data.email)">
+                        <v-icon start>mdi-email-fast-outline</v-icon>
+                        {{ $t('mua.userLoginAndResetForm.magicLink.sendBtn') }}
+                    </v-btn>
+                </LoginWithProvider>
             </v-card-text>
-            <LoginWithProvider :accountId="props.formData._id" />
         </v-card>
         <v-container class="w-100">
             <v-col class="text-center justify-center align-center">

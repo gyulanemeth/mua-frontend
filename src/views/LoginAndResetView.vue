@@ -97,10 +97,7 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
 
 async function handleGetLoginAccountEvent (params, statusCallBack) {
   const res = await usersStore.loginGetAccounts(params)
-  if (res.token) {
-    tokenData.value = jwtDecode(res.token)
-  }
-  statusCallBack(!res.message)
+  statusCallBack(!res.message ? (res.singleAccount ? 'magicLink' : 'selectAccount') : false)
 }
 
 async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
@@ -114,6 +111,11 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
     await accountsStore.readOne(route.params.urlFriendlyName)
     router.push(`/accounts/${route.params.urlFriendlyName}/dashboard`)
   }
+}
+
+async function handleSendMagicLinkUrlFriendlyNameEvent (email, statusCallBack) {
+  const res = await usersStore.sendMagicLinkUrlFriendlyName(route.params.urlFriendlyName, email)
+  statusCallBack(!res.message)
 }
 
 async function handleLoginEvent (params, statusCallBack) {
@@ -130,7 +132,7 @@ async function handleLoginEvent (params, statusCallBack) {
 }
 
 async function handleLoginSelectEvent (accountId, statusCallBack) {
-  const res = await usersStore.loginSelect(accountId)
+  const res = await usersStore.loginSelect(route.query.token, accountId)
   if (res.twoFactorEnabled) {
     twoFactorEnabled.value = true
     return
@@ -139,11 +141,6 @@ async function handleLoginSelectEvent (accountId, statusCallBack) {
   if (res.success) {
     router.push('accounts/')
   }
-}
-
-async function handleSendMagicLinkEvent (accountId, statusCallBack) {
-  const res = await usersStore.sendMagicLink(route.query.token || null, accountId)
-  statusCallBack(!res.message)
 }
 
 watchEffect(async () => {
@@ -161,12 +158,12 @@ watchEffect(async () => {
 
   <MFALoginForm v-else-if="twoFactorEnabled" />
   <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
-    :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent" />
+    :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent"
+    @handleSendMagicLinkHandler="handleSendMagicLinkUrlFriendlyNameEvent" />
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"
     :tokenData="tokenData" @handleGetLoginAccountsHandler="handleGetLoginAccountEvent"
     @handleLoginHandler="handleLoginEvent"
-    @handleLoginSelectHandler="handleLoginSelectEvent"
-    @handleSendMagicLinkHandler="handleSendMagicLinkEvent" />
+    @handleLoginSelectHandler="handleLoginSelectEvent" />
 
 </template>

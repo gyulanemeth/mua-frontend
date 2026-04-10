@@ -197,9 +197,6 @@ export default (connectors) => {
       async loginGetAccounts (email) {
         try {
           const res = await connectors.user.loginGetAccounts({ email })
-          if (res.token) {
-            localStorage.setItem('loginToken', res.token)
-          }
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -207,8 +204,21 @@ export default (connectors) => {
         }
       },
 
-      async loginSelect (accountId) {
+      async sendMagicLinkUrlFriendlyName (urlFriendlyName, email) {
         try {
+          const res = await connectors.user.sendMagicLinkUrlFriendlyName(urlFriendlyName, email)
+          return res
+        } catch (e) {
+          useSystemMessagesStore().addError(e)
+          return e
+        }
+      },
+
+      async loginSelect (token, accountId) {
+        try {
+          if (token) {
+            localStorage.setItem('loginToken', token)
+          }
           const res = await connectors.user.loginSelect(accountId)
           if (res.twoFactorLoginToken) {
             return { twoFactorEnabled: true }
@@ -219,19 +229,6 @@ export default (connectors) => {
           localStorage.setItem('accountId', loginTokenData.account._id)
           this.saveRecentLogins(loginTokenData.account._id)
           return { success: true }
-        } catch (e) {
-          useSystemMessagesStore().addError(e)
-          return e
-        }
-      },
-
-      async sendMagicLink (token, accountId) {
-        try {
-          if (token) {
-            localStorage.setItem('loginToken', token)
-          }
-          const res = await connectors.user.sendMagicLink(accountId)
-          return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
           return e

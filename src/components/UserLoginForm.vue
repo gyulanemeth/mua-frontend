@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useUsersStore } from '../stores/index.js'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
 
-const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginSelectHandler', 'handleSendMagicLinkHandler'])
+const emit = defineEmits(['handleGetLoginAccountsHandler', 'handleLoginSelectHandler'])
 
 const props = defineProps({
   tokenData: Object
@@ -110,11 +110,15 @@ async function removeAccount (urlFriendlyName) {
                 </v-btn>
             </v-card-text>
 
-            <!-- Step 1 cb: magic link sent (single account) -->
+            <!-- Step 1 cb: email sent confirmation -->
             <v-card-text v-else-if="!props.tokenData.accounts && cb" align="center" class="py-6">
                 <v-icon size="48" color="primary" class="mb-3">mdi-email-fast-outline</v-icon>
-                <p class="text-h6 mb-2">{{ $t('mua.userLoginAndResetForm.magicLink.sentHeader') }}</p>
-                <p class="text-body-2 text-medium-emphasis">{{ $t('mua.userLoginAndResetForm.cb.loginMessage') }}</p>
+                <p class="text-h6 mb-2">
+                    {{ cb === 'magicLink' ? $t('mua.userLoginAndResetForm.magicLink.sentHeader') : $t('mua.userLoginAndResetForm.selectAccount.sentHeader') }}
+                </p>
+                <p class="text-body-2 text-medium-emphasis">
+                    {{ cb === 'magicLink' ? $t('mua.userLoginAndResetForm.cb.magicLinkMessage') : $t('mua.userLoginAndResetForm.cb.selectAccountMessage') }}
+                </p>
             </v-card-text>
 
             <!-- Step 2: account picker -->

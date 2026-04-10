@@ -235,7 +235,11 @@
         "orText": "Or sign in without a password",
         "sendBtn": "Send magic link",
         "sentHeader": "Magic link sent!",
-        "sentMessage": "Check your inbox and click the link to sign in. The link expires in 15 minutes."
+        "sentMessage": "Check your inbox and click the link to sign in. The link expires in 15 minutes.",
+        "dialogMessage": "Enter your email and we'll send you a magic link to sign in — no password needed."
+      },
+      "selectAccount": {
+        "sentHeader": "Check your email!"
       },
       "cb": {
         "resetMessage": "To continue resetting your password, please check your inbox and click the link we sent you.",
@@ -245,7 +249,9 @@
         "backToRecentLoginsBtn": "View Recent Logins",
         "loginToDifferentAccountMessage": "Login to different account?",
         "loginToDifferentAccountCbBtn": "Switch Account",
-        "loginMessage": "We sent a magic link to your email. Click it to sign in — no password needed. The link expires in 15 minutes."
+        "loginMessage": "We sent an email to your inbox. Click the link to sign in — no password needed.",
+        "magicLinkMessage": "We sent a magic link to your email. Click it to sign in — no password needed. The link expires in 15 minutes.",
+        "selectAccountMessage": "We sent an email with your account list. Click the link, select your account, and you'll be signed in."
       },
       "confirmDialog": {
         "removeHeader": "Are you sure you want to delete your recent login?",
