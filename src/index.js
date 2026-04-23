@@ -4,7 +4,7 @@ import { setActivePinia } from 'pinia'
 import 'vuetify/styles'
 import VueApexCharts from 'vue3-apexcharts'
 
-import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore, useCaptchaStore as useMuaCaptchaStore } from './stores/index.js'
+import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore, useCaptchaStore as useMuaCaptchaStore, useStatsStore as useMuaStatsStore } from './stores/index.js'
 let pluginEnv = null
 const MuaPlugin = {
   install (app, options = {}) {
@@ -37,7 +37,7 @@ const MuaPlugin = {
   }
 }
 
-export { useMuaAccountStore, useMuaUsersStore, useMuaAdminsStore, useMuaCaptchaStore }
+export { useMuaAccountStore, useMuaUsersStore, useMuaAdminsStore, useMuaCaptchaStore, useMuaStatsStore }
 
 export default MuaPlugin
 
