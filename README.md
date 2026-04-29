@@ -99,23 +99,30 @@ To receive Mua operation notifications in your Vue 3 app, add the `<MuaErrorMess
 Mua-Frontend requires the following variables to be included in your `.env` file
 
 ```bash
-VITE_APP_TERMS_URL=<url>
-VITE_APP_PRIVACY_URL=<url>
+VITE_API_BASE_URL=<api_base_url>
 VITE_APP_NAME=<app_name>
 VITE_APP_TITLE=<app_title>
 VITE_APP_BASE_URL=<app_url>
+VITE_APP_TERMS_URL=<terms_url>
+VITE_APP_PRIVACY_URL=<privacy_url>
+VITE_APP_LOGO_URL=<logo_url>
 VITE_AUTH_PROVIDERS=['google', 'github', 'microsoft']
 ```
 
 #### Explanation of Variables:
 
-- **`VITE_APP_TERMS_URL`**: The URL to your Terms and Conditions page. This link will be displayed in relevant parts of the app to provide access to your terms.
-- **`VITE_APP_PRIVACY_URL`**: The URL to your Privacy Policy page. This link will be shown wherever privacy details need to be shared with users.
-- **`VITE_APP_NAME`**: The name of your application, which will be displayed in places like the navbar, loading screens, and headers.
-- **`VITE_APP_TITLE`**: The title of your application, used in browser titles or other display areas where a more descriptive name is needed.
-- **`VITE_APP_BASE_URL`**: The base URL of your backend server. This is used by the app to communicate with your backend services.
+- **`VITE_API_BASE_URL`** *(required)*: The base URL of your mua-backend API server. Used by all API connectors.
+- **`VITE_APP_NAME`** *(required)*: The name of your application, displayed in loading screens and headers.
+- **`VITE_APP_TITLE`** *(required)*: The title used in browser tab titles and page headings.
+- **`VITE_APP_BASE_URL`** *(required)*: The base URL of your frontend application. Used to generate links shown to users.
+- **`VITE_APP_TERMS_URL`** *(required)*: The URL to your Terms and Conditions page, displayed during registration and invitation acceptance.
+- **`VITE_APP_PRIVACY_URL`** *(required)*: The URL to your Privacy Policy page, displayed during registration and invitation acceptance.
+- **`VITE_APP_LOGO_URL`** *(optional)*: URL to your application logo, shown on login and auth screens.
+- **`VITE_AUTH_PROVIDERS`** *(optional)*: An array of OAuth providers to enable — `'google'`, `'github'`, and/or `'microsoft'`. These providers must be configured in [mua-backend](https://www.npmjs.com/package/mua-backend).
 
-- **`VITE_AUTH_PROVIDERS`**: An array of OAuth providers, which can include `'google'`, `'github'`, and `'microsoft'`. These providers must be properly configured in [mua-backend](https://www.npmjs.com/package/mua-backend). If setup is complete for any of these providers, adding them here will automatically enable them in your app for user authentication.
+::: warning
+The plugin validates all required options and env variables on startup and throws a descriptive error if anything is missing. This surfaces misconfiguration early rather than at runtime.
+:::
 
 ### 6. Add to `vite.config.js` file
 To ensure proper optimization of dependencies, include the following in your `vite.config.js`
@@ -245,6 +252,16 @@ Methods for managing users:
 - **async patchEmailConfirm(token)**: Confirm the user’s new email.
 - **async uploadProfilePicture(formData)**: Upload a new profile picture.
 - **async deleteProfilePicture()**: Delete the user’s profile picture.
+- **async MFALogin(params)**: Complete login using a 2FA code or recovery code. `params` accepts `{ code }` for a TOTP code or `{ recoveryCode }` for a recovery code.
+- **async getMFA()**: Retrieve 2FA setup data (QR code and secret) for the logged-in user. Returns `{ qrcode, secret }` when 2FA is not yet enabled, or `{ recoverySecret }` when already enabled.
+- **async confirmMFA(code)**: Confirm the TOTP code and enable 2FA. Returns `{ enabled: true, recoverySecret }` on success.
+- **async disableMFA()**: Disable 2FA for the logged-in user. Returns `{ enabled: false }` on success.
+- **async loginGetAccounts(email)**: Retrieve all accounts associated with an email address during the login flow.
+- **async sendMagicLinkUrlFriendlyName(urlFriendlyName, email)**: Send a magic link email for passwordless login to a specific workspace.
+- **async verifyMagicLink(token)**: Verify a magic link token and complete login.
+- **async loginSelect(token, accountId)**: Select an account to log into from a multi-account magic link flow.
+- **async getRecentLoginsAccounts()**: Retrieve the list of recently logged-in accounts from local storage.
+- **async removeRecentLoginAccount(urlFriendlyName)**: Remove an account from the recent logins list.
 
 ---
 
@@ -273,6 +290,10 @@ Methods for managing admins:
 - **async readOne()**: Get details of the logged-in admin.
 - **async uploadProfilePicture(formData)**: Upload the admin’s profile picture.
 - **async deleteProfilePicture()**: Delete the admin’s profile picture.
+- **async MFALogin(params)**: Complete admin login using a 2FA code or recovery code. `params` accepts `{ code }` for a TOTP code or `{ recoveryCode }` for a recovery code.
+- **async getMFA()**: Retrieve 2FA setup data (QR code and secret) for the logged-in admin.
+- **async confirmMFA(code)**: Confirm the TOTP code and enable 2FA for the admin. Returns `{ enabled: true, recoverySecret }` on success.
+- **async disableMFA()**: Disable 2FA for the logged-in admin.
 
 
 

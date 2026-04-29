@@ -38,6 +38,7 @@ const onSubmit = async () => {
     await userStore.readOne()
     recoverySecret.value = res.recoverySecret
     code.value = ''
+    dialog.value = true
   }
 }
 
