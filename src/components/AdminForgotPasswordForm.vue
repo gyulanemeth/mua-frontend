@@ -1,15 +1,27 @@
 <script setup>
 import { ref } from 'vue'
-import { useCaptchaStore } from '../stores/index.js'
+import TurnstileWidget from './TurnstileWidget.vue'
+import { useCaptchaStore, useTurnstileStore } from '../stores/index.js'
 
 const cb = ref()
 const data = ref({})
 const captchaStore = useCaptchaStore()
+const turnstileStore = useTurnstileStore()
+const captchaType = import.meta.env.VITE_CAPTCHA_TYPE || 'svg'
 const processing = ref(false)
 const captchaData = ref()
+const turnstileSiteKey = ref(null)
+const turnstileWidget = ref(null)
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
 async function generateCaptcha () {
+  if (captchaType === 'turnstile') {
+    if (!turnstileSiteKey.value) {
+      const res = await turnstileStore.getTurnstileConfig()
+      turnstileSiteKey.value = res.siteKey
+    }
+    return
+  }
   const res = await captchaStore.getCaptcha()
   captchaData.value = res.data
   data.value.captchaProbe = res.probe
@@ -37,17 +49,21 @@ generateCaptcha()
                     :placeholder="data.email || $t('mua.adminForgotPasswordForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
 
-                <div v-if="!cb" class="d-flex flex-wrap align-center justify-center">
-                    <div v-html="captchaData"></div><v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
-                    <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
-                        class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
-                        :placeholder="'Captcha text'" v-model="data.captchaText" required />
+                <div v-if="!cb">
+                    <div v-if="captchaType !== 'turnstile'" class="d-flex flex-wrap align-center justify-center">
+                        <div v-html="captchaData"></div><v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
+                        <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
+                            class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
+                            :placeholder="'Captcha text'" v-model="data.captchaText" required />
+                    </div>
+                    <TurnstileWidget v-else-if="turnstileSiteKey" ref="turnstileWidget" :sitekey="turnstileSiteKey"
+                        @token="(t) => { data.turnstileToken = t }" />
                 </div>
 
                 <div v-if="!cb"
-                    @keydown.enter="data.captchaText ? processing = true && $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } generateCaptcha(); processing = false; }) : null">
-                    <v-btn data-test-id="forgotPassword-submitBtn" :disabled="!data || !data.captchaText || !data.email" color="primary"
-                        @click="processing = true; $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } generateCaptcha(); processing = false; })">
+                    @keydown.enter="(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText) ? processing = true && $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } if (captchaType !== 'turnstile') { generateCaptcha() } else { turnstileWidget?.reset(); data.turnstileToken = null } processing = false; }) : null">
+                    <v-btn data-test-id="forgotPassword-submitBtn" :disabled="!data || !(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText) || !data.email" color="primary"
+                        @click="processing = true; $emit('passwordRecoveryEventHandler', data, (res) => { if (res) { cb = res } if (captchaType !== 'turnstile') { generateCaptcha() } else { turnstileWidget?.reset(); data.turnstileToken = null } processing = false; })">
 
                         {{ !processing ? $t('mua.adminForgotPasswordForm.submitBtn') : '' }}
 

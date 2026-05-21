@@ -4,7 +4,7 @@ import { setActivePinia } from 'pinia'
 import 'vuetify/styles'
 import VueApexCharts from 'vue3-apexcharts'
 
-import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore, useCaptchaStore as useMuaCaptchaStore, useStatsStore as useMuaStatsStore } from './stores/index.js'
+import { useAccountsStore as useMuaAccountStore, useUsersStore as useMuaUsersStore, useAdminsStore as useMuaAdminsStore, useCaptchaStore as useMuaCaptchaStore, useStatsStore as useMuaStatsStore, useTurnstileStore as useMuaTurnstileStore } from './stores/index.js'
 const REQUIRED_OPTIONS = ['router', 'pinia', 'env']
 const REQUIRED_ENV_VARS = [
   'VITE_API_BASE_URL',
@@ -61,7 +61,7 @@ const MuaPlugin = {
   }
 }
 
-export { useMuaAccountStore, useMuaUsersStore, useMuaAdminsStore, useMuaCaptchaStore, useMuaStatsStore }
+export { useMuaAccountStore, useMuaUsersStore, useMuaAdminsStore, useMuaCaptchaStore, useMuaStatsStore, useMuaTurnstileStore }
 
 export default MuaPlugin
 

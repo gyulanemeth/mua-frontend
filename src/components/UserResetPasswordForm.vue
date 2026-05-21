@@ -1,16 +1,21 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useCaptchaStore } from '../stores/index.js'
+import TurnstileWidget from './TurnstileWidget.vue'
+import { useCaptchaStore, useTurnstileStore } from '../stores/index.js'
 
 const props = defineProps({
   formData: Object
 })
 
 const captchaStore = useCaptchaStore()
+const turnstileStore = useTurnstileStore()
+const captchaType = import.meta.env.VITE_CAPTCHA_TYPE || 'svg'
 const route = useRoute()
 
 const captchaData = ref()
+const turnstileSiteKey = ref(null)
+const turnstileWidget = ref(null)
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
@@ -25,6 +30,13 @@ if (props.formData.account) {
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
 async function generateCaptcha () {
+  if (captchaType === 'turnstile') {
+    if (!turnstileSiteKey.value) {
+      const res = await turnstileStore.getTurnstileConfig()
+      turnstileSiteKey.value = res.siteKey
+    }
+    return
+  }
   const res = await captchaStore.getCaptcha()
   captchaData.value = res.data
   data.value.captchaProbe = res.probe
@@ -78,13 +90,13 @@ generateCaptcha()
                     <p class="text-body-2 text-medium-emphasis mb-1">{{ props.formData.account?.name }}</p>
                     <p v-if="props.formData.email" class="text-body-2 text-medium-emphasis mb-5">{{ props.formData.email }}</p>
                     <div v-if="cb !== 'reset'"
-                        @keydown.enter="data.captchaText ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; generateCaptcha(); processing = false }) : null">
+                        @keydown.enter="(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText) ? processing = true && $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; if (captchaType !== 'turnstile') { generateCaptcha() } else { turnstileWidget?.reset(); data.turnstileToken = null } processing = false }) : null">
                         <v-text-field v-if="!props.formData.email" hide-details data-test-id="loginAndResetForm-emailField"
                             density="compact" class="mb-4 rounded" color="primary" variant="solo"
                             type="email" name="email"
                             :placeholder="$t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                             @update:modelValue="res => data.email = res.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
-                        <div class="d-flex flex-wrap align-center justify-center mb-4">
+                        <div v-if="captchaType !== 'turnstile'" class="d-flex flex-wrap align-center justify-center mb-4">
                             <div v-html="captchaData"></div>
                             <v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2"
                                 @click="generateCaptcha()" icon="mdi-refresh" />
@@ -92,9 +104,11 @@ generateCaptcha()
                                 class="mt-3 rounded" color="primary" variant="solo" name="captchaText" type="text"
                                 :placeholder="'Captcha text'" v-model="data.captchaText" required />
                         </div>
-                        <v-btn block color="primary" :disabled="!data.captchaText || !data.account || !data.email"
+                        <TurnstileWidget v-else-if="turnstileSiteKey" ref="turnstileWidget" :sitekey="turnstileSiteKey"
+                            @token="(t) => { data.turnstileToken = t }" />
+                        <v-btn block color="primary" :disabled="!(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText) || !data.account || !data.email"
                             data-test-id="loginAndResetForm-forgotPasswordBtn"
-                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; generateCaptcha(); processing = false })">
+                            @click="processing = true; $emit('handleForgotPasswordHandler', data, (res) => { res ? cb = res : null; if (captchaType !== 'turnstile') { generateCaptcha() } else { turnstileWidget?.reset(); data.turnstileToken = null } processing = false })">
                             {{ !processing ? $t('mua.userLoginAndResetForm.resetBtnText') : '' }}
                             <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                                 processing ? $t('mua.processing') : '' }}
