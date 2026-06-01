@@ -3,6 +3,7 @@ import createAdminsStore from './admins.js'
 import createAccountsStore from './accounts.js'
 import createStatsStore from './stats.js'
 import createCaptchaStore from './captcha.js'
+import createTurnstileStore from './turnstile.js'
 
 import connectors from '../connectors/index.js'
 
@@ -31,4 +32,9 @@ const useCaptchaStore = () => {
   return store()
 }
 
-export { useUsersStore, useAdminsStore, useAccountsStore, useStatsStore, useCaptchaStore }
+const useTurnstileStore = () => {
+  const store = createTurnstileStore(connectors().turnstileConnectors)
+  return store()
+}
+
+export { useUsersStore, useAdminsStore, useAccountsStore, useStatsStore, useCaptchaStore, useTurnstileStore }

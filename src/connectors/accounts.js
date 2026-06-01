@@ -118,7 +118,7 @@ export default function (fetch, apiUrl) {
     } else if (!formData.user || !formData.user.name || !formData.user.email || (!formData.user.password && !formData.user.googleProfileId && !formData.user.microsoftProfileId && !formData.user.githubProfileId)) {
       throw new RouteError('User name, email and password are required')
     }
-    const res = await postCreateAccount({}, { account: formData.account, user: formData.user, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe })
+    const res = await postCreateAccount({}, { account: formData.account, user: formData.user, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe, turnstileToken: formData.turnstileToken })
     return res
   }
 
@@ -176,7 +176,7 @@ export default function (fetch, apiUrl) {
     if (!data || !data.email || !data.id) {
       throw new RouteError('Email is required')
     }
-    const res = await postSendForgotPassword({ id: data.id }, { email: data.email, captchaText: data.captchaText, captchaProbe: data.captchaProbe })
+    const res = await postSendForgotPassword({ id: data.id }, { email: data.email, captchaText: data.captchaText, captchaProbe: data.captchaProbe, turnstileToken: data.turnstileToken })
     return res
   }
 

@@ -3,6 +3,7 @@ import users from './users.js'
 import admins from './admins.js'
 import stats from './stats.js'
 import captcha from './captcha.js'
+import turnstile from './turnstile.js'
 import { env } from '../index.js'
 
 export default function () {
@@ -12,6 +13,7 @@ export default function () {
   const adminConnectors = admins(fetch, import.meta.env.VITE_API_BASE_URL)
   const statsConnectors = stats(fetch, import.meta.env.VITE_API_BASE_URL)
   const captchaConnectors = captcha(fetch, import.meta.env.VITE_API_BASE_URL)
+  const turnstileConnectors = turnstile(fetch, import.meta.env.VITE_API_BASE_URL)
 
-  return { userConnectors, accountsConnectors, adminConnectors, statsConnectors, captchaConnectors }
+  return { userConnectors, accountsConnectors, adminConnectors, statsConnectors, captchaConnectors, turnstileConnectors }
 }

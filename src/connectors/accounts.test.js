@@ -409,6 +409,42 @@ describe('test accounts connectors', () => {
     })
   })
 
+  test('test createOne account with turnstile token', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({
+        result: {
+          newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+          newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+        }
+      })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).account.createOne({ user: { name: 'userName', email: 'email@email.com', password: 'userPassword' }, account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }, turnstileToken: 'test-token' })
+
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/create',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          account: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' },
+          user: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+          turnstileToken: 'test-token'
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
+        }
+      })
+    expect(res).toEqual({
+      newUser: { name: 'userName', email: 'email@email.com', password: 'userPassword' },
+      newAccount: { name: 'AccountName', urlFriendlyName: 'updateUrlFriendlyName' }
+    })
+  })
+
   test('test createOne with undefined input ', async () => {
     const fetch = vi.fn()
     fetch.mockResolvedValue({
@@ -579,6 +615,26 @@ describe('test accounts connectors', () => {
       {
         method: 'POST',
         body: JSON.stringify({ email: 'user1@gmail.com' }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test forgotPassword send with turnstile token', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await accounts(fetch, apiUrl).forgotPassword.send({ id: '123', email: 'user1@gmail.com', turnstileToken: 'test-token' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua/accounts/v1/accounts/123/forgot-password/send',
+      {
+        method: 'POST',
+        body: JSON.stringify({ email: 'user1@gmail.com', turnstileToken: 'test-token' }),
         headers: { 'Content-Type': 'application/json' }
       })
     expect(res).toEqual({ success: true })

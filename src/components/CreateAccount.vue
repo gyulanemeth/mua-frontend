@@ -1,7 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import CreateWithProvider from './CreateWithProvider.vue'
-import { useCaptchaStore } from '../stores/index.js'
+import TurnstileWidget from './TurnstileWidget.vue'
+import { useCaptchaStore, useTurnstileStore } from '../stores/index.js'
 
 const emit = defineEmits(['buttonEvent', 'reSendFinalizeRegistrationEvent'])
 
@@ -11,8 +12,12 @@ const data = ref({
 })
 
 const captchaStore = useCaptchaStore()
+const turnstileStore = useTurnstileStore()
+const captchaType = import.meta.env.VITE_CAPTCHA_TYPE || 'svg'
 
 const captchaData = ref()
+const turnstileSiteKey = ref(null)
+const turnstileWidget = ref(null)
 const cb = ref()
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 const url = import.meta.env.VITE_APP_BASE_URL
@@ -40,6 +45,13 @@ function startCountDown () {
 }
 
 async function generateCaptcha () {
+  if (captchaType === 'turnstile') {
+    if (!turnstileSiteKey.value) {
+      const res = await turnstileStore.getTurnstileConfig()
+      turnstileSiteKey.value = res.siteKey
+    }
+    return
+  }
   const res = await captchaStore.getCaptcha()
   captchaData.value = res.data
   data.value.captchaProbe = res.probe
@@ -60,7 +72,12 @@ async function submitBtn () {
       processing.value = false
       startCountDown()
       if (res.message) {
-        generateCaptcha()
+        if (captchaType === 'turnstile') {
+          turnstileWidget.value?.reset()
+          data.value.turnstileToken = null
+        } else {
+          generateCaptcha()
+        }
       }
     })
   }
@@ -168,13 +185,15 @@ watch(() => data.value.account.urlFriendlyName, () => {
                             data.account.urlFriendlyName }}</span>
                     </div>
 
-                    <div class="d-flex flex-wrap align-center justify-center">
+                    <div v-if="captchaType !== 'turnstile'" class="d-flex flex-wrap align-center justify-center">
                         <div v-html="captchaData"></div><v-btn density="compact" size="large"
                             class="rounded-0 elevation-0 mr-2" @click="generateCaptcha()" icon="mdi-refresh" />
                         <v-text-field hide-details data-test-id="forgotPassword-captchaField" density="compact"
                             class=" my-5 rounded" color="primary" variant="solo" name="captchaText" type="text"
                             :placeholder="'Captcha text'" v-model="data.captchaText" required />
                     </div>
+                    <TurnstileWidget v-else-if="turnstileSiteKey" ref="turnstileWidget" :sitekey="turnstileSiteKey"
+                        @token="(t) => { data.turnstileToken = t }" />
 
                     <div v-if="terms && privacy" class="d-flex align-center justify-start my-2" style="width: 100%;">
                         <v-checkbox color="primary" v-model="checkbox" hide-details></v-checkbox>
@@ -189,7 +208,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                     </div>
 
                     <v-btn block color="primary" data-test-id="createAccount-submitBtn" class="mt-2"
-                        :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0"
+                        :disabled="!checkbox || data.account.name.length === 0 || data.account.urlFriendlyName.length === 0 || (captchaType === 'turnstile' && !data.turnstileToken)"
                         @click="submitBtn">
                         {{ !processing ? $t('mua.createAccount.submitBtn') : '' }}
                         <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
