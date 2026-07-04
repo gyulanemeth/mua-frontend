@@ -298,8 +298,44 @@ describe('users Store', () => {
       return { name: 'user1', email: 'user1@gmail.com', _id: '12test12' }
     }
 
+    const mockListProjects = async function (params) {
+      if (!params || !params.accountId) {
+        throw new RouteError('Account id is required')
+      }
+      return { items: [{ _id: 'project1' }], count: 1 }
+    }
+
+    const mockSendMagicLinkUrlFriendlyName = async function (urlFriendlyName, data) {
+      if (!urlFriendlyName || !data || !data.email) {
+        throw new RouteError('urlFriendlyName and email are required')
+      }
+      return { success: true }
+    }
+
+    const mockLoginSelect = async function (accountId) {
+      if (!accountId) {
+        throw new RouteError('Account id is required')
+      }
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
+      if (accountId === '2fa-account') {
+        return { twoFactorLoginToken: token }
+      }
+      return { loginToken: token }
+    }
+
+    const mockVerifyMagicLink = async function (accountId) {
+      if (!accountId) {
+        throw new RouteError('Account id is required')
+      }
+      const token = jwt.sign({ type: 'login', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: accountId } }, secrets)
+      if (accountId === '2fa-account') {
+        return { twoFactorLoginToken: token }
+      }
+      return { loginToken: token }
+    }
+
     return {
-      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission, getMFA: mockGetMFA, confirmMFA: mockConfirmMFA, disableMFA: mockDisableMFA, MFALogin: mockMFALogin },
+      user: { reSendfinalizeRegistrationEmail: mockReSendfinalizeRegistrationEmail, deleteProfilePicture: mockDeleteUserProfilePicture, uploadProfilePicture: mockUploadUserProfilePicture, patchName: mockPatchUserName, patchPassword: mockPatchPassword, getAccessToken: mockgetAccessToken, login: mockLogin, loginWithUrlFriendlyName: mockLoginWithUrlFriendlyName, loginGetAccounts: mockLoginGetAccounts, readOne: mockUserReadOne, patchEmail: mockPatchEmail, patchEmailConfirm: mockPatchEmailConfirm, deletePermission: mockDeletePermission, list: mockList, deleteOne: mockDeleteOne, patchRole: mockPatchRole, loginWithProvider: mockLoginWithProvider, createWithProvider: mockCreateWithProvider, linkToProvider: mockLinkToProvider, createPassword: mockCreatePassword, disconnectProvider: mockDisconnectProvider, disconnectPermission: mockDisconnectPermission, getMFA: mockGetMFA, confirmMFA: mockConfirmMFA, disableMFA: mockDisableMFA, MFALogin: mockMFALogin, listProjects: mockListProjects, sendMagicLinkUrlFriendlyName: mockSendMagicLinkUrlFriendlyName, loginSelect: mockLoginSelect, verifyMagicLink: mockVerifyMagicLink },
       account: { finalizeRegistration: mockFinalizeRegistration, readOne: mockReadOneAccount },
       invitation: { send: mockSendInvitation, accept: mockAccept, reSend: mockReSendInvitation },
       forgotPassword: { send: mockSendForgetPasssword, reset: mockReset }
@@ -383,6 +419,13 @@ describe('users Store', () => {
     const store = usersStore()
     const res = await store.MFALogin({ code: 'test' })
     expect(res.success).toBe(true)
+  })
+
+  test('test MFALogin error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.MFALogin()
+    expect(res.message).toEqual('Error')
   })
 
   test('test getMFA missing params', async () => {
@@ -473,6 +516,79 @@ describe('users Store', () => {
     expect(res.message).toEqual('User email is required')
     expect(store.user).toEqual(undefined)
     expect(store.accessToken).toEqual(undefined)
+  })
+
+  test('test success listProjects', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.listProjects({ accountId: '112233' })
+    expect(res.count).toEqual(1)
+  })
+
+  test('test listProjects error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.listProjects()
+    expect(res).toBeUndefined()
+  })
+
+  test('test success sendMagicLinkUrlFriendlyName', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.sendMagicLinkUrlFriendlyName('urlFriendlyName1', { email: 'user1@gmail.com' })
+    expect(res.success).toEqual(true)
+  })
+
+  test('test sendMagicLinkUrlFriendlyName error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.sendMagicLinkUrlFriendlyName()
+    expect(res.message).toEqual('urlFriendlyName and email are required')
+  })
+
+  test('test success loginSelect', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginSelect('loginToken', '112233')
+    expect(res.success).toEqual(true)
+  })
+
+  test('test loginSelect with twoFactorLoginToken', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginSelect('loginToken', '2fa-account')
+    expect(res.twoFactorEnabled).toEqual(true)
+  })
+
+  test('test loginSelect error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const res = await store.loginSelect('loginToken')
+    expect(res.message).toEqual('Account id is required')
+  })
+
+  test('test success verifyMagicLink', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const magicToken = jwt.sign({ type: 'magic-link', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '112233' } }, secrets)
+    const res = await store.verifyMagicLink(magicToken)
+    expect(res.success).toEqual(true)
+  })
+
+  test('test verifyMagicLink with twoFactorLoginToken', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const magicToken = jwt.sign({ type: 'magic-link', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '2fa-account' } }, secrets)
+    const res = await store.verifyMagicLink(magicToken)
+    expect(res.twoFactorEnabled).toEqual(true)
+  })
+
+  test('test verifyMagicLink error', async () => {
+    const usersStore = useUsersStore(mokeConnector())
+    const store = usersStore()
+    const magicToken = jwt.sign({ type: 'magic-link', user: { _id: '12test12', email: 'user1@gmail.com' }, account: { _id: '' } }, secrets)
+    const res = await store.verifyMagicLink(magicToken)
+    expect(res.message).toEqual('Account id is required')
   })
 
   test('test login error invalid ', async () => {

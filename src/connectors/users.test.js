@@ -1031,4 +1031,126 @@ describe('test accounts connectors', () => {
 
     await expect(users(fetch, apiUrl).disconnectProvider()).rejects.toThrowError('User id, provider and account id are required')
   })
+
+  test('test send magic link with urlFriendlyName ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).sendMagicLinkUrlFriendlyName('urlFriendlyNameExample1', { email: 'user1@gmail.com', captchaText: 'abcd', captchaProbe: 'probe', turnstileToken: 'token' })
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/urlFriendlyNameExample1/login/url-friendly-name/magic-link',
+      {
+        method: 'POST',
+        body: JSON.stringify({ email: 'user1@gmail.com', captchaText: 'abcd', captchaProbe: 'probe', turnstileToken: 'token' }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+    expect(res).toEqual({ success: true })
+  })
+
+  test('test send magic link with urlFriendlyName undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { success: true } })
+    })
+    await expect(users(fetch, apiUrl).sendMagicLinkUrlFriendlyName()).rejects.toThrowError('urlFriendlyName and email are required')
+  })
+
+  test('test login select ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+
+    localStorage.setItem('loginToken', 'Token')
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).loginSelect('112233')
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/112233/login/select',
+      {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer Token'
+        }
+      })
+    expect(res.loginToken).toEqual('Token')
+  })
+
+  test('test login select with twoFactorLoginToken ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'Token' } })
+    })
+
+    const res = await users(fetch, apiUrl).loginSelect('112233')
+    expect(res.twoFactorLoginToken).toEqual('Token')
+  })
+
+  test('test login select undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).loginSelect()).rejects.toThrowError('Account id is required')
+  })
+
+  test('test verify magic link ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+
+    localStorage.setItem('magicLinkToken', 'Token')
+    const spy = vi.spyOn(fetch, 'impl')
+    const res = await users(fetch, apiUrl).verifyMagicLink('112233')
+    expect(spy).toHaveBeenLastCalledWith(
+      'https:/mua//v1/accounts/112233/login/magic-link/verify',
+      {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer Token'
+        }
+      })
+    expect(res.loginToken).toEqual('Token')
+  })
+
+  test('test verify magic link with twoFactorLoginToken ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'Token' } })
+    })
+
+    const res = await users(fetch, apiUrl).verifyMagicLink('112233')
+    expect(res.twoFactorLoginToken).toEqual('Token')
+  })
+
+  test('test verify magic link undefined input ', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { loginToken: 'Token' } })
+    })
+    await expect(users(fetch, apiUrl).verifyMagicLink()).rejects.toThrowError('Account id is required')
+  })
 })

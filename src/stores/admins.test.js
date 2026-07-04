@@ -607,6 +607,15 @@ describe('admins Store', () => {
     expect(res.success).toEqual(true)
   })
 
+  test('test login with provider error', async () => {
+    const connectors = mokeConnector()
+    connectors.admins.loginWithProvider = async () => { throw new RouteError('Provider login failed') }
+    const adminStore = useAdminsStore(connectors)
+    const userStore = adminStore()
+    const res = await userStore.loginWithProvider()
+    expect(res.message).toEqual('Provider login failed')
+  })
+
   test('test get access token error missing id', async () => {
     const adminStore = useAdminsStore(mokeConnector())
     const userStore = adminStore()
