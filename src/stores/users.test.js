@@ -461,7 +461,7 @@ describe('users Store', () => {
   test('test success login get accounts', async () => {
     const usersStore = useUsersStore(mokeConnector())
     const store = usersStore()
-    const res = await store.loginGetAccounts('12123password')
+    const res = await store.loginGetAccounts({ email: 'user1@gmail.com' })
     expect(res).toEqual({ success: true })
   })
 

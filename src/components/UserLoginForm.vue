@@ -1,14 +1,18 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUsersStore } from '../stores/index.js'
+import { useUsersStore, useCaptchaStore, useTurnstileStore } from '../stores/index.js'
 import ConfirmDialog from '../dialogs/ConfirmDialog.vue'
+import TurnstileWidget from './TurnstileWidget.vue'
 
 const props = defineProps({
   tokenData: Object
 })
 
 const router = useRouter()
+const captchaStore = useCaptchaStore()
+const turnstileStore = useTurnstileStore()
+const captchaType = import.meta.env.VITE_CAPTCHA_TYPE || 'svg'
 const data = ref({})
 const cb = ref(false)
 const processing = ref(false)
@@ -16,12 +20,41 @@ const loginProcessing = ref(false)
 const recentLogins = ref(await useUsersStore().getRecentLoginsAccounts())
 const openRecentLogins = ref(recentLogins.value)
 const confirmDialogRef = ref()
+const captchaData = ref()
+const turnstileSiteKey = ref(null)
+const turnstileWidget = ref(null)
 
 const defaultLogo = import.meta.env.BASE_URL + 'placeholder.jpg'
 const appIcon = import.meta.env.VITE_APP_LOGO_URL
 
 if (props.tokenData.user) {
   data.value.email = props.tokenData.user.email
+}
+
+async function generateCaptcha () {
+  if (captchaType === 'turnstile') {
+    if (!turnstileSiteKey.value) {
+      const res = await turnstileStore.getTurnstileConfig()
+      turnstileSiteKey.value = res.siteKey
+    }
+    return
+  }
+  const res = await captchaStore.getCaptcha()
+  captchaData.value = res.data
+  data.value.captchaProbe = res.probe
+}
+
+if (!props.tokenData.accounts) {
+  generateCaptcha()
+}
+
+function resetCaptcha () {
+  if (captchaType !== 'turnstile') {
+    generateCaptcha()
+  } else {
+    turnstileWidget.value?.reset()
+    data.value.turnstileToken = null
+  }
 }
 
 async function removeAccount (urlFriendlyName) {
@@ -86,15 +119,26 @@ async function removeAccount (urlFriendlyName) {
 
             <!-- Step 1: email entry -->
             <v-card-text v-if="!props.tokenData.accounts && !cb" align="center"
-                @keydown.enter="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })">
+                @keydown.enter="(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText) ? (processing = true) && $emit('handleGetLoginAccountsHandler', data, (res) => { res ? cb = res : null; resetCaptcha(); processing = false }) : null">
                 <p class="text-h6 mb-5">{{ $t('mua.userLoginAndResetForm.loginHeader') }}</p>
                 <v-text-field hide-details data-test-id="loginAndResetForm-emailField" density="compact"
                     class="mb-5 rounded" color="primary" variant="solo"
                     type="email" name="email"
                     :placeholder="data.email || $t('mua.userLoginAndResetForm.emailPlaceHolder')" :value="data.email"
                     @update:modelValue="v => data.email = v.replace(/[^a-z0-9+@ \.,_-]/gim, '')" required />
+                <div v-if="captchaType !== 'turnstile'" class="d-flex flex-wrap align-center justify-center mb-4">
+                    <div v-html="captchaData"></div>
+                    <v-btn density="compact" size="large" class="rounded-0 elevation-0 mr-2"
+                        @click="generateCaptcha()" icon="mdi-refresh" />
+                    <v-text-field hide-details data-test-id="loginAndResetForm-captchaField" density="compact"
+                        class="mt-3 rounded" color="primary" variant="solo" name="captchaText" type="text"
+                        :placeholder="'Captcha text'" v-model="data.captchaText" required />
+                </div>
+                <TurnstileWidget v-else-if="turnstileSiteKey" ref="turnstileWidget" :sitekey="turnstileSiteKey"
+                    class="mb-4" @token="(t) => { data.turnstileToken = t }" />
                 <v-btn color="primary" data-test-id="loginAndResetForm-getLoginAccountsBtn"
-                    @click="processing = true; $emit('handleGetLoginAccountsHandler', data.email, (res) => { res ? cb = res : processing = false })">
+                    :disabled="!data.email || !(captchaType === 'turnstile' ? data.turnstileToken : data.captchaText)"
+                    @click="processing = true; $emit('handleGetLoginAccountsHandler', data, (res) => { res ? cb = res : null; resetCaptcha(); processing = false })">
                     {{ !processing ? $t('mua.userLoginAndResetForm.loginBtnText') : '' }}
                     <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                         processing ? $t('mua.processing') : '' }}
