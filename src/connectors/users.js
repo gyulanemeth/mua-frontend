@@ -167,7 +167,7 @@ export default function (fetch, apiUrl) {
     if (!formData || !formData.email) {
       throw new RouteError('User email is required')
     }
-    const res = await postLoginGetEmails({}, { email: formData.email })
+    const res = await postLoginGetEmails({}, { email: formData.email, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe, turnstileToken: formData.turnstileToken })
     return res
   }
 
@@ -185,11 +185,11 @@ export default function (fetch, apiUrl) {
     return res
   }
 
-  const sendMagicLinkUrlFriendlyName = async function (urlFriendlyName, email) {
-    if (!urlFriendlyName || !email) {
+  const sendMagicLinkUrlFriendlyName = async function (urlFriendlyName, formData) {
+    if (!urlFriendlyName || !formData?.email) {
       throw new RouteError('urlFriendlyName and email are required')
     }
-    const res = await postMagicLinkUrlFriendlyName({ id: urlFriendlyName }, { email })
+    const res = await postMagicLinkUrlFriendlyName({ id: urlFriendlyName }, { email: formData.email, captchaText: formData.captchaText, captchaProbe: formData.captchaProbe, turnstileToken: formData.turnstileToken })
     return res
   }
 

@@ -25,7 +25,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                 </v-avatar>
             </v-card-text>
         </v-card>
-        <MagicLinkDialog ref="magicLinkDialogRef" @send="(email, cb) => $emit('handleSendMagicLinkHandler', email, cb)" />
+        <MagicLinkDialog ref="magicLinkDialogRef" @send="(data, cb) => $emit('handleSendMagicLinkHandler', data, cb)" />
         <v-card class="ma-2 pa-2 rounded-xl elevation-2" width="80%" max-width="600px"
             @keydown.enter="processing = true; $emit('handleLoginWithUrlFriendlyName', { email: data.email, password: data.password, urlFriendlyName: props.formData.urlFriendlyName }, () => { processing = false })">
             <v-card-text align="center">

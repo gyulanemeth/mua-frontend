@@ -90,7 +90,8 @@ async function handleForgotPasswordEvent (params, statusCallBack) {
     email: params.email,
     accountId: params.account._id,
     captchaText: params.captchaText,
-    captchaProbe: params.captchaProbe
+    captchaProbe: params.captchaProbe,
+    turnstileToken: params.turnstileToken
   })
   statusCallBack(!res.message && 'reset')
 }
@@ -113,8 +114,8 @@ async function handleLoginWithUrlFriendlyNameEvent (params, statusCallBack) {
   }
 }
 
-async function handleSendMagicLinkUrlFriendlyNameEvent (email, statusCallBack) {
-  const res = await usersStore.sendMagicLinkUrlFriendlyName(route.params.urlFriendlyName, email)
+async function handleSendMagicLinkUrlFriendlyNameEvent (data, statusCallBack) {
+  const res = await usersStore.sendMagicLinkUrlFriendlyName(route.params.urlFriendlyName, data)
   statusCallBack(!res.message)
 }
 

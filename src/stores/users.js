@@ -194,9 +194,9 @@ export default (connectors) => {
           return e
         }
       },
-      async loginGetAccounts (email) {
+      async loginGetAccounts (data) {
         try {
-          const res = await connectors.user.loginGetAccounts({ email })
+          const res = await connectors.user.loginGetAccounts(data)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -204,9 +204,9 @@ export default (connectors) => {
         }
       },
 
-      async sendMagicLinkUrlFriendlyName (urlFriendlyName, email) {
+      async sendMagicLinkUrlFriendlyName (urlFriendlyName, data) {
         try {
-          const res = await connectors.user.sendMagicLinkUrlFriendlyName(urlFriendlyName, email)
+          const res = await connectors.user.sendMagicLinkUrlFriendlyName(urlFriendlyName, data)
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -294,7 +294,8 @@ export default (connectors) => {
             email: data.email,
             id: data.accountId,
             captchaText: data.captchaText,
-            captchaProbe: data.captchaProbe
+            captchaProbe: data.captchaProbe,
+            turnstileToken: data.turnstileToken
           })
           return res
         } catch (e) {
