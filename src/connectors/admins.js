@@ -53,7 +53,7 @@ export default function (fetch, apiUrl) {
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/profile-picture`, generateAdditionalHeaders)
   const uploadImageRoute = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImageRoute, generateAdditionalHeaders)
   const postLoginWithProvider = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/login/provider')
-  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`, generateAdditionalHeaders)
   const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('admin-disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
   const getMFARoute = createGetConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)

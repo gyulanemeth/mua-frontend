@@ -497,7 +497,8 @@ describe('test admin connectors', () => {
         method: 'POST',
         body: undefined,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
     expect(res.redirectUrl).toEqual('link')

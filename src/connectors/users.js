@@ -61,7 +61,7 @@ export default function (fetch, apiUrl) {
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   const postLoginWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/provider/${params.provider}`)
-  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`, generateAdditionalHeaders)
   const postCreateWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/create-account/provider/${params.provider}`)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
