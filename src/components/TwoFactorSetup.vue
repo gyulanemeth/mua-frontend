@@ -13,20 +13,20 @@ const qrCode = ref()
 const secret = ref()
 const recoverySecret = ref()
 const dialog = ref(false)
+const disableCode = ref('')
 
 async function getCode () {
   const res = await userStore.getMFA()
   if (res.qrcode) {
     qrCode.value = res.qrcode
     secret.value = res.secret
-  } else if (res.recoverySecret) {
-    recoverySecret.value = res.recoverySecret
   }
 }
 
 const disableMFA = async () => {
-  const res = await userStore.disableMFA()
+  const res = await userStore.disableMFA(disableCode.value)
   if (res.enabled === false) {
+    disableCode.value = ''
     await userStore.readOne()
     getCode()
   }
@@ -88,25 +88,19 @@ getCode()
             </div>
             <div v-else class="d-flex flex-wrap mx-0 mb-5 align-center justify-start w-100">
                 <div class="my-2 d-flex flex-wrap align-center w-100">
-                    <p class="font-weight-bold w-100 mt-5"> {{ $t('mua.twoFactorSetup.recoveryTitle') }} </p>
-                    <v-col cols="12" class="ma-0 pa-0" md="6">
-                        <p> {{ $t('mua.twoFactorSetup.recoveryDescription') }}</p>
-                    </v-col>
-                    <v-col cols="12" class="ma-0 pa-0" md="6">
-                        <v-btn color="primary" size="small" @click="dialog = true">
-                            {{ $t('mua.twoFactorSetup.recoveryBtn') }}
-                        </v-btn>
-                    </v-col>
-                </div>
-                <div class="my-2 d-flex flex-wrap align-center w-100">
                     <p class="font-weight-bold w-100 mt-5">{{ $t('mua.twoFactorSetup.disableTitle') }} </p>
                     <v-col cols="12" class="ma-0 pa-0" md="6">
                         <p> {{ $t('mua.twoFactorSetup.disableDescription') }} </p>
                     </v-col>
                     <v-col cols="12" class="ma-0 pa-0" md="6">
-                        <v-btn @click="disableMFA" color="error" size="small">
-                            {{ $t('mua.twoFactorSetup.disableBtn') }}
-                        </v-btn>
+                        <div class="d-flex align-center">
+                            <v-text-field v-model="disableCode" variant="outlined" density="compact" hide-details
+                                :placeholder="$t('mua.twoFactorSetup.disableCodePlaceholder')" class="mr-2"
+                                style="max-width: 160px;" @keydown.enter.prevent="disableCode && disableMFA()" />
+                            <v-btn @click="disableMFA" :disabled="!disableCode" color="error" size="small">
+                                {{ $t('mua.twoFactorSetup.disableBtn') }}
+                            </v-btn>
+                        </div>
                     </v-col>
                 </div>
             </div>

@@ -1052,4 +1052,14 @@ describe('users Store', () => {
     const res = await store.disconnectProvider({ accountId: '12test', id: '11Test1', provider: 'google' })
     expect(res.message).toEqual('Password Is Required')
   })
+
+  test('test reset forgot Password with 2FA enabled', async () => {
+    const connectors = mokeConnector()
+    connectors.forgotPassword.reset = async () => ({ twoFactorEnabled: true })
+    const usersStore = useUsersStore(connectors)
+    const store = usersStore()
+    const token = jwt.sign({ type: 'forgot-password', user: { _id: '123', email: 'user@email.com' }, account: { _id: '112233' } }, secrets)
+    const res = await store.resetForgotPassword(token, 'newPassword', 'newPassword')
+    expect(res).toEqual({ twoFactorEnabled: true })
+  })
 })

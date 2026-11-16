@@ -562,6 +562,7 @@
       "recoveryBtn": "show code",
       "disableTitle": "Disable 2FA",
       "disableDescription": "If you want to use single factor authentication, press disable. You can re-enable 2FA at any time.",
+      "disableCodePlaceholder": "6-digit code",
       "disableBtn": "disable",
       "dialog": {
         "title": "2FA recovery",

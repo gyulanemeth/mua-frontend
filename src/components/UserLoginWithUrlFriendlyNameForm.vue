@@ -52,7 +52,7 @@ const appIcon = import.meta.env.VITE_APP_LOGO_URL
                     <v-progress-circular v-if="processing" :size="20" indeterminate></v-progress-circular>{{
                         processing ? $t('mua.processing') : '' }}
                 </v-btn>
-                <LoginWithProvider :accountId="props.formData._id">
+                <LoginWithProvider :accountId="props.formData._id" @twoFactorRequired="$emit('twoFactorRequired')">
                     <v-btn block variant="outlined" color="primary" class="mb-2"
                         @click="magicLinkDialogRef.show(data.email)">
                         <v-icon start>mdi-email-fast-outline</v-icon>

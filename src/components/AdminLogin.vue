@@ -53,7 +53,7 @@ async function submit () {
                         processing ? $t('mua.processing') : '' }}
                 </v-btn>
             </v-card-text>
-            <AdminLoginWithProvider />
+            <AdminLoginWithProvider @twoFactorRequired="twoFactorEnabled = true" />
         </v-card>
         <v-container class="w-100">
             <v-col class="text-center justify-center align-center">

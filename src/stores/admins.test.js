@@ -667,4 +667,13 @@ describe('admins Store', () => {
     const res = await userStore.getAccessToken(token)
     expect(res.success).toEqual(true)
   })
+
+  test('test reset forgot Password with 2FA enabled', async () => {
+    const connectors = mokeConnector()
+    connectors.forgotPassword.reset = async () => ({ twoFactorEnabled: true })
+    const adminStore = useAdminsStore(connectors)
+    const userStore = adminStore()
+    const res = await userStore.resetForgotPassword('forgotPasswordToken', 'newPassword', 'newPassword')
+    expect(res).toEqual({ twoFactorEnabled: true })
+  })
 })

@@ -81,8 +81,11 @@ async function loadData () {
 }
 
 async function handleForgotPasswordResetEvent (params, statusCallBack) {
-  await usersStore.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
+  const res = await usersStore.resetForgotPassword(route.query.token, params.password, params.confirmPassword)
   statusCallBack()
+  if (res?.twoFactorEnabled) {
+    twoFactorEnabled.value = true
+  }
 }
 
 async function handleForgotPasswordEvent (params, statusCallBack) {
@@ -139,14 +142,16 @@ watchEffect(async () => {
 
 <template>
 
+  <MFALoginForm v-if="twoFactorEnabled" />
+
   <ResetPasswordForm
-    v-if="formData && (route.name === 'accounts-forgot-password' || route.name === 'accounts-forgot-password-reset')"
+    v-else-if="formData && (route.name === 'accounts-forgot-password' || route.name === 'accounts-forgot-password-reset')"
     :formData='formData' @handleForgotPasswordResetHandler="handleForgotPasswordResetEvent"
     @handleForgotPasswordHandler="handleForgotPasswordEvent" />
 
-  <MFALoginForm v-else-if="twoFactorEnabled" />
   <LoginWithUrlFriendlyNameForm v-else-if="formData && route.name === 'accounts-login-with-urlFriendlyName'"
     :formData='formData' @handleLoginWithUrlFriendlyName="handleLoginWithUrlFriendlyNameEvent"
+    @twoFactorRequired="twoFactorEnabled = true"
     @handleSendMagicLinkHandler="handleSendMagicLinkUrlFriendlyNameEvent" />
 
   <LoginForm v-else-if="route.name === 'accounts-login' || route.name === 'accounts-login-select'"

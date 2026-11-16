@@ -787,4 +787,18 @@ describe('test accounts connectors', () => {
     })
     await expect(accounts(fetch, apiUrl).account.createOneByAdmin()).rejects.toThrowError('Name and UrlFriendlyName are required')
   })
+
+  test('test forgotPassword reset with 2FA enabled', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'twoFactorToken' } })
+    })
+
+    const res = await accounts(fetch, apiUrl).forgotPassword.reset({ id: '123', token: 'Token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
+    expect(res).toEqual({ twoFactorEnabled: true })
+    expect(localStorage.getItem('two-factor-login')).toEqual('twoFactorToken')
+    expect(localStorage.getItem('resetPasswordToken')).toBeFalsy()
+  })
 })

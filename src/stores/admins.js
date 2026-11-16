@@ -80,9 +80,9 @@ export default (connectors) => {
           return e
         }
       },
-      async disableMFA () {
+      async disableMFA (code) {
         try {
-          const res = await connectors.admins.disableMFA({ id: this.user._id })
+          const res = await connectors.admins.disableMFA({ id: this.user._id, code })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -157,6 +157,9 @@ export default (connectors) => {
       async resetForgotPassword (forgotPasswordToken, newPassword, newPasswordAgain) {
         try {
           const resetPasswordToken = await connectors.forgotPassword.reset({ token: forgotPasswordToken, newPassword, newPasswordAgain })
+          if (resetPasswordToken?.twoFactorEnabled) {
+            return { twoFactorEnabled: true }
+          }
           const resetPasswordTokenData = jwtDecode(resetPasswordToken)
           this.accessToken = await connectors.admins.getAccessToken({ id: resetPasswordTokenData.user._id })
           this.user = await connectors.admins.readOne({ id: resetPasswordTokenData.user._id })

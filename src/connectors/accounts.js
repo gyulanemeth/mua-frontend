@@ -186,6 +186,11 @@ export default function (fetch, apiUrl) {
     }
     localStorage.setItem('resetPasswordToken', formData.token)
     const res = await postResetForgotPassword({ id: formData.id }, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+      localStorage.removeItem('resetPasswordToken')
+      return { twoFactorEnabled: true }
+    }
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('resetPasswordToken')

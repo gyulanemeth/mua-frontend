@@ -155,7 +155,7 @@ watch(() => data.value.account.urlFriendlyName, () => {
                         {{ $t('mua.userLoginAndResetForm.nextBtn') }}
                     </v-btn>
                     <CreateWithProvider v-if="!data.user.googleProfileId"
-                        @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; step = 2 }" />
+                        @updateUserData="(val) => { data.user.name = val.name; data.user.email = val.email; data.user.googleProfileId = val.id; data.user.profilePicture = val.profilePicture; data.user.providerToken = val.providerToken; step = 2 }" />
                 </div>
                 <div v-if="step === 2" @keydown.enter="submitBtn">
                     <v-divider class="my-3" />
