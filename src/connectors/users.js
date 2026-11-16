@@ -61,7 +61,7 @@ export default function (fetch, apiUrl) {
   const postLogin = createPostConnector(fetch, apiUrl, generateLoginRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
   const postLoginGetEmails = createPostConnector(fetch, apiUrl, generateLoginGetAccountsRoute)
   const postLoginWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/provider/${params.provider}`)
-  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.accountId}/users/${params.id}/link/provider/${params.provider}`, generateAdditionalHeaders)
   const postCreateWithProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/create-account/provider/${params.provider}`)
   const updateEmail = createPatchConnector(fetch, apiUrl, generatePatchEmailRoute, generateAdditionalHeaders)
   const confirmEmailUpdate = createPatchConnector(fetch, apiUrl, generatePatchConfirmEmailRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('verifyEmailToken')}` }))
@@ -76,7 +76,7 @@ export default function (fetch, apiUrl) {
   const getProjectsRoute = createGetConnector(fetch, apiUrl, generateGetProjectsRoute, generateAdditionalHeaders)
   const getMFARoute = createGetConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
   const confirmMFARoute = createPostConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
-  const disableMFARoute = createDeleteConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const disableMFARoute = createDeleteConnector(fetch, apiUrl, (params) => `${generateMFARoute(params)}?code=${encodeURIComponent(params.code)}`, generateAdditionalHeaders)
   const postMFALogin = createPostConnector(fetch, apiUrl, () => '/v1/accounts/mfa-login', () => ({ Authorization: `Bearer ${localStorage.getItem('two-factor-login')}` }))
   const postMagicLinkVerify = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/magic-link/verify`, () => ({ Authorization: `Bearer ${localStorage.getItem('magicLinkToken')}` }))
   const postLoginSelect = createPostConnector(fetch, apiUrl, (params) => `/v1/accounts/${params.id}/login/select`, () => ({ Authorization: `Bearer ${localStorage.getItem('loginToken')}` }))
@@ -107,10 +107,10 @@ export default function (fetch, apiUrl) {
   }
 
   const disableMFA = async function (params) {
-    if (!params || !params.accountId || !params.id) {
-      throw new RouteError('User id and account id are required')
+    if (!params || !params.accountId || !params.id || !params.code) {
+      throw new RouteError('User id, account id and code are required')
     }
-    const res = await disableMFARoute({ id: params.id, accountId: params.accountId })
+    const res = await disableMFARoute({ id: params.id, accountId: params.accountId, code: params.code })
     return res
   }
 

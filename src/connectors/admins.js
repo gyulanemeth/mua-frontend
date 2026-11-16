@@ -53,12 +53,12 @@ export default function (fetch, apiUrl) {
   const deleteProfilePictureRoute = createDeleteConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/profile-picture`, generateAdditionalHeaders)
   const uploadImageRoute = createPostBinaryConnector(fetch, apiUrl, 'profilePicture', generateUploadImageRoute, generateAdditionalHeaders)
   const postLoginWithProvider = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/login/provider')
-  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`)
+  const postLinkToProvider = createPostConnector(fetch, apiUrl, (params) => `/v1/system-admins/${params.id}/link`, generateAdditionalHeaders)
   const patchDisconnectProvider = createPatchConnector(fetch, apiUrl, generatePatchDisconnectProviderRoute, () => ({ Authorization: `Bearer ${localStorage.getItem('admin-disconnect-permission-token')}` }))
   const disconnectPermissionUser = createPostConnector(fetch, apiUrl, generateDisconnectPermissionRoute, generateAdditionalHeaders)
   const getMFARoute = createGetConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
   const confirmMFARoute = createPostConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
-  const disableMFARoute = createDeleteConnector(fetch, apiUrl, generateMFARoute, generateAdditionalHeaders)
+  const disableMFARoute = createDeleteConnector(fetch, apiUrl, (params) => `${generateMFARoute(params)}?code=${encodeURIComponent(params.code)}`, generateAdditionalHeaders)
   const postMFALogin = createPostConnector(fetch, apiUrl, () => '/v1/system-admins/mfa-login', () => ({ Authorization: `Bearer ${localStorage.getItem('two-factor-login')}` }))
 
   const list = async function (param, query) {
@@ -169,10 +169,10 @@ export default function (fetch, apiUrl) {
   }
 
   const disableMFA = async function (params) {
-    if (!params || !params.id) {
-      throw new RouteError('ID is required')
+    if (!params || !params.id || !params.code) {
+      throw new RouteError('ID and code are required')
     }
-    const res = await disableMFARoute({ id: params.id })
+    const res = await disableMFARoute({ id: params.id, code: params.code })
     return res
   }
 
@@ -238,6 +238,11 @@ export default function (fetch, apiUrl) {
     }
     localStorage.setItem('resetPasswordToken', formData.token)
     const res = await postResetForgotPassword({}, { newPassword: formData.newPassword, newPasswordAgain: formData.newPasswordAgain })
+    if (res.twoFactorLoginToken) {
+      localStorage.setItem('two-factor-login', res.twoFactorLoginToken)
+      localStorage.removeItem('resetPasswordToken')
+      return { twoFactorEnabled: true }
+    }
     if (res.loginToken) {
       localStorage.setItem('loginToken', res.loginToken)
       localStorage.removeItem('resetPasswordToken')

@@ -4,6 +4,7 @@ import { useAdminsStore } from '../stores/index.js'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 
 const router = useRouter()
+const emit = defineEmits(['twoFactorRequired'])
 const googleProvider = import.meta.env.VITE_AUTH_PROVIDERS?.includes('google')
 
 async function submitLoginWithProvider () {
@@ -15,11 +16,15 @@ async function submitLoginWithProvider () {
         try {
           const params = new URLSearchParams(popup.location.search)
           const loginToken = params.get('adminLoginToken')
+          const twoFactorLoginToken = params.get('adminTwoFactorLoginToken')
           const failedQuery = params.get('failed')
-          if (!popup.closed && (loginToken || failedQuery)) {
+          if (!popup.closed && (loginToken || twoFactorLoginToken || failedQuery)) {
             clearInterval(interval)
             popup.close()
-            if (loginToken) {
+            if (twoFactorLoginToken) {
+              localStorage.setItem('two-factor-login', twoFactorLoginToken)
+              emit('twoFactorRequired')
+            } else if (loginToken) {
               localStorage.setItem('loginToken', loginToken)
               const res = await useAdminsStore().getAccessToken(loginToken)
               if (res.success) {

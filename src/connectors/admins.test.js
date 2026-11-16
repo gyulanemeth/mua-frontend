@@ -347,9 +347,9 @@ describe('test admin connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await admin(fetch, apiUrl).admins.disableMFA({ id: 'userId' })
+    const res = await admin(fetch, apiUrl).admins.disableMFA({ id: 'userId', code: '123456' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua/admin/v1/system-admins/userId/mfa',
+      'https:/mua/admin/v1/system-admins/userId/mfa?code=123456',
       {
         method: 'DELETE',
         headers: {
@@ -367,7 +367,7 @@ describe('test admin connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(admin(fetch, apiUrl).admins.disableMFA()).rejects.toThrowError('ID is required')
+    await expect(admin(fetch, apiUrl).admins.disableMFA({ id: 'userId' })).rejects.toThrowError('ID and code are required')
   })
 
   test('test confirmMFA admin', async () => {
@@ -497,7 +497,8 @@ describe('test admin connectors', () => {
         method: 'POST',
         body: undefined,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
     expect(res.redirectUrl).toEqual('link')
@@ -934,5 +935,18 @@ describe('test admin connectors', () => {
       json: () => Promise.resolve({ result: { permissionToken: 'permissionToken' } })
     })
     await expect(admin(fetch, apiUrl).admins.deleteProfilePicture()).rejects.toThrowError('User id is required')
+  })
+
+  test('test forgotPassword reset admin with 2FA enabled', async () => {
+    const fetch = vi.fn()
+    fetch.mockResolvedValue({
+      ok: true,
+      headers: { get: () => 'application/json' },
+      json: () => Promise.resolve({ result: { twoFactorLoginToken: 'twoFactorToken' } })
+    })
+
+    const res = await admin(fetch, apiUrl).forgotPassword.reset({ token: 'token', newPassword: 'newPassword', newPasswordAgain: 'newPassword' })
+    expect(res).toEqual({ twoFactorEnabled: true })
+    expect(localStorage.getItem('two-factor-login')).toEqual('twoFactorToken')
   })
 })

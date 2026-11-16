@@ -258,9 +258,9 @@ describe('test accounts connectors', () => {
     })
 
     const spy = vi.spyOn(fetch, 'impl')
-    const res = await users(fetch, apiUrl).disableMFA({ accountId: '123', id: 'userId' })
+    const res = await users(fetch, apiUrl).disableMFA({ accountId: '123', id: 'userId', code: '123456' })
     expect(spy).toHaveBeenLastCalledWith(
-      'https:/mua//v1/accounts/123/users/userId/mfa',
+      'https:/mua//v1/accounts/123/users/userId/mfa?code=123456',
       {
         method: 'DELETE',
         headers: {
@@ -278,7 +278,7 @@ describe('test accounts connectors', () => {
       headers: { get: () => 'application/json' },
       json: () => Promise.resolve({ result: { loginToken: 'Token' } })
     })
-    await expect(users(fetch, apiUrl).disableMFA()).rejects.toThrowError('User id and account id are required')
+    await expect(users(fetch, apiUrl).disableMFA({ accountId: '123', id: 'userId' })).rejects.toThrowError('User id, account id and code are required')
   })
 
   test('test confirmMFA', async () => {
@@ -908,7 +908,8 @@ describe('test accounts connectors', () => {
         method: 'POST',
         body: undefined,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('accessToken')
         }
       })
     expect(res.redirectUrl).toEqual('link')

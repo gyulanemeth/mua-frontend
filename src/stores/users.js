@@ -148,9 +148,9 @@ export default (connectors) => {
           return e
         }
       },
-      async disableMFA () {
+      async disableMFA (code) {
         try {
-          const res = await connectors.user.disableMFA({ accountId: this.user.accountId, id: this.user._id })
+          const res = await connectors.user.disableMFA({ accountId: this.user.accountId, id: this.user._id, code })
           return res
         } catch (e) {
           useSystemMessagesStore().addError(e)
@@ -310,6 +310,9 @@ export default (connectors) => {
             throw new RouteError('Valid token, password and new password Is Required')
           }
           const loginToken = await connectors.forgotPassword.reset({ id: forgotPasswordTokenData.account._id, token: forgotPasswordToken, newPassword, newPasswordAgain })
+          if (loginToken?.twoFactorEnabled) {
+            return { twoFactorEnabled: true }
+          }
           const loginTokenData = jwtDecode(loginToken)
           this.accessToken = await connectors.user.getAccessToken({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })
           this.user = await connectors.user.readOne({ id: loginTokenData.user._id, accountId: loginTokenData.account._id })

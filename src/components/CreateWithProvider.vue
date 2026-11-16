@@ -33,7 +33,7 @@ async function submitCreateWithProvider (provider) {
             popup.close()
             if (userData) {
               const data = jwtDecode(userData)
-              emit('updateUserData', data.user)
+              emit('updateUserData', { ...data.user, providerToken: userData })
             } else if (loginToken) {
               localStorage.setItem('loginToken', loginToken)
               const res = await useUsersStore().getAccessToken(loginToken)

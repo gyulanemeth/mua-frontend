@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import SetAndReSetPassword from '../components/AdminSetAndReSetPassword.vue'
+import MFALoginForm from '../components/MFALoginForm.vue'
 import useSystemMessagesStore from '../stores/systemMessages.js'
 import { useAdminsStore } from '../stores/index.js'
 
@@ -14,6 +15,7 @@ const router = useRouter()
 const { tm } = useI18n()
 
 const formData = ref()
+const twoFactorEnabled = ref(false)
 
 async function loadData () {
   if (route.name === 'system-admins-accept-invitation') {
@@ -37,6 +39,11 @@ async function handleSetPasswordEvent (params) {
 
 async function handleResetPassword (params, statusCallBack) {
   const res = await store.resetForgotPassword(params.token, params.newPassword, params.newPasswordAgain)
+  if (res?.twoFactorEnabled) {
+    statusCallBack(false)
+    twoFactorEnabled.value = true
+    return
+  }
   statusCallBack(!res.message && res)
   if (!res.message) {
     await new Promise(resolve => setTimeout(resolve, 5000))
@@ -52,6 +59,7 @@ watchEffect(async () => {
 
 <template>
 
-  <SetAndReSetPassword :formData="formData" @setPasswordEventHandler="handleSetPasswordEvent" @resetPasswordEventHandler="handleResetPassword" />
+  <MFALoginForm v-if="twoFactorEnabled" systemAdmin />
+  <SetAndReSetPassword v-else :formData="formData" @setPasswordEventHandler="handleSetPasswordEvent" @resetPasswordEventHandler="handleResetPassword" />
 
 </template>
